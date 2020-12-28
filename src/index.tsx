@@ -6,7 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import netlifyidentity from 'netlify-identity-widget';
 import LoggedOutApp from './LoggedOutApp';
 import { ChakraProvider } from '@chakra-ui/react';
+import { setupIdentity } from 'setupIdentity';
 
+setupIdentity();
 const user = netlifyidentity.currentUser();
 
 ReactDOM.render(

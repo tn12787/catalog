@@ -1,3 +1,4 @@
+import Login from 'pages/Login';
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -11,7 +12,7 @@ const LoggedOutApp = () => {
     <Router>
       <Switch>
         <Route path="/login">
-          <div>login</div>
+          <Login />
         </Route>
         <Redirect to="/login" />
       </Switch>
