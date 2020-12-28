@@ -1,4 +1,9 @@
 [build]
-  command = "yarn build:functions"
-  functions = "functions-build" # This is where the functions are built to. Needs to be different to where the source lives
-  publish = "build" 
+command = "yarn build:functions" 
+functions = "functions-build" # This is where the functions are built to. Needs to be different to where the source lives
+publish = "build" 
+
+[[redirects]]
+from = "/*"
+status = 200
+to = "/index.html"
