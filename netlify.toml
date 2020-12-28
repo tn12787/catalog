@@ -1,8 +1,0 @@
-[build]
-base = "./"
-command = "yarn build:functions && yarn build"
-functions = "functions/"
-[[redirects]]
-from = "/*"
-status = 200
-to = "/index.html"
