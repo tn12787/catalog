@@ -3,17 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import netlifyidentity from 'netlify-identity-widget';
 import LoggedOutApp from './LoggedOutApp';
 import { ChakraProvider } from '@chakra-ui/react';
-import { setupIdentity } from 'setupIdentity';
-
-setupIdentity();
-const user = netlifyidentity.currentUser();
+import { auth } from 'firebase-details';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider>{user ? <App /> : <LoggedOutApp />}</ChakraProvider>
+    <ChakraProvider>
+      {auth.currentUser ? <App /> : <LoggedOutApp />}
+    </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
