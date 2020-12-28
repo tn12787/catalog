@@ -5,24 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import netlifyidentity from 'netlify-identity-widget';
 import LoggedOutApp from './LoggedOutApp';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const user = netlifyidentity.currentUser();
 
-if (user) {
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
-} else {
-  ReactDOM.render(
-    <React.StrictMode>
-      <LoggedOutApp />
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
-}
+ReactDOM.render(
+  <React.StrictMode>
+    <ChakraProvider>{user ? <App /> : <LoggedOutApp />}</ChakraProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
