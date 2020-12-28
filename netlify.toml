@@ -1,6 +1,6 @@
 [build]
 base = "./"
-command = "yarn build"
+command = "yarn build:functions && yarn build"
 functions = "functions/"
 [[redirects]]
 from = "/*"
