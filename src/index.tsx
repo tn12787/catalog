@@ -3,13 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import netlifyidentity from 'netlify-identity-widget';
+import LoggedOutApp from './LoggedOutApp';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const user = netlifyidentity.currentUser();
+
+if (user) {
+  ReactDOM.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+} else {
+  ReactDOM.render(
+    <React.StrictMode>
+      <LoggedOutApp />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
