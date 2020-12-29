@@ -33,3 +33,9 @@ exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
   // Setting an 'uppercase' field in Cloud Firestore document returns a Promise.
   return snap.ref.set({uppercase}, {merge: true});
 });
+
+exports.removeUser = functions.auth.user().onDelete(async ({uid}) => {
+  functions.logger.log('Removing user', uid);
+  const writeMessageResult = await admin.firestore().collection('users').doc(uid).delete()
+  functions.logger.log('Removed user', uid, ". Result: ", writeMessageResult);
+});
