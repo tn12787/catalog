@@ -10,17 +10,19 @@ import {
 
 const LoggedOutApp = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/sign-up">
-          <SignUp />
-        </Route>
-        <Redirect to="/login" />
-      </Switch>
-    </Router>
+    <>
+      <Router>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/sign-up">
+            <SignUp />
+          </Route>
+          <Redirect to="/login" />
+        </Switch>
+      </Router>
+    </>
   );
 };
 
