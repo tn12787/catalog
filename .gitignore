@@ -68,6 +68,9 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+
+.firebase
+
 # dotenv environment variables file
 .env
 .env.test

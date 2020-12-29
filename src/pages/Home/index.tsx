@@ -1,4 +1,4 @@
-import { Flex, Button, Text } from '@chakra-ui/react';
+import { Flex, Button, Text, Stack } from '@chakra-ui/react';
 import { auth } from 'firebase-details';
 import React, { useState } from 'react';
 
@@ -15,13 +15,27 @@ const Home = (props: Props) => {
       setLoading(false);
     }
   };
+
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      await auth.currentUser?.delete();
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <Flex align="center" justify="center" direction="column">
+    <Stack align="center" justify="center" direction="column">
       <Text>Welcome to the logged in app!</Text>
       <Button isLoading={loading} onClick={onLogout}>
         Log Out
       </Button>
-    </Flex>
+
+      <Button isLoading={loading} colorScheme="red" onClick={onDelete}>
+        Delete Account
+      </Button>
+    </Stack>
   );
 };
 
