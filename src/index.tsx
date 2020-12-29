@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import LoggedOutApp from './LoggedOutApp';
 import { ChakraProvider } from '@chakra-ui/react';
-import { auth } from 'firebase-details';
-
+import Root from './Root';
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider>
-      {auth.currentUser ? <App /> : <LoggedOutApp />}
+      <Root />
     </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root')
