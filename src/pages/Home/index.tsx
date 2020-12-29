@@ -10,7 +10,6 @@ const Home = (props: Props) => {
     try {
       setLoading(true);
       await auth.signOut();
-      // window.location.reload();
     } finally {
       setLoading(false);
     }
