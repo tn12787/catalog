@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Stack } from '@chakra-ui/react';
+import { Button, Text, Stack } from '@chakra-ui/react';
 import { auth } from 'firebase-details';
 import React, { useState } from 'react';
 
