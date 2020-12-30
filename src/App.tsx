@@ -1,21 +1,31 @@
 import React from 'react';
-import Home from 'pages/Home';
 import {
   BrowserRouter as Router,
   Route,
   Redirect,
   Switch,
 } from 'react-router-dom';
+import { Flex } from '@chakra-ui/react';
+import Nav from 'components/Nav';
+import Account from 'pages/Accounts';
+import { appLinks } from 'appLinks';
+import Releases from 'pages/Releases';
 
 const App = () => {
   return (
     <Router>
-      <Switch>
-        <Route path="/home">
-          <Home />
-        </Route>
-        <Redirect to="/home" />
-      </Switch>
+      <Flex minH="100vh">
+        <Nav links={appLinks} />
+        <Switch>
+          <Route path="/releases">
+            <Releases />
+          </Route>
+          <Route path="/account">
+            <Account />
+          </Route>
+          <Redirect to="/releases" />
+        </Switch>
+      </Flex>
     </Router>
   );
 };
