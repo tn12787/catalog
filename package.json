@@ -34,6 +34,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "yarn build && firebase deploy",
+    "deploy:hosting": "yarn build && firebase deploy --only hosting",
     "deploy:functions": "cd functions && npm run deploy",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
