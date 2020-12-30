@@ -5,7 +5,7 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import 'firebase/firestore';
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: '***REMOVED***',
   authDomain: 'launchday-mvp.firebaseapp.com',
   projectId: 'launchday-mvp',

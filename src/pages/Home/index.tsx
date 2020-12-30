@@ -1,11 +1,21 @@
-import { Button, Text, Stack } from '@chakra-ui/react';
+import { Button, Text, Stack, Heading } from '@chakra-ui/react';
 import { auth } from 'firebase-details';
 import React, { useState } from 'react';
+import {
+  SuspenseWithPerf,
+  useFirestore,
+  useFirestoreCollectionData,
+} from 'reactfire';
 
 interface Props {}
 
 const Home = (props: Props) => {
   const [loading, setLoading] = useState(false);
+  const releasesRef = useFirestore().collection('releases');
+  const { data } = useFirestoreCollectionData(releasesRef, {
+    idField: 'id',
+  });
+  console.log(data);
   const onLogout = async () => {
     try {
       setLoading(true);
@@ -26,7 +36,14 @@ const Home = (props: Props) => {
 
   return (
     <Stack align="center" justify="center" direction="column">
-      <Text>Welcome to the logged in app!</Text>
+      <Heading>Releases</Heading>
+      <SuspenseWithPerf fallback={<Text>loading...</Text>} traceId="release-loading">
+        <Stack spacing={2}>
+          {data?.map((datum: any) => (
+            <Text>{datum.name}</Text>
+          ))}
+        </Stack>
+      </SuspenseWithPerf>
       <Button isLoading={loading} onClick={onLogout}>
         Log Out
       </Button>

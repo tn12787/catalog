@@ -4,10 +4,14 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
 import Root from './Root';
+import { FirebaseAppProvider } from 'reactfire';
+import { firebaseConfig } from 'firebase-details';
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider>
-      <Root />
+      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+        <Root />
+      </FirebaseAppProvider>
     </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root')
