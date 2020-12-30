@@ -1,8 +1,8 @@
 import { Button, Flex, Input, Stack, Text, useToast } from '@chakra-ui/react';
-import { auth } from 'firebase-details';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { useAuth } from 'reactfire';
 
 interface LoginData {
   email: string;
@@ -13,6 +13,7 @@ const Login = () => {
   const { register, errors, handleSubmit } = useForm<LoginData>();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const auth = useAuth();
   const onSubmit = async ({ email, password }: LoginData) => {
     try {
       setLoading(true);

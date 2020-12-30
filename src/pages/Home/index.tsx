@@ -1,8 +1,8 @@
 import { Button, Text, Stack, Heading } from '@chakra-ui/react';
-import { auth } from 'firebase-details';
 import React, { useState } from 'react';
 import {
   SuspenseWithPerf,
+  useAuth,
   useFirestore,
   useFirestoreCollectionData,
 } from 'reactfire';
@@ -15,6 +15,7 @@ const Home = (props: Props) => {
   const { data } = useFirestoreCollectionData(releasesRef, {
     idField: 'id',
   });
+  const auth = useAuth();
 
   const onLogout = async () => {
     try {
