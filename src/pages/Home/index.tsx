@@ -15,7 +15,7 @@ const Home = (props: Props) => {
   const { data } = useFirestoreCollectionData(releasesRef, {
     idField: 'id',
   });
-  console.log(data);
+
   const onLogout = async () => {
     try {
       setLoading(true);
@@ -37,7 +37,10 @@ const Home = (props: Props) => {
   return (
     <Stack align="center" justify="center" direction="column">
       <Heading>Releases</Heading>
-      <SuspenseWithPerf fallback={<Text>loading...</Text>} traceId="release-loading">
+      <SuspenseWithPerf
+        fallback={<Text>loading...</Text>}
+        traceId="release-loading"
+      >
         <Stack spacing={2}>
           {data?.map((datum: any) => (
             <Text>{datum.name}</Text>
