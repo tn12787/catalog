@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth, useFirestore } from 'reactfire';
-import { signupConfig } from './signupConfig'
+import { signupConfig } from './signupConfig';
 
 interface SignUpData {
   name: string;
@@ -70,8 +70,6 @@ const SignUp = () => {
         <Text fontWeight="semibold" fontSize="3xl">
           Create an account
         </Text>
-
-
         {signupConfig.map(
           ({ name, type, registerArgs, label }: FormDatum<LoginData>) => (
             <Stack>
@@ -88,7 +86,6 @@ const SignUp = () => {
             </Stack>
           )
         )}
-        
         <Button type="submit" isLoading={loading}>
           Create Account
         </Button>
