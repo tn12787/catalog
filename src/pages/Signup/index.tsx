@@ -1,8 +1,8 @@
 import { Button, Flex, Input, Stack, Text, useToast } from '@chakra-ui/react';
-import { auth, db } from 'firebase-details';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { useAuth, useFirestore } from 'reactfire';
 
 interface SignUpData {
   name: string;
@@ -15,6 +15,8 @@ const SignUp = () => {
   const { register, errors, handleSubmit, setError } = useForm<SignUpData>();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  const auth = useAuth();
+  const firestore = useFirestore();
   const onSubmit = async ({
     name,
     email,
@@ -32,7 +34,7 @@ const SignUp = () => {
         email,
         password
       );
-      const userRef = db.collection('users').doc(userData.user?.uid);
+      const userRef = firestore.collection('users').doc(userData.user?.uid);
       userRef.set({
         name,
       });
