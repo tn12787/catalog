@@ -1,8 +1,10 @@
 import { Button, Flex, Input, Stack, Text, useToast } from '@chakra-ui/react';
+import { FormDatum, LoginData } from 'pages/Login/types';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth, useFirestore } from 'reactfire';
+import { signupConfig } from './signupConfig'
 
 interface SignUpData {
   name: string;
@@ -69,61 +71,24 @@ const SignUp = () => {
           Create an account
         </Text>
 
-        <Stack>
-          <Text fontSize="sm" fontWeight="semibold">
-            Name
-          </Text>
-          <Input
-            isInvalid={!!errors.name}
-            name="name"
-            type="text"
-            ref={register({ required: 'Please enter your name.' })}
-          />
-          <Text color="red.400">{errors.name?.message}</Text>
-        </Stack>
-        <Stack>
-          <Text fontSize="sm" fontWeight="semibold">
-            Email Address
-          </Text>
-          <Input
-            isInvalid={!!errors.email}
-            name="email"
-            type="email"
-            ref={register({ required: 'Please enter your email address.' })}
-          />
-          <Text color="red.400">{errors.email?.message}</Text>
-        </Stack>
-        <Stack>
-          <Text fontSize="sm" fontWeight="semibold">
-            Password
-          </Text>
-          <Input
-            isInvalid={!!errors.password}
-            name="password"
-            type="password"
-            ref={register({
-              required: 'Please enter a password.',
-              minLength: {
-                value: 8,
-                message: 'Passwords must be at least 8 characters.',
-              },
-            })}
-          />
-          <Text color="red.400">{errors.password?.message}</Text>
-        </Stack>
-        <Stack>
-          <Text fontSize="sm" fontWeight="semibold">
-            Confirm Password
-          </Text>
-          <Input
-            isInvalid={!!errors.confirmPassword}
-            name="confirmPassword"
-            type="password"
-            ref={register({ required: 'Please confirm your password.' })}
-          />
-          <Text color="red.400">{errors.confirmPassword?.message}</Text>
-        </Stack>
 
+        {signupConfig.map(
+          ({ name, type, registerArgs, label }: FormDatum<LoginData>) => (
+            <Stack>
+              <Text fontSize="sm" fontWeight="semibold">
+                {label}
+              </Text>
+              <Input
+                isInvalid={!!errors[name]}
+                name={name}
+                type={type}
+                ref={register({ ...registerArgs })}
+              />
+              <Text color="red.400">{errors[name]?.message}</Text>
+            </Stack>
+          )
+        )}
+        
         <Button type="submit" isLoading={loading}>
           Create Account
         </Button>
