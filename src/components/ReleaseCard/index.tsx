@@ -1,7 +1,7 @@
-import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { Text, Box, Image, Flex } from '@chakra-ui/react';
+import { Text, Box, Image, Flex, Icon, Button } from '@chakra-ui/react';
 import React from 'react';
 import { ReleaseType } from 'types';
+import { FiCalendar, FiDisc, FiUser } from 'react-icons/fi';
 
 interface ReleaseCardProps {
   title: string;
@@ -26,6 +26,7 @@ const ReleaseCard = ({
     bg="white"
     borderRadius={'13px'}
     width="100%"
+    maxH="150px"
   >
     <Image
       src={img}
@@ -34,23 +35,28 @@ const ReleaseCard = ({
       height="150px"
       backgroundSize="cover"
     />
-    <Box p={5} py={1}>
-      <Text fontSize="25px" fontWeight="semibold">
-        {title}
-      </Text>
-      <Flex align="center" mt={1}>
-        <InfoOutlineIcon mr={1} />
+    <Flex width="100%" direction="column" p={5} py={1}>
+      <Flex flex={1} align="center" justify="space-between" py={1}>
+        <Text pl={'2px'} fontSize="25px" color="charcoal" fontWeight="semibold">
+          {title}
+        </Text>
+        <Button py={'6px'} px={6} height="auto" fontSize="15px" variant="outline" colorScheme="purple">
+          View Details
+        </Button>
+      </Flex>
+      <Flex align="center" color="softCharcoal" my={1}>
+        <Icon fontSize="22px" as={FiUser} mr={2} />
         <Text fontSize="14px">{artist}</Text>
       </Flex>
-      <Flex align="center" mt={3}>
-        <InfoOutlineIcon mr={1} />
+      <Flex align="center" color="mist" my={1}>
+        <Icon fontSize="22px" as={FiDisc} mr={2} />
         <Text fontSize="14px">{type}</Text>
       </Flex>
-      <Flex align="center" mt={3}>
-        <InfoOutlineIcon mr={1} />
+      <Flex align="center" color="mist" my={1}>
+        <Icon fontSize="22px" as={FiCalendar} mr={2} />
         <Text fontSize="14px">{targetDate}</Text>
       </Flex>
-    </Box>
+    </Flex>
   </Flex>
 );
 

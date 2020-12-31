@@ -17,18 +17,20 @@ const App = () => {
     <Router>
       <Flex minH="100vh">
         <Nav links={appLinks} />
-        <Switch>
-          <Route exact path="/releases/new">
-            <NewRelease />
-          </Route>
-          <Route path="/releases">
-            <Releases />
-          </Route>
-          <Route path="/account">
-            <Account />
-          </Route>
-          <Redirect to="/releases" />
-        </Switch>
+        <Flex width="100%" ml="300px" overflowY="auto">
+          <Switch>
+            <Route exact path="/releases/new">
+              <NewRelease />
+            </Route>
+            <Route path="/releases">
+              <Releases />
+            </Route>
+            <Route path="/account">
+              <Account />
+            </Route>
+            <Redirect to="/releases" />
+          </Switch>
+        </Flex>
       </Flex>
     </Router>
   );
