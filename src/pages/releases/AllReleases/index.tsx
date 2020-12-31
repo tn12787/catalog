@@ -1,4 +1,4 @@
-import { Text, Stack, Heading, Button } from '@chakra-ui/react';
+import { Text, Stack, Heading, Button, Flex } from '@chakra-ui/react';
 import React from 'react';
 import {
   SuspenseWithPerf,
@@ -20,13 +20,27 @@ const Releases = (props: Props) => {
   );
 
   return (
-    <Stack flex={1} bg="#eee" align="center" py={6} direction="column" width="100%">
+    <Stack
+      flex={1}
+      bg="#eee"
+      align="center"
+      py={6}
+      direction="column"
+      width="100%"
+    >
       <SuspenseWithPerf
         fallback={<Text>loading...</Text>}
         traceId="release-loading"
       >
         <Stack spacing={2} width="90%" maxW="900px">
-          <Heading py={4} color="green.400" alignSelf="flex-start">All Releases</Heading>
+          <Flex align="center" justify="space-between">
+            <Heading py={4} color="green.400" alignSelf="flex-start">
+              All Releases
+            </Heading>
+            <Button to={'/releases/new'} as={Link}>
+              Create New Release
+            </Button>
+          </Flex>
           {items.data?.map((datum: any) => {
             // TODO: Better destructuring here
             const {
@@ -46,9 +60,6 @@ const Releases = (props: Props) => {
             return <ReleaseCard {...props} />;
           })}
         </Stack>
-        <Button to={'/releases/new'} as={Link}>
-          Create New Release
-        </Button>
       </SuspenseWithPerf>
     </Stack>
   );
