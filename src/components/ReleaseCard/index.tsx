@@ -1,4 +1,4 @@
-import { Text, Box, Image, Flex, Icon, Button } from '@chakra-ui/react';
+import { Text, Image, Flex, Icon, Button } from '@chakra-ui/react';
 import React from 'react';
 import { ReleaseType } from 'types';
 import { FiCalendar, FiDisc, FiUser } from 'react-icons/fi';
