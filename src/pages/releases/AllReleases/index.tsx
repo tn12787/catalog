@@ -18,15 +18,15 @@ const Releases = (props: Props) => {
       idField: 'id',
     }
   );
-  
+
   return (
-    <Stack flex={1} bg="#eee" align="center" direction="column" width="100%">
-      <Heading>All Releases</Heading>
+    <Stack flex={1} bg="#eee" align="center" py={6} direction="column" width="100%">
       <SuspenseWithPerf
         fallback={<Text>loading...</Text>}
         traceId="release-loading"
       >
-        <Stack spacing={2} width="100%" maxW="900px">
+        <Stack spacing={2} width="90%" maxW="900px">
+          <Heading py={4} color="green.400" alignSelf="flex-start">All Releases</Heading>
           {items.data?.map((datum: any) => {
             // TODO: Better destructuring here
             const {

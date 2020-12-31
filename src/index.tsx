@@ -6,9 +6,11 @@ import { ChakraProvider } from '@chakra-ui/react';
 import Root from './Root';
 import { FirebaseAppProvider } from 'reactfire';
 import { firebaseConfig } from 'firebase-details';
+import { appTheme } from 'customTheme';
+
 ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={appTheme}>
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
         <Root />
       </FirebaseAppProvider>

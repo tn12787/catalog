@@ -9,7 +9,7 @@ interface Props {
 
 const Nav = ({ links }: Props) => {
   return (
-    <Stack m={5} minW={'300px'}>
+    <Stack m={5} w={'260px'} position="fixed">
       <Text fontSize="2xl" fontWeight="bold">
         LaunchDay
       </Text>
