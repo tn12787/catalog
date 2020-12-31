@@ -1,37 +1,57 @@
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { Text, Heading, Box, Image } from '@chakra-ui/react';
+import { Text, Box, Image, Flex } from '@chakra-ui/react';
 import React from 'react';
+import { ReleaseType } from 'types';
 
 interface ReleaseCardProps {
   title: string;
   artist: string;
   targetDate: string;
-  desc?: string;
+  type: ReleaseType;
   img?: string;
 }
 
 const ReleaseCard = ({
   title,
-  desc,
   img,
+  type,
   artist,
   targetDate,
 }: ReleaseCardProps) => (
   // TODO: Get these aligning properly
-  <Box alignItems="baseline">
-    <Box>
-      <Image src={img} alt="this is an image" boxSize="100px"></Image>
+  <Flex
+    my={'11px'}
+    overflow="hidden"
+    alignItems="center"
+    bg="white"
+    borderRadius={'13px'}
+    width="100%"
+  >
+    <Image
+      src={img}
+      alt="this is an image"
+      width="150px"
+      height="150px"
+      backgroundSize="cover"
+    />
+    <Box p={5} py={1}>
+      <Text fontSize="25px" fontWeight="semibold">
+        {title}
+      </Text>
+      <Flex align="center" mt={1}>
+        <InfoOutlineIcon mr={1} />
+        <Text fontSize="14px">{artist}</Text>
+      </Flex>
+      <Flex align="center" mt={3}>
+        <InfoOutlineIcon mr={1} />
+        <Text fontSize="14px">{type}</Text>
+      </Flex>
+      <Flex align="center" mt={3}>
+        <InfoOutlineIcon mr={1} />
+        <Text fontSize="14px">{targetDate}</Text>
+      </Flex>
     </Box>
-    <Box p={5} shadow="md" borderWidth="1px">
-      <Heading fontSize="x2">{title}</Heading>
-      <InfoOutlineIcon />
-      <Text mt={4}>{artist}</Text>
-      <InfoOutlineIcon />
-      <Text mt={4}>{desc}</Text>
-      <InfoOutlineIcon />
-      <Text mt={4}>{targetDate}</Text>
-    </Box>
-  </Box>
+  </Flex>
 );
 
-export default ReleaseCard
+export default ReleaseCard;

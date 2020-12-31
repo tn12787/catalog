@@ -7,9 +7,10 @@ import {
 } from 'react-router-dom';
 import { Flex } from '@chakra-ui/react';
 import Nav from 'components/Nav';
-import Account from 'pages/Accounts';
+import Account from 'pages/Account';
 import { appLinks } from 'appLinks';
-import Releases from 'pages/Releases';
+import Releases from 'pages/releases/AllReleases';
+import NewRelease from 'pages/releases/NewRelease';
 
 const App = () => {
   return (
@@ -17,6 +18,9 @@ const App = () => {
       <Flex minH="100vh">
         <Nav links={appLinks} />
         <Switch>
+          <Route exact path="/releases/new">
+            <NewRelease />
+          </Route>
           <Route path="/releases">
             <Releases />
           </Route>
