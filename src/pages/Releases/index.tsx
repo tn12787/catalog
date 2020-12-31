@@ -1,11 +1,11 @@
-import { Text, Stack, Heading, Box, Image } from '@chakra-ui/react';
+import { Text, Stack, Heading } from '@chakra-ui/react';
 import React from 'react';
 import {
   SuspenseWithPerf,
   useFirestore,
   useFirestoreCollectionData,
 } from 'reactfire';
-import { ReleaseCard } from './releaseCard';
+import ReleaseCard from 'components/ReleaseCard';
 
 interface Props {}
 
@@ -25,15 +25,17 @@ const Releases = (props: Props) => {
         <Stack spacing={2}>
           {data?.map((datum: any) => {
             // TODO: Better destructuring here
-            const { name, description, imageUrl, artist, tdate } = datum
+            const { name, description, imageUrl, artist, tdate } = datum;
             const props = {
               title: name,
-              targetDate: tdate || "01/01/1970",
-              artist: artist || "ya loud boi",
-              desc: description || "empty rn",
-              img: imageUrl || "https://semantic-ui.com/images/wireframe/image.png"
-            }
-            return ReleaseCard(props)
+              targetDate: tdate || '01/01/1970',
+              artist: artist || 'ya loud boi',
+              desc: description || 'empty rn',
+              img:
+                imageUrl ||
+                'https://semantic-ui.com/images/wireframe/image.png',
+            };
+            return <ReleaseCard {...props} />;
           })}
         </Stack>
       </SuspenseWithPerf>
