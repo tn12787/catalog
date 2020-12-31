@@ -1,7 +1,8 @@
+import { FormDatum } from 'types/forms';
+import { SignUpData } from './types';
 // TODO: move this types file to somewhere generic
-import { FormDatum, LoginData } from "../Login/types";
 
-export const signupConfig: FormDatum<LoginData>[] = [
+export const signupConfig: FormDatum<SignUpData>[] = [
   {
     name: 'name',
     label: 'Name',
@@ -31,7 +32,7 @@ export const signupConfig: FormDatum<LoginData>[] = [
     label: 'Confirm Password',
     type: 'password',
     registerArgs: {
-      required: 'Please confirm your password.'
+      required: 'Please confirm your password.',
     },
   },
 ];

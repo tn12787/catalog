@@ -9,7 +9,7 @@ export interface Release {
   musicVideo?: MusicVideo;
 }
 
-type ReleaseType = 'Single' | 'EP' | 'Album';
+export type ReleaseType = 'Single' | 'EP' | 'Album';
 
 interface Artist {
   name: string;

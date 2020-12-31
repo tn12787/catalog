@@ -1,5 +1,5 @@
-import Login from 'pages/Login';
-import SignUp from 'pages/Signup';
+import Login from 'pages/auth/Login';
+import SignUp from 'pages/auth/Signup';
 import React from 'react';
 import {
   BrowserRouter as Router,

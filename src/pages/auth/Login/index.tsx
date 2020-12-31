@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth } from 'reactfire';
+import { FormDatum } from 'types/forms';
 import { loginConfig } from './loginConfig';
-import { FormDatum, LoginData } from './types';
+import { LoginData } from './types';
 
 const Login = () => {
   const { register, errors, handleSubmit } = useForm<LoginData>();
@@ -51,7 +52,13 @@ const Login = () => {
         </Text>
 
         {loginConfig.map(
-          ({ name, type, registerArgs, label }: FormDatum<LoginData>) => (
+          ({
+            name,
+            type,
+            registerArgs,
+            label,
+            extraProps,
+          }: FormDatum<LoginData>) => (
             <Stack>
               <Text fontSize="sm" fontWeight="semibold">
                 {label}
@@ -61,6 +68,7 @@ const Login = () => {
                 name={name}
                 type={type}
                 ref={register({ ...registerArgs })}
+                {...extraProps}
               />
               <Text color="red.400">{errors[name]?.message}</Text>
             </Stack>

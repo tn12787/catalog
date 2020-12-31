@@ -13,8 +13,9 @@ const Nav = ({ links }: Props) => {
       <Text fontSize="2xl" fontWeight="bold">
         LaunchDay
       </Text>
-      {links.map(({ text, ...rest }) => (
+      {links.map(({ text, ...rest }, index) => (
         <Link
+          key={index.toString()}
           p={2}
           py={1}
           borderRadius={6}

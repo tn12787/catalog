@@ -1,17 +1,11 @@
 import { Button, Flex, Input, Stack, Text, useToast } from '@chakra-ui/react';
-import { FormDatum, LoginData } from 'pages/Login/types';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth, useFirestore } from 'reactfire';
+import { FormDatum } from 'types/forms';
 import { signupConfig } from './signupConfig';
-
-interface SignUpData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { SignUpData } from './types';
 
 const SignUp = () => {
   const { register, errors, handleSubmit, setError } = useForm<SignUpData>();
@@ -71,7 +65,7 @@ const SignUp = () => {
           Create an account
         </Text>
         {signupConfig.map(
-          ({ name, type, registerArgs, label }: FormDatum<LoginData>) => (
+          ({ name, type, registerArgs, label }: FormDatum<SignUpData>) => (
             <Stack>
               <Text fontSize="sm" fontWeight="semibold">
                 {label}
