@@ -22,7 +22,6 @@ const Artwork = ({ releaseData }: Props) => {
 
   const data = useFirestoreDocData(artworkRef, { idField: 'id' });
   const artwork: ReleaseArtwork = data.data as ReleaseArtwork;
-  console.log(releaseData);
 
   return (
     <Card>

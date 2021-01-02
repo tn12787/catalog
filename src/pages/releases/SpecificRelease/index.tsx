@@ -10,7 +10,7 @@ import Events from './Events';
 import EditArtwork from './editing/EditArtwork';
 import EditDistribution from './editing/EditDistribution';
 
-interface SpecificReleaseParams {
+export interface SpecificReleaseParams {
   releaseId: string;
 }
 
@@ -36,7 +36,7 @@ const SpecificRelease = () => {
         <EditArtwork />
       </Route>
       <Route path={`${path}/distribution/edit`}>
-        <EditDistribution />
+        <EditDistribution releaseData={releaseData} />
       </Route>
       <Route path={path} exact>
         <Stack flex={1} bg="#eee" align="center" direction="column">
