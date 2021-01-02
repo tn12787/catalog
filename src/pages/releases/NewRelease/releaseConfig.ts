@@ -1,7 +1,7 @@
 import { Release } from 'types';
 import { FormDatum } from 'types/forms';
 
-export const releaseConfig: FormDatum<Release>[] = [
+export const basicInfoConfig: FormDatum<Release>[] = [
   {
     name: 'name',
     label: 'Name',
@@ -12,8 +12,24 @@ export const releaseConfig: FormDatum<Release>[] = [
     name: 'targetDate',
     label: 'Release Date',
     type: 'date',
-    registerArgs: { required: 'Please select a release date.' },
+    registerArgs: { },
   },
+  {
+    name: 'type',
+    label: 'Release Type',
+    type: 'select',
+    registerArgs: {
+      required: 'Please select a type',
+    },
+    options: ['Single', 'EP', 'Album'],
+    extraProps: {
+      min: new Date(),
+    },
+  },
+];
+
+
+export const releaseConfig: FormDatum<Release>[] = [
   {
     name: 'artist',
     label: 'Artist',
