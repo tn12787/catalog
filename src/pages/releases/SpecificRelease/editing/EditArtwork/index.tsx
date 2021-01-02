@@ -16,13 +16,13 @@ interface Props {
 
 const EditArtwork = ({ releaseData }: Props) => {
   const artworkRef = useFirestore()
-  .collection('artwork')
-  .doc(releaseData.artwork); // TODO: What if this is null here? 
+    .collection('artwork')
+    .doc(releaseData.artwork); // TODO: What if this is null here? 
 
-/* TODO: Why not like this? Something to do with creating if not exists
-   const { data } = useFirestoreDocData(artworkRef, {
-    idField: 'id',
-  }); */
+  /* TODO: Why not like this? Something to do with creating if not exists
+     const { data } = useFirestoreDocData(artworkRef, {
+      idField: 'id',
+    }); */
 
   const { data } = useFirestoreDocData(artworkRef);
   const artwork: Artwork = data as Artwork;
@@ -36,7 +36,7 @@ const EditArtwork = ({ releaseData }: Props) => {
   - Done by? Should be assigned to when not complete
   - Original Due date? Should be just due date and switch to orig if over due?
   */
-  const { register, errors, handleSubmit, setError } = useForm<Artwork>();
+  const { register, errors, handleSubmit, setError } = useForm<Artwork>({ defaultValues: artwork });
 
   const [loading, setLoading] = useState(false);
 
@@ -51,13 +51,13 @@ const EditArtwork = ({ releaseData }: Props) => {
   }: Artwork) => {
     try {
       setLoading(true);
-      await artworkRef.set({
-        status,
-        dueDate,
-        url,
-        completedBy,
-        completedOn
-      })
+      await artworkRef.set(
+        {
+          status,
+          dueDate,
+          completedBy,
+        },
+        { merge: true })
       toast({
         status: 'success',
         title: 'Success',
