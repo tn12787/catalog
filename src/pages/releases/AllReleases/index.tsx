@@ -42,23 +42,7 @@ const Releases = (props: Props) => {
             </Button>
           </Flex>
           {items.data?.map((datum: any) => {
-            const {
-              name,
-              id,
-              type = 'EP',
-              imageUrl = 'https://semantic-ui.com/images/wireframe/image.png',
-              artist = 'Unknown Artist',
-              targetDate,
-            } = datum;
-            const props = {
-              id,
-              title: name,
-              targetDate: targetDate || 'Not set yet',
-              artist,
-              img: imageUrl,
-              type,
-            };
-            return <ReleaseCard {...props} />;
+            return <ReleaseCard releaseData={datum} />;
           })}
         </Stack>
       </SuspenseWithPerf>

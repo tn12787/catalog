@@ -1,4 +1,5 @@
 export interface Release {
+  [key: string]: any;
   targetDate: string;
   name: string;
   type: ReleaseType;
