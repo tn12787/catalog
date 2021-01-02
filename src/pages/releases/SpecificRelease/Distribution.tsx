@@ -25,7 +25,7 @@ const Distribution = ({ releaseData }: Props) => {
     idField: 'id',
   }) as any;
 
-  if (status === 'loading') {
+  if (status === 'loading' && releaseData.distribution) {
     return (
       <Card>
         <Flex direction="row" justify="space-between">
@@ -56,24 +56,31 @@ const Distribution = ({ releaseData }: Props) => {
         )}
       </Flex>
       {releaseData.distribution ? (
-        <Stack
-          spacing={3}
-          py={4}
-          width={'90%'}
-          justify="space-between"
-          direction="column"
-        >
-          {fields.map((field) => {
-            return (
-              <Stack>
-                <Text fontSize="md" fontWeight="bold">
-                  {field.name}
-                </Text>
-                <Text>{docData[field.value]}</Text>
-              </Stack>
-            );
-          })}
-        </Stack>
+        <Flex py={4}>
+          <Stack
+            width={'50%'}
+            spacing={3}
+            justify="space-between"
+            direction="column"
+          >
+            {fields.map((field) => {
+              return (
+                <Stack>
+                  <Text fontSize="md" fontWeight="bold">
+                    {field.name}
+                  </Text>
+                  <Text whiteSpace="pre-wrap">{docData[field.value]}</Text>
+                </Stack>
+              );
+            })}
+          </Stack>
+          <Stack width={'50%'}>
+            <Text fontSize="md" fontWeight="bold">
+              Notes
+            </Text>
+            <Text whiteSpace="pre-wrap">{docData.notes}</Text>
+          </Stack>
+        </Flex>
       ) : (
         <Flex py={4} align="center" direction="column" justify="space-between">
           <Text color="charcoal" mb={3}>

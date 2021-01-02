@@ -2,8 +2,6 @@ import {
   Button,
   Flex,
   Heading,
-  Input,
-  Select,
   Stack,
   Text,
   useToast,
@@ -14,9 +12,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFirestore } from 'reactfire';
 import { Release } from 'types';
-import { FormDatum } from 'types/forms';
 import { basicInfoConfig } from './releaseConfig';
 import { useHistory } from 'react-router-dom';
+import FormContent from 'components/FormContent';
 
 const BasicInfo = () => {
   const { register, errors, handleSubmit } = useForm<any>();
@@ -58,46 +56,11 @@ const BasicInfo = () => {
         <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
-              {basicInfoConfig.map(
-                ({
-                  name,
-                  type,
-                  registerArgs,
-                  label,
-                  options,
-                  extraProps,
-                }: FormDatum<Release>) => {
-                  return (
-                    <Stack key={name}>
-                      <Text fontSize="md" fontWeight="semibold">
-                        {label}
-                      </Text>
-                      {type === 'select' ? (
-                        <Select
-                          width="100%"
-                          isInvalid={!!errors[name]}
-                          name={name}
-                          ref={register({ ...registerArgs })}
-                          {...extraProps}
-                        >
-                          {options?.map((option) => (
-                            <option value={option}>{option}</option>
-                          ))}
-                        </Select>
-                      ) : (
-                        <Input
-                          isInvalid={!!errors[name]}
-                          name={name}
-                          type={type}
-                          ref={register({ ...registerArgs })}
-                          {...extraProps}
-                        />
-                      )}
-                      <Text color="red.400">{errors[name]?.message}</Text>
-                    </Stack>
-                  );
-                }
-              )}
+              <FormContent
+                config={basicInfoConfig}
+                errors={errors}
+                register={register}
+              />
               <Flex justify="flex-end">
                 <Button
                   colorScheme="blue"

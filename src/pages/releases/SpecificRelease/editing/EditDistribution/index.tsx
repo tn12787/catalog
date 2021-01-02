@@ -1,23 +1,14 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Input,
-  Select,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiSave } from 'react-icons/fi';
 import Card from 'components/Card';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useFirestore, useFirestoreDocDataOnce } from 'reactfire';
+import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { Distribution, Release } from 'types';
-import { FormDatum } from 'types/forms';
 import { distribConfig } from './distribConfig';
 import { useHistory, useParams } from 'react-router-dom';
 import { SpecificReleaseParams } from '../..';
+import FormContent from 'components/FormContent';
 
 interface Props {
   releaseData: any;
@@ -31,17 +22,20 @@ const EditDistribution = ({ releaseData }: Props) => {
     .collection('distributions')
     .doc(releaseData.distribution);
   const releaseRef = useFirestore().collection('releases').doc(releaseId);
-  const { data: distribData } = useFirestoreDocDataOnce(distribRef, {
+  const { data: distribData } = useFirestoreDocData(distribRef, {
     idField: 'id',
   }) as any;
 
-  const { register, errors, handleSubmit, reset } = useForm<Distribution>({
-    defaultValues: distribData as Distribution,
-  });
+  const { register, errors, handleSubmit, reset } = useForm<Distribution>();
+
+  const checkForExistence = useCallback(async () => {
+    const actualDoc = await distribRef.get();
+    if (actualDoc.exists) reset(distribData);
+  }, [distribRef, reset, distribData]);
 
   useEffect(() => {
-    reset(distribData);
-  }, [distribData, reset]);
+    checkForExistence();
+  }, [distribData]);
 
   const toast = useToast();
   const history = useHistory();
@@ -57,7 +51,7 @@ const EditDistribution = ({ releaseData }: Props) => {
       toast({
         status: 'success',
         title: 'Success',
-        description: 'Distribution info created successfully.',
+        description: 'Your changes were saved.',
       });
       history.push(`/releases/${releaseData.id}`);
     } catch (e) {
@@ -82,46 +76,11 @@ const EditDistribution = ({ releaseData }: Props) => {
         <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
-              {distribConfig.map(
-                ({
-                  name,
-                  type,
-                  registerArgs,
-                  label,
-                  options,
-                  extraProps,
-                }: FormDatum<Distribution>) => {
-                  return (
-                    <Stack key={name}>
-                      <Text fontSize="md" fontWeight="semibold">
-                        {label}
-                      </Text>
-                      {type === 'select' ? (
-                        <Select
-                          width="100%"
-                          isInvalid={!!errors[name]}
-                          name={name}
-                          ref={register({ ...registerArgs })}
-                          {...extraProps}
-                        >
-                          {options?.map((option) => (
-                            <option value={option}>{option}</option>
-                          ))}
-                        </Select>
-                      ) : (
-                        <Input
-                          isInvalid={!!errors[name]}
-                          name={name}
-                          type={type}
-                          ref={register({ ...registerArgs })}
-                          {...extraProps}
-                        />
-                      )}
-                      <Text color="red.400">{errors[name]?.message}</Text>
-                    </Stack>
-                  );
-                }
-              )}
+              <FormContent
+                config={distribConfig}
+                errors={errors}
+                register={register}
+              />
               <Flex justify="flex-end">
                 <Button
                   colorScheme="blue"
