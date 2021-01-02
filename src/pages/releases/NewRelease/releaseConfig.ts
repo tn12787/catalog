@@ -9,10 +9,12 @@ export const basicInfoConfig: FormDatum<Release>[] = [
     registerArgs: { required: 'Please enter a name for your release.' },
   },
   {
-    name: 'targetDate',
-    label: 'Release Date',
-    type: 'date',
-    registerArgs: { },
+    name: 'artist',
+    label: 'Artist',
+    type: 'text',
+    registerArgs: {
+      required: 'Please enter an artist.',
+    },
   },
   {
     name: 'type',
@@ -26,8 +28,13 @@ export const basicInfoConfig: FormDatum<Release>[] = [
       min: new Date(),
     },
   },
+  {
+    name: 'targetDate',
+    label: 'Release Date',
+    type: 'date',
+    registerArgs: { required: 'Please enter a date for your release.' },
+  },
 ];
-
 
 export const releaseConfig: FormDatum<Release>[] = [
   {

@@ -34,7 +34,7 @@ interface ReleaseTask {
   completedOn?: string;
 }
 
-interface Distribution extends ReleaseTask {
+export interface Distribution extends ReleaseTask {
   provider: string;
 }
 
@@ -42,14 +42,14 @@ interface OutSourceableReleaseTask extends ReleaseTask {
   completedBy?: Contact | Contact[];
 }
 
-interface Artwork extends OutSourceableReleaseTask {
+export interface Artwork extends OutSourceableReleaseTask {
   url: string;
 }
 
-interface Mastering extends OutSourceableReleaseTask {
+export interface Mastering extends OutSourceableReleaseTask {
   url: string;
 }
 
-interface MusicVideo extends OutSourceableReleaseTask {
+export interface MusicVideo extends OutSourceableReleaseTask {
   url: string;
 }

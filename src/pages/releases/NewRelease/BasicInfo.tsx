@@ -16,18 +16,14 @@ import { useFirestore } from 'reactfire';
 import { Release } from 'types';
 import { FormDatum } from 'types/forms';
 import { basicInfoConfig } from './releaseConfig';
-import { WizardStep } from './types';
+import { useHistory } from 'react-router-dom';
 
-interface Props extends WizardStep {
-  nextStep?: () => void;
-  onCreate: (releaseId: string) => void;
-}
-
-const BasicInfo = ({ nextStep, onCreate }: Props) => {
+const BasicInfo = () => {
   const { register, errors, handleSubmit } = useForm<any>();
   const [loading, setLoading] = useState(false);
   const collectionRef = useFirestore().collection('releases');
   const toast = useToast();
+  const history = useHistory();
 
   const onSubmit = async (data: Release) => {
     try {
@@ -39,8 +35,7 @@ const BasicInfo = ({ nextStep, onCreate }: Props) => {
         title: 'Success',
         description: 'Release created.',
       });
-      onCreate(newDoc.id);
-      nextStep?.();
+      history.push(`/releases/${newDoc.id}`);
     } catch (e) {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
@@ -111,7 +106,7 @@ const BasicInfo = ({ nextStep, onCreate }: Props) => {
                   isLoading={loading}
                   type="submit"
                 >
-                  Next: Artists
+                  Create
                 </Button>
               </Flex>
             </Stack>
