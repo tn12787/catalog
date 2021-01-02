@@ -9,6 +9,7 @@ interface Props {
 export interface SummaryField {
   name: string;
   value: string;
+  hidden?: boolean;
 }
 
 const fields: SummaryField[] = [
