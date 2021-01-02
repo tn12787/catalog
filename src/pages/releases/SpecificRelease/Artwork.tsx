@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Text } from '@chakra-ui/react';
 import Card from 'components/Card';
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
@@ -7,11 +7,6 @@ import { Artwork as ReleaseArtwork } from 'types';
 
 interface Props {
   releaseData: any;
-}
-
-interface SummaryField {
-  name: string;
-  value: string;
 }
 
 const Artwork = ({ releaseData }: Props) => {

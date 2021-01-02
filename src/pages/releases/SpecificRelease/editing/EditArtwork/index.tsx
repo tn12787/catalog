@@ -1,14 +1,12 @@
-import { Flex, Stack, Input, Button, Text, useToast, Heading, Select } from '@chakra-ui/react';
+import { Flex, Stack, Button, Text, useToast, Heading } from '@chakra-ui/react';
 import Card from 'components/Card';
-import { basicInfoConfig } from 'pages/releases/NewRelease/releaseConfig';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiArrowRight } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import { Artwork, Release } from 'types';
-import { FormDatum } from 'types/forms';
+import { Artwork } from 'types';
 import { artworkConfig } from './artworkConfig';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
+import FormContent from 'components/FormContent';
 
 interface Props {
   releaseData: any;
@@ -17,7 +15,7 @@ interface Props {
 const EditArtwork = ({ releaseData }: Props) => {
   const artworkRef = useFirestore()
     .collection('artwork')
-    .doc(releaseData.artwork); // TODO: What if this is null here? 
+    .doc(releaseData.artwork); // TODO: What if this is null here?
 
   /* TODO: Why not like this? Something to do with creating if not exists
      const { data } = useFirestoreDocData(artworkRef, {
@@ -36,18 +34,20 @@ const EditArtwork = ({ releaseData }: Props) => {
   - Done by? Should be assigned to when not complete
   - Original Due date? Should be just due date and switch to orig if over due?
   */
-  const { register, errors, handleSubmit, setError } = useForm<Artwork>({ defaultValues: artwork });
+  const { register, errors, handleSubmit } = useForm<Artwork>({
+    defaultValues: artwork,
+  });
 
   const [loading, setLoading] = useState(false);
 
-  const toast = useToast()
+  const toast = useToast();
 
   const onSubmit = async ({
     status,
     dueDate,
     url,
     completedBy,
-    completedOn
+    completedOn,
   }: Artwork) => {
     try {
       setLoading(true);
@@ -57,7 +57,8 @@ const EditArtwork = ({ releaseData }: Props) => {
           dueDate,
           completedBy,
         },
-        { merge: true })
+        { merge: true }
+      );
       toast({
         status: 'success',
         title: 'Success',
@@ -85,37 +86,11 @@ const EditArtwork = ({ releaseData }: Props) => {
         <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
-              {artworkConfig.map(
-                ({ name, type, registerArgs, label, options }: FormDatum<Artwork>) => {
-                  return (
-                    <Stack key={name}>
-                      <Text fontSize="md" fontWeight="semibold">
-                        {label}
-                      </Text>
-                      {type === 'select' ? (
-                        <Select
-                          width="100%"
-                          isInvalid={!!errors[name]}
-                          name={name}
-                          ref={register({ ...registerArgs })}
-                        >
-                          {options?.map((option) => (
-                            <option value={option}>{option}</option>
-                          ))}
-                        </Select>
-                      ) : (
-                          <Input
-                            isInvalid={!!errors[name]}
-                            name={name}
-                            type={type}
-                            ref={register({ ...registerArgs })}
-                          />
-                        )}
-                      <Text color="red.400">{errors[name]?.message}</Text>
-                    </Stack>
-                  );
-                }
-              )}
+              <FormContent
+                config={artworkConfig}
+                errors={errors}
+                register={register}
+              />
               <Flex justify="flex-end">
                 <Button
                   colorScheme="blue"

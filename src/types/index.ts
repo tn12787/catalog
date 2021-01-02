@@ -26,12 +26,17 @@ export interface User {
   email: string;
 }
 
-export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
+export type ReleaseTaskStatus =
+  | 'Outstanding'
+  | 'In progress'
+  | 'Waiting'
+  | 'Complete';
 
 interface ReleaseTask {
   dueDate: string;
   status: ReleaseTaskStatus;
   completedOn?: string;
+  notes?: string;
 }
 
 export interface Distribution extends ReleaseTask {

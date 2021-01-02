@@ -7,4 +7,6 @@ export interface FormDatum<T, K = any> {
   registerArgs?: RegisterOptions;
   options?: K[];
   extraProps?: { [key: string]: any };
+  helperText?: string;
+  defaultValue?: K;
 }
