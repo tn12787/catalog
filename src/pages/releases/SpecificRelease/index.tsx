@@ -1,9 +1,14 @@
 import { Spinner, Stack } from '@chakra-ui/react';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import HeaderSection from './HeaderSection';
 import Summary from './Summary';
+import Artwork from './Artwork';
+import Distribution from './Distribution';
+import Events from './Events';
+import EditArtwork from './editing/EditArtwork';
+import EditDistribution from './editing/EditDistribution';
 
 interface SpecificReleaseParams {
   releaseId: string;
@@ -12,7 +17,10 @@ interface SpecificReleaseParams {
 const SpecificRelease = () => {
   const { releaseId } = useParams<SpecificReleaseParams>();
   const releaseRef = useFirestore().collection('releases').doc(releaseId);
-  const { status, data: releaseData } = useFirestoreDocData(releaseRef);
+  const { status, data: releaseData } = useFirestoreDocData(releaseRef, {
+    idField: 'id',
+  });
+  let { path } = useRouteMatch();
 
   if (status === 'loading') {
     return (
@@ -23,12 +31,25 @@ const SpecificRelease = () => {
   }
 
   return (
-    <Stack flex={1} bg="#eee" align="center" direction="column">
-      <Stack spacing={4} width="100%" maxW={'900px'}>
-        <HeaderSection releaseData={releaseData} />
-        <Summary releaseData={releaseData} />
-      </Stack>
-    </Stack>
+    <Switch>
+      <Route path={`${path}/artwork/edit`}>
+        <EditArtwork />
+      </Route>
+      <Route path={`${path}/distribution/edit`}>
+        <EditDistribution />
+      </Route>
+      <Route path={path} exact>
+        <Stack flex={1} bg="#eee" align="center" direction="column">
+          <Stack mb={4} spacing={4} width="100%" maxW={'900px'}>
+            <HeaderSection releaseData={releaseData} />
+            <Summary releaseData={releaseData} />
+            <Artwork releaseData={releaseData} />
+            <Distribution releaseData={releaseData} />
+            <Events releaseData={releaseData} />
+          </Stack>
+        </Stack>
+      </Route>
+    </Switch>
   );
 };
 

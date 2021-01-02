@@ -2,14 +2,21 @@ import { Flex, Heading, Icon, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-// import { Release } from 'types';
+import { useFirestore, useFirestoreDocData } from 'reactfire';
+import { Artwork } from 'types';
 
 interface Props {
   releaseData: any;
 }
 
 const HeaderSection = ({ releaseData }: Props) => {
-  console.log(releaseData);
+  const artworkRef = useFirestore()
+    .collection('artwork')
+    .doc(releaseData.artwork);
+
+  const { data } = useFirestoreDocData(artworkRef);
+  const artwork: Artwork = data as Artwork;
+
   return (
     <Flex width="100%" flex={1} direction="column">
       <Flex position="relative" overflow="hidden">
@@ -19,8 +26,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           objectFit="cover"
           width="100%"
           src={
-            releaseData.imageUrl ||
-            'https://semantic-ui.com/images/wireframe/image.png'
+            artwork?.url || 'https://semantic-ui.com/images/wireframe/image.png'
           }
         />
         <Flex

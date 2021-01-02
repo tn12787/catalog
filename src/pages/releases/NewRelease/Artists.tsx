@@ -16,9 +16,8 @@ import { useForm } from 'react-hook-form';
 import { Release } from 'types';
 import { FormDatum } from 'types/forms';
 import { basicInfoConfig } from './releaseConfig';
-import { WizardStep } from './types';
 
-interface Props extends WizardStep {
+interface Props {
   releaseId: string;
 }
 
