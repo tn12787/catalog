@@ -1,35 +1,78 @@
-import { Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Spinner, Stack, Text } from '@chakra-ui/react';
 import Card from 'components/Card';
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
-import { Distribution as ReleaseDistribution } from 'types';
+import { SummaryField } from './Summary';
 
 interface Props {
   releaseData: any;
 }
 
-interface SummaryField {
-  name: string;
-  value: string;
-}
+const fields: SummaryField[] = [
+  { name: 'Distributor', value: 'distributor' },
+  { name: 'Due Date', value: 'dueDate' },
+];
 
 const Distribution = ({ releaseData }: Props) => {
   const { url } = useRouteMatch();
-  const artworkRef = useFirestore()
-    .collection('distribution')
+  const distribRef = useFirestore()
+    .collection('distributions')
     .doc(releaseData.distribution);
 
-  const data = useFirestoreDocData(artworkRef, { idField: 'id' });
-  const distribution: ReleaseDistribution = data.data as ReleaseDistribution;
-  console.log(releaseData);
+  const { status, data: docData } = useFirestoreDocData(distribRef, {
+    idField: 'id',
+  }) as any;
+
+  if (status === 'loading') {
+    return (
+      <Card>
+        <Flex direction="row" justify="space-between">
+          <Heading fontSize="2xl">💿 Distribution</Heading>
+        </Flex>
+        <Spinner />
+      </Card>
+    );
+  }
+
   return (
     <Card>
-      <Flex direction="column">
+      <Flex direction="row" justify="space-between">
         <Heading fontSize="2xl">💿 Distribution</Heading>
+        {releaseData.distribution && (
+          <Button
+            flexGrow={0}
+            height="auto"
+            py={1}
+            px={12}
+            as={Link}
+            colorScheme="purple"
+            variant="outline"
+            to={`${url}/distribution/edit`}
+          >
+            Edit
+          </Button>
+        )}
       </Flex>
       {releaseData.distribution ? (
-        <Flex py={4} width={'90%'} justify="space-between"></Flex>
+        <Stack
+          spacing={3}
+          py={4}
+          width={'90%'}
+          justify="space-between"
+          direction="column"
+        >
+          {fields.map((field) => {
+            return (
+              <Stack>
+                <Text fontSize="md" fontWeight="bold">
+                  {field.name}
+                </Text>
+                <Text>{docData[field.value]}</Text>
+              </Stack>
+            );
+          })}
+        </Stack>
       ) : (
         <Flex py={4} align="center" direction="column" justify="space-between">
           <Text color="charcoal" mb={3}>

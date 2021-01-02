@@ -35,7 +35,7 @@ interface ReleaseTask {
 }
 
 export interface Distribution extends ReleaseTask {
-  provider: string;
+  distributor: string;
 }
 
 interface OutSourceableReleaseTask extends ReleaseTask {

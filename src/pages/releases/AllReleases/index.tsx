@@ -50,7 +50,6 @@ const Releases = (props: Props) => {
               artist = 'Unknown Artist',
               targetDate,
             } = datum;
-            console.log(targetDate);
             const props = {
               id,
               title: name,

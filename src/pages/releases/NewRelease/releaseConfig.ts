@@ -24,15 +24,15 @@ export const basicInfoConfig: FormDatum<Release>[] = [
       required: 'Please select a type',
     },
     options: ['Single', 'EP', 'Album'],
-    extraProps: {
-      min: new Date(),
-    },
   },
   {
     name: 'targetDate',
     label: 'Release Date',
     type: 'date',
     registerArgs: { required: 'Please enter a date for your release.' },
+    extraProps: {
+      min: new Date(),
+    },
   },
 ];
 

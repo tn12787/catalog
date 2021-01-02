@@ -6,7 +6,7 @@ interface Props {
   releaseData: any;
 }
 
-interface SummaryField {
+export interface SummaryField {
   name: string;
   value: string;
 }
