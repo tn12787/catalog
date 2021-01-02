@@ -9,7 +9,7 @@ interface Props {
 
 const Nav = ({ links }: Props) => {
   return (
-    <Stack m={5} w={'260px'} position="fixed">
+    <Stack  px={5} py={5} height="100%" w={'200px'} position="fixed" bg="#26064E" color="white">
       <Text fontSize="2xl" fontWeight="bold">
         LaunchDay
       </Text>
@@ -19,7 +19,7 @@ const Nav = ({ links }: Props) => {
           p={2}
           py={1}
           borderRadius={6}
-          activeStyle={{ backgroundColor: 'lightgrey' }}
+          activeStyle={{ backgroundColor: 'grey' }}
           fontWeight={'bold'}
           as={NavLink as any}
           {...rest}

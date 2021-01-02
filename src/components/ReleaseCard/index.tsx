@@ -2,8 +2,10 @@ import { Text, Image, Flex, Icon, Button } from '@chakra-ui/react';
 import React from 'react';
 import { ReleaseType } from 'types';
 import { FiCalendar, FiDisc, FiUser } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 interface ReleaseCardProps {
+  id: string;
   title: string;
   artist: string;
   targetDate: string;
@@ -12,6 +14,7 @@ interface ReleaseCardProps {
 }
 
 const ReleaseCard = ({
+  id,
   title,
   img,
   type,
@@ -40,7 +43,16 @@ const ReleaseCard = ({
         <Text pl={'2px'} fontSize="25px" color="charcoal" fontWeight="semibold">
           {title}
         </Text>
-        <Button py={'6px'} px={6} height="auto" fontSize="15px" variant="outline" colorScheme="purple">
+        <Button
+          py={'6px'}
+          px={6}
+          as={Link}
+          to={`/releases/${id}`}
+          height="auto"
+          fontSize="15px"
+          variant="outline"
+          colorScheme="purple"
+        >
           View Details
         </Button>
       </Flex>

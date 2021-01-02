@@ -11,16 +11,20 @@ import Account from 'pages/Account';
 import { appLinks } from 'appLinks';
 import Releases from 'pages/releases/AllReleases';
 import NewRelease from 'pages/releases/NewRelease';
+import SpecificRelease from 'pages/releases/SpecificRelease';
 
 const App = () => {
   return (
     <Router>
       <Flex minH="100vh">
         <Nav links={appLinks} />
-        <Flex width="100%" ml="300px" overflowY="auto">
+        <Flex width="100%" ml="200px" overflowY="auto">
           <Switch>
-            <Route exact path="/releases/new">
+            <Route path="/releases/new">
               <NewRelease />
+            </Route>
+            <Route path="/releases/:releaseId">
+              <SpecificRelease />
             </Route>
             <Route path="/releases">
               <Releases />

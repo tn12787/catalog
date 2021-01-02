@@ -42,17 +42,19 @@ const Releases = (props: Props) => {
             </Button>
           </Flex>
           {items.data?.map((datum: any) => {
-            // TODO: Better destructuring here
             const {
               name,
+              id,
               type = 'EP',
               imageUrl = 'https://semantic-ui.com/images/wireframe/image.png',
-              artist = 'ya loud boi',
-              targetDate = '01/01/1970',
-            } = datum;
-            const props = {
-              title: name,
+              artist = 'Unknown Artist',
               targetDate,
+            } = datum;
+            console.log(targetDate);
+            const props = {
+              id,
+              title: name,
+              targetDate: targetDate || 'Not set yet',
               artist,
               img: imageUrl,
               type,
