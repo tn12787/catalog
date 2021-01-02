@@ -33,6 +33,7 @@ export type ReleaseTaskStatus =
   | 'Complete';
 
 interface ReleaseTask {
+  [key: string]: any;
   dueDate: string;
   status: ReleaseTaskStatus;
   completedOn?: string;

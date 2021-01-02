@@ -36,6 +36,7 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
         ({
           name,
           type,
+          hidden,
           registerArgs,
           label,
           options,
@@ -43,7 +44,7 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
           helperText,
         }: FormDatum<T>) => {
           const InputComponent = deriveComponent(type);
-          return (
+          return hidden ? null : (
             <Stack key={name as string}>
               <Text fontSize="md" fontWeight="semibold">
                 {label}

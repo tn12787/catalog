@@ -9,4 +9,5 @@ export interface FormDatum<T, K = any> {
   extraProps?: { [key: string]: any };
   helperText?: string;
   defaultValue?: K;
+  hidden?: boolean;
 }

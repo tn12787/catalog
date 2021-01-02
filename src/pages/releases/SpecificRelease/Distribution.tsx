@@ -1,18 +1,27 @@
-import { Button, Flex, Heading, Spinner, Stack, Text } from '@chakra-ui/react';
+import {
+  Badge,
+  Button,
+  Flex,
+  Heading,
+  Spinner,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import Card from 'components/Card';
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { SummaryField } from './Summary';
+import { Distribution as ReleaseDistribution } from 'types';
 
 interface Props {
   releaseData: any;
 }
 
-const fields: SummaryField[] = [
-  { name: 'Status', value: 'status' },
+const buildFields = (isComplete: boolean): SummaryField[] => [
   { name: 'Distributor', value: 'distributor' },
-  { name: 'Due Date', value: 'dueDate' },
+  { name: `${isComplete ? 'Original ' : ''}Due Date`, value: 'dueDate' },
+  { name: 'Completed On', value: 'completedOn', hidden: !isComplete },
 ];
 
 const Distribution = ({ releaseData }: Props) => {
@@ -21,9 +30,12 @@ const Distribution = ({ releaseData }: Props) => {
     .collection('distributions')
     .doc(releaseData.distribution);
 
-  const { status, data: docData } = useFirestoreDocData(distribRef, {
-    idField: 'id',
-  }) as any;
+  const { status, data: docData } = useFirestoreDocData<ReleaseDistribution>(
+    distribRef,
+    {
+      idField: 'id',
+    }
+  );
 
   if (status === 'loading' && releaseData.distribution) {
     return (
@@ -31,7 +43,7 @@ const Distribution = ({ releaseData }: Props) => {
         <Flex direction="row" justify="space-between">
           <Heading fontSize="2xl">💿 Distribution</Heading>
         </Flex>
-        <Spinner />
+        <Spinner alignSelf="center" />
       </Card>
     );
   }
@@ -39,7 +51,12 @@ const Distribution = ({ releaseData }: Props) => {
   return (
     <Card>
       <Flex direction="row" align="center" justify="space-between">
-        <Heading fontSize="2xl">💿 Distribution</Heading>
+        <Flex align="center">
+          <Heading fontSize="2xl">💿 Distribution</Heading>
+          <Badge colorScheme="purple" ml={3}>
+            {docData?.status}
+          </Badge>
+        </Flex>
         {releaseData.distribution && (
           <Button
             flexGrow={0}
@@ -63,22 +80,28 @@ const Distribution = ({ releaseData }: Props) => {
             justify="space-between"
             direction="column"
           >
-            {fields.map((field) => {
-              return (
-                <Stack>
-                  <Text fontSize="md" fontWeight="bold">
-                    {field.name}
-                  </Text>
-                  <Text whiteSpace="pre-wrap">{docData[field.value]}</Text>
-                </Stack>
-              );
-            })}
+            {buildFields(docData.status === 'Complete').map(
+              ({ name, value, hidden }) => {
+                return hidden ? null : (
+                  <Stack>
+                    <Text fontSize="md" fontWeight="bold">
+                      {name}
+                    </Text>
+                    <Text whiteSpace="pre-wrap">{docData[value]}</Text>
+                  </Stack>
+                );
+              }
+            )}
           </Stack>
           <Stack width={'50%'}>
-            <Text fontSize="md" fontWeight="bold">
-              Notes
-            </Text>
-            <Text whiteSpace="pre-wrap">{docData.notes}</Text>
+            {docData.notes ? (
+              <Stack>
+                <Text fontSize="md" fontWeight="bold">
+                  Notes
+                </Text>
+                <Text whiteSpace="pre-wrap">{docData.notes}</Text>
+              </Stack>
+            ) : null}
           </Stack>
         </Flex>
       ) : (

@@ -2,7 +2,9 @@ import { ReleaseTaskStatus } from './../../../../../types/index';
 import { Distribution } from 'types';
 import { FormDatum } from 'types/forms';
 
-export const distribConfig: FormDatum<Distribution, ReleaseTaskStatus>[] = [
+export const buildDistribConfig = (
+  alreadyCompleted: boolean
+): FormDatum<Distribution, ReleaseTaskStatus>[] => [
   {
     name: 'distributor',
     label: 'Distributor',
@@ -35,6 +37,15 @@ export const distribConfig: FormDatum<Distribution, ReleaseTaskStatus>[] = [
       required: 'Please select a type',
     },
     options: ['Outstanding', 'In progress', 'Waiting', 'Complete'],
+  },
+  {
+    name: 'completedOn',
+    label: 'Completed On',
+    hidden: !alreadyCompleted,
+    type: 'date',
+    registerArgs: {
+      required: 'Please enter the date completed',
+    },
   },
   {
     name: 'notes',

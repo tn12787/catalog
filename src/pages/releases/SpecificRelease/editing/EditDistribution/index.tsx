@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { Distribution, Release } from 'types';
-import { distribConfig } from './distribConfig';
+import { buildDistribConfig } from './distribConfig';
 import { useHistory, useParams } from 'react-router-dom';
 import { SpecificReleaseParams } from '../..';
 import FormContent from 'components/FormContent';
@@ -26,7 +26,13 @@ const EditDistribution = ({ releaseData }: Props) => {
     idField: 'id',
   }) as any;
 
-  const { register, errors, handleSubmit, reset } = useForm<Distribution>();
+  const {
+    register,
+    errors,
+    handleSubmit,
+    reset,
+    watch,
+  } = useForm<Distribution>();
 
   const checkForExistence = useCallback(async () => {
     const actualDoc = await distribRef.get();
@@ -61,6 +67,8 @@ const EditDistribution = ({ releaseData }: Props) => {
     }
   };
 
+  const status = watch('status');
+
   return (
     <Stack
       flex={1}
@@ -72,12 +80,12 @@ const EditDistribution = ({ releaseData }: Props) => {
     >
       <Stack py={8} spacing={3} width="90%" maxW="900px">
         <Heading>Edit Distribution</Heading>
-        <Text>Enter info about the distributor and the task's due date.</Text>
+        <Text>Add or change info about the distributor.</Text>
         <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               <FormContent
-                config={distribConfig}
+                config={buildDistribConfig(status === 'Complete')}
                 errors={errors}
                 register={register}
               />
