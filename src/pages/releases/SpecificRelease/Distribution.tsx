@@ -10,6 +10,7 @@ interface Props {
 }
 
 const fields: SummaryField[] = [
+  { name: 'Status', value: 'status' },
   { name: 'Distributor', value: 'distributor' },
   { name: 'Due Date', value: 'dueDate' },
 ];
@@ -37,7 +38,7 @@ const Distribution = ({ releaseData }: Props) => {
 
   return (
     <Card>
-      <Flex direction="row" justify="space-between">
+      <Flex direction="row" align="center" justify="space-between">
         <Heading fontSize="2xl">💿 Distribution</Heading>
         {releaseData.distribution && (
           <Button

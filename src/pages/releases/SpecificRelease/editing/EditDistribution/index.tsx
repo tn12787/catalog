@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { FiSave } from 'react-icons/fi';
 import Card from 'components/Card';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFirestore, useFirestoreDocDataOnce } from 'reactfire';
 import { Distribution, Release } from 'types';
@@ -35,9 +35,13 @@ const EditDistribution = ({ releaseData }: Props) => {
     idField: 'id',
   }) as any;
 
-  const { register, errors, handleSubmit } = useForm<Distribution>({
+  const { register, errors, handleSubmit, reset } = useForm<Distribution>({
     defaultValues: distribData as Distribution,
   });
+
+  useEffect(() => {
+    reset(distribData);
+  }, [distribData, reset]);
 
   const toast = useToast();
   const history = useHistory();
