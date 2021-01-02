@@ -39,7 +39,7 @@ export interface Distribution extends ReleaseTask {
 }
 
 interface OutSourceableReleaseTask extends ReleaseTask {
-  completedBy?: Contact | Contact[];
+  completedBy?: string;
 }
 
 export interface Artwork extends OutSourceableReleaseTask {

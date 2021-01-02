@@ -1,8 +1,7 @@
+import { Artwork } from 'types';
 import { FormDatum } from 'types/forms';
-import { ArtworkData } from './types';
-// TODO: move this types file to somewhere generic
 
-export const artworkConfig: FormDatum<ArtworkData>[] = [
+export const artworkConfig: FormDatum<Artwork>[] = [
   // TODO: Status should be calculated
   {
     name: 'status',
@@ -14,7 +13,7 @@ export const artworkConfig: FormDatum<ArtworkData>[] = [
   // TODO: Eventually will be a contact where that could be a person or firm?
   // Default should be the user
   {
-    name: 'assignee',
+    name: 'completedBy',
     label: 'Assignee',
     type: 'text',
     registerArgs: { required: 'Please enter the assignee.' },

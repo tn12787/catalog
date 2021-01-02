@@ -5,14 +5,28 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiArrowRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { Release } from 'types';
+import { Artwork, Release } from 'types';
 import { FormDatum } from 'types/forms';
 import { artworkConfig } from './artworkConfig';
-import { ArtworkData } from './types';
+import { useFirestore, useFirestoreDocData } from 'reactfire';
 
-interface Props { }
+interface Props {
+  releaseData: any;
+}
 
-const EditArtwork = (props: Props) => {
+const EditArtwork = ({ releaseData }: Props) => {
+  const artworkRef = useFirestore()
+  .collection('artwork')
+  .doc(releaseData.artwork); // TODO: What if this is null here? 
+
+/* TODO: Why not like this? Something to do with creating if not exists
+   const { data } = useFirestoreDocData(artworkRef, {
+    idField: 'id',
+  }); */
+
+  const { data } = useFirestoreDocData(artworkRef);
+  const artwork: Artwork = data as Artwork;
+
   // TODO: Do you nead release data here? How else will firebase know where to save it?
   // TODO: SIGNup data? What is that a type?
   /* 
@@ -22,31 +36,32 @@ const EditArtwork = (props: Props) => {
   - Done by? Should be assigned to when not complete
   - Original Due date? Should be just due date and switch to orig if over due?
   */
-  const { register, errors, handleSubmit, setError } = useForm<ArtworkData>();
+  const { register, errors, handleSubmit, setError } = useForm<Artwork>();
 
   const [loading, setLoading] = useState(false);
 
   const toast = useToast()
 
   const onSubmit = async ({
+    status,
     dueDate,
-    assignee,
-    status
-  }: ArtworkData) => {
+    url,
+    completedBy,
+    completedOn
+  }: Artwork) => {
     try {
       setLoading(true);
-      /*const userData = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );*/
-      /*const userRef = firestore.collection('users').doc(userData.user?.uid);
-      userRef.set({
-        name,
-      });*/
+      await artworkRef.set({
+        status,
+        dueDate,
+        url,
+        completedBy,
+        completedOn
+      })
       toast({
         status: 'success',
         title: 'Success',
-        description: `Artwork created! Currently ${status}, assigned to ${assignee} due by ${dueDate}`,
+        description: `Artwork created! Currently ${status}, assigned to ${completedBy} due by ${dueDate}`,
       });
     } catch (e) {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
@@ -71,7 +86,7 @@ const EditArtwork = (props: Props) => {
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               {artworkConfig.map(
-                ({ name, type, registerArgs, label, options }: FormDatum<ArtworkData>) => {
+                ({ name, type, registerArgs, label, options }: FormDatum<Artwork>) => {
                   return (
                     <Stack key={name}>
                       <Text fontSize="md" fontWeight="semibold">

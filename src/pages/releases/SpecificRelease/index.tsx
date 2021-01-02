@@ -33,7 +33,7 @@ const SpecificRelease = () => {
   return (
     <Switch>
       <Route path={`${path}/artwork/edit`}>
-        <EditArtwork />
+        <EditArtwork releaseData={releaseData} />
       </Route>
       <Route path={`${path}/distribution/edit`}>
         <EditDistribution releaseData={releaseData} />
