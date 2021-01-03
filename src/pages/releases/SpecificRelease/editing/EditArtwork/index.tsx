@@ -7,6 +7,8 @@ import { Artwork } from 'types';
 import { artworkConfig } from './artworkConfig';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import FormContent from 'components/FormContent';
+import { useParams } from 'react-router-dom';
+import { SpecificReleaseParams } from '../..';
 
 interface Props {
   releaseData: any;
@@ -17,11 +19,13 @@ const EditArtwork = ({ releaseData }: Props) => {
     .collection('artwork')
     .doc(releaseData.artwork); // TODO: What if this is null here?
 
+  const { releaseId } = useParams<SpecificReleaseParams>();
+  const releaseRef = useFirestore().collection('releases').doc(releaseId);
+
   /* TODO: Why not like this? Something to do with creating if not exists
      const { data } = useFirestoreDocData(artworkRef, {
       idField: 'id',
     }); */
-
   const { data } = useFirestoreDocData(artworkRef);
   const artwork: Artwork = data as Artwork;
 
@@ -56,9 +60,11 @@ const EditArtwork = ({ releaseData }: Props) => {
           status,
           dueDate,
           completedBy,
+          release: releaseId
         },
         { merge: true }
       );
+      await releaseRef.set({ artwork: artworkRef.id }, { merge: true });
       toast({
         status: 'success',
         title: 'Success',
