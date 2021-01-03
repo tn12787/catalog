@@ -1,8 +1,16 @@
-import { Button, Flex, Heading, Text, Spinner, Badge, Stack } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Heading,
+  Text,
+  Spinner,
+  Badge,
+  Stack,
+} from '@chakra-ui/react';
 import Card from 'components/Card';
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { useFirestore, useFirestoreDocData,  } from 'reactfire';
+import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { Artwork as ReleaseArtwork } from 'types';
 import { SummaryField } from './Summary';
 
@@ -22,11 +30,13 @@ const Artwork = ({ releaseData }: Props) => {
     .doc(releaseData.artwork);
 
   let { url } = useRouteMatch();
-  const editUrl = `${url}/artwork/edit`
+  const editUrl = `${url}/artwork/edit`;
 
-  const { status, data: artworkData } = useFirestoreDocData<ReleaseArtwork>(artworkRef, { idField: 'id' });
+  const { status, data: artworkData } = useFirestoreDocData<ReleaseArtwork>(
+    artworkRef,
+    { idField: 'id' }
+  );
 
-  
   if (status === 'loading' && releaseData.artwork) {
     return (
       <Card>
@@ -40,15 +50,20 @@ const Artwork = ({ releaseData }: Props) => {
 
   return (
     <Card>
-      <Flex direction="row" align="center" justify="space-between">
-        <Flex align="center">
+      <Flex
+        align="center"
+        justify="space-between"
+        direction={['column', 'column', 'row']}
+      >
+        <Flex align="center" direction={['column', 'column', 'row']}>
           <Heading fontSize="2xl">🎨 Artwork</Heading>
-          <Badge colorScheme="purple" ml={3}>
+          <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
             {artworkData?.status}
           </Badge>
         </Flex>
         {releaseData.artwork && (
           <Button
+            mt={[2, 2, 0]}
             flexGrow={0}
             height="auto"
             py={1}
@@ -99,12 +114,7 @@ const Artwork = ({ releaseData }: Props) => {
           <Text color="charcoal" mb={3}>
             This release has no artwork info yet.
           </Text>
-          <Button
-            flexGrow={0}
-            as={Link}
-            colorScheme="purple"
-            to={editUrl}
-          >
+          <Button flexGrow={0} as={Link} colorScheme="purple" to={editUrl}>
             Add now
           </Button>
         </Flex>
