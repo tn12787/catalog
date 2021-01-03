@@ -18,7 +18,7 @@ const App = () => {
     <Router>
       <Flex minH="100vh">
         <Nav links={appLinks} />
-        <Flex width="100%" ml="200px" overflowY="auto">
+        <Flex width="100%" ml={[0, 0, "200px"]} overflowY="auto">
           <Switch>
             <Route path="/releases/new">
               <NewRelease />

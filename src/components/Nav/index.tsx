@@ -9,7 +9,16 @@ interface Props {
 
 const Nav = ({ links }: Props) => {
   return (
-    <Stack  px={5} py={5} height="100%" w={'200px'} position="fixed" bg="#26064E" color="white">
+    <Stack
+      display={['none', 'none', 'flex']}
+      px={5}
+      py={5}
+      height="100%"
+      w={'200px'}
+      position="fixed"
+      bg="#26064E"
+      color="white"
+    >
       <Text fontSize="2xl" fontWeight="bold">
         LaunchDay
       </Text>

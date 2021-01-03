@@ -1,5 +1,6 @@
 import { Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import Card from 'components/Card';
+import ReleaseStatusBadge from 'components/ReleaseStatusBadge';
 import React from 'react';
 
 interface Props {
@@ -10,30 +11,47 @@ export interface SummaryField {
   name: string;
   value: string;
   hidden?: boolean;
+  Component?: any;
 }
 
 const fields: SummaryField[] = [
   { name: 'Artist', value: 'artist' },
-  { name: 'Status', value: 'status' },
+  { name: 'Status', value: 'status', Component: ReleaseStatusBadge },
   { name: 'Release Type', value: 'type' },
   { name: 'Target Date', value: 'targetDate' },
 ];
 
 const Summary = ({ releaseData }: Props) => {
   return (
-    <Card>
+    <Card alignItems={['center', 'center', 'stretch']}>
       <Flex direction="column">
         <Heading fontSize="2xl">Summary</Heading>
       </Flex>
-      <Flex py={4} width={'90%'} justify="space-between">
+      <Flex
+        direction={['column', 'column', 'row']}
+        py={4}
+        width={'90%'}
+        justify="space-between"
+        alignItems={['center', 'center', 'stretch']}
+      >
         {fields.map((field) => {
           return (
-            <Stack>
+            <Flex
+              mb={[3, 3, 0]}
+              width="100%"
+              align={['center', 'center', 'flex-start']}
+              direction={['row', 'row', 'column']}
+              justify={['space-between']}
+            >
               <Text fontSize="md" fontWeight="bold">
                 {field.name}
               </Text>
-              <Text>{releaseData[field.value]}</Text>
-            </Stack>
+              {field.Component ? (
+                <field.Component releaseData={releaseData} />
+              ) : (
+                <Text mt={[0, 0, 2]}>{releaseData[field.value]}</Text>
+              )}
+            </Flex>
           );
         })}
       </Flex>

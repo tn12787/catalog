@@ -13,21 +13,29 @@ const ReleaseCard = ({ releaseData }: ReleaseCardProps) => (
     my={'11px'}
     overflow="hidden"
     alignItems="center"
+    direction={['column', 'column', 'row']}
     bg="white"
     borderRadius={'13px'}
     width="100%"
-    maxH="150px"
+    maxH={['auto', 'auto', '150px']}
   >
     <Image
       src={'https://semantic-ui.com/images/wireframe/image.png'}
       alt="this is an image"
-      width="150px"
+      width={['100%', '100%', '150px']}
       height="150px"
       backgroundSize="cover"
+      objectFit="cover"
     />
     <Flex width="100%" direction="column" p={5} py={1}>
-      <Flex flex={1} align="center" justify="space-between" py={1}>
-        <Flex align="center">
+      <Flex
+        flex={1}
+        align="center"
+        direction={['column', 'column', 'row']}
+        justify="space-between"
+        py={1}
+      >
+        <Flex align="center" direction={['column', 'column', 'row']}>
           <Text
             pl={'2px'}
             fontSize="25px"
@@ -42,6 +50,7 @@ const ReleaseCard = ({ releaseData }: ReleaseCardProps) => (
         <Button
           py={'6px'}
           px={6}
+          mt={[2,2, 0]}
           as={Link}
           to={`/releases/${releaseData.id}`}
           height="auto"

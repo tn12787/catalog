@@ -40,7 +40,7 @@ const SpecificRelease = () => {
       </Route>
       <Route path={path} exact>
         <Stack flex={1} bg="#eee" align="center" direction="column">
-          <Stack mb={4} spacing={4} width="100%" maxW={'900px'}>
+          <Stack mb={4} spacing={4} width="90%" maxW={'900px'}>
             <HeaderSection releaseData={releaseData} />
             <Summary releaseData={releaseData} />
             <Artwork releaseData={releaseData} />

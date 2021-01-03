@@ -50,15 +50,22 @@ const Distribution = ({ releaseData }: Props) => {
 
   return (
     <Card>
-      <Flex direction="row" align="center" justify="space-between">
-        <Flex align="center">
-          <Heading fontSize="2xl">💿 Distribution</Heading>
-          <Badge colorScheme="purple" ml={3}>
+      <Flex
+        direction={['column', 'column', 'row']}
+        align="center"
+        justify="space-between"
+      >
+        <Flex align="center" direction={['column', 'column', 'row']}>
+          <Heading whiteSpace="nowrap" fontSize="2xl">
+            💿 Distribution
+          </Heading>
+          <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
             {docData?.status}
           </Badge>
         </Flex>
         {releaseData.distribution && (
           <Button
+            mt={[2, 2, 0]}
             flexGrow={0}
             height="auto"
             py={1}
@@ -73,10 +80,11 @@ const Distribution = ({ releaseData }: Props) => {
         )}
       </Flex>
       {releaseData.distribution ? (
-        <Flex py={4}>
+        <Flex py={4} direction={['column', 'column', 'row']}>
           <Stack
-            width={'50%'}
+            width={['auto', 'auto', '50%']}
             spacing={3}
+            pb={2}
             justify="space-between"
             direction="column"
           >
@@ -93,7 +101,7 @@ const Distribution = ({ releaseData }: Props) => {
               }
             )}
           </Stack>
-          <Stack width={'50%'}>
+          <Stack width={['auto', 'auto', '50%']}>
             {docData.notes ? (
               <Stack>
                 <Text fontSize="md" fontWeight="bold">
