@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { FiSave } from 'react-icons/fi';
 import { Artwork } from 'types';
 import { buildArtworkConfig } from './artworkConfig';
-import { useFirestore, useFirestoreDocData, useStorage } from 'reactfire';
+import { useFirestore, useFirestoreDocData, useStorage, useStorageTask } from 'reactfire';
 import FormContent from 'components/FormContent';
 import { useHistory, useParams } from 'react-router-dom';
 import { SpecificReleaseParams } from '../..';
@@ -22,22 +22,13 @@ const EditArtwork = ({ releaseData }: Props) => {
   const { releaseId } = useParams<SpecificReleaseParams>();
   const releaseRef = useFirestore().collection('releases').doc(releaseId);
 
-  // const test = useStorage.
-
   const { data } = useFirestoreDocData(artworkRef, {
     idField: 'id',
   });
   const artwork: Artwork = data as Artwork;
 
-  // TODO: Do you nead release data here? How else will firebase know where to save it?
-  // TODO: SIGNup data? What is that a type?
-  /* 
-  TODO: There are many flows here e.g
-  - We should mark something done and be able to specify a date of completion
-    - Default should be today but editable
-  - Done by? Should be assigned to when not complete
-  - Original Due date? Should be just due date and switch to orig if over due?
-  */
+  const storageRef = useStorage().ref('images/')
+
   const { register, errors, handleSubmit, watch } = useForm<Artwork>({
     defaultValues: artwork,
   });
@@ -53,10 +44,12 @@ const EditArtwork = ({ releaseData }: Props) => {
 
       const { file, ...rest } = data
 
-      // TODO: Save the file here
+      const artworkFileRef = storageRef.child(artworkRef.id)
+      artworkFileRef.put(file)
+      const downloadURL = await artworkFileRef.getDownloadURL()
 
       await artworkRef.set(
-        { ...rest, release: releaseId },
+        { ...rest, url: downloadURL, release: releaseId },
         { merge: true }
       );
       await releaseRef.set({ artwork: artworkRef.id }, { merge: true });
