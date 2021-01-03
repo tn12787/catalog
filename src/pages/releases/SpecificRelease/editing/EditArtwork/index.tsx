@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { FiSave } from 'react-icons/fi';
 import { Artwork } from 'types';
 import { buildArtworkConfig } from './artworkConfig';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
+import { useFirestore, useFirestoreDocData, useStorage } from 'reactfire';
 import FormContent from 'components/FormContent';
 import { useHistory, useParams } from 'react-router-dom';
 import { SpecificReleaseParams } from '../..';
@@ -22,11 +22,11 @@ const EditArtwork = ({ releaseData }: Props) => {
   const { releaseId } = useParams<SpecificReleaseParams>();
   const releaseRef = useFirestore().collection('releases').doc(releaseId);
 
-  /* TODO: Why not like this? Something to do with creating if not exists
-     const { data } = useFirestoreDocData(artworkRef, {
-      idField: 'id',
-    }); */
-  const { data } = useFirestoreDocData(artworkRef);
+  // const test = useStorage.
+
+  const { data } = useFirestoreDocData(artworkRef, {
+    idField: 'id',
+  });
   const artwork: Artwork = data as Artwork;
 
   // TODO: Do you nead release data here? How else will firebase know where to save it?
@@ -49,9 +49,14 @@ const EditArtwork = ({ releaseData }: Props) => {
 
   const onSubmit = async (data: Artwork) => {
     try {
-      setLoading(true);
+      setLoading(true)
+
+      const { file, ...rest } = data
+
+      // TODO: Save the file here
+
       await artworkRef.set(
-        { ...data, release: releaseId },
+        { ...rest, release: releaseId },
         { merge: true }
       );
       await releaseRef.set({ artwork: artworkRef.id }, { merge: true });
