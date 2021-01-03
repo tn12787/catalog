@@ -56,9 +56,11 @@ export const buildArtworkConfig = (
     },
   },
   {
-    name: 'file',
+    name: 'albumArt',
     label: 'Artwork File',
     type: 'file',
+    hidden: !alreadyCompleted,
     registerArgs: {},
+    extraProps: { accept: 'image/jpeg, image/png' },
   },
 ];
