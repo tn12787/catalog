@@ -22,6 +22,7 @@ const HeaderSection = ({ releaseData }: Props) => {
       <Flex position="relative" overflow="hidden">
         <Image
           filter="blur(5px)"
+          transform={'scale(1.05)'}
           maxH="200px"
           objectFit="cover"
           width="100%"

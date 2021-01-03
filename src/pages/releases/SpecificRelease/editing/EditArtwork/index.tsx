@@ -5,10 +5,11 @@ import { useForm } from 'react-hook-form';
 import { FiSave } from 'react-icons/fi';
 import { Artwork } from 'types';
 import { buildArtworkConfig } from './artworkConfig';
-import { useFirestore, useFirestoreDocData, useStorage, useStorageTask } from 'reactfire';
+import { useFirestore, useFirestoreDocData, useStorage } from 'reactfire';
 import FormContent from 'components/FormContent';
 import { useHistory, useParams } from 'react-router-dom';
-import { SpecificReleaseParams } from '../..';
+import { SpecificReleaseParams } from 'pages/releases/SpecificRelease';
+import 'firebase/storage';
 
 interface Props {
   releaseData: any;
@@ -27,7 +28,7 @@ const EditArtwork = ({ releaseData }: Props) => {
   });
   const artwork: Artwork = data as Artwork;
 
-  const storageRef = useStorage().ref('images/')
+  const storageRef = useStorage().ref('images/');
 
   const { register, errors, handleSubmit, watch } = useForm<Artwork>({
     defaultValues: artwork,
@@ -40,13 +41,13 @@ const EditArtwork = ({ releaseData }: Props) => {
 
   const onSubmit = async (data: Artwork) => {
     try {
-      setLoading(true)
+      setLoading(true);
 
-      const { file, ...rest } = data
+      const { albumArt, ...rest } = data;
 
-      const artworkFileRef = storageRef.child(artworkRef.id)
-      artworkFileRef.put(file)
-      const downloadURL = await artworkFileRef.getDownloadURL()
+      const artworkFileRef = storageRef.child(artworkRef.id);
+      await artworkFileRef.put(albumArt[0], { contentType: 'image/jpeg' });
+      const downloadURL = await artworkFileRef.getDownloadURL();
 
       await artworkRef.set(
         { ...rest, url: downloadURL, release: releaseId },
@@ -84,7 +85,7 @@ const EditArtwork = ({ releaseData }: Props) => {
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               <FormContent
-                config={buildArtworkConfig(status == 'Complete')}
+                config={buildArtworkConfig(status === 'Complete')}
                 errors={errors}
                 register={register}
               />
