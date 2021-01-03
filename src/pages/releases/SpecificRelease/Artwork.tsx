@@ -1,32 +1,98 @@
-import { Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Text, Spinner, Badge, Stack } from '@chakra-ui/react';
 import Card from 'components/Card';
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
+import { useFirestore, useFirestoreDocData,  } from 'reactfire';
 import { Artwork as ReleaseArtwork } from 'types';
+import { SummaryField } from './Summary';
 
 interface Props {
   releaseData: any;
 }
 
+const buildFields = (isComplete: boolean): SummaryField[] => [
+  { name: `${isComplete ? 'Completed By' : 'Assignee'}`, value: 'completedBy' },
+  { name: `${isComplete ? 'Original ' : ''}Due Date`, value: 'dueDate' },
+  { name: 'Completed On', value: 'completedOn', hidden: !isComplete },
+];
+
 const Artwork = ({ releaseData }: Props) => {
   const artworkRef = useFirestore()
     .collection('artwork')
     .doc(releaseData.artwork);
+
   let { url } = useRouteMatch();
 
-  const data = useFirestoreDocData(artworkRef, { idField: 'id' });
-  const artwork: ReleaseArtwork = data.data as ReleaseArtwork;
+  const { status, data: artworkData } = useFirestoreDocData<ReleaseArtwork>(artworkRef, { idField: 'id' });
+
+  
+  if (status === 'loading' && releaseData.artwork) {
+    return (
+      <Card>
+        <Flex direction="row" justify="space-between">
+          <Heading fontSize="2xl">🎨 Artwork</Heading>
+        </Flex>
+        <Spinner alignSelf="center" />
+      </Card>
+    );
+  }
 
   return (
     <Card>
-      <Flex direction="column">
-        <Heading color="softCharcoal" fontSize="2xl">
-          🎨 Artwork
-        </Heading>
+      <Flex direction="row" align="center" justify="space-between">
+        <Flex align="center">
+          <Heading fontSize="2xl">🎨 Artwork</Heading>
+          <Badge colorScheme="purple" ml={3}>
+            {artworkData?.status}
+          </Badge>
+        </Flex>
+        {releaseData.artwork && (
+          <Button
+            flexGrow={0}
+            height="auto"
+            py={1}
+            px={12}
+            as={Link}
+            colorScheme="purple"
+            variant="outline"
+            to={`${url}/artwork/edit`}
+          >
+            Edit
+          </Button>
+        )}
       </Flex>
       {releaseData.artwork ? (
-        <Flex py={4} width={'90%'} justify="space-between"></Flex>
+        <Flex py={4}>
+          <Stack
+            width={'50%'}
+            spacing={3}
+            justify="space-between"
+            direction="column"
+          >
+            {buildFields(artworkData.status === 'Complete').map(
+              ({ name, value, hidden }) => {
+                return hidden ? null : (
+                  <Stack>
+                    <Text fontSize="md" fontWeight="bold">
+                      {name}
+                    </Text>
+                    <Text whiteSpace="pre-wrap">{artworkData[value]}</Text>
+                  </Stack>
+                );
+              }
+            )}
+          </Stack>
+          <Stack width={'50%'}>
+            {artworkData.notes ? (
+              <Stack>
+                <Text fontSize="md" fontWeight="bold">
+                  Notes
+                </Text>
+                <Text whiteSpace="pre-wrap">{artworkData.notes}</Text>
+              </Stack>
+            ) : null}
+          </Stack>
+        </Flex>
       ) : (
         <Flex py={4} align="center" direction="column" justify="space-between">
           <Text color="charcoal" mb={3}>
