@@ -55,4 +55,10 @@ export const buildArtworkConfig = (
       maxLength: 200,
     },
   },
+  {
+    name: 'file',
+    label: 'Artwork File',
+    type: 'file',
+    registerArgs: {},
+  },
 ];
