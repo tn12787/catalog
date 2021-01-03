@@ -1,27 +1,58 @@
-import { Artwork } from 'types';
+import { Artwork, ReleaseTaskStatus } from 'types';
 import { FormDatum } from 'types/forms';
 
-export const artworkConfig: FormDatum<Artwork>[] = [
-  // TODO: Status should be calculated
+export const buildArtworkConfig = (
+  alreadyCompleted: boolean
+): FormDatum<Artwork, ReleaseTaskStatus>[] => [
+  {
+    name: 'completedBy',
+    label: 'Assignee',
+    registerArgs: {
+      required: 'Please a team or person that will complete the artwork.',
+    },
+    extraProps: {
+      maxLength: 60,
+    },
+  },
+  {
+    name: 'dueDate',
+    label: 'Due on',
+    type: 'date',
+    helperText:
+      'We recommend aiming to complete artwork at least 4 weeks before your target release date.',
+    registerArgs: {
+      required: 'Please enter a due date.',
+    },
+    extraProps: {
+      min: new Date(),
+    },
+  },
   {
     name: 'status',
     label: 'Status',
     type: 'select',
-    registerArgs: { required: 'What is the state of your work?' },
-    options: ['Pending', 'Done'],
-  },
-  // TODO: Eventually will be a contact where that could be a person or firm?
-  // Default should be the user
-  {
-    name: 'completedBy',
-    label: 'Assignee',
-    type: 'text',
-    registerArgs: { required: 'Please enter the assignee.' },
+    registerArgs: {
+      required: 'Please select a type',
+    },
+    options: ['Outstanding', 'In progress', 'Waiting', 'Complete'],
   },
   {
-    name: 'dueDate',
-    label: 'Due Date',
+    name: 'completedOn',
+    label: 'Completed On',
+    hidden: !alreadyCompleted,
     type: 'date',
-    registerArgs: { required: 'Please enter the date when the artwork is due.' },
+    registerArgs: {
+      required: 'Please enter the date completed',
+    },
+  },
+  {
+    name: 'notes',
+    label: 'Notes',
+    type: 'textarea',
+    registerArgs: {},
+    extraProps: {
+      placeholder: 'Add notes here about this task.',
+      maxLength: 200,
+    },
   },
 ];

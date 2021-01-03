@@ -2,12 +2,12 @@ import { Flex, Stack, Button, Text, useToast, Heading } from '@chakra-ui/react';
 import Card from 'components/Card';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiSave } from 'react-icons/fi';
 import { Artwork } from 'types';
-import { artworkConfig } from './artworkConfig';
+import { buildArtworkConfig } from './artworkConfig';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import FormContent from 'components/FormContent';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { SpecificReleaseParams } from '../..';
 
 interface Props {
@@ -38,44 +38,37 @@ const EditArtwork = ({ releaseData }: Props) => {
   - Done by? Should be assigned to when not complete
   - Original Due date? Should be just due date and switch to orig if over due?
   */
-  const { register, errors, handleSubmit } = useForm<Artwork>({
+  const { register, errors, handleSubmit, watch } = useForm<Artwork>({
     defaultValues: artwork,
   });
 
   const [loading, setLoading] = useState(false);
 
   const toast = useToast();
+  const history = useHistory();
 
-  const onSubmit = async ({
-    status,
-    dueDate,
-    url,
-    completedBy,
-    completedOn,
-  }: Artwork) => {
+  const onSubmit = async (data: Artwork) => {
     try {
       setLoading(true);
       await artworkRef.set(
-        {
-          status,
-          dueDate,
-          completedBy,
-          release: releaseId
-        },
+        { ...data, release: releaseId },
         { merge: true }
       );
       await releaseRef.set({ artwork: artworkRef.id }, { merge: true });
       toast({
         status: 'success',
         title: 'Success',
-        description: `Artwork created! Currently ${status}, assigned to ${completedBy} due by ${dueDate}`,
+        description: 'Changes to artwork saved',
       });
+      history.push(`/releases/${releaseData.id}`);
     } catch (e) {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
       setLoading(false);
     }
   };
+
+  const status = watch('status');
 
   return (
     <Stack
@@ -93,7 +86,7 @@ const EditArtwork = ({ releaseData }: Props) => {
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               <FormContent
-                config={artworkConfig}
+                config={buildArtworkConfig(status == 'Complete')}
                 errors={errors}
                 register={register}
               />
@@ -101,7 +94,7 @@ const EditArtwork = ({ releaseData }: Props) => {
                 <Button
                   colorScheme="blue"
                   flexGrow={0}
-                  rightIcon={<FiArrowRight />}
+                  rightIcon={<FiSave />}
                   isLoading={loading}
                   type="submit"
                 >
