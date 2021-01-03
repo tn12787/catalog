@@ -22,6 +22,7 @@ const Artwork = ({ releaseData }: Props) => {
     .doc(releaseData.artwork);
 
   let { url } = useRouteMatch();
+  const editUrl = `${url}/artwork/edit`
 
   const { status, data: artworkData } = useFirestoreDocData<ReleaseArtwork>(artworkRef, { idField: 'id' });
 
@@ -55,7 +56,7 @@ const Artwork = ({ releaseData }: Props) => {
             as={Link}
             colorScheme="purple"
             variant="outline"
-            to={`${url}/artwork/edit`}
+            to={editUrl}
           >
             Edit
           </Button>
@@ -102,7 +103,7 @@ const Artwork = ({ releaseData }: Props) => {
             flexGrow={0}
             as={Link}
             colorScheme="purple"
-            to={`${url}/artwork/edit`}
+            to={editUrl}
           >
             Add now
           </Button>
