@@ -1,14 +1,9 @@
-import { Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import Card from 'components/Card';
 import React from 'react';
 
 interface Props {
   releaseData: any;
-}
-
-interface SummaryField {
-  name: string;
-  value: string;
 }
 
 const Events = ({ releaseData }: Props) => {

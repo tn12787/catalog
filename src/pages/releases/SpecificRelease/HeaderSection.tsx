@@ -18,7 +18,12 @@ const HeaderSection = ({ releaseData }: Props) => {
   const artwork: Artwork = data as Artwork;
 
   return (
-    <Flex width="100%" flex={1} direction="column">
+    <Flex
+      width={['100%', '100%', '90%']}
+      maxWidth={'900px'}
+      flex={1}
+      direction="column"
+    >
       <Flex position="relative" overflow="hidden">
         <Image
           filter="blur(5px)"
@@ -43,7 +48,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           }
         ></Flex>
       </Flex>
-      <Flex align="center">
+      <Flex align="center" w={['90%', '90%', '100%']} margin={['0 auto']}>
         <Flex align="center">
           <Icon as={FiArrowLeft} mr={1} />
           <Text fontSize="sm" as={Link} mr={4} to={'/releases'}>
