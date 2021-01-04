@@ -9,6 +9,7 @@ import Distribution from './Distribution';
 import Events from './Events';
 import EditArtwork from './editing/EditArtwork';
 import EditDistribution from './editing/EditDistribution';
+import EditSummary from './editing/EditSummary';
 
 export interface SpecificReleaseParams {
   releaseId: string;
@@ -38,10 +39,13 @@ const SpecificRelease = () => {
       <Route path={`${path}/distribution/edit`}>
         <EditDistribution releaseData={releaseData} />
       </Route>
+      <Route path={`${path}/edit`}>
+        <EditSummary releaseData={releaseData} />
+      </Route>
       <Route path={path} exact>
         <Stack flex={1} bg="#eee" align="center" direction="column">
+          <HeaderSection releaseData={releaseData} />
           <Stack mb={4} spacing={4} width="90%" maxW={'900px'}>
-            <HeaderSection releaseData={releaseData} />
             <Summary releaseData={releaseData} />
             <Artwork releaseData={releaseData} />
             <Distribution releaseData={releaseData} />

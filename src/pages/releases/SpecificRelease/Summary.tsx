@@ -1,7 +1,8 @@
-import { Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Text } from '@chakra-ui/react';
 import Card from 'components/Card';
 import ReleaseStatusBadge from 'components/ReleaseStatusBadge';
 import React from 'react';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 interface Props {
   releaseData: any;
@@ -22,10 +23,33 @@ const fields: SummaryField[] = [
 ];
 
 const Summary = ({ releaseData }: Props) => {
+
+  let { url } = useRouteMatch();
+  const editUrl = `${url}/edit`;
   return (
     <Card alignItems={['center', 'center', 'stretch']}>
-      <Flex direction="column">
-        <Heading fontSize="2xl">Summary</Heading>
+      <Flex
+        align="center"
+        justify="space-between"
+        direction={['column', 'column', 'row']}
+      >
+        <Flex align="center" direction={['column', 'column', 'row']}>
+          <Heading fontSize="2xl">Summary</Heading>
+        </Flex>
+
+        <Button
+          mt={[2, 2, 0]}
+          flexGrow={0}
+          height="auto"
+          py={1}
+          px={12}
+          as={Link}
+          colorScheme="purple"
+          variant="outline"
+          to={editUrl}
+        >
+          Edit
+        </Button>
       </Flex>
       <Flex
         direction={['column', 'column', 'row']}
