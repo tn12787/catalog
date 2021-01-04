@@ -1,4 +1,12 @@
-import { Flex, Stack, Button, Text, useToast, Heading } from '@chakra-ui/react';
+import {
+  Flex,
+  Stack,
+  Button,
+  Text,
+  useToast,
+  Heading,
+  Image,
+} from '@chakra-ui/react';
 import Card from 'components/Card';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -68,6 +76,8 @@ const EditArtwork = ({ releaseData }: Props) => {
   };
 
   const status = watch('status');
+  const watchedAlbumArt = watch('albumArt');
+  console.log(watchedAlbumArt);
 
   return (
     <Stack
@@ -84,6 +94,17 @@ const EditArtwork = ({ releaseData }: Props) => {
         <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
+              <Image
+                borderRadius="5px"
+                width="100%"
+                height="500px"
+                objectFit="cover"
+                src={
+                  watchedAlbumArt?.length
+                    ? URL.createObjectURL(watchedAlbumArt[0])
+                    : artwork.url
+                }
+              />
               <FormContent
                 config={buildArtworkConfig(status === 'Complete')}
                 errors={errors}
