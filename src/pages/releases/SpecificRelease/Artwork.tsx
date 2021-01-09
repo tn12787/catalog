@@ -49,7 +49,7 @@ const Artwork = ({ releaseData }: Props) => {
   }
 
   return (
-    <Card>
+    <Card alignItems={['center', 'center', 'stretch']}>
       <Flex
         align="center"
         justify="space-between"
@@ -78,26 +78,29 @@ const Artwork = ({ releaseData }: Props) => {
         )}
       </Flex>
       {releaseData.artwork ? (
-        <Flex py={4}>
-          <Stack
-            width={'50%'}
-            spacing={3}
-            justify="space-between"
-            direction="column"
-          >
-            {buildFields(artworkData.status === 'Complete').map(
-              ({ name, value, hidden }) => {
-                return hidden ? null : (
-                  <Stack>
-                    <Text fontSize="md" fontWeight="bold">
-                      {name}
-                    </Text>
-                    <Text whiteSpace="pre-wrap">{artworkData[value]}</Text>
-                  </Stack>
-                );
-              }
-            )}
-          </Stack>
+        <Flex
+          direction={['column', 'column', 'row']}
+          py={4}
+          width={'90%'}
+          justify="space-between"
+          alignItems={['center', 'center', 'stretch']}
+        >
+          {buildFields(artworkData.status === 'Complete').map(
+            ({ name, value, hidden }) => {
+              return hidden ? null : (
+                <Flex
+                  mb={[3, 3, 0]}
+                  width="100%"
+                  align={['center', 'center', 'flex-start']}
+                  direction={['row', 'row', 'column']}
+                  justify={['space-between']}
+                >
+                  <Text fontSize="md" fontWeight="bold">{name}</Text>
+                  <Text mt={[0, 0, 2]}>{artworkData[value]}</Text>
+                </Flex>
+              );
+            }
+          )}
           <Stack width={'50%'}>
             {artworkData.notes ? (
               <Stack>
@@ -110,15 +113,15 @@ const Artwork = ({ releaseData }: Props) => {
           </Stack>
         </Flex>
       ) : (
-        <Flex py={4} align="center" direction="column" justify="space-between">
-          <Text color="charcoal" mb={3}>
-            This release has no artwork info yet.
+          <Flex py={4} align="center" direction="column" justify="space-between">
+            <Text color="charcoal" mb={3}>
+              This release has no artwork info yet.
           </Text>
-          <Button flexGrow={0} as={Link} colorScheme="purple" to={editUrl}>
-            Add now
+            <Button flexGrow={0} as={Link} colorScheme="purple" to={editUrl}>
+              Add now
           </Button>
-        </Flex>
-      )}
+          </Flex>
+        )}
     </Card>
   );
 };
