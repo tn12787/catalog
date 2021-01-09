@@ -85,7 +85,7 @@ const Artwork = ({ releaseData }: Props) => {
           justify="space-between"
           alignItems={['center', 'center', 'stretch']}
         >
-          <Stack>
+          <Stack width={'100%'}>
             {buildFields(artworkData.status === 'Complete').map(
               ({ name, value, hidden }) => {
                 return hidden ? null : (
