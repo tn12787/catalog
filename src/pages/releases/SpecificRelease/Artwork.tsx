@@ -85,31 +85,33 @@ const Artwork = ({ releaseData }: Props) => {
           justify="space-between"
           alignItems={['center', 'center', 'stretch']}
         >
-          {buildFields(artworkData.status === 'Complete').map(
-            ({ name, value, hidden }) => {
-              return hidden ? null : (
-                <Flex
-                  mb={[3, 3, 0]}
-                  width="100%"
-                  align={['center', 'center', 'flex-start']}
-                  direction={['row', 'row', 'column']}
-                  justify={['space-between']}
-                >
-                  <Text fontSize="md" fontWeight="bold">{name}</Text>
-                  <Text mt={[0, 0, 2]}>{artworkData[value]}</Text>
-                </Flex>
-              );
-            }
-          )}
-          <Stack width={'50%'}>
-            {artworkData.notes ? (
-              <Stack>
-                <Text fontSize="md" fontWeight="bold">
-                  Notes
+          <Stack>
+            {buildFields(artworkData.status === 'Complete').map(
+              ({ name, value, hidden }) => {
+                return hidden ? null : (
+                  <Flex
+                    mb={[3, 3, 0]}
+                    width="100%"
+                    align={['center', 'center', 'flex-start']}
+                    direction={['row', 'row', 'column']}
+                    justify={['space-between']}
+                  >
+                    <Text fontSize="md" fontWeight="bold">{name}</Text>
+                    <Text mt={[0, 0, 2]}>{artworkData[value]}</Text>
+                  </Flex>
+                );
+              }
+            )}
+            <Stack>
+              {artworkData.notes ? (
+                <Stack>
+                  <Text fontSize="md" fontWeight="bold">
+                    Notes
                 </Text>
-                <Text whiteSpace="pre-wrap">{artworkData.notes}</Text>
-              </Stack>
-            ) : null}
+                  <Text whiteSpace="pre-wrap">{artworkData.notes}</Text>
+                </Stack>
+              ) : null}
+            </Stack>
           </Stack>
         </Flex>
       ) : (
