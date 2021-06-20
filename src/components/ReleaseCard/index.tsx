@@ -3,7 +3,10 @@ import ReleaseStatusBadge from 'components/ReleaseStatusBadge';
 import React from 'react';
 import { FiCalendar, FiDisc, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
+import {
+  useFirestore,
+  useFirestoreDocData,
+} from 'reactfire';
 import { Artwork } from 'types';
 
 interface ReleaseCardProps {
@@ -13,8 +16,10 @@ interface ReleaseCardProps {
 const ReleaseCard = ({ releaseData }: ReleaseCardProps) => {
   const artworkRef = useFirestore()
     .collection('artwork')
-    .doc(releaseData.artwork);
-  const { data } = useFirestoreDocData<Artwork>(artworkRef, { idField: 'id' });
+    .doc(releaseData.artwork ?? 'bogo');
+  const { data } = useFirestoreDocData<Artwork>(artworkRef, {
+    idField: 'id',
+  });
 
   return (
     <Flex
