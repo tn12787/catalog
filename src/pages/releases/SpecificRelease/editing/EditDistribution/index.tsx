@@ -26,13 +26,8 @@ const EditDistribution = ({ releaseData }: Props) => {
     idField: 'id',
   }) as any;
 
-  const {
-    register,
-    errors,
-    handleSubmit,
-    reset,
-    watch,
-  } = useForm<Distribution>();
+  const { register, errors, handleSubmit, reset, watch } =
+    useForm<Distribution>();
 
   const checkForExistence = useCallback(async () => {
     const actualDoc = await distribRef.get();
@@ -41,7 +36,7 @@ const EditDistribution = ({ releaseData }: Props) => {
 
   useEffect(() => {
     checkForExistence();
-  }, [distribData]);
+  }, [distribData, checkForExistence]);
 
   const toast = useToast();
   const history = useHistory();

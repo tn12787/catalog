@@ -1,6 +1,7 @@
 {
   "name": "launchday",
   "version": "0.1.0",
+  "license": "UNLICENSED",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^1.0.2",
