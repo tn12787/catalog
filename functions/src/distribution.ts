@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 import { addEventToGoogleCalendar } from './common';
 
 exports.createDistributionEvent = functions.firestore
-  .document('/distribution/{documentId}')
+  .document('/distributions/{documentId}')
   .onCreate((snap, context) => {
     const token = context.auth?.token;
     if (!token) return;
@@ -14,7 +14,7 @@ exports.createDistributionEvent = functions.firestore
   });
 
 exports.updateDistributionEvent = functions.firestore
-  .document('/distribution/{documentId}')
+  .document('/distributions/{documentId}')
   .onUpdate((change, context) => {
     const token = context.auth?.token;
     if (!token) return;
