@@ -28,7 +28,7 @@ const Distribution = ({ releaseData }: Props) => {
   const { url } = useRouteMatch();
   const distribRef = useFirestore()
     .collection('distributions')
-    .doc(releaseData.distribution);
+    .doc(releaseData.distribution ?? '');
 
   const { status, data: docData } = useFirestoreDocData<ReleaseDistribution>(
     distribRef,

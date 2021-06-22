@@ -26,7 +26,7 @@ interface Props {
 const EditArtwork = ({ releaseData }: Props) => {
   const artworkRef = useFirestore()
     .collection('artwork')
-    .doc(releaseData.artwork ?? 'bogo'); // TODO: What if this is null here?
+    .doc(releaseData.artwork); // TODO: What if this is null here?
 
   const { releaseId } = useParams<SpecificReleaseParams>();
   const releaseRef = useFirestore().collection('releases').doc(releaseId);

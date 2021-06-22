@@ -17,7 +17,7 @@ export interface SpecificReleaseParams {
 
 const SpecificRelease = () => {
   const { releaseId } = useParams<SpecificReleaseParams>();
-  const releaseRef = useFirestore().collection('releases').doc(releaseId);
+  const releaseRef = useFirestore().collection('releases').doc(releaseId ?? '');
   const { status, data: releaseData } = useFirestoreDocData(releaseRef, {
     idField: 'id',
   });
