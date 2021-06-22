@@ -6,7 +6,7 @@ exports.createDistributionEvent = functions.firestore
   .onCreate((snap, context) => {
     const token = context.auth?.token;
     if (!token) return;
-    console.log(token, snap.data());
+    functions.logger.log(token, snap.data());
     return addEventToGoogleCalendar(
       { id: context.params.documentId, ...snap.data() },
       token.toString() ?? ''
@@ -18,7 +18,7 @@ exports.updateDistributionEvent = functions.firestore
   .onUpdate((change, context) => {
     const token = context.auth?.token;
     if (!token) return;
-    console.log(token, change.after.data());
+    functions.logger.log(token, change.after.data());
     return addEventToGoogleCalendar(
       { id: context.params.documentId, ...change.after.data() },
       token.toString() ?? ''
