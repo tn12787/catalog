@@ -94,17 +94,20 @@ const EditArtwork = ({ releaseData }: Props) => {
         <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
-              <Image
-                borderRadius="5px"
-                width="100%"
-                height="500px"
-                objectFit="cover"
-                src={
-                  watchedAlbumArt?.length
-                    ? URL.createObjectURL(watchedAlbumArt[0])
-                    : artwork.url
-                }
-              />
+              {status === 'Complete' &&
+                (artwork.url || watchedAlbumArt?.length) && (
+                  <Image
+                    borderRadius="5px"
+                    width="100%"
+                    height="500px"
+                    objectFit="cover"
+                    src={
+                      watchedAlbumArt?.length
+                        ? URL.createObjectURL(watchedAlbumArt[0])
+                        : artwork.url
+                    }
+                  />
+                )}
               <FormContent
                 config={buildArtworkConfig(status === 'Complete')}
                 errors={errors}
