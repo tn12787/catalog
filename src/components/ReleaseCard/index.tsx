@@ -3,10 +3,7 @@ import ReleaseStatusBadge from 'components/ReleaseStatusBadge';
 import React from 'react';
 import { FiCalendar, FiDisc, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import {
-  useFirestore,
-  useFirestoreDocData,
-} from 'reactfire';
+import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { Artwork } from 'types';
 
 interface ReleaseCardProps {
@@ -29,11 +26,15 @@ const ReleaseCard = ({ releaseData }: ReleaseCardProps) => {
       direction={['column', 'column', 'row']}
       bg="white"
       borderRadius={'13px'}
+      border="1px solid #ddd"
       width="100%"
       maxH={['auto', 'auto', '150px']}
     >
       <Image
-        src={data?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
+        src={
+          (!data?.url.includes('bogo') && data?.url) ||
+          'https://semantic-ui.com/images/wireframe/image.png'
+        }
         alt="this is an image"
         width={['100%', '100%', '150px']}
         height="150px"
