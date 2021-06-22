@@ -36,7 +36,7 @@ const EditDistribution = ({ releaseData }: Props) => {
 
   useEffect(() => {
     checkForExistence();
-  }, [distribData, checkForExistence]);
+  }, [distribData]);
 
   const toast = useToast();
   const history = useHistory();
