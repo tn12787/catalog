@@ -7,7 +7,7 @@ export const addEventToGoogleCalendar = async (
   accessToken: string
 ) => {
   const authClient = getOauthClient(accessToken);
-  await calendar.events.insert({
+  return await calendar.events.insert({
     auth: authClient,
     calendarId: 'primary',
     requestBody: data,
@@ -17,7 +17,7 @@ export const addEventToGoogleCalendar = async (
 export const updateCalendarEvent = async (data: any, accessToken: string) => {
   const authClient = getOauthClient(accessToken);
 
-  await calendar.events.patch({
+  return await calendar.events.patch({
     auth: authClient,
     calendarId: 'primary',
     eventId: data.id,
