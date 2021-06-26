@@ -1,6 +1,6 @@
 import { Text, Image, Flex, Icon, Button } from '@chakra-ui/react';
 import ReleaseStatusBadge from 'components/ReleaseStatusBadge';
-import React from 'react';
+import React, { useRef } from 'react';
 import { FiCalendar, FiDisc, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
@@ -11,10 +11,11 @@ interface ReleaseCardProps {
 }
 
 const ReleaseCard = ({ releaseData }: ReleaseCardProps) => {
-  const artworkRef = useFirestore()
-    .collection('artwork')
-    .doc(releaseData.artwork ?? 'bogo');
-  const { data } = useFirestoreDocData<Artwork>(artworkRef, {
+  const artworkRef = useRef(
+    useFirestore().collection('artwork').doc(releaseData.artwork)
+  );
+
+  const { data } = useFirestoreDocData<Artwork>(artworkRef.current, {
     idField: 'id',
   });
 
@@ -31,12 +32,10 @@ const ReleaseCard = ({ releaseData }: ReleaseCardProps) => {
       maxH={['auto', 'auto', '150px']}
     >
       <Image
-        src={
-          (!data?.url.includes('bogo') && data?.url) ||
-          'https://semantic-ui.com/images/wireframe/image.png'
-        }
+        src={data?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
         alt="this is an image"
         width={['100%', '100%', '150px']}
+        minW={['100%', '100%', '150px']}
         height="150px"
         backgroundSize="cover"
         objectFit="cover"

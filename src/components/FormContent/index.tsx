@@ -58,7 +58,9 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
                 {...extraProps}
               >
                 {options?.map((option) => (
-                  <option value={option}>{option}</option>
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
                 ))}
               </InputComponent>
 
