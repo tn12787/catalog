@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiSave } from 'react-icons/fi';
 import Card from 'components/Card';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { Distribution, Release } from 'types';
@@ -9,6 +9,10 @@ import { buildDistribConfig } from './distribConfig';
 import { useHistory, useParams } from 'react-router-dom';
 import { SpecificReleaseParams } from '../..';
 import FormContent from 'components/FormContent';
+import {
+  addEventToGoogleCalendar,
+  updateCalendarEvent,
+} from 'api/calendars/google';
 
 interface Props {
   releaseData: any;
@@ -18,11 +22,11 @@ const EditDistribution = ({ releaseData }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const { releaseId } = useParams<SpecificReleaseParams>();
-  const distribRef = useFirestore()
-    .collection('distributions')
-    .doc(releaseData.distribution);
+  const distribRef = useRef(
+    useFirestore().collection('distributions').doc(releaseData.distribution)
+  );
   const releaseRef = useFirestore().collection('releases').doc(releaseId);
-  const { data: distribData } = useFirestoreDocData(distribRef, {
+  const { data: distribData } = useFirestoreDocData(distribRef.current, {
     idField: 'id',
   }) as any;
 
@@ -30,7 +34,7 @@ const EditDistribution = ({ releaseData }: Props) => {
     useForm<Distribution>();
 
   const checkForExistence = useCallback(async () => {
-    const actualDoc = await distribRef.get();
+    const actualDoc = await distribRef.current.get();
     if (actualDoc.exists) reset(distribData);
   }, [distribRef, reset, distribData]);
 
@@ -38,17 +42,39 @@ const EditDistribution = ({ releaseData }: Props) => {
     checkForExistence();
   }, [distribData]);
 
+  console.log(distribData);
+
   const toast = useToast();
   const history = useHistory();
 
-  const onSubmit = async (data: Release) => {
+  const onSubmit = async (data: Distribution) => {
+    console.log(data);
     try {
       setLoading(true);
-      await distribRef.set(
+      await distribRef.current.set(
         { ...data, created: Date.now(), release: releaseId },
         { merge: true }
       );
-      await releaseRef.set({ distribution: distribRef.id }, { merge: true });
+      await releaseRef.set(
+        { distribution: distribRef.current.id },
+        { merge: true }
+      );
+      if (distribData.calendarEventId) {
+        await updateCalendarEvent({
+          id: distribData.calendarEventId,
+          start: { date: data.dueDate },
+          end: { date: data.dueDate },
+          summary: `${releaseData.name}: Distribution`,
+        });
+      } else {
+        const result = await addEventToGoogleCalendar({
+          start: { date: data.dueDate },
+          end: { date: data.dueDate },
+          summary: `${releaseData.name}: Distribution`,
+        });
+        await distribRef.current.update({ calendarEventId: result.result.id });
+      }
+
       toast({
         status: 'success',
         title: 'Success',
@@ -56,6 +82,7 @@ const EditDistribution = ({ releaseData }: Props) => {
       });
       history.push(`/releases/${releaseData.id}`);
     } catch (e) {
+      console.log(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
       setLoading(false);

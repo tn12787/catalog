@@ -11,7 +11,10 @@ const Account = (props: Props) => {
   const onLogout = async () => {
     try {
       setLoading(true);
-      await auth.signOut();
+      const auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(() => {
+        return auth.signOut();
+      });
     } finally {
       setLoading(false);
     }
@@ -29,7 +32,12 @@ const Account = (props: Props) => {
   return (
     <Stack bg={'#eee'} flex={1} align="center" direction="column">
       <Heading>Account</Heading>
-      <Button isLoading={loading} colorScheme="red" variant="outline" onClick={onLogout}>
+      <Button
+        isLoading={loading}
+        colorScheme="red"
+        variant="outline"
+        onClick={onLogout}
+      >
         Log Out
       </Button>
       <Button isLoading={loading} colorScheme="red" onClick={onDelete}>

@@ -8,7 +8,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import Card from 'components/Card';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { Artwork as ReleaseArtwork } from 'types';
@@ -25,15 +25,15 @@ const buildFields = (isComplete: boolean): SummaryField[] => [
 ];
 
 const Artwork = ({ releaseData }: Props) => {
-  const artworkRef = useFirestore()
-    .collection('artwork')
-    .doc(releaseData.artwork);
+  const artworkRef = useRef(
+    useFirestore().collection('artwork').doc(releaseData.artwork)
+  );
 
   let { url } = useRouteMatch();
   const editUrl = `${url}/artwork/edit`;
 
   const { status, data: artworkData } = useFirestoreDocData<ReleaseArtwork>(
-    artworkRef,
+    artworkRef.current,
     { idField: 'id' }
   );
 
@@ -96,7 +96,9 @@ const Artwork = ({ releaseData }: Props) => {
                     direction={['row', 'row', 'column']}
                     justify={['space-between']}
                   >
-                    <Text fontSize="md" fontWeight="bold">{name}</Text>
+                    <Text fontSize="md" fontWeight="bold">
+                      {name}
+                    </Text>
                     <Text mt={[0, 0, 2]}>{artworkData[value]}</Text>
                   </Flex>
                 );
@@ -107,7 +109,7 @@ const Artwork = ({ releaseData }: Props) => {
                 <Stack>
                   <Text fontSize="md" fontWeight="bold">
                     Notes
-                </Text>
+                  </Text>
                   <Text whiteSpace="pre-wrap">{artworkData.notes}</Text>
                 </Stack>
               ) : null}
@@ -115,15 +117,15 @@ const Artwork = ({ releaseData }: Props) => {
           </Stack>
         </Flex>
       ) : (
-          <Flex py={4} align="center" direction="column" justify="space-between">
-            <Text color="charcoal" mb={3}>
-              This release has no artwork info yet.
+        <Flex py={4} align="center" direction="column" justify="space-between">
+          <Text color="charcoal" mb={3}>
+            This release has no artwork info yet.
           </Text>
-            <Button flexGrow={0} as={Link} colorScheme="purple" to={editUrl}>
-              Add now
+          <Button flexGrow={0} as={Link} colorScheme="purple" to={editUrl}>
+            Add now
           </Button>
-          </Flex>
-        )}
+        </Flex>
+      )}
     </Card>
   );
 };
