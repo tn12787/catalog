@@ -77,7 +77,6 @@ const EditArtwork = ({ releaseData }: Props) => {
 
   const status = watch('status');
   const watchedAlbumArt = watch('albumArt');
-  console.log(watchedAlbumArt);
 
   return (
     <Stack

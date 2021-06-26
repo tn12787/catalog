@@ -8,7 +8,6 @@ const Root = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   auth.onAuthStateChanged((user) => {
-    console.log(user);
     setIsLoggedIn(!!user);
     setLoading(false);
   });

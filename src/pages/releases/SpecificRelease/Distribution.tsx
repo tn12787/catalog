@@ -8,7 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Card from 'components/Card';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { SummaryField } from './Summary';
@@ -26,12 +26,12 @@ const buildFields = (isComplete: boolean): SummaryField[] => [
 
 const Distribution = ({ releaseData }: Props) => {
   const { url } = useRouteMatch();
-  const distribRef = useFirestore()
-    .collection('distributions')
-    .doc(releaseData.distribution ?? '');
+  const distribRef = useRef(
+    useFirestore().collection('distributions').doc(releaseData.distribution)
+  );
 
   const { status, data: docData } = useFirestoreDocData<ReleaseDistribution>(
-    distribRef,
+    distribRef.current,
     {
       idField: 'id',
     }
