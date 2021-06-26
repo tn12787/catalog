@@ -5,6 +5,9 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import 'firebase/firestore';
 
+const CLIENT_ID =
+  '419424197757-7n7f5frs3qof0mk9gh0h04ntiu7d36kc.apps.googleusercontent.com';
+
 export const firebaseConfig = {
   apiKey: '***REMOVED***',
   authDomain: 'launchday-mvp.firebaseapp.com',
@@ -15,5 +18,24 @@ export const firebaseConfig = {
   measurementId: 'G-27J597W62Q',
 };
 
+export const initClient = async () => {
+  gapi.load('client:auth2', () => {
+    gapi.client.init({
+      apiKey: firebaseConfig.apiKey,
+      discoveryDocs: [
+        'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
+      ],
+      clientId: CLIENT_ID,
+      scope:
+        'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/userinfo.profile',
+    });
+
+    gapi.auth2.init({
+      client_id: CLIENT_ID,
+    });
+  });
+};
+
+initClient();
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
