@@ -1,5 +1,22 @@
-import { Flex, Heading, Icon, Image, Text } from '@chakra-ui/react';
-import React from 'react';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Icon,
+  Image,
+  Text,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/react';
+import React, { useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
@@ -10,12 +27,39 @@ interface Props {
 }
 
 const HeaderSection = ({ releaseData }: Props) => {
-  const artworkRef = useFirestore()
-    .collection('artwork')
-    .doc(releaseData.artwork);
+  const artworkRef = useRef(
+    useFirestore().collection('artwork').doc(releaseData.artwork)
+  );
+  const toast = useToast();
 
-  const { data } = useFirestoreDocData(artworkRef);
-  const artwork: Artwork = data as Artwork;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>();
+
+  const releaseRef = useRef(
+    useFirestore().collection('releases').doc(releaseData.id)
+  );
+
+  const { data: artworkData } = useFirestoreDocData<Artwork>(
+    artworkRef.current
+  );
+
+  const onDelete = async () => {
+    try {
+      await releaseRef.current.delete();
+      toast({
+        status: 'success',
+        title: 'Deleted',
+        description: 'Your release was deleted successfully.',
+      });
+    } catch (error) {
+      toast({
+        status: 'error',
+        title: 'Oh no...',
+        description: error.toString(),
+      });
+    } finally {
+    }
+  };
 
   return (
     <Flex
@@ -32,7 +76,8 @@ const HeaderSection = ({ releaseData }: Props) => {
           objectFit="cover"
           width="100%"
           src={
-            artwork?.url || 'https://semantic-ui.com/images/wireframe/image.png'
+            artworkData?.url ||
+            'https://semantic-ui.com/images/wireframe/image.png'
           }
         />
         <Flex
@@ -48,15 +93,50 @@ const HeaderSection = ({ releaseData }: Props) => {
           }
         ></Flex>
       </Flex>
-      <Flex align="center" w={['90%', '90%', '100%']} margin={['0 auto']}>
-        <Flex align="center">
-          <Icon as={FiArrowLeft} mr={1} />
-          <Text fontSize="sm" as={Link} mr={4} to={'/releases'}>
-            Back
-          </Text>
-        </Flex>
-        <Heading>{releaseData.name}</Heading>
+      <Flex align="center" justify="space-between">
+        <HStack
+          alignItems="center"
+          w={['90%', '90%', '100%']}
+          margin={['0 auto']}
+        >
+          <HStack alignItems="center">
+            <Icon as={FiArrowLeft} />
+            <Text fontSize="sm" as={Link} to={'/releases'}>
+              Back
+            </Text>
+          </HStack>
+          <Heading>{releaseData.name}</Heading>
+        </HStack>
+        <Button colorScheme="red" onClick={onOpen}>
+          Delete
+        </Button>
       </Flex>
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef as any}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Remove Release?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Are you sure you want to delete your release? This change cannot be
+            undone.
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button ref={cancelRef as any} onClick={onClose}>
+              No
+            </Button>
+            <Button colorScheme="red" ml={3} onClick={onDelete}>
+              Yes
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Flex>
   );
 };

@@ -44,7 +44,7 @@ const BasicInfo = () => {
   return (
     <Stack
       flex={1}
-      bg="#eee"
+      bg="#f1f1f1"
       align="center"
       direction="column"
       width="100%"

@@ -12,6 +12,13 @@ export interface Release {
 
 export type ReleaseType = 'Single' | 'EP' | 'Album';
 
+export enum ReleaseTaskType {
+  DISTRIBUTION = 'Distribution',
+  ARTWORK = 'Artwork',
+  MASTERING = 'Mastering',
+  MUSIC_VIDEO = 'Music Video',
+}
+
 interface Artist {
   name: string;
 }
@@ -33,12 +40,13 @@ export type ReleaseTaskStatus =
   | 'Waiting'
   | 'Complete';
 
-interface ReleaseTask {
+export interface ReleaseTask {
   [key: string]: any;
   dueDate: string;
   status: ReleaseTaskStatus;
   completedOn?: string;
   notes?: string;
+  calendarEventId?: string;
 }
 
 export interface Distribution extends ReleaseTask {

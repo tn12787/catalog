@@ -3,16 +3,13 @@ import { FiSave } from 'react-icons/fi';
 import Card from 'components/Card';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
-import { Distribution, Release } from 'types';
+import { ObservableStatus, useFirestore, useFirestoreDocData } from 'reactfire';
+import { Distribution, ReleaseTaskType } from 'types';
 import { buildDistribConfig } from './distribConfig';
 import { useHistory, useParams } from 'react-router-dom';
 import { SpecificReleaseParams } from '../..';
 import FormContent from 'components/FormContent';
-import {
-  addEventToGoogleCalendar,
-  updateCalendarEvent,
-} from 'api/calendars/google';
+import { createOrUpdateCalendarEventForReleaseTask } from 'api/calendars/google';
 
 interface Props {
   releaseData: any;
@@ -26,9 +23,10 @@ const EditDistribution = ({ releaseData }: Props) => {
     useFirestore().collection('distributions').doc(releaseData.distribution)
   );
   const releaseRef = useFirestore().collection('releases').doc(releaseId);
-  const { data: distribData } = useFirestoreDocData(distribRef.current, {
-    idField: 'id',
-  }) as any;
+  const { data: distribData }: ObservableStatus<Distribution> =
+    useFirestoreDocData(distribRef.current, {
+      idField: 'id',
+    });
 
   const { register, errors, handleSubmit, reset, watch } =
     useForm<Distribution>();
@@ -42,8 +40,6 @@ const EditDistribution = ({ releaseData }: Props) => {
     checkForExistence();
   }, [distribData]);
 
-  console.log(distribData);
-
   const toast = useToast();
   const history = useHistory();
 
@@ -55,25 +51,15 @@ const EditDistribution = ({ releaseData }: Props) => {
         { ...data, created: Date.now(), release: releaseId },
         { merge: true }
       );
-      await releaseRef.set(
-        { distribution: distribRef.current.id },
-        { merge: true }
+      await releaseRef.update({ distribution: distribRef.current.id });
+
+      await createOrUpdateCalendarEventForReleaseTask(
+        data,
+        releaseData.name,
+        ReleaseTaskType.DISTRIBUTION,
+        distribRef.current,
+        distribData.calendarEventId
       );
-      if (distribData.calendarEventId) {
-        await updateCalendarEvent({
-          id: distribData.calendarEventId,
-          start: { date: data.dueDate },
-          end: { date: data.dueDate },
-          summary: `${releaseData.name}: Distribution`,
-        });
-      } else {
-        const result = await addEventToGoogleCalendar({
-          start: { date: data.dueDate },
-          end: { date: data.dueDate },
-          summary: `${releaseData.name}: Distribution`,
-        });
-        await distribRef.current.update({ calendarEventId: result.result.id });
-      }
 
       toast({
         status: 'success',
