@@ -16,9 +16,9 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { Artwork } from 'types';
 
@@ -31,6 +31,7 @@ const HeaderSection = ({ releaseData }: Props) => {
     useFirestore().collection('artwork').doc(releaseData.artwork)
   );
   const toast = useToast();
+  const history = useHistory();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>();
@@ -51,6 +52,7 @@ const HeaderSection = ({ releaseData }: Props) => {
         title: 'Deleted',
         description: 'Your release was deleted successfully.',
       });
+      history.push(`/releases/`);
     } catch (error) {
       toast({
         status: 'error',

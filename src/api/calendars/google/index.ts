@@ -1,5 +1,5 @@
 import { initClient } from 'firebase-details';
-import { ReleaseTask, ReleaseTaskType } from 'types';
+import { Release, ReleaseTask, ReleaseTaskType } from 'types';
 import firebase from 'firebase';
 
 export const listUserCalendars = async () => {
@@ -29,6 +29,51 @@ export const updateCalendarEvent = async (data: gapi.client.calendar.Event) => {
   });
 };
 
+export const buildReleaseEventDescription = (data: Release): string => {
+  return `
+    <h3>Info</h3>
+    <ul>
+      <li>
+        Artist: ${data.artist}
+      </li>
+      <li>
+        Type: ${data.type}
+      </li>
+    </ul>
+  `;
+};
+
+export const buildReleaseTaskEventDescription = <T extends ReleaseTask>(
+  data: T,
+  taskType: ReleaseTaskType
+): string => {
+  return `<h3>Info</h3><ul><li>Status: ${data.status}</li></ul><h3>Notes</h3><p>${data.notes}</p>`;
+};
+
+export const createOrUpdateReleaseEvent = async (
+  data: Release,
+  refToUpdate: firebase.firestore.DocumentReference,
+  existingEventId?: string
+) => {
+  const calendarData = {
+    start: { date: data.targetDate },
+    end: { date: data.targetDate },
+    summary: `${data.name}: Final Release`,
+    description: buildReleaseEventDescription(data),
+  };
+  if (existingEventId) {
+    await updateCalendarEvent({
+      id: existingEventId,
+      ...calendarData,
+    });
+  } else {
+    const response = await addEventToGoogleCalendar(calendarData);
+    await refToUpdate.update({
+      calendarEventId: response.result.id,
+    });
+  }
+};
+
 export const createOrUpdateCalendarEventForReleaseTask = async <
   T extends ReleaseTask
 >(
@@ -42,6 +87,7 @@ export const createOrUpdateCalendarEventForReleaseTask = async <
     start: { date: data.dueDate },
     end: { date: data.dueDate },
     summary: `${releaseName}: ${taskType}`,
+    description: buildReleaseTaskEventDescription(data, taskType),
   };
   if (existingEventId) {
     await updateCalendarEvent({

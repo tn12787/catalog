@@ -1,11 +1,4 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiArrowRight } from 'react-icons/fi';
 import Card from 'components/Card';
 import React, { useState } from 'react';
@@ -15,9 +8,10 @@ import { Release } from 'types';
 import { basicInfoConfig } from './releaseConfig';
 import { useHistory } from 'react-router-dom';
 import FormContent from 'components/FormContent';
+import { createOrUpdateReleaseEvent } from 'api/calendars/google';
 
 const BasicInfo = () => {
-  const { register, errors, handleSubmit } = useForm<any>();
+  const { register, errors, handleSubmit } = useForm<Release>();
   const [loading, setLoading] = useState(false);
   const collectionRef = useFirestore().collection('releases');
   const toast = useToast();
@@ -28,6 +22,9 @@ const BasicInfo = () => {
       setLoading(true);
       const newDoc = await collectionRef.doc();
       await newDoc.set({ ...data, created: Date.now() });
+
+      await createOrUpdateReleaseEvent(data, newDoc);
+
       toast({
         status: 'success',
         title: 'Success',
