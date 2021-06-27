@@ -56,15 +56,21 @@ const EditArtwork = ({ releaseData }: Props) => {
       setLoading(true);
 
       const { albumArt, ...rest } = data;
+      if (albumArt?.length) {
+        const artworkFileRef = storageRef.child(artworkRef.current.id);
+        await artworkFileRef.put(albumArt[0], { contentType: 'image/jpeg' });
+        const downloadURL = await artworkFileRef.getDownloadURL();
+        await artworkRef.current.set(
+          { ...rest, url: downloadURL, release: releaseId },
+          { merge: true }
+        );
+      } else {
+        await artworkRef.current.set(
+          { ...rest, release: releaseId },
+          { merge: true }
+        );
+      }
 
-      const artworkFileRef = storageRef.child(artworkRef.current.id);
-      await artworkFileRef.put(albumArt[0], { contentType: 'image/jpeg' });
-      const downloadURL = await artworkFileRef.getDownloadURL();
-
-      await artworkRef.current.set(
-        { ...rest, url: downloadURL, release: releaseId },
-        { merge: true }
-      );
       await releaseRef.set({ artwork: artworkRef.current.id }, { merge: true });
 
       await createOrUpdateCalendarEventForReleaseTask(

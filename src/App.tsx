@@ -12,13 +12,14 @@ import { appLinks } from 'appLinks';
 import Releases from 'pages/releases/AllReleases';
 import NewRelease from 'pages/releases/NewRelease';
 import SpecificRelease from 'pages/releases/SpecificRelease';
+import Artists from 'pages/artists';
 
 const App = () => {
   return (
     <Router>
       <Flex minH="100vh">
         <Nav links={appLinks} />
-        <Flex width="100%" ml={[0, 0, "200px"]} overflowY="auto">
+        <Flex width="100%" ml={[0, 0, '300px']} overflowY="auto">
           <Switch>
             <Route path="/releases/new">
               <NewRelease />
@@ -28,6 +29,9 @@ const App = () => {
             </Route>
             <Route path="/releases">
               <Releases />
+            </Route>
+            <Route path="/artists">
+              <Artists />
             </Route>
             <Route path="/account">
               <Account />
