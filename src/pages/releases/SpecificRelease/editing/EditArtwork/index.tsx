@@ -11,35 +11,39 @@ import Card from 'components/Card';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiSave } from 'react-icons/fi';
-import { Artwork } from 'types';
+import { Artwork, ReleaseTaskType } from 'types';
 import { buildArtworkConfig } from './artworkConfig';
 import { useFirestore, useFirestoreDocData, useStorage } from 'reactfire';
 import FormContent from 'components/FormContent';
 import { useHistory, useParams } from 'react-router-dom';
 import { SpecificReleaseParams } from 'pages/releases/SpecificRelease';
 import 'firebase/storage';
+import { useRef } from 'react';
+import { createOrUpdateCalendarEventForReleaseTask } from 'api/calendars/google';
 
 interface Props {
   releaseData: any;
 }
 
 const EditArtwork = ({ releaseData }: Props) => {
-  const artworkRef = useFirestore()
-    .collection('artwork')
-    .doc(releaseData.artwork); // TODO: What if this is null here?
+  const artworkRef = useRef(
+    useFirestore().collection('artwork').doc(releaseData.artwork)
+  ); // TODO: What if this is null here?
 
   const { releaseId } = useParams<SpecificReleaseParams>();
   const releaseRef = useFirestore().collection('releases').doc(releaseId);
 
-  const { data } = useFirestoreDocData(artworkRef, {
-    idField: 'id',
-  });
-  const artwork: Artwork = data as Artwork;
+  const { data: existingArtwork } = useFirestoreDocData<Artwork>(
+    artworkRef.current,
+    {
+      idField: 'id',
+    }
+  );
 
   const storageRef = useStorage().ref('images/');
 
   const { register, errors, handleSubmit, watch } = useForm<Artwork>({
-    defaultValues: artwork,
+    defaultValues: existingArtwork,
   });
 
   const [loading, setLoading] = useState(false);
@@ -53,15 +57,24 @@ const EditArtwork = ({ releaseData }: Props) => {
 
       const { albumArt, ...rest } = data;
 
-      const artworkFileRef = storageRef.child(artworkRef.id);
+      const artworkFileRef = storageRef.child(artworkRef.current.id);
       await artworkFileRef.put(albumArt[0], { contentType: 'image/jpeg' });
       const downloadURL = await artworkFileRef.getDownloadURL();
 
-      await artworkRef.set(
+      await artworkRef.current.set(
         { ...rest, url: downloadURL, release: releaseId },
         { merge: true }
       );
-      await releaseRef.set({ artwork: artworkRef.id }, { merge: true });
+      await releaseRef.set({ artwork: artworkRef.current.id }, { merge: true });
+
+      await createOrUpdateCalendarEventForReleaseTask(
+        data,
+        releaseData.name,
+        ReleaseTaskType.ARTWORK,
+        artworkRef.current,
+        existingArtwork.calendarEventId
+      );
+
       toast({
         status: 'success',
         title: 'Success',
@@ -94,7 +107,7 @@ const EditArtwork = ({ releaseData }: Props) => {
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               {status === 'Complete' &&
-                (artwork.url || watchedAlbumArt?.length) && (
+                (existingArtwork.url || watchedAlbumArt?.length) && (
                   <Image
                     borderRadius="5px"
                     width="100%"
@@ -103,7 +116,7 @@ const EditArtwork = ({ releaseData }: Props) => {
                     src={
                       watchedAlbumArt?.length
                         ? URL.createObjectURL(watchedAlbumArt[0])
-                        : artwork.url
+                        : existingArtwork.url
                     }
                   />
                 )}
