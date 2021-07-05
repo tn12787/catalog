@@ -1,8 +1,19 @@
-export interface Release {
+interface BaseRelease {
   [key: string]: any;
   targetDate: string;
   name: string;
   type: ReleaseType;
+}
+
+export interface Release extends BaseRelease {
+  artist: string;
+  artwork: string;
+  distribution: string;
+  mastering?: string;
+  musicVideo?: string;
+}
+
+export interface EnrichedRelease extends BaseRelease {
   artist: Artist;
   artwork: Artwork;
   distribution: Distribution;

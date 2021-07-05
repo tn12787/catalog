@@ -8,6 +8,7 @@
     "@chakra-ui/react": "^1.0.4",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
+    "@fontsource/inter": "^4.4.5",
     "@hookform/error-message": "^0.0.5",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -15,6 +16,7 @@
     "firebase": "^8.2.1",
     "firebase-functions": "^3.13.0",
     "framer-motion": "^3.1.1",
+    "next": "11.0.1",
     "query-string": "^6.13.8",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -23,10 +25,9 @@
     "react-hook-form": "^6.13.1",
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
     "react-step-wizard": "^5.3.5",
     "reactfire": "^3.0.0-rc.0",
-    "typescript": "^4.0.3",
+    "typescript": "^4.3.5",
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
@@ -37,22 +38,18 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
-    "@types/react-router-dom": "^5.1.6"
+    "@types/react-router-dom": "^5.1.6",
+    "eslint": "^7.30.0",
+    "eslint-config-next": "^11.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "next dev",
+    "start-production": "next start",
+    "build": "next build",
     "deploy": "yarn build && firebase deploy",
     "deploy:hosting": "yarn build && firebase deploy --only hosting",
     "deploy:functions": "cd functions && npm run deploy",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "test": "jest test"
   },
   "browserslist": {
     "production": [
