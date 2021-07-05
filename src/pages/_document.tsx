@@ -8,10 +8,6 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <link rel="icon" href={`${process.env.PUBLIC_URL}/favicon.ico`} />
           <meta name="theme-color" content="#000000" />
-          <meta
-            name="description"
-            content="Web site created using create-react-app"
-          />
           <script src="https://apis.google.com/js/api.js" async />
           <link
             rel="apple-touch-icon"
