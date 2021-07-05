@@ -51,12 +51,6 @@
     "deploy:functions": "cd functions && npm run deploy",
     "test": "jest test"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
