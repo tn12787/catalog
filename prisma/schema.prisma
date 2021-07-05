@@ -1,0 +1,99 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  VIEW
+  EDIT
+  ADMIN
+}
+
+enum ReleaseType {
+  SINGLE
+  EP
+  ALBUM
+}
+
+enum CloudProvider {
+  GSUITE
+  OFFICE_365
+}
+
+enum TaskStatus {
+  OUTSTANDING
+  IN_PROGRESS
+  COMPLETE
+}
+
+enum ReleaseTaskType {
+  MASTERING
+  ARTWORK
+  DISTRIBUTION
+  MUSIC_VIDEO
+}
+
+model Team {
+  id       String        @id @default(uuid())
+  name     String
+  provider CloudProvider
+  role     Role          @default(VIEW)
+  users    User[]
+  artists  Artist[]
+  contacts Contact[]
+  releases Release[]
+}
+
+model User {
+  id     String        @id @default(uuid())
+  email  String        @unique
+  name   String
+  team   Team          @relation(fields: [teamId], references: [id])
+  teamId String
+  tasks  ReleaseTask[]
+}
+
+model Artist {
+  id           String  @id @default(uuid())
+  name         String
+  spotifyUrl   String?
+  instagramUrl String?
+  team         Team    @relation(fields: [managedBy], references: [id])
+  managedBy    String
+}
+
+model Release {
+  id         String        @id @default(uuid())
+  name       String
+  type       ReleaseType
+  targetDate DateTime
+  tasks      ReleaseTask[]
+  team       Team          @relation(fields: [teamId], references: [id])
+  teamId     String
+}
+
+model Contact {
+  id     String        @id @default(uuid())
+  name   String
+  email  String?
+  phone  String?
+  team   Team          @relation(fields: [teamId], references: [id])
+  teamId String
+  tasks  ReleaseTask[]
+}
+
+model ReleaseTask {
+  id              String          @id @default(uuid())
+  url             String?         @unique
+  notes           String?
+  calendarEventId String?         @unique
+  dueDate         DateTime
+  status          TaskStatus
+  type            ReleaseTaskType
+  release         Release         @relation(fields: [releaseId], references: [id])
+  releaseId       String
+  user            User?           @relation(fields: [assignee], references: [id])
+  assignee        String?
+  contact         Contact?        @relation(fields: [completedBy], references: [id])
+  completedBy     String?
+}
