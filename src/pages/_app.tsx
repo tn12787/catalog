@@ -1,23 +1,26 @@
-import { ChakraProvider } from '@chakra-ui/react';
-import 'C:UsersTomDocumentsGitHublaunchdaysrcindex.css';
+import { Box, ChakraProvider } from '@chakra-ui/react';
 import { appTheme } from 'customTheme';
 import { firebaseConfig } from 'firebase-details';
+import { NextPage } from 'next';
 import { AppProps } from 'next/app';
-import Head from 'next/head';
 import React from 'react';
 import { FirebaseAppProvider } from 'reactfire';
+import '../index.css';
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+interface Props extends Omit<AppProps, 'Component'> {
+  Component: NextPage & { getLayout?: () => React.FC<any> };
+}
+
+const MyApp = ({ Component, pageProps }: Props) => {
+  const Layout = Component.getLayout ? Component.getLayout() : Box;
+
   return (
     <React.StrictMode>
-      <Head>
-        <title>React App</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-
       <ChakraProvider theme={appTheme}>
         <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </FirebaseAppProvider>
       </ChakraProvider>
     </React.StrictMode>

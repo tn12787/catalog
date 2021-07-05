@@ -3,7 +3,6 @@ import FormContent from 'components/FormContent';
 import { SignUpData } from 'data/signup/types';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import { useAuth, useFirestore } from 'reactfire';
 import { signupConfig } from 'data/signup/signupConfig';
 
@@ -72,7 +71,7 @@ const SignUp = () => {
         <Button type="submit" isLoading={loading}>
           Create Account
         </Button>
-        <Text color="grey" fontSize="sm" as={Link} to={'/login'}>
+        <Text color="grey" fontSize="sm" as={'a'} href={'/login'}>
           Already have an account? Sign in.
         </Text>
       </Stack>

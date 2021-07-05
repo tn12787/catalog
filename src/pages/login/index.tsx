@@ -10,7 +10,6 @@ import {
 import FormContent from 'components/FormContent';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import { useAuth } from 'reactfire';
 import { loginConfig } from 'data/login/loginConfig';
 import { LoginData } from 'data/login/types';
@@ -101,7 +100,7 @@ const Login = () => {
           <Button isLoading={loading} type="submit">
             Log in
           </Button>
-          <Text color="grey" fontSize="sm" as={Link} to={'/sign-up'}>
+          <Text color="grey" fontSize="sm" as={'a'} href={'/signup'}>
             Don't have an account?
           </Text>
         </Stack>
