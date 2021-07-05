@@ -16,7 +16,7 @@ const NotFound = (props: Props) => {
     >
       <Stack align="center">
         <Heading>Oh no...</Heading>
-        <Text>That release doesn't exist.</Text>
+        <Text>That release doesn&apos;t exist.</Text>
       </Stack>
       <Button
         variant="outline"

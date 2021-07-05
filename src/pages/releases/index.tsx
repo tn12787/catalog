@@ -8,12 +8,13 @@ import {
 import ReleaseCard from 'components/releases/ReleaseCard';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
+import { Release } from 'types';
 
 interface Props {}
 
 const Releases = (props: Props) => {
   const releasesRef = useFirestore().collection('releases');
-  const items = useFirestoreCollectionData(
+  const items = useFirestoreCollectionData<Release>(
     releasesRef.orderBy('targetDate', 'desc'),
     {
       idField: 'id',
@@ -38,8 +39,8 @@ const Releases = (props: Props) => {
             Create New Release
           </Button>
         </Flex>
-        {items.data?.map((datum: any) => {
-          return <ReleaseCard releaseData={datum} />;
+        {items.data?.map((datum: Release, index) => {
+          return <ReleaseCard key={index.toString()} releaseData={datum} />;
         })}
       </Stack>
     </Stack>

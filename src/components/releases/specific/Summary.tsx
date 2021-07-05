@@ -64,6 +64,7 @@ const Summary = ({ releaseData }: Props) => {
               align={['center', 'center', 'flex-start']}
               direction={['row', 'row', 'column']}
               justify={['space-between']}
+              key={field.name}
             >
               <Text fontSize="md" fontWeight="bold">
                 {field.name}

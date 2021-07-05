@@ -124,6 +124,7 @@ const EditArtwork = ({ releaseData }: Props) => {
                     width="100%"
                     height="500px"
                     objectFit="cover"
+                    alt="completed artwork"
                     src={
                       watchedAlbumArt?.length
                         ? URL.createObjectURL(watchedAlbumArt[0])

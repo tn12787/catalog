@@ -101,7 +101,7 @@ const Login = () => {
             Log in
           </Button>
           <Text color="grey" fontSize="sm" as={'a'} href={'/signup'}>
-            Don't have an account?
+            Don&apos;t have an account?
           </Text>
         </Stack>
         <HStack width="100%">

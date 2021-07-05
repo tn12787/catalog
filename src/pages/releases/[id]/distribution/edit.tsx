@@ -39,7 +39,7 @@ const EditDistribution = ({ releaseData }: Props) => {
 
   useEffect(() => {
     checkForExistence();
-  }, [distribData]);
+  }, [distribData, checkForExistence]);
 
   const toast = useToast();
 
