@@ -1,11 +1,11 @@
 import { Button, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 import FormContent from 'components/FormContent';
+import { SignUpData } from 'data/signup/types';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAuth, useFirestore } from 'reactfire';
-import { signupConfig } from './signupConfig';
-import { SignUpData } from './types';
+import { signupConfig } from 'data/signup/signupConfig';
 
 const SignUp = () => {
   const { register, errors, handleSubmit, setError } = useForm<SignUpData>();
