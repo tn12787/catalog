@@ -79,6 +79,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           maxH="200px"
           objectFit="cover"
           width="100%"
+          alt="album art"
           src={
             artworkData?.url ||
             'https://semantic-ui.com/images/wireframe/image.png'

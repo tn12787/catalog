@@ -33,12 +33,19 @@ const withReleaseData = <T extends ComponentWithReleaseData>(
         }
       };
       checkForExistence();
-    }, [releaseData, status]);
+    }, [releaseData, status, releaseRef]);
 
     if (status === 'loading') {
       return (
-        <Stack flex={1} bg="#eee" align="center" direction="column">
-          <Spinner />
+        <Stack
+          flex={1}
+          height={'100vh'}
+          bg="#eee"
+          align="center"
+          justify="center"
+          direction="column"
+        >
+          <Spinner color="purple.500" size="xl" />
         </Stack>
       );
     } else if (notFound) {

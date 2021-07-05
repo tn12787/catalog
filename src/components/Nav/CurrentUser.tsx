@@ -50,6 +50,7 @@ const CurrentUser = (props: Props) => {
           borderRadius="400px"
           w={'48px'}
           h={'48px'}
+          alt="profile picture"
           src={user?.data?.photoURL as string}
         />
         <Text>{user?.data?.displayName}</Text>
