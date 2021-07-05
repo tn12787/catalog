@@ -26,7 +26,7 @@
     "react-router-dom": "^5.2.0",
     "react-step-wizard": "^5.3.5",
     "reactfire": "^3.0.0-rc.0",
-    "typescript": "^4.0.3",
+    "typescript": "^4.3.5",
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {

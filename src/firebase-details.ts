@@ -37,5 +37,3 @@ export const initClient = async () => {
 };
 
 initClient();
-firebase.initializeApp(firebaseConfig);
-export const auth = firebase.auth();
