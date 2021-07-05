@@ -9,6 +9,7 @@ import FormContent from 'components/FormContent';
 import { basicInfoConfig } from 'components/releases/NewRelease/releaseConfig';
 import withReleaseData from 'HOCs/withReleaseData';
 import { useRouter } from 'next/router';
+import BackButton from 'components/BackButton';
 
 interface Props {
   releaseData: Release;
