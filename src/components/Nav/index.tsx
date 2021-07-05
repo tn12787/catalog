@@ -1,8 +1,9 @@
 import { Divider, Link, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import CurrentUser from './CurrentUser';
 import { NavBarLink } from './types';
+import NextLink from 'next/link';
+import NavLink from './NavLink';
 
 interface Props {
   links: NavBarLink[];
@@ -25,22 +26,14 @@ const Nav = ({ links }: Props) => {
           LaunchDay
         </Text>
 
-        {links.map(({ text, ...rest }, index) => (
-          <Link
-            key={index.toString()}
-            p={2}
-            py={2}
-            borderRadius={6}
-            activeStyle={{ backgroundColor: 'grey' }}
-            fontWeight={'bold'}
-            as={NavLink as any}
-            {...rest}
-          >
-            {text}
-          </Link>
+        {links.map((link, index) => (
+          <NavLink {...link} key={index.toString()} />
         ))}
       </Stack>
-      <Divider backgroundColor="rgba(255,255,255,0.1)" borderColor="rgba(255,255,255,0.1)" />
+      <Divider
+        backgroundColor="rgba(255,255,255,0.1)"
+        borderColor="rgba(255,255,255,0.1)"
+      />
       <CurrentUser />
     </Stack>
   );
