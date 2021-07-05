@@ -1,4 +1,4 @@
-import Login from 'pages/auth/login';
+import Login from 'pages/login';
 import SignUp from 'pages/auth/signup';
 import React from 'react';
 import {
