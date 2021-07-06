@@ -39,27 +39,90 @@ enum ReleaseTaskType {
 }
 
 model Team {
-  id       String        @id @default(uuid())
+  id       String        @id @default(cuid())
   name     String
   provider CloudProvider
-  role     Role          @default(VIEW)
-  users    User[]
+  users    TeamUser[]
   artists  Artist[]
   contacts Contact[]
   releases Release[]
+  invites  Invite[]
+}
+
+model TeamUser {
+  id     String  @id @default(cuid())
+  user   User?   @relation(fields: [userId], references: [id])
+  team   Team?   @relation(fields: [teamId], references: [id])
+  userId String?
+  teamId String?
+  role   Role    @default(VIEW)
+
+  @@unique([userId, teamId])
+}
+
+model Invite {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  accepted  Boolean
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    String
+  createdAt DateTime @default(now())
 }
 
 model User {
-  id     String        @id @default(uuid())
-  email  String        @unique
-  name   String
-  team   Team          @relation(fields: [teamId], references: [id])
-  teamId String
-  tasks  ReleaseTask[]
+  id            String        @id @default(cuid())
+  email         String        @unique
+  name          String
+  tasks         ReleaseTask[]
+  emailVerified Boolean       @default(false)
+  image         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  teams         TeamUser[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model Account {
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
+
+  @@unique([providerId, providerAccountId])
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
 }
 
 model Artist {
-  id           String  @id @default(uuid())
+  id           String  @id @default(cuid())
   name         String
   spotifyUrl   String?
   instagramUrl String?
@@ -68,17 +131,19 @@ model Artist {
 }
 
 model Release {
-  id         String        @id @default(uuid())
+  id         String        @id @default(cuid())
   name       String
   type       ReleaseType
   targetDate DateTime
   tasks      ReleaseTask[]
   team       Team          @relation(fields: [teamId], references: [id])
   teamId     String
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
 }
 
 model Contact {
-  id     String        @id @default(uuid())
+  id     String        @id @default(cuid())
   name   String
   email  String?
   phone  String?
@@ -88,7 +153,7 @@ model Contact {
 }
 
 model ReleaseTask {
-  id              String          @id @default(uuid())
+  id              String          @id @default(cuid())
   url             String?         @unique
   notes           String?
   calendarEventId String?         @unique
@@ -101,4 +166,6 @@ model ReleaseTask {
   assignee        String?
   contact         Contact?        @relation(fields: [completedBy], references: [id])
   completedBy     String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }

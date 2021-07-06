@@ -1,27 +1,52 @@
 import { PrismaClient } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { Token } from 'next-auth';
 const prisma = new PrismaClient();
+import { getSession } from 'next-auth/client';
+import { getToken } from 'next-auth/jwt';
 
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  switch (req.method) {
-    default:
-      res.status(409);
+const secret = process.env.SECRET;
+
+const releaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const token = await getToken({ req, secret });
+
+  console.log(token);
+  if (!token) {
+    res.status(401).end(`Unauthorized`);
   }
-}
 
-const get = async (req: NextApiRequest, res: NextApiResponse) => {
+  switch (req.method) {
+    case 'GET':
+      await get(req, res, token as Token);
+      break;
+    case 'POST':
+      await get(req, res, token as Token);
+      break;
+    default:
+      res.setHeader('Allow', ['GET', 'PUT']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
+};
+
+const get = async (req: NextApiRequest, res: NextApiResponse, token: Token) => {
   const posts = await prisma.release.findMany({
     orderBy: {
       targetDate: 'asc',
+    },
+    include: {
+      team: {
+        include: { users: { include: { user: true } } },
+      },
     },
   });
   res.json(posts);
 };
 
-const post = async (req: NextApiRequest, res: NextApiResponse) => {
+const post = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  token: Token
+) => {
   const data = req.body;
   const result = await prisma.release.create({
     data: {
@@ -32,3 +57,5 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   });
   res.json(result);
 };
+
+export default releaseHandler;
