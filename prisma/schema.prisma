@@ -74,7 +74,7 @@ model User {
   email         String        @unique
   name          String
   tasks         ReleaseTask[]
-  emailVerified Boolean       @default(false)
+  emailVerified Boolean?       @default(false)
   image         String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt

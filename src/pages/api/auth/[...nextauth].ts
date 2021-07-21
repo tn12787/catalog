@@ -16,5 +16,29 @@ export default NextAuth({
   session: {
     jwt: true,
   },
+  callbacks: {
+    async jwt(token, user, account, profile, isNewUser) {
+      if (isNewUser) {
+        try {
+          prisma.team.create({
+            data: {
+              name: `${user?.name}'s Team`,
+              provider: 'GSUITE',
+              users: {
+                create: {
+                  role: 'ADMIN',
+                  user: { connect: { id: user?.id as string } },
+                },
+              },
+            },
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      return { ...token, account, user, profile };
+    },
+  },
   adapter: PrismaAdapter(prisma),
 });

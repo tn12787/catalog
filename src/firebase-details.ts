@@ -36,4 +36,4 @@ export const initClient = async () => {
   });
 };
 
-initClient();
+// initClient();
