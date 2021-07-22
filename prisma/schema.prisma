@@ -5,7 +5,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["selectRelationCount", "referentialActions"]
 }
 
 enum Role {
@@ -50,12 +51,12 @@ model Team {
 }
 
 model TeamUser {
-  id     String  @id @default(cuid())
-  user   User?   @relation(fields: [userId], references: [id])
-  team   Team?   @relation(fields: [teamId], references: [id])
-  userId String?
-  teamId String?
-  role   Role    @default(VIEW)
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId String
+  teamId String
+  role   Role   @default(VIEW)
 
   @@unique([userId, teamId])
 }
@@ -64,7 +65,7 @@ model Invite {
   id        String   @id @default(cuid())
   email     String   @unique
   accepted  Boolean
-  team      Team     @relation(fields: [teamId], references: [id])
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId    String
   createdAt DateTime @default(now())
 }
@@ -74,7 +75,7 @@ model User {
   email         String        @unique
   name          String
   tasks         ReleaseTask[]
-  emailVerified Boolean?       @default(false)
+  emailVerified Boolean?      @default(false)
   image         String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
@@ -91,7 +92,7 @@ model Session {
   accessToken  String   @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -105,7 +106,7 @@ model Account {
   accessTokenExpires DateTime?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
-  user               User      @relation(fields: [userId], references: [id])
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([providerId, providerAccountId])
 }
@@ -126,7 +127,7 @@ model Artist {
   name         String
   spotifyUrl   String?
   instagramUrl String?
-  team         Team    @relation(fields: [managedBy], references: [id])
+  team         Team    @relation(fields: [managedBy], references: [id], onDelete: Cascade)
   managedBy    String
 }
 
@@ -136,7 +137,7 @@ model Release {
   type       ReleaseType
   targetDate DateTime
   tasks      ReleaseTask[]
-  team       Team          @relation(fields: [teamId], references: [id])
+  team       Team          @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId     String
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
@@ -147,7 +148,7 @@ model Contact {
   name   String
   email  String?
   phone  String?
-  team   Team          @relation(fields: [teamId], references: [id])
+  team   Team          @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId String
   tasks  ReleaseTask[]
 }
@@ -160,7 +161,7 @@ model ReleaseTask {
   dueDate         DateTime
   status          TaskStatus
   type            ReleaseTaskType
-  release         Release         @relation(fields: [releaseId], references: [id])
+  release         Release         @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
   user            User?           @relation(fields: [assignee], references: [id])
   assignee        String?

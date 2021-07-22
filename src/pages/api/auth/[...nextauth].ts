@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
+import { createDefaultTeamForUser } from 'apiUtils/teams';
 
 const prisma = new PrismaClient();
 
@@ -18,26 +19,14 @@ export default NextAuth({
   },
   callbacks: {
     async jwt(token, user, account, profile, isNewUser) {
-      if (isNewUser) {
-        try {
-          prisma.team.create({
-            data: {
-              name: `${user?.name}'s Team`,
-              provider: 'GSUITE',
-              users: {
-                create: {
-                  role: 'ADMIN',
-                  user: { connect: { id: user?.id as string } },
-                },
-              },
-            },
-          });
-        } catch (e) {
-          console.log(e);
-        }
+      const userTeams = await prisma.teamUser.count({
+        where: { userId: user?.id as string },
+      });
+      if (isNewUser || !userTeams) {
+        await createDefaultTeamForUser(user as User);
       }
 
-      return { ...token, account, user, profile };
+      return { token, user, account, profile };
     },
   },
   adapter: PrismaAdapter(prisma),
