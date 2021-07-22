@@ -16,6 +16,7 @@ import { LoginData } from 'data/login/types';
 import firebase from 'firebase';
 import GoogleButton from 'react-google-button';
 import { initClient } from 'firebase-details';
+import { signIn } from 'next-auth/client';
 
 const Login = () => {
   const { register, errors, handleSubmit } = useForm<LoginData>();
@@ -44,34 +45,7 @@ const Login = () => {
   };
 
   const signInWithGoogle = async () => {
-    await initClient();
-    const googleAuth = gapi.auth2.getAuthInstance();
-    try {
-      setLoading(true);
-      const googleUser = await googleAuth.signIn({
-        scope:
-          'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events',
-      });
-
-      const token = googleUser.getAuthResponse().id_token;
-      const credential = firebase.auth.GoogleAuthProvider.credential(token);
-
-      await firebase.auth().signInWithCredential(credential);
-      if (!token) {
-        toast({
-          status: 'error',
-          description: 'Something went wrong...',
-        });
-      }
-    } catch (e) {
-      console.log(e);
-      toast({
-        status: 'error',
-        description: e.toString(),
-      });
-    } finally {
-      setLoading(false);
-    }
+    await signIn('google', { callbackUrl: 'http://localhost:3000/releases' });
   };
 
   return (

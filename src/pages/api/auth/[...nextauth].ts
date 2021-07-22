@@ -7,10 +7,15 @@ import { createDefaultTeamForUser } from 'apiUtils/teams';
 const prisma = new PrismaClient();
 
 export default NextAuth({
+  pages: {
+    signIn: '/login',
+  },
   providers: [
     Providers.Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      scope:
+        'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events',
     }),
   ],
   secret: process.env.SECRET,
@@ -26,7 +31,7 @@ export default NextAuth({
         await createDefaultTeamForUser(user as User);
       }
 
-      return { token, user, account, profile };
+      return token;
     },
   },
   adapter: PrismaAdapter(prisma),
