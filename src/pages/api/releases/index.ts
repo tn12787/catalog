@@ -10,9 +10,12 @@ const secret = process.env.SECRET;
 const releaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({ req, secret });
 
-  console.log(token);
+  const session = await getSession({ req });
+  console.log(session, token);
+
   if (!token) {
     res.status(401).end(`Unauthorized`);
+    return;
   }
 
   switch (req.method) {
@@ -20,7 +23,7 @@ const releaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       await get(req, res, token as Token);
       break;
     case 'POST':
-      await get(req, res, token as Token);
+      await post(req, res, token as Token);
       break;
     default:
       res.setHeader('Allow', ['GET', 'PUT']);

@@ -31,7 +31,12 @@ export default NextAuth({
         await createDefaultTeamForUser(user as User);
       }
 
-      return token;
+      return { ...token, userData: { user, profile } };
+    },
+    async session(session, token) {
+      // Add property to session, like an access_token from a provider.
+      session.accessToken = token.accessToken;
+      return { ...session, token };
     },
   },
   adapter: PrismaAdapter(prisma),

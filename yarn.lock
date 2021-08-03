@@ -1220,6 +1220,13 @@
   resolved "https://registry.yarnpkg.com/@sqltools/formatter/-/formatter-1.2.3.tgz#1185726610acc37317ddab11c3c7f9066966bd20"
   integrity sha512-O3uyB/JbkAEMZaP3YqyHH7TMnex7tWyCbCI4EfJdOCoN6HIhqdJBWTM6aCCiWQ/5f5wxjgU735QAIpJbjDvmzg==
 
+"@storyofams/next-api-decorators@^1.5.6":
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/@storyofams/next-api-decorators/-/next-api-decorators-1.5.6.tgz#31cb2d0efdc6e77e49491793e2401575661c1dd0"
+  integrity sha512-P0QYnq2qWSCmCqZhCfSlxhc9Wr5Jbtxvq97u82i3GwFoBYxGFtdA9JQJ+BTIbB2S+ta9USbXur82iM/qd3h8Xw==
+  dependencies:
+    reflect-metadata "^0.1.13"
+
 "@styled-system/core@5.1.2":
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/@styled-system/core/-/core-5.1.2.tgz#b8b7b86455d5a0514f071c4fa8e434b987f6a772"
