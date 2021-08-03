@@ -1,64 +1,45 @@
-import { PrismaClient } from '@prisma/client';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { Token } from 'next-auth';
+import {
+  Body,
+  createHandler,
+  Get,
+  HttpCode,
+  Post,
+} from '@storyofams/next-api-decorators';
+
+import { Prisma, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-import { getSession } from 'next-auth/client';
-import { getToken } from 'next-auth/jwt';
+import requiresAuth from 'apiUtils/auth';
 
-const secret = process.env.SECRET;
-
-const releaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const token = await getToken({ req, secret });
-
-  const session = await getSession({ req });
-  console.log(session, token);
-
-  if (!token) {
-    res.status(401).end(`Unauthorized`);
-    return;
-  }
-
-  switch (req.method) {
-    case 'GET':
-      await get(req, res, token as Token);
-      break;
-    case 'POST':
-      await post(req, res, token as Token);
-      break;
-    default:
-      res.setHeader('Allow', ['GET', 'PUT']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-};
-
-const get = async (req: NextApiRequest, res: NextApiResponse, token: Token) => {
-  const posts = await prisma.release.findMany({
-    orderBy: {
-      targetDate: 'asc',
-    },
-    include: {
-      team: {
-        include: { users: { include: { user: true } } },
+@requiresAuth()
+class ReleaseListHandler {
+  @Get()
+  async releases() {
+    const posts = await prisma.release.findMany({
+      orderBy: {
+        targetDate: 'asc',
       },
-    },
-  });
-  res.json(posts);
-};
+      include: {
+        team: {
+          include: { users: { include: { user: true } } },
+        },
+      },
+    });
+    return posts;
+  }
 
-const post = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  token: Token
-) => {
-  const data = req.body;
-  const result = await prisma.release.create({
-    data: {
-      name: data.name,
-      type: data.type,
-      targetDate: data.targetDate,
-    },
-  });
-  res.json(result);
-};
+  @Post()
+  @HttpCode(201)
+  async createRelease(@Body() body: Prisma.ReleaseCreateInput) {
+    const result = await prisma.release.create({
+      data: {
+        name: body.name,
+        type: body.type,
+        targetDate: body.targetDate,
+        team: body.team,
+      },
+    });
+    return 'Created release';
+  }
+}
 
-export default releaseHandler;
+export default createHandler(ReleaseListHandler);
