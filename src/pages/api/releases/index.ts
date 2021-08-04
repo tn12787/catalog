@@ -3,10 +3,14 @@ import {
   createHandler,
   Get,
   HttpCode,
+  ParseDatePipe,
   Post,
+  ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
-import { Prisma, PrismaClient } from '@prisma/client';
+import { CreateReleaseDto } from 'models/releases/create';
+
+import { Prisma, PrismaClient, ReleaseType } from '@prisma/client';
 const prisma = new PrismaClient();
 import requiresAuth from 'apiUtils/auth';
 
@@ -29,16 +33,18 @@ class ReleaseListHandler {
 
   @Post()
   @HttpCode(201)
-  async createRelease(@Body() body: Prisma.ReleaseCreateInput) {
+  async createRelease(@Body(ValidationPipe) body: CreateReleaseDto) {
     const result = await prisma.release.create({
       data: {
         name: body.name,
-        type: body.type,
+        type: body.type as ReleaseType,
         targetDate: body.targetDate,
-        team: body.team,
+        team: {
+          connect: { id: body.team },
+        },
       },
     });
-    return 'Created release';
+    return result;
   }
 }
 

@@ -16,9 +16,9 @@ enum Role {
 }
 
 enum ReleaseType {
-  SINGLE
+  Single
   EP
-  ALBUM
+  Album
 }
 
 enum CloudProvider {

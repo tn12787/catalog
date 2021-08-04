@@ -21,7 +21,11 @@ export interface EnrichedRelease extends BaseRelease {
   musicVideo?: MusicVideo;
 }
 
-export type ReleaseType = 'Single' | 'EP' | 'Album';
+export enum ReleaseType {
+  SINGLE = 'Single',
+  EP = 'EP',
+  ALBUM = 'Album',
+}
 
 export enum ReleaseTaskType {
   DISTRIBUTION = 'Distribution',
