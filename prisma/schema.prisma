@@ -123,17 +123,21 @@ model VerificationRequest {
 }
 
 model Artist {
-  id           String  @id @default(cuid())
+  id           String    @id @default(cuid())
   name         String
+  legalName    String?
   spotifyUrl   String?
   instagramUrl String?
-  team         Team    @relation(fields: [managedBy], references: [id], onDelete: Cascade)
+  team         Team      @relation(fields: [managedBy], references: [id], onDelete: Cascade)
   managedBy    String
+  releases     Release[]
 }
 
 model Release {
   id         String        @id @default(cuid())
   name       String
+  artist     Artist        @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artistId   String
   type       ReleaseType
   targetDate DateTime
   tasks      ReleaseTask[]
@@ -141,6 +145,8 @@ model Release {
   teamId     String
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
+
+  @@unique([name, artistId, teamId])
 }
 
 model Contact {
