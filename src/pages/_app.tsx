@@ -5,6 +5,7 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import React from 'react';
 import { FirebaseAppProvider } from 'reactfire';
+import 'focus-visible/dist/focus-visible';
 import '../index.css';
 
 import '@fontsource/inter';
