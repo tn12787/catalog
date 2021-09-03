@@ -7,6 +7,8 @@ import React from 'react';
 import { FirebaseAppProvider } from 'reactfire';
 import 'focus-visible/dist/focus-visible';
 import '../index.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate } from 'react-query/hydration';
 
 import '@fontsource/inter';
 import '@fontsource/inter/400.css';
@@ -21,17 +23,22 @@ interface Props extends Omit<AppProps, 'Component'> {
 }
 
 const MyApp = ({ Component, pageProps }: Props) => {
+  const [queryClient] = React.useState(() => new QueryClient());
   const Layout = Component.getLayout ? Component.getLayout() : Box;
 
   return (
     <React.StrictMode>
-      <ChakraProvider theme={appTheme}>
-        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </FirebaseAppProvider>
-      </ChakraProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <ChakraProvider theme={appTheme}>
+            <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </FirebaseAppProvider>
+          </ChakraProvider>
+        </Hydrate>
+      </QueryClientProvider>
     </React.StrictMode>
   );
 };

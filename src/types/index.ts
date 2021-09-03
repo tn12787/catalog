@@ -15,8 +15,8 @@ export interface Release extends BaseRelease {
 
 export interface EnrichedRelease extends BaseRelease {
   artist: Artist;
-  artwork: Artwork;
-  distribution: Distribution;
+  artwork?: Artwork;
+  distribution?: Distribution;
   mastering?: Mastering;
   musicVideo?: MusicVideo;
 }

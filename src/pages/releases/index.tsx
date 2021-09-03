@@ -1,25 +1,23 @@
 import { Text, Stack, Heading, Button, Flex } from '@chakra-ui/react';
 import React from 'react';
-import {
-  SuspenseWithPerf,
-  useFirestore,
-  useFirestoreCollectionData,
-} from 'reactfire';
+
 import ReleaseCard from 'components/releases/ReleaseCard';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
-import { Release } from 'types';
+import { ReleaseType } from 'types';
+import { useQuery } from 'react-query';
+import { fetchReleases } from 'queries/releases';
+import { getSession } from 'next-auth/client';
+import { GetServerSideProps } from 'next';
 
 interface Props {}
 
 const Releases = (props: Props) => {
-  const releasesRef = useFirestore().collection('releases');
-  const items = useFirestoreCollectionData<Release>(
-    releasesRef.orderBy('targetDate', 'desc'),
-    {
-      idField: 'id',
-    }
-  );
+  const { data, isLoading, isError } = useQuery('releases', fetchReleases, {
+    retry: false,
+  });
+
+  console.log(data)
 
   return (
     <Stack
@@ -39,12 +37,42 @@ const Releases = (props: Props) => {
             Create New Release
           </Button>
         </Flex>
-        {items.data?.map((datum: Release, index) => {
-          return <ReleaseCard key={index.toString()} releaseData={datum} />;
-        })}
+        {isLoading ? (
+          <ReleaseCard
+            releaseData={{
+              artist: { name: 'me' },
+              targetDate: new Date().toISOString(),
+              name: 'Loading',
+              type: ReleaseType.ALBUM,
+            }}
+            loading
+          />
+        ) : (
+          !isError &&
+          data.data?.map((datum, index) => {
+            return <ReleaseCard key={index.toString()} releaseData={datum} />;
+          })
+        )}
       </Stack>
     </Stack>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 };
 
 Releases.getLayout = () => DashboardLayout;
