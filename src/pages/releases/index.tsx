@@ -17,8 +17,6 @@ const Releases = (props: Props) => {
     retry: false,
   });
 
-  console.log(data)
-
   return (
     <Stack
       flex={1}
@@ -49,7 +47,7 @@ const Releases = (props: Props) => {
           />
         ) : (
           !isError &&
-          data.data?.map((datum, index) => {
+          data?.map((datum, index) => {
             return <ReleaseCard key={index.toString()} releaseData={datum} />;
           })
         )}
