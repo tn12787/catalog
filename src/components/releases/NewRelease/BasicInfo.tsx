@@ -9,6 +9,8 @@ import { basicInfoConfig } from './releaseConfig';
 import FormContent from 'components/FormContent';
 import { createOrUpdateReleaseEvent } from 'events/calendars/google';
 import { useRouter } from 'next/router';
+import { fetchArtists } from 'queries/artists';
+import { useQuery } from 'react-query';
 
 const BasicInfo = () => {
   const { register, errors, handleSubmit } = useForm<Release>();
@@ -16,6 +18,8 @@ const BasicInfo = () => {
   const collectionRef = useFirestore().collection('releases');
   const toast = useToast();
   const router = useRouter();
+
+  const { data: artists } = useQuery('artists', fetchArtists);
 
   const onSubmit = async (data: Release) => {
     try {
@@ -31,7 +35,7 @@ const BasicInfo = () => {
         description: 'Release created.',
       });
       router.push(`/releases/${newDoc.id}`);
-    } catch (e) {
+    } catch (e: any) {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
       setLoading(false);
@@ -54,7 +58,7 @@ const BasicInfo = () => {
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               <FormContent
-                config={basicInfoConfig}
+                config={basicInfoConfig(artists ?? [])}
                 errors={errors}
                 register={register}
               />

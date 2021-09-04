@@ -1,45 +1,80 @@
 import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiSave } from 'react-icons/fi';
 import Card from 'components/Card';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFirestore } from 'reactfire';
-import { Distribution, Release } from 'types';
+import { EnrichedRelease } from 'types';
 import FormContent from 'components/FormContent';
 import { basicInfoConfig } from 'components/releases/NewRelease/releaseConfig';
 import withReleaseData from 'HOCs/withReleaseData';
 import { useRouter } from 'next/router';
 import BackButton from 'components/BackButton';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { updateBasicReleaseInfo } from 'queries/releases';
+import { SingleReleaseVars } from 'queries/releases/types';
+import DashboardLayout from 'components/layouts/DashboardLayout';
+import { fetchArtists } from 'queries/artists';
+import dayjs from 'dayjs';
+import { ReleaseType } from '.prisma/client';
 
 interface Props {
-  releaseData: Release;
+  releaseData: EnrichedRelease;
+}
+
+interface BasicInfoForm extends Omit<EnrichedRelease, 'targetDate' | 'artist'> {
+  targetDate: Date;
+  artist: string;
+  name: string;
+  type: ReleaseType;
 }
 
 const EditSummary = ({ releaseData }: Props) => {
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const releaseRef = useFirestore().collection('releases').doc(releaseData.id);
 
-  const { register, errors, handleSubmit } = useForm<Release>({
-    defaultValues: releaseData,
+  const properDateFormat = useMemo(
+    () => dayjs(releaseData.targetDate).format('YYYY-MM-DD'),
+    [releaseData.targetDate]
+  );
+
+  const { register, errors, handleSubmit, reset } = useForm<BasicInfoForm>({
+    defaultValues: {
+      ...releaseData,
+      artist: releaseData.artist.id,
+      targetDate: properDateFormat,
+    },
   });
+
+  console.log(properDateFormat);
+
+  const queryClient = useQueryClient();
+  const { mutateAsync: updateInfo, isLoading } = useMutation(
+    updateBasicReleaseInfo,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['releases']);
+      },
+    }
+  );
+
+  const { data: artists } = useQuery('artists', fetchArtists);
 
   const toast = useToast();
 
-  const onSubmit = async (data: Release) => {
+  const onSubmit = async (data: BasicInfoForm) => {
     try {
-      setLoading(true);
-      await releaseRef.set({ ...data }, { merge: true });
+      await updateInfo({
+        ...data,
+        id: releaseData.id,
+      } as SingleReleaseVars);
       toast({
         status: 'success',
         title: 'Success',
         description: 'Your changes were saved.',
       });
       router.push(`/releases/${releaseData.id}`);
-    } catch (e) {
+    } catch (e: any) {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -63,7 +98,7 @@ const EditSummary = ({ releaseData }: Props) => {
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               <FormContent
-                config={basicInfoConfig}
+                config={basicInfoConfig(artists ?? [])}
                 errors={errors}
                 register={register}
               />
@@ -72,7 +107,7 @@ const EditSummary = ({ releaseData }: Props) => {
                   colorScheme="blue"
                   flexGrow={0}
                   leftIcon={<FiSave />}
-                  isLoading={loading}
+                  isLoading={isLoading}
                   type="submit"
                 >
                   Save
@@ -85,5 +120,7 @@ const EditSummary = ({ releaseData }: Props) => {
     </Stack>
   );
 };
+
+EditSummary.getLayout = () => DashboardLayout;
 
 export default withReleaseData(EditSummary);

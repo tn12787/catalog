@@ -11,7 +11,7 @@ const ReleaseArtist = ({ releaseData }: Props) => {
   return (
     <HStack align="center" color="mist">
       <Icon fontSize="22px" as={FiUser} />
-      <Text fontSize="14px">{releaseData.artist.name}</Text>
+      <Text fontSize="sm">{releaseData.artist.name}</Text>
     </HStack>
   );
 };

@@ -2,6 +2,17 @@ import { Button, Flex, Heading, Link, Text } from '@chakra-ui/react';
 import Card from 'components/Card';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
+import { EnrichedRelease } from 'types';
+
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(utc);
+dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
 
 interface Props {
   releaseData: any;
@@ -9,16 +20,29 @@ interface Props {
 
 export interface SummaryField {
   name: string;
-  value: string;
+  content: JSX.Element;
   hidden?: boolean;
-  Component?: any;
 }
 
-const fields: SummaryField[] = [
-  { name: 'Artist', value: 'artist' },
-  { name: 'Status', value: 'status', Component: ReleaseStatusBadge },
-  { name: 'Release Type', value: 'type' },
-  { name: 'Target Date', value: 'targetDate' },
+const fields = (releaseData: EnrichedRelease): SummaryField[] => [
+  {
+    name: 'Artist',
+    content: (
+      <NextLink href={`/artists/${releaseData.artist.id}`} passHref>
+        <Link>{releaseData.artist.name}</Link>
+      </NextLink>
+    ),
+  },
+  { name: 'Status', content: <ReleaseStatusBadge releaseData={releaseData} /> },
+  { name: 'Release Type', content: <Text>{releaseData.type}</Text> },
+  {
+    name: 'Target Date',
+    content: (
+      <Text fontSize="sm">
+        {dayjs.utc(releaseData.targetDate).format('LL')}
+      </Text>
+    ),
+  },
 ];
 
 const Summary = ({ releaseData }: Props) => {
@@ -56,7 +80,7 @@ const Summary = ({ releaseData }: Props) => {
         justify="space-between"
         alignItems={['center', 'center', 'stretch']}
       >
-        {fields.map((field) => {
+        {fields(releaseData).map((field) => {
           return (
             <Flex
               mb={[3, 3, 0]}
@@ -69,11 +93,7 @@ const Summary = ({ releaseData }: Props) => {
               <Text fontSize="md" fontWeight="bold">
                 {field.name}
               </Text>
-              {field.Component ? (
-                <field.Component releaseData={releaseData} />
-              ) : (
-                <Text mt={[0, 0, 2]}>{releaseData[field.value]}</Text>
-              )}
+              {field.content}
             </Flex>
           );
         })}

@@ -1,6 +1,5 @@
-import { PrismaClient, User } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { User } from '@prisma/client';
+import prisma from 'backend/prisma/client';
 
 export const createDefaultTeamForUser = async (user: User) => {
   try {
@@ -16,7 +15,6 @@ export const createDefaultTeamForUser = async (user: User) => {
         },
       },
     });
-    console.log(team);
   } catch (e) {
     console.log(e);
   }

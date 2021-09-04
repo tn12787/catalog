@@ -11,7 +11,7 @@ const ReleaseType = ({ releaseData }: Props) => {
   return (
     <HStack align="center" color="mist">
       <Icon fontSize="22px" as={FiDisc} />
-      <Text fontSize="14px">{releaseData.type}</Text>
+      <Text fontSize="sm">{releaseData.type}</Text>
     </HStack>
   );
 };

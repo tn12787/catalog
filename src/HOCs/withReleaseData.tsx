@@ -1,14 +1,16 @@
 import { Spinner, Stack } from '@chakra-ui/react';
 import NotFound from 'components/releases/specific/NotFound';
 import { useRouter } from 'next/router';
+import { fetchReleases, fetchSingleRelease } from 'queries/releases';
 import React, { useRef, useState } from 'react';
 import { useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
-import { Release } from 'types';
+import { EnrichedRelease } from 'types';
 import { LayoutablePage } from './types';
 
 interface ComponentWithReleaseData {
-  releaseData: Release;
+  releaseData: EnrichedRelease;
 }
 
 const withReleaseData = <T extends ComponentWithReleaseData>(
@@ -17,25 +19,26 @@ const withReleaseData = <T extends ComponentWithReleaseData>(
   const Wrapper = (props: T) => {
     const router = useRouter();
     const [notFound, setNotFound] = useState(false);
-    const releaseId = router.query.id;
-    const releaseRef = useFirestore()
-      .collection('releases')
-      .doc(releaseId as string);
-    const { status, data: releaseData } = useFirestoreDocData(releaseRef, {
-      idField: 'id',
+    const releaseId = router.query.id as string;
+    const {
+      data: response,
+      isLoading,
+      isError,
+    } = useQuery(['releases', releaseId], () => fetchSingleRelease(releaseId), {
+      retry: false,
     });
 
-    useEffect(() => {
-      const checkForExistence = async () => {
-        if (status === 'success') {
-          const data = await releaseRef.get();
-          setNotFound(!data.exists);
-        }
-      };
-      checkForExistence();
-    }, [releaseData, status, releaseRef]);
+    // useEffect(() => {
+    //   const checkForExistence = async () => {
+    //     if (status === 'success') {
+    //       const data = await releaseRef.get();
+    //       setNotFound(!data.exists);
+    //     }
+    //   };
+    //   checkForExistence();
+    // }, [releaseData, status, releaseRef]);
 
-    if (status === 'loading') {
+    if (isLoading) {
       return (
         <Stack
           flex={1}
@@ -48,10 +51,10 @@ const withReleaseData = <T extends ComponentWithReleaseData>(
           <Spinner color="purple.500" size="xl" />
         </Stack>
       );
-    } else if (notFound) {
+    } else if (response?.status === 404 || !response?.data) {
       return <NotFound />;
     } else {
-      return <Component {...props} releaseData={releaseData} />;
+      return <Component {...props} releaseData={response?.data} />;
     }
   };
 

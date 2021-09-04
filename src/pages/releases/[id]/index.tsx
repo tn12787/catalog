@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 
-import { Release } from 'types';
+import { EnrichedRelease, Release } from 'types';
 import withReleaseData from 'HOCs/withReleaseData';
 import Artwork from 'components/releases/specific/Artwork';
 import Distribution from 'components/releases/specific/Distribution';
@@ -10,7 +10,7 @@ import Summary from 'components/releases/specific/Summary';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 
 interface Props {
-  releaseData: Release;
+  releaseData: EnrichedRelease;
 }
 
 const SpecificRelease = ({ releaseData }: Props) => {

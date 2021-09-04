@@ -13,7 +13,11 @@ import { GetServerSideProps } from 'next';
 interface Props {}
 
 const Releases = (props: Props) => {
-  const { data, isLoading, isError } = useQuery('releases', fetchReleases, {
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useQuery('releases', fetchReleases, {
     retry: false,
   });
 
@@ -38,7 +42,8 @@ const Releases = (props: Props) => {
         {isLoading ? (
           <ReleaseCard
             releaseData={{
-              artist: { name: 'me' },
+              id: 'release_loading',
+              artist: { name: 'me', id: 'loading' },
               targetDate: new Date().toISOString(),
               name: 'Loading',
               type: ReleaseType.ALBUM,
@@ -47,7 +52,7 @@ const Releases = (props: Props) => {
           />
         ) : (
           !isError &&
-          data?.map((datum, index) => {
+          response?.data?.map((datum, index) => {
             return <ReleaseCard key={index.toString()} releaseData={datum} />;
           })
         )}

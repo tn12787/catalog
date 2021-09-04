@@ -58,19 +58,13 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           justify="space-between"
           py={1}
         >
-          <HStack align="center" direction={['column', 'column', 'row']}>
+          <HStack alignItems="center" direction={['column', 'column', 'row']}>
             <Skeleton isLoaded={!loading}>
-              <Text
-                pl={'2px'}
-                fontSize="25px"
-                color="charcoal"
-                fontWeight="semibold"
-                mr={2}
-              >
+              <Text fontSize="25px" color="charcoal" fontWeight="semibold">
                 {releaseData.name}
               </Text>
             </Skeleton>
-            <Skeleton isLoaded={!loading}>
+            <Skeleton display="flex" alignItems="center" isLoaded={!loading}>
               <ReleaseStatusBadge releaseData={releaseData} />
             </Skeleton>
           </HStack>

@@ -1,10 +1,9 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient, User } from '@prisma/client';
-import { createDefaultTeamForUser } from 'apiUtils/teams';
-
-const prisma = new PrismaClient();
+import { User } from '@prisma/client';
+import { createDefaultTeamForUser } from 'backend/apiUtils/teams';
+import prisma from 'backend/prisma/client';
 
 export default NextAuth({
   pages: {

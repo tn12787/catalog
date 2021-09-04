@@ -1,4 +1,8 @@
-interface BaseRelease {
+interface DataModel {
+  id: string;
+}
+
+interface BaseRelease extends DataModel {
   [key: string]: any;
   targetDate: string;
   name: string;
@@ -34,17 +38,20 @@ export enum ReleaseTaskType {
   MUSIC_VIDEO = 'Music Video',
 }
 
-interface Artist {
+interface Artist extends DataModel {
   name: string;
+  spotifyUrl?: string;
+  legalName?: string;
+  instagramUrl?: string;
 }
 
-export interface Contact {
+export interface Contact extends DataModel {
   name: string;
   email?: string;
   phone?: string;
 }
 
-export interface User {
+export interface User extends DataModel {
   name: string;
   email: string;
 }
@@ -55,7 +62,7 @@ export type ReleaseTaskStatus =
   | 'Waiting'
   | 'Complete';
 
-export interface ReleaseTask {
+export interface ReleaseTask extends DataModel {
   [key: string]: any;
   dueDate: string;
   status: ReleaseTaskStatus;

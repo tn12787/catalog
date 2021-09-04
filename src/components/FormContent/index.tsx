@@ -15,6 +15,11 @@ interface Props<T> {
   errors: any;
 }
 
+interface SelectOption {
+  label: string;
+  value: string;
+}
+
 type InputComponentType = ComponentWithAs<any, any>;
 
 const deriveComponent = (type?: string): InputComponentType => {
@@ -57,9 +62,9 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
                 ref={register({ ...registerArgs })}
                 {...extraProps}
               >
-                {options?.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
+                {options?.map((option: SelectOption) => (
+                  <option key={option.label} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </InputComponent>

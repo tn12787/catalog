@@ -1,7 +1,8 @@
-import { Release } from 'types';
+import { Artist } from '.prisma/client';
+import { Release, ReleaseType } from 'types';
 import { FormDatum } from 'types/forms';
 
-export const basicInfoConfig: FormDatum<Release>[] = [
+export const basicInfoConfig = (artists: Artist[]): FormDatum<Release>[] => [
   {
     name: 'name',
     label: 'Name',
@@ -11,10 +12,11 @@ export const basicInfoConfig: FormDatum<Release>[] = [
   {
     name: 'artist',
     label: 'Artist',
-    type: 'text',
+    type: 'select',
     registerArgs: {
       required: 'Please enter an artist.',
     },
+    options: artists.map(({ id, name }) => ({ label: name, value: id })),
   },
   {
     name: 'type',
@@ -23,7 +25,11 @@ export const basicInfoConfig: FormDatum<Release>[] = [
     registerArgs: {
       required: 'Please select a type',
     },
-    options: ['Single', 'EP', 'Album'],
+    options: [
+      { label: 'Single', value: ReleaseType.SINGLE },
+      { label: 'EP', value: ReleaseType.EP },
+      { label: 'Album', value: ReleaseType.SINGLE },
+    ],
   },
   {
     name: 'targetDate',
