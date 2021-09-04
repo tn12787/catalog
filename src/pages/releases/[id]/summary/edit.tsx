@@ -1,9 +1,8 @@
 import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiSave } from 'react-icons/fi';
 import Card from 'components/Card';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useFirestore } from 'reactfire';
 import { EnrichedRelease } from 'types';
 import FormContent from 'components/FormContent';
 import { basicInfoConfig } from 'components/releases/NewRelease/releaseConfig';

@@ -2,18 +2,14 @@ import {
   Text,
   Image,
   Flex,
-  Icon,
   Button,
-  Link,
   Skeleton,
   HStack,
   Stack,
 } from '@chakra-ui/react';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
-import React, { useRef } from 'react';
-import { FiCalendar, FiDisc, FiUser } from 'react-icons/fi';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
-import { Artwork, EnrichedRelease, Release } from 'types';
+import React from 'react';
+import { EnrichedRelease } from 'types';
 import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
 import ReleaseType from './ReleaseType';
