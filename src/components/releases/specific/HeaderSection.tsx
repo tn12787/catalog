@@ -22,28 +22,23 @@ import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
-import { Artwork } from 'types';
+import { Artwork, EnrichedRelease } from 'types';
 
 interface Props {
-  releaseData: any;
+  releaseData: EnrichedRelease;
 }
 
 const HeaderSection = ({ releaseData }: Props) => {
-  const artworkRef = useRef(
-    useFirestore().collection('artwork').doc(releaseData.artwork)
-  );
   const toast = useToast();
   const router = useRouter();
+
+  const artwork = releaseData.tasks.find((item) => item.type === 'artwork');
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>();
 
   const releaseRef = useRef(
     useFirestore().collection('releases').doc(releaseData.id)
-  );
-
-  const { data: artworkData } = useFirestoreDocData<Artwork>(
-    artworkRef.current
   );
 
   const onDelete = async () => {
@@ -81,7 +76,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           width="100%"
           alt="album art"
           src={
-            artworkData?.url ||
+            releaseData.tas?.url ||
             'https://semantic-ui.com/images/wireframe/image.png'
           }
         />
