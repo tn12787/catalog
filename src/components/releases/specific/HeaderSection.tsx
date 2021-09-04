@@ -32,8 +32,6 @@ const HeaderSection = ({ releaseData }: Props) => {
   const toast = useToast();
   const router = useRouter();
 
-  const artwork = releaseData.tasks.find((item) => item.type === 'artwork');
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>();
 
@@ -50,7 +48,7 @@ const HeaderSection = ({ releaseData }: Props) => {
         description: 'Your release was deleted successfully.',
       });
       router.push(`/releases/`);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         status: 'error',
         title: 'Oh no...',
@@ -76,7 +74,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           width="100%"
           alt="album art"
           src={
-            releaseData.tas?.url ||
+            releaseData.artwork?.url ||
             'https://semantic-ui.com/images/wireframe/image.png'
           }
         />

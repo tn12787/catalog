@@ -1,10 +1,12 @@
+import { TaskStatus } from '.prisma/client';
+
 interface DataModel {
   id: string;
 }
 
 interface BaseRelease extends DataModel {
   [key: string]: any;
-  targetDate: string;
+  targetDate: Date | string;
   name: string;
   type: ReleaseType;
 }
@@ -38,7 +40,7 @@ export enum ReleaseTaskType {
   MUSIC_VIDEO = 'Music Video',
 }
 
-interface Artist extends DataModel {
+export interface Artist extends DataModel {
   name: string;
   spotifyUrl?: string;
   legalName?: string;
@@ -65,7 +67,7 @@ export type ReleaseTaskStatus =
 export interface ReleaseTask extends DataModel {
   [key: string]: any;
   dueDate: Date;
-  status: ReleaseTaskStatus;
+  status: TaskStatus;
   completedOn?: string;
   notes?: string;
   calendarEventId?: string;
