@@ -94,49 +94,45 @@ const Releases = () => {
           </Button>
         </Flex>
         <HStack justifyContent="space-between">
-          <Skeleton isLoaded={!isLoading || !!search}>
-            <InputGroup maxW="400px">
-              <Input
-                bg="smoke"
-                placeholder="Search releases..."
-                onChange={(e) => setSearch(e.target.value)}
-                value={search}
-              />
-              <InputRightElement>
-                <Icon color="mist" as={BiSearch} />
-              </InputRightElement>
-            </InputGroup>
-          </Skeleton>
-          <Skeleton isLoaded={!isLoading || !!search}>
-            <HStack>
-              <Text
-                whiteSpace="nowrap"
-                fontSize="sm"
-                fontWeight="bold"
-                color="mist"
-              >
-                Sort by:
-              </Text>
-              <Select
-                bg="white"
-                value={JSON.stringify(sortBy)}
-                onChange={(e) => {
-                  const valueAsObj = JSON.parse(e.target.value);
-                  const item = sortOptions.find((item) =>
-                    isEqual(item, valueAsObj)
-                  );
+          <InputGroup maxW="400px">
+            <Input
+              bg="smoke"
+              placeholder="Search releases..."
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+            />
+            <InputRightElement>
+              <Icon color="mist" as={BiSearch} />
+            </InputRightElement>
+          </InputGroup>
+          <HStack>
+            <Text
+              whiteSpace="nowrap"
+              fontSize="sm"
+              fontWeight="bold"
+              color="mist"
+            >
+              Sort by:
+            </Text>
+            <Select
+              bg="white"
+              value={JSON.stringify(sortBy)}
+              onChange={(e) => {
+                const valueAsObj = JSON.parse(e.target.value);
+                const item = sortOptions.find((item) =>
+                  isEqual(item, valueAsObj)
+                );
 
-                  setSortBy(item ?? sortOptions[0]);
-                }}
-              >
-                {sortOptions.map((item) => (
-                  <option key={item.label} value={JSON.stringify(item)}>
-                    {item.label}
-                  </option>
-                ))}
-              </Select>
-            </HStack>
-          </Skeleton>
+                setSortBy(item ?? sortOptions[0]);
+              }}
+            >
+              {sortOptions.map((item) => (
+                <option key={item.label} value={JSON.stringify(item)}>
+                  {item.label}
+                </option>
+              ))}
+            </Select>
+          </HStack>
         </HStack>
         {isLoading ? (
           <ReleaseCard

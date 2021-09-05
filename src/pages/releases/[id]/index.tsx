@@ -3,7 +3,7 @@ import { Stack } from '@chakra-ui/react';
 import { EnrichedRelease } from 'types';
 import withReleaseData from 'HOCs/withReleaseData';
 import Artwork from 'components/releases/specific/Artwork';
-import Distribution from 'components/releases/specific/Distribution';
+import Distribution from 'components/releases/specific/DistributionInfo';
 import Events from 'components/releases/specific/Events';
 import HeaderSection from 'components/releases/specific/HeaderSection';
 import Summary from 'components/releases/specific/Summary';

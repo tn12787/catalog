@@ -10,11 +10,12 @@ import {
 } from '@chakra-ui/react';
 import Card from 'components/Card';
 import React from 'react';
-import { SummaryField } from './Summary';
+import { SummaryField } from '../Summary';
 import { EnrichedRelease } from 'types';
 import { useRouter } from 'next/router';
 import { TaskStatus } from '.prisma/client';
 import dayjs from 'dayjs';
+import NextLink from 'next/link';
 
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -34,7 +35,7 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
     {
       name: 'Distributor',
       content: (
-        <Text fontSize="sm">{releaseData.distribution?.distributor}</Text>
+        <Text fontSize="sm">{releaseData.distribution?.distributor?.name}</Text>
       ),
     },
     {
@@ -87,19 +88,20 @@ const Distribution = ({ releaseData }: Props) => {
           </Badge>
         </Flex>
         {releaseData.distribution && (
-          <Button
-            mt={[2, 2, 0]}
-            flexGrow={0}
-            height="auto"
-            py={1}
-            px={12}
-            as={Link as any}
-            colorScheme="purple"
-            variant="outline"
-            href={`${router.query.id}/distribution/edit`}
-          >
-            Edit
-          </Button>
+          <NextLink passHref href={`${router.query.id}/distribution/edit`}>
+            <Button
+              mt={[2, 2, 0]}
+              flexGrow={0}
+              height="auto"
+              py={1}
+              px={12}
+              as={Link as any}
+              colorScheme="purple"
+              variant="outline"
+            >
+              Edit
+            </Button>
+          </NextLink>
         )}
       </Flex>
       {releaseData.distribution ? (
@@ -140,14 +142,11 @@ const Distribution = ({ releaseData }: Props) => {
           <Text color="charcoal" mb={3}>
             This release has no distribution info yet.
           </Text>
-          <Button
-            flexGrow={0}
-            as={Link as any}
-            colorScheme="purple"
-            href={`${router.query.id}/distribution/edit`}
-          >
-            Add now
-          </Button>
+          <NextLink passHref href={`${router.query.id}/distribution/edit`}>
+            <Button flexGrow={0} as={Link as any} colorScheme="purple">
+              Add now
+            </Button>
+          </NextLink>
         </Flex>
       )}
     </Card>

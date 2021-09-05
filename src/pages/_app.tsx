@@ -31,11 +31,9 @@ const MyApp = ({ Component, pageProps }: Props) => {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <ChakraProvider theme={appTheme}>
-            <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </FirebaseAppProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </ChakraProvider>
         </Hydrate>
       </QueryClientProvider>

@@ -14,7 +14,7 @@ interface ComponentWithReleaseData {
 const withReleaseData = <T extends ComponentWithReleaseData>(
   Component: LayoutablePage<T>
 ) => {
-  const Wrapper = (props: T) => {
+  const Wrapper = (props: Omit<T, 'releaseData'>) => {
     const router = useRouter();
     const releaseId = router.query.id as string;
     const { data: response, isLoading } = useQuery(
@@ -41,7 +41,8 @@ const withReleaseData = <T extends ComponentWithReleaseData>(
     } else if (response?.status === 404 || !response?.data) {
       return <NotFound />;
     } else {
-      return <Component {...props} releaseData={response?.data} />;
+      const overallProps = { ...props, releaseData: response.data } as T;
+      return <Component {...overallProps} />;
     }
   };
 

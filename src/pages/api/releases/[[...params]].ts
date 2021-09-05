@@ -55,7 +55,7 @@ class ReleaseListHandler {
       include: {
         artist: true,
         artwork: true,
-        distribution: true,
+        distribution: { include: { distributor: true } },
         marketing: true,
         musicVideo: true,
       },
@@ -117,9 +117,12 @@ class ReleaseListHandler {
     @Param('id') id: string,
     @Body(ValidationPipe) body: CreateDistributionDto
   ) {
+    const optionalArgs = body.assignee
+      ? { assignee: { connect: { id: body.assignee } } }
+      : {};
     const result = await prisma.distribution.create({
       data: {
-        assignee: { connect: { id: body.assignee } },
+        ...optionalArgs,
         distributor: { connect: { id: body.distributor } },
         release: { connect: { id } },
         status: body.status,
@@ -135,12 +138,15 @@ class ReleaseListHandler {
     @Param('id') id: string,
     @Body(ValidationPipe) body: CreateDistributionDto
   ) {
+    const optionalArgs = body.assignee
+      ? { assignee: { connect: { id: body.assignee } } }
+      : {};
     const result = await prisma.distribution.update({
       where: {
         releaseId: id,
       },
       data: {
-        assignee: { connect: { id: body.assignee } },
+        ...optionalArgs,
         distributor: { connect: { id: body.distributor } },
         status: body.status,
         notes: body.notes,

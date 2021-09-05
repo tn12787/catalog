@@ -10,4 +10,5 @@ export interface FormDatum<T, K = any> {
   helperText?: string;
   defaultValue?: K;
   hidden?: boolean;
+  isLoading?: boolean;
 }

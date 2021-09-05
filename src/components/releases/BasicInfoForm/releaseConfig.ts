@@ -16,7 +16,11 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<Release>[] => [
     registerArgs: {
       required: 'Please enter an artist.',
     },
+    extraProps: {
+      placeholder: 'Select an artist...',
+    },
     options: artists.map(({ id, name }) => ({ label: name, value: id })),
+    isLoading: !artists.length,
   },
   {
     name: 'type',

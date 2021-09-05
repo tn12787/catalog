@@ -1,4 +1,4 @@
-import { TaskStatus } from '.prisma/client';
+import { Distributor, TaskStatus } from '.prisma/client';
 
 interface DataModel {
   id: string;
@@ -67,7 +67,7 @@ export interface ReleaseTask extends DataModel {
 }
 
 export interface Distribution extends ReleaseTask {
-  distributor: string;
+  distributor: Distributor;
 }
 
 interface OutSourceableReleaseTask extends ReleaseTask {

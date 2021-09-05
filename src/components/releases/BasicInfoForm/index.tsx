@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiArrowRight } from 'react-icons/fi';
 import Card from 'components/Card';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { EnrichedRelease, ReleaseType } from 'types';
 import { basicInfoConfig } from './releaseConfig';
@@ -37,10 +37,10 @@ const BasicInfoForm = ({ existingRelease }: Props) => {
     [existingRelease?.targetDate]
   );
 
-  const { register, errors, handleSubmit } = useForm<BasicInfoFormData>({
+  const { register, errors, handleSubmit, reset } = useForm<BasicInfoFormData>({
     defaultValues: {
       ...existingRelease,
-      artist: existingRelease?.artist.id,
+      artist: existingRelease?.artistId,
       targetDate: properDateFormat,
     },
   });
@@ -97,6 +97,14 @@ const BasicInfoForm = ({ existingRelease }: Props) => {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     }
   };
+
+  useEffect(() => {
+    reset({
+      ...existingRelease,
+      artist: existingRelease?.artistId,
+      targetDate: properDateFormat,
+    });
+  }, [existingRelease, artists, properDateFormat, reset]);
 
   return (
     <Stack

@@ -24,14 +24,13 @@ export const AccountSwitcher = () => {
   };
 
   const { data: response, isLoading } = useQuery('me', fetchMe);
-  const onDelete = async () => {};
 
   return (
     <Menu>
-      <Skeleton isLoaded={!loading && !isLoading}>
+      <Skeleton rounded="lg" isLoaded={!loading && !isLoading}>
         <AccountSwitcherButton
-          teamName={response?.teams[0].team.name as string}
-          userName={session?.user?.name as string}
+          teamName={(response?.teams[0].team.name as string) ?? 'loadingTeam'}
+          userName={(session?.user?.name as string) ?? 'loadingUser'}
           photoUrl={session?.user?.image as string}
         />
       </Skeleton>
@@ -46,7 +45,12 @@ export const AccountSwitcher = () => {
         </Text>
         <MenuOptionGroup defaultValue={response?.teams[0].team.id}>
           {response?.teams.map(({ team }) => (
-            <MenuItemOption value={team.id} fontWeight="semibold" rounded="md">
+            <MenuItemOption
+              key={team.id}
+              value={team.id}
+              fontWeight="semibold"
+              rounded="md"
+            >
               {team.name}
             </MenuItemOption>
           ))}

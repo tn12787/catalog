@@ -1,20 +1,23 @@
-import { ReleaseTaskStatus } from '../../../types/index';
-import { Distribution } from 'types';
 import { FormDatum } from 'types/forms';
+import { Distributor, TaskStatus } from '.prisma/client';
+import { EditDistributionFormData } from './types';
 
 export const buildDistribConfig = (
-  alreadyCompleted: boolean
-): FormDatum<Distribution, ReleaseTaskStatus>[] => [
+  alreadyCompleted: boolean,
+  distributors: Distributor[]
+): FormDatum<EditDistributionFormData>[] => [
   {
     name: 'distributor',
     label: 'Distributor',
+    type: 'select',
     registerArgs: {
       required: 'Please enter a distributor name.',
     },
     extraProps: {
-      placeholder: 'Distributor name e.g. AWAL',
-      maxLength: 60,
+      placeholder: 'Select a distributor...',
     },
+    options: distributors.map(({ id, name }) => ({ label: name, value: id })),
+    isLoading: !distributors.length,
   },
   {
     name: 'dueDate',
@@ -36,7 +39,11 @@ export const buildDistribConfig = (
     registerArgs: {
       required: 'Please select a type',
     },
-    options: ['Outstanding', 'In progress', 'Waiting', 'Complete'],
+    options: [
+      { label: 'Outstanding', value: TaskStatus.OUTSTANDING },
+      { label: 'In progress', value: TaskStatus.IN_PROGRESS },
+      { label: 'Complete', value: TaskStatus.COMPLETE },
+    ],
   },
   {
     name: 'completedOn',

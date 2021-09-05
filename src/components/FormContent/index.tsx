@@ -5,6 +5,10 @@ import {
   Stack,
   Text,
   ComponentWithAs,
+  InputGroup,
+  InputRightElement,
+  Spinner,
+  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FormDatum } from 'types/forms';
@@ -13,7 +17,7 @@ import { FieldError, FieldErrors, UseFormMethods } from 'react-hook-form';
 interface Props<T> {
   config: FormDatum<T>[];
   register: UseFormMethods<T>['register'];
-  errors: FieldErrors<T>;
+  errors: UseFormMethods<T>['errors'];
 }
 
 interface SelectOption {
@@ -48,6 +52,7 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
           options,
           extraProps,
           helperText,
+          isLoading,
         }: FormDatum<T>) => {
           const InputComponent = deriveComponent(type);
           return hidden ? null : (
@@ -55,20 +60,30 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
               <Text fontSize="md" fontWeight="semibold">
                 {label}
               </Text>
-              <InputComponent
-                width="100%"
-                isInvalid={!!errors[name]}
-                name={name as string}
-                type={type}
-                ref={register({ ...registerArgs })}
-                {...extraProps}
-              >
-                {options?.map((option: SelectOption) => (
-                  <option key={option.label} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </InputComponent>
+              <InputGroup>
+                <InputComponent
+                  width="100%"
+                  isInvalid={!!errors[name]}
+                  name={name as string}
+                  type={type}
+                  icon={isLoading ? <></> : undefined}
+                  ref={register({ ...registerArgs })}
+                  {...extraProps}
+                >
+                  {options?.map((option: SelectOption) => (
+                    <option key={option.label} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </InputComponent>
+                {isLoading && (
+                  <InputRightElement>
+                    <Box>
+                      <Spinner color="mist" size="sm"></Spinner>
+                    </Box>
+                  </InputRightElement>
+                )}
+              </InputGroup>
 
               {helperText && (
                 <Text color="grey" fontSize="sm">

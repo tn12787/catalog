@@ -1,24 +1,28 @@
+import { Distributor } from '.prisma/client';
 import { SortByOptions } from '../types';
 import { EnrichedRelease, Distribution } from 'types';
 import axios, { AxiosResponse } from 'axios';
-import { DistributionVars, CreateDistributionVars } from './types';
+import { DistributionVars } from './types';
 
-export const updateDistribution = async ({
-  id,
+export const updateSingleDistribution = async ({
+  releaseId,
   ...rest
 }: DistributionVars): Promise<Distribution | void> => {
-  if (!id) return Promise.reject();
+  if (!releaseId) return Promise.reject();
 
-  const { data: response } = await axios.put(`/api/releases/${id}`, {
-    ...rest,
-  });
+  const { data: response } = await axios.put(
+    `/api/releases/${releaseId}/distribution`,
+    {
+      ...rest,
+    }
+  );
   return response;
 };
 
-export const createDistribution = async ({
+export const createSingleDistribution = async ({
   releaseId,
   ...rest
-}: CreateDistributionVars): Promise<Distribution | void> => {
+}: DistributionVars): Promise<Distribution | void> => {
   const { data: response } = await axios.post(
     `/api/releases/${releaseId}/distribution`,
     {
@@ -28,11 +32,16 @@ export const createDistribution = async ({
   return response;
 };
 
-export const deleteDistribution = async (
+export const deleteSingleDistribution = async (
   releaseId: string
 ): Promise<Distribution | void> => {
   const { data: response } = await axios.delete(
     `/api/releases/${releaseId}/distribution`
   );
+  return response;
+};
+
+export const fetchDistributors = async (): Promise<Distributor[]> => {
+  const { data: response } = await axios.get('/api/distributors');
   return response;
 };
