@@ -46,6 +46,8 @@ export const uploadImageToFirebase = async (
   artworkData: File
 ) => {
   try {
+    if (!artworkData) return;
+
     const artworkFileRef = firebase
       .storage()
       .ref()

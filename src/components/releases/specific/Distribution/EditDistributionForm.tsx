@@ -27,9 +27,17 @@ interface Props {
 const EditDistributionForm = ({ releaseData }: Props) => {
   const router = useRouter();
 
-  const properDateFormat = useMemo(
+  const formattedDueDate = useMemo(
     () => dayjs(releaseData.distribution?.dueDate).format('YYYY-MM-DD'),
     [releaseData.distribution?.dueDate]
+  );
+
+  const formattedCompletedOn = useMemo(
+    () =>
+      releaseData.distribution?.completedOn
+        ? dayjs(releaseData.distribution?.completedOn).format('YYYY-MM-DD')
+        : undefined,
+    [releaseData.distribution?.completedOn]
   );
 
   const {
@@ -43,7 +51,8 @@ const EditDistributionForm = ({ releaseData }: Props) => {
       ? {
           ...releaseData.distribution,
           distributor: releaseData.distribution?.distributor?.id,
-          dueDate: properDateFormat,
+          dueDate: formattedDueDate,
+          completedOn: formattedCompletedOn,
         }
       : {},
   });
@@ -110,9 +119,16 @@ const EditDistributionForm = ({ releaseData }: Props) => {
     reset({
       ...releaseData.distribution,
       distributor: releaseData.distribution?.distributorId,
-      dueDate: properDateFormat,
+      dueDate: formattedDueDate,
+      completedOn: formattedCompletedOn,
     });
-  }, [releaseData.distribution, distributors, properDateFormat, reset]);
+  }, [
+    releaseData.distribution,
+    distributors,
+    formattedDueDate,
+    formattedCompletedOn,
+    reset,
+  ]);
 
   return (
     <Stack

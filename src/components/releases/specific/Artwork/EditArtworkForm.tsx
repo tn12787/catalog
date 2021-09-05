@@ -8,7 +8,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import Card from 'components/Card';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiSave } from 'react-icons/fi';
 import { Artwork, EnrichedRelease } from 'types';
@@ -26,6 +26,14 @@ import {
 } from 'queries/artwork';
 import { useQueryClient, useMutation } from 'react-query';
 import { EditArtworkFormData } from './types';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(utc);
+dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
 
 interface Props {
   releaseData: EnrichedRelease;
@@ -34,8 +42,27 @@ interface Props {
 const EditArtworkForm = ({ releaseData }: Props) => {
   const router = useRouter();
 
-  const { register, errors, handleSubmit, watch } = useForm<Artwork>({
-    defaultValues: releaseData.artwork ?? {},
+  const formattedDueDate = useMemo(
+    () => dayjs(releaseData.artwork?.dueDate).format('YYYY-MM-DD'),
+    [releaseData.artwork?.dueDate]
+  );
+
+  const formattedCompletedOn = useMemo(
+    () =>
+      releaseData.artwork?.completedOn
+        ? dayjs(releaseData.artwork?.completedOn).format('YYYY-MM-DD')
+        : undefined,
+    [releaseData.artwork?.completedOn]
+  );
+
+  const { register, errors, handleSubmit, watch, reset } = useForm<Artwork>({
+    defaultValues: releaseData.artwork
+      ? {
+          ...releaseData.artwork,
+          dueDate: formattedDueDate,
+          completedOn: formattedCompletedOn,
+        }
+      : {},
   });
 
   const toast = useToast();
@@ -112,6 +139,14 @@ const EditArtworkForm = ({ releaseData }: Props) => {
 
   const status = watch('status');
   const watchedAlbumArt = watch('artworkData');
+
+  useEffect(() => {
+    reset({
+      ...releaseData.artwork,
+      dueDate: formattedDueDate,
+      completedOn: formattedCompletedOn,
+    });
+  }, [releaseData.artwork, formattedDueDate, formattedCompletedOn, reset]);
 
   return (
     <Stack
