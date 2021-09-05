@@ -4,6 +4,7 @@ import CurrentUser from './CurrentUser';
 import { NavBarLink } from './types';
 import NextLink from 'next/link';
 import NavLink from './NavLink';
+import { AccountSwitcher } from './AccountSwitcher';
 
 interface Props {
   links: NavBarLink[];
@@ -21,20 +22,18 @@ const Nav = ({ links }: Props) => {
       bg="#1c1624"
       color="white"
     >
-      <Stack flex={'1 1 auto'}>
-        <Text fontSize="2xl" mb={8} fontWeight="bold">
-          LaunchDay
-        </Text>
-
-        {links.map((link, index) => (
-          <NavLink {...link} key={index.toString()} />
-        ))}
+      <Stack flex={'1 1 auto'} spacing={'30px'}>
+        <AccountSwitcher />
+        <Stack>
+          {links.map((link, index) => (
+            <NavLink {...link} key={index.toString()} />
+          ))}
+        </Stack>
       </Stack>
       <Divider
         backgroundColor="rgba(255,255,255,0.1)"
         borderColor="rgba(255,255,255,0.1)"
       />
-      <CurrentUser />
     </Stack>
   );
 };
