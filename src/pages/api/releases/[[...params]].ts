@@ -129,6 +129,36 @@ class ReleaseListHandler {
     });
     return result;
   }
+
+  @Put('/:id/distribution')
+  async updateDistribution(
+    @Param('id') id: string,
+    @Body(ValidationPipe) body: CreateDistributionDto
+  ) {
+    const result = await prisma.distribution.update({
+      where: {
+        releaseId: id,
+      },
+      data: {
+        assignee: { connect: { id: body.assignee } },
+        distributor: { connect: { id: body.distributor } },
+        status: body.status,
+        notes: body.notes,
+        dueDate: body.dueDate,
+      },
+    });
+    return result;
+  }
+
+  @Delete('/:id/distribution')
+  async deleteDistribution(@Param('id') id: string) {
+    const result = await prisma.distribution.delete({
+      where: {
+        releaseId: id,
+      },
+    });
+    return result;
+  }
 }
 
 export default createHandler(ReleaseListHandler);
