@@ -5,14 +5,24 @@ import {
   Stack,
   Text,
   ComponentWithAs,
+  InputGroup,
+  InputRightElement,
+  Spinner,
+  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FormDatum } from 'types/forms';
+import { FieldError, FieldErrors, UseFormMethods } from 'react-hook-form';
 
 interface Props<T> {
   config: FormDatum<T>[];
-  register: (...args: any[]) => any;
-  errors: any;
+  register: UseFormMethods<T>['register'];
+  errors: UseFormMethods<T>['errors'];
+}
+
+interface SelectOption {
+  label: string;
+  value: string;
 }
 
 type InputComponentType = ComponentWithAs<any, any>;
@@ -42,6 +52,7 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
           options,
           extraProps,
           helperText,
+          isLoading,
         }: FormDatum<T>) => {
           const InputComponent = deriveComponent(type);
           return hidden ? null : (
@@ -49,27 +60,39 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
               <Text fontSize="md" fontWeight="semibold">
                 {label}
               </Text>
-              <InputComponent
-                width="100%"
-                isInvalid={!!errors[name]}
-                name={name as string}
-                type={type}
-                ref={register({ ...registerArgs })}
-                {...extraProps}
-              >
-                {options?.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </InputComponent>
+              <InputGroup>
+                <InputComponent
+                  width="100%"
+                  isInvalid={!!errors[name]}
+                  name={name as string}
+                  type={type}
+                  icon={isLoading ? <></> : undefined}
+                  ref={register({ ...registerArgs })}
+                  {...extraProps}
+                >
+                  {options?.map((option: SelectOption) => (
+                    <option key={option.label} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </InputComponent>
+                {isLoading && (
+                  <InputRightElement>
+                    <Box>
+                      <Spinner color="mist" size="sm"></Spinner>
+                    </Box>
+                  </InputRightElement>
+                )}
+              </InputGroup>
 
               {helperText && (
                 <Text color="grey" fontSize="sm">
                   {helperText}
                 </Text>
               )}
-              <Text color="red.400">{errors[name]?.message}</Text>
+              <Text color="red.400">
+                {(errors[name] as FieldError)?.message}
+              </Text>
             </Stack>
           );
         }

@@ -1,5 +1,5 @@
 import { initClient } from 'firebase-details';
-import { Release, ReleaseTask, ReleaseTaskType } from 'types';
+import { Release, ReleaseTask } from 'types';
 import firebase from 'firebase';
 
 export const listUserCalendars = async () => {
@@ -44,8 +44,7 @@ export const buildReleaseEventDescription = (data: Release): string => {
 };
 
 export const buildReleaseTaskEventDescription = <T extends ReleaseTask>(
-  data: T,
-  taskType: ReleaseTaskType
+  data: T
 ): string => {
   return `<h3>Info</h3><ul><li>Status: ${data.status}</li></ul><h3>Notes</h3><p>${data.notes}</p>`;
 };
@@ -56,8 +55,8 @@ export const createOrUpdateReleaseEvent = async (
   existingEventId?: string
 ) => {
   const calendarData = {
-    start: { date: data.targetDate },
-    end: { date: data.targetDate },
+    start: { date: (data.targetDate as Date).toISOString() },
+    end: { date: (data.targetDate as Date).toISOString() },
     summary: `${data.name}: Final Release`,
     description: buildReleaseEventDescription(data),
   };
@@ -79,15 +78,14 @@ export const createOrUpdateCalendarEventForReleaseTask = async <
 >(
   data: T,
   releaseName: string,
-  taskType: ReleaseTaskType,
   refToUpdate: firebase.firestore.DocumentReference,
   existingEventId?: string
 ) => {
   const calendarData = {
-    start: { date: data.dueDate },
-    end: { date: data.dueDate },
-    summary: `${releaseName}: ${taskType}`,
-    description: buildReleaseTaskEventDescription(data, taskType),
+    start: { date: (data.dueDate as Date).toISOString() },
+    end: { date: (data.dueDate as Date).toISOString() },
+    summary: `${releaseName}`,
+    description: buildReleaseTaskEventDescription(data),
   };
   if (existingEventId) {
     await updateCalendarEvent({

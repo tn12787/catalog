@@ -19,49 +19,49 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { deleteSingleRelease } from 'queries/releases';
 import { useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
-import { Artwork } from 'types';
+import { useMutation, useQueryClient } from 'react-query';
+import { EnrichedRelease } from 'types';
 
 interface Props {
-  releaseData: any;
+  releaseData: EnrichedRelease;
 }
 
 const HeaderSection = ({ releaseData }: Props) => {
-  const artworkRef = useRef(
-    useFirestore().collection('artwork').doc(releaseData.artwork)
-  );
   const toast = useToast();
   const router = useRouter();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>();
 
-  const releaseRef = useRef(
-    useFirestore().collection('releases').doc(releaseData.id)
-  );
-
-  const { data: artworkData } = useFirestoreDocData<Artwork>(
-    artworkRef.current
+  const queryClient = useQueryClient();
+  const { mutateAsync: deleteRelease, isLoading } = useMutation(
+    deleteSingleRelease,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['releases']);
+      },
+    }
   );
 
   const onDelete = async () => {
     try {
-      await releaseRef.current.delete();
+      await deleteRelease(releaseData.id);
       toast({
         status: 'success',
         title: 'Deleted',
         description: 'Your release was deleted successfully.',
       });
-      router.push(`/releases/`);
-    } catch (error) {
+      onClose();
+      router.push(`/releases`);
+    } catch (error: any) {
       toast({
         status: 'error',
         title: 'Oh no...',
         description: error.toString(),
       });
-    } finally {
     }
   };
 
@@ -81,7 +81,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           width="100%"
           alt="album art"
           src={
-            artworkData?.url ||
+            releaseData.artwork?.url ||
             'https://semantic-ui.com/images/wireframe/image.png'
           }
         />
@@ -138,7 +138,12 @@ const HeaderSection = ({ releaseData }: Props) => {
             <Button ref={cancelRef as any} onClick={onClose}>
               No
             </Button>
-            <Button colorScheme="red" ml={3} onClick={onDelete}>
+            <Button
+              colorScheme="red"
+              isLoading={isLoading}
+              ml={3}
+              onClick={onDelete}
+            >
               Yes
             </Button>
           </AlertDialogFooter>
