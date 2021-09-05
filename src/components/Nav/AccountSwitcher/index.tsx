@@ -57,6 +57,7 @@ export const AccountSwitcher = () => {
           {session?.user?.email}
         </Text>
         <MenuOptionGroup
+          type="radio"
           defaultValue={selectedTeam as string}
           value={selectedTeam as string}
           onChange={(val) => setSelectedTeam(val as string)}
