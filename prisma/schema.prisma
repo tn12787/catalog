@@ -71,17 +71,21 @@ model Invite {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  email         String        @unique
-  name          String
-  tasks         ReleaseTask[]
-  emailVerified Boolean?      @default(false)
-  image         String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  teams         TeamUser[]
+  id                    String         @id @default(cuid())
+  email                 String         @unique
+  name                  String
+  emailVerified         Boolean?       @default(false)
+  image                 String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  accounts              Account[]
+  sessions              Session[]
+  teams                 TeamUser[]
+  artworksAssigned      Artwork[]
+  distributionsAssigned Distribution[]
+  marketingAssigned     Marketing[]
+  musicVideosAssigned   MusicVideo[]
+  masteringAssigned     Mastering[]
 }
 
 model Session {
@@ -134,39 +138,84 @@ model Artist {
 }
 
 model Release {
-  id         String        @id @default(cuid())
-  name       String
-  artist     Artist        @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  artistId   String
-  type       ReleaseType
-  targetDate DateTime
-  tasks      ReleaseTask[]
-  team       Team          @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId     String
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  id           String        @id @default(cuid())
+  name         String
+  artist       Artist        @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artistId     String
+  type         ReleaseType
+  targetDate   DateTime
+  team         Team          @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId       String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  artwork      Artwork?
+  distribution Distribution?
+  marketing    Marketing?
+  musicVideo   MusicVideo?
+  mastering    Mastering?
 
   @@unique([name, artistId, teamId])
 }
 
 model Contact {
-  id     String        @id @default(cuid())
-  name   String
-  email  String?
-  phone  String?
-  team   Team          @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId String
-  tasks  ReleaseTask[]
+  id                String         @id @default(cuid())
+  name              String
+  email             String?
+  phone             String?
+  team              Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId            String
+  artworkTasks      Artwork[]
+  distributionTasks Distribution[]
+  marketingTasks    Marketing[]
+  musicVideos       MusicVideo[]
+  masteringTasks    Mastering[]
 }
 
-model ReleaseTask {
+model Artwork {
+  id              String     @id @default(cuid())
+  url             String?    @unique
+  notes           String?
+  calendarEventId String?    @unique
+  dueDate         DateTime
+  status          TaskStatus
+  release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  releaseId       String
+  user            User?      @relation(fields: [assignee], references: [id])
+  assignee        String?
+  contact         Contact?   @relation(fields: [completedBy], references: [id])
+  completedBy     String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@unique([releaseId])
+}
+
+model Distribution {
+  id              String     @id @default(cuid())
+  distributor     String?    @unique
+  notes           String?
+  calendarEventId String?    @unique
+  dueDate         DateTime
+  status          TaskStatus
+  release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  releaseId       String
+  user            User?      @relation(fields: [assignee], references: [id])
+  assignee        String?
+  contact         Contact?   @relation(fields: [completedBy], references: [id])
+  completedBy     String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@unique([releaseId])
+}
+
+model Marketing {
   id              String          @id @default(cuid())
-  url             String?         @unique
+  links           MarketingLink[]
   notes           String?
   calendarEventId String?         @unique
   dueDate         DateTime
   status          TaskStatus
-  type            ReleaseTaskType
   release         Release         @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
   user            User?           @relation(fields: [assignee], references: [id])
@@ -176,5 +225,51 @@ model ReleaseTask {
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
-  @@unique([type, releaseId])
+  @@unique([releaseId])
+}
+
+model MarketingLink {
+  id            String    @id @default(cuid())
+  url           String
+  name          String
+  marketingTask Marketing @relation(fields: [marketingId], references: [id], onDelete: Cascade)
+  marketingId   String
+}
+
+model MusicVideo {
+  id              String     @id @default(cuid())
+  url             String?    @unique
+  notes           String?
+  calendarEventId String?    @unique
+  dueDate         DateTime
+  status          TaskStatus
+  release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  releaseId       String
+  user            User?      @relation(fields: [assignee], references: [id])
+  assignee        String?
+  contact         Contact?   @relation(fields: [completedBy], references: [id])
+  completedBy     String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@unique([releaseId])
+}
+
+model Mastering {
+  id              String     @id @default(cuid())
+  url             String?    @unique
+  notes           String?
+  calendarEventId String?    @unique
+  dueDate         DateTime
+  status          TaskStatus
+  release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  releaseId       String
+  user            User?      @relation(fields: [assignee], references: [id])
+  assignee        String?
+  contact         Contact?   @relation(fields: [completedBy], references: [id])
+  completedBy     String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@unique([releaseId])
 }

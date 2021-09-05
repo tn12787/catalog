@@ -13,7 +13,7 @@ import {
 
 import { CreateReleaseDto } from 'backend/models/releases/create';
 
-import { Release, ReleaseTaskType, ReleaseType } from '@prisma/client';
+import { Release, ReleaseType } from '@prisma/client';
 import requiresAuth from 'backend/apiUtils/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
@@ -36,20 +36,10 @@ class ReleaseListHandler {
       },
       include: {
         artist: true,
-        tasks: true,
+        artwork: true,
       },
     });
-    return releases.map(({ tasks, ...release }) => ({
-      ...release,
-      artwork: tasks.find((task) => task.type === ReleaseTaskType.ARTWORK),
-      mastering: tasks.find((task) => task.type === ReleaseTaskType.MASTERING),
-      distribution: tasks.find(
-        (task) => task.type === ReleaseTaskType.DISTRIBUTION
-      ),
-      musicVideo: tasks.find(
-        (task) => task.type === ReleaseTaskType.MUSIC_VIDEO
-      ),
-    }));
+    return releases;
   }
 
   @Get('/:id')
@@ -62,25 +52,14 @@ class ReleaseListHandler {
       },
       include: {
         artist: true,
-        tasks: true,
+        artwork: true,
+        distribution: true,
+        marketing: true,
+        musicVideo: true,
       },
     });
 
-    if (!release) throw new NotFoundException();
-
-    const { tasks, ...rest } = release;
-
-    return {
-      ...rest,
-      artwork: tasks.find((task) => task.type === ReleaseTaskType.ARTWORK),
-      mastering: tasks.find((task) => task.type === ReleaseTaskType.MASTERING),
-      distribution: tasks.find(
-        (task) => task.type === ReleaseTaskType.DISTRIBUTION
-      ),
-      musicVideo: tasks.find(
-        (task) => task.type === ReleaseTaskType.MUSIC_VIDEO
-      ),
-    };
+    return release;
   }
 
   @Post()
