@@ -23,7 +23,6 @@ import { deleteSingleRelease } from 'queries/releases';
 import { useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useMutation, useQueryClient } from 'react-query';
-import { useFirestore } from 'reactfire';
 import { EnrichedRelease } from 'types';
 
 interface Props {

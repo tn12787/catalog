@@ -11,41 +11,27 @@ import Card from 'components/Card';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiSave } from 'react-icons/fi';
-import { Artwork, Release, ReleaseTaskType } from 'types';
-import { buildArtworkConfig } from '../../../../data/releases/artwork/artworkConfig';
-import { useFirestore, useFirestoreDocData, useStorage } from 'reactfire';
+import { Artwork, EnrichedRelease } from 'types';
+import { buildArtworkConfig } from 'data/releases/artwork/artworkConfig';
+import { useStorage } from 'reactfire';
 import FormContent from 'components/FormContent';
 import 'firebase/storage';
-import { useRef } from 'react';
-import { createOrUpdateCalendarEventForReleaseTask } from 'events/calendars/google';
 import withReleaseData from 'HOCs/withReleaseData';
 import { useRouter } from 'next/router';
 import BackButton from 'components/BackButton';
+import { TaskStatus } from '.prisma/client';
 
 interface Props {
-  releaseData: Release;
+  releaseData: EnrichedRelease;
 }
 
 const EditArtwork = ({ releaseData }: Props) => {
   const router = useRouter();
-  const artworkRef = useRef(
-    useFirestore().collection('artwork').doc(releaseData.artwork)
-  ); // TODO: What if this is null here?
-
-  const releaseId = releaseData.id;
-  const releaseRef = useFirestore().collection('releases').doc(releaseData.id);
-
-  const { data: existingArtwork } = useFirestoreDocData<Artwork>(
-    artworkRef.current,
-    {
-      idField: 'id',
-    }
-  );
 
   const storageRef = useStorage().ref('images/');
 
   const { register, errors, handleSubmit, watch } = useForm<Artwork>({
-    defaultValues: existingArtwork,
+    defaultValues: releaseData.artwork,
   });
 
   const [loading, setLoading] = useState(false);
@@ -58,29 +44,31 @@ const EditArtwork = ({ releaseData }: Props) => {
 
       const { albumArt, ...rest } = data;
       if (albumArt?.length) {
-        const artworkFileRef = storageRef.child(artworkRef.current.id);
-        await artworkFileRef.put(albumArt[0], { contentType: 'image/jpeg' });
-        const downloadURL = await artworkFileRef.getDownloadURL();
-        await artworkRef.current.set(
-          { ...rest, url: downloadURL, release: releaseId },
-          { merge: true }
-        );
+        // const artworkFileRef = storageRef.child(artworkRef.id);
+        // await artworkFileRef.put(albumArt[0], { contentType: 'image/jpeg' });
+        // const downloadURL = await artworkFileRef.getDownloadURL();
+        // await artworkRef.current.set(
+        //   { ...rest, url: downloadURL, release: releaseId },
+        //   { merge: true }
+        // );
       } else {
-        await artworkRef.current.set(
-          { ...rest, release: releaseId },
-          { merge: true }
-        );
+        // await artworkRef.current.set(
+        //   { ...rest, release: releaseId },
+        //   { merge: true }
+        // );
       }
 
-      await releaseRef.set({ artwork: artworkRef.current.id }, { merge: true });
+      // await releaseRef.set({ artwork: artworkRef.current.id }, { merge: true });
 
-      await createOrUpdateCalendarEventForReleaseTask(
-        data,
-        releaseData.name,
-        ReleaseTaskType.ARTWORK,
-        artworkRef.current,
-        existingArtwork.calendarEventId
-      );
+      // await createOrUpdateCalendarEventForReleaseTask(
+      //   data,
+      //   releaseData.name,
+      //   ReleaseTaskType.ARTWORK,
+      //   artworkRef.current,
+      //    releaseData.artwork?.calendarEventId
+      // );
+
+      // TODO: create artwork task if it doesn't exist or update it if it does, invalidate ['releases', releaseId]
 
       toast({
         status: 'success',
@@ -88,7 +76,7 @@ const EditArtwork = ({ releaseData }: Props) => {
         description: 'Changes to artwork saved',
       });
       router.push(`/releases/${releaseData.id}`);
-    } catch (e) {
+    } catch (e: any) {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
       setLoading(false);
@@ -117,8 +105,8 @@ const EditArtwork = ({ releaseData }: Props) => {
         <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
-              {status === 'Complete' &&
-                (existingArtwork.url || watchedAlbumArt?.length) && (
+              {status === TaskStatus.COMPLETE &&
+                (releaseData.artwork?.url || watchedAlbumArt?.length) && (
                   <Image
                     borderRadius="5px"
                     width="100%"
@@ -128,12 +116,12 @@ const EditArtwork = ({ releaseData }: Props) => {
                     src={
                       watchedAlbumArt?.length
                         ? URL.createObjectURL(watchedAlbumArt[0])
-                        : existingArtwork.url
+                        : releaseData.artwork?.url
                     }
                   />
                 )}
               <FormContent
-                config={buildArtworkConfig(status === 'Complete')}
+                config={buildArtworkConfig(status === TaskStatus.COMPLETE)}
                 errors={errors}
                 register={register}
               />

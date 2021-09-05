@@ -16,25 +16,14 @@ const withReleaseData = <T extends ComponentWithReleaseData>(
 ) => {
   const Wrapper = (props: T) => {
     const router = useRouter();
-    const [notFound, setNotFound] = useState(false);
     const releaseId = router.query.id as string;
-    const {
-      data: response,
-      isLoading,
-      isError,
-    } = useQuery(['releases', releaseId], () => fetchSingleRelease(releaseId), {
-      retry: false,
-    });
-
-    // useEffect(() => {
-    //   const checkForExistence = async () => {
-    //     if (status === 'success') {
-    //       const data = await releaseRef.get();
-    //       setNotFound(!data.exists);
-    //     }
-    //   };
-    //   checkForExistence();
-    // }, [releaseData, status, releaseRef]);
+    const { data: response, isLoading } = useQuery(
+      ['releases', releaseId],
+      () => fetchSingleRelease(releaseId),
+      {
+        retry: false,
+      }
+    );
 
     if (isLoading) {
       return (

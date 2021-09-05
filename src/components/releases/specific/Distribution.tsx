@@ -9,10 +9,9 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Card from 'components/Card';
-import React, { useRef } from 'react';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
+import React from 'react';
 import { SummaryField } from './Summary';
-import { Distribution as ReleaseDistribution, EnrichedRelease } from 'types';
+import { EnrichedRelease } from 'types';
 import { useRouter } from 'next/router';
 import { TaskStatus } from '.prisma/client';
 import dayjs from 'dayjs';

@@ -33,13 +33,6 @@ export enum ReleaseType {
   ALBUM = 'Album',
 }
 
-export enum ReleaseTaskType {
-  DISTRIBUTION = 'Distribution',
-  ARTWORK = 'Artwork',
-  MASTERING = 'Mastering',
-  MUSIC_VIDEO = 'Music Video',
-}
-
 export interface Artist extends DataModel {
   name: string;
   spotifyUrl?: string;

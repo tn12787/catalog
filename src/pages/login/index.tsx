@@ -10,31 +10,27 @@ import {
 import FormContent from 'components/FormContent';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuth } from 'reactfire';
 import { loginConfig } from 'data/login/loginConfig';
 import { LoginData } from 'data/login/types';
-import firebase from 'firebase';
 import GoogleButton from 'react-google-button';
-import { initClient } from 'firebase-details';
 import { signIn } from 'next-auth/client';
 
 const Login = () => {
   const { register, errors, handleSubmit } = useForm<LoginData>();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const auth = useAuth();
 
   const onEmailPassSubmit = async ({ email, password }: LoginData) => {
     try {
       setLoading(true);
-      const user = await auth.signInWithEmailAndPassword(email, password);
-      if (!user) {
-        toast({
-          status: 'error',
-          description: 'Your email or password is incorrect.',
-        });
-      }
-    } catch (e) {
+      // const user = await signIn(email, password);
+      // if (!user) {
+      //   toast({
+      //     status: 'error',
+      //     description: 'Your email or password is incorrect.',
+      //   });
+      // }
+    } catch (e: any) {
       toast({
         status: 'error',
         description: e.toString(),

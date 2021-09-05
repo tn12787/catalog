@@ -1,45 +1,28 @@
 import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiSave } from 'react-icons/fi';
 import Card from 'components/Card';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ObservableStatus, useFirestore, useFirestoreDocData } from 'reactfire';
-import { Distribution, Release, ReleaseTaskType } from 'types';
-import { buildDistribConfig } from '../../../../data/releases/distribution/distribConfig';
+import { Distribution, EnrichedRelease } from 'types';
+import { buildDistribConfig } from 'data/releases/distribution/distribConfig';
 import FormContent from 'components/FormContent';
-import { createOrUpdateCalendarEventForReleaseTask } from 'events/calendars/google';
 import { useRouter } from 'next/router';
 import withReleaseData from 'HOCs/withReleaseData';
 import BackButton from 'components/BackButton';
+import { TaskStatus } from '.prisma/client';
 
 interface Props {
-  releaseData: Release;
+  releaseData: EnrichedRelease;
 }
 
 const EditDistribution = ({ releaseData }: Props) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const releaseId = releaseData.id;
-  const distribRef = useRef(
-    useFirestore().collection('distributions').doc(releaseData.distribution)
-  );
-  const releaseRef = useFirestore().collection('releases').doc(releaseId);
-  const { data: distribData }: ObservableStatus<Distribution> =
-    useFirestoreDocData(distribRef.current, {
-      idField: 'id',
-    });
 
-  const { register, errors, handleSubmit, reset, watch } =
-    useForm<Distribution>();
-
-  const checkForExistence = useCallback(async () => {
-    const actualDoc = await distribRef.current.get();
-    if (actualDoc.exists) reset(distribData);
-  }, [distribRef, reset, distribData]);
-
-  useEffect(() => {
-    checkForExistence();
-  }, [distribData, checkForExistence]);
+  const { register, errors, handleSubmit, watch } = useForm<Distribution>({
+    defaultValues: releaseData.distribution,
+  });
 
   const toast = useToast();
 
@@ -47,19 +30,21 @@ const EditDistribution = ({ releaseData }: Props) => {
     console.log(data);
     try {
       setLoading(true);
-      await distribRef.current.set(
-        { ...data, created: Date.now(), release: releaseId },
-        { merge: true }
-      );
-      await releaseRef.update({ distribution: distribRef.current.id });
+      // await distribRef.current.set(
+      //   { ...data, created: Date.now(), release: releaseId },
+      //   { merge: true }
+      // );
+      // await releaseRef.update({ distribution: distribRef.current.id });
 
-      await createOrUpdateCalendarEventForReleaseTask(
-        data,
-        releaseData.name,
-        ReleaseTaskType.DISTRIBUTION,
-        distribRef.current,
-        distribData.calendarEventId
-      );
+      // await createOrUpdateCalendarEventForReleaseTask(
+      //   data,
+      //   releaseData.name,
+      //   ReleaseTaskType.DISTRIBUTION,
+      //   distribRef.current,
+      //   distribData.calendarEventId
+      // );
+
+      // TODO: perform update here and invalidate ['releases', releaseData.id]
 
       toast({
         status: 'success',
@@ -67,7 +52,7 @@ const EditDistribution = ({ releaseData }: Props) => {
         description: 'Your changes were saved.',
       });
       router.push(`/releases/${releaseData.id}`);
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
@@ -97,7 +82,7 @@ const EditDistribution = ({ releaseData }: Props) => {
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               <FormContent
-                config={buildDistribConfig(status === 'Complete')}
+                config={buildDistribConfig(status === TaskStatus.COMPLETE)}
                 errors={errors}
                 register={register}
               />

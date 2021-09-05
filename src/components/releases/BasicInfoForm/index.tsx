@@ -1,10 +1,9 @@
 import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiArrowRight } from 'react-icons/fi';
 import Card from 'components/Card';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useFirestore } from 'reactfire';
-import { EnrichedRelease, Release, ReleaseType } from 'types';
+import { EnrichedRelease, ReleaseType } from 'types';
 import { basicInfoConfig } from './releaseConfig';
 import FormContent from 'components/FormContent';
 import { useRouter } from 'next/router';
