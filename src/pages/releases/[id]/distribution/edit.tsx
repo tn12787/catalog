@@ -10,13 +10,13 @@ import { useRouter } from 'next/router';
 import withReleaseData from 'HOCs/withReleaseData';
 import BackButton from 'components/BackButton';
 import { TaskStatus } from '.prisma/client';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface Props {
   releaseData: EnrichedRelease;
 }
 
 const EditDistribution = ({ releaseData }: Props) => {
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const releaseId = releaseData.id;
 
@@ -24,12 +24,56 @@ const EditDistribution = ({ releaseData }: Props) => {
     defaultValues: releaseData.distribution,
   });
 
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: createDistribution, isLoading: createLoading } =
+    useMutation(createSingleDistribution, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['releases']);
+      },
+    });
+
+  const { mutateAsync: updateDistribution, isLoading: updateLoading } =
+    useMutation(updateSingleDistribution, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['releases']);
+      },
+    });
+
   const toast = useToast();
 
-  const onSubmit = async (data: Distribution) => {
-    console.log(data);
+  const onCreate = async (data: Distribution) => {
     try {
-      setLoading(true);
+      // await distribRef.current.set(
+      //   { ...data, created: Date.now(), release: releaseId },
+      //   { merge: true }
+      // );
+      // await releaseRef.update({ distribution: distribRef.current.id });
+
+      // await createOrUpdateCalendarEventForReleaseTask(
+      //   data,
+      //   releaseData.name,
+      //   ReleaseTaskType.DISTRIBUTION,
+      //   distribRef.current,
+      //   distribData.calendarEventId
+      // );
+
+      // TODO: perform update here and invalidate ['releases', releaseData.id]
+
+      toast({
+        status: 'success',
+        title: 'Success',
+        description: 'Your changes were saved.',
+      });
+      router.push(`/releases/${releaseData.id}`);
+    } catch (e: any) {
+      console.log(e);
+      toast({ status: 'error', title: 'Oh no...', description: e.toString() });
+    }
+  };
+
+  const onUpdate = async (data: Distribution) => {
+    try {
       // await distribRef.current.set(
       //   { ...data, created: Date.now(), release: releaseId },
       //   { merge: true }
@@ -56,7 +100,6 @@ const EditDistribution = ({ releaseData }: Props) => {
       console.log(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
-      setLoading(false);
     }
   };
 
@@ -78,7 +121,7 @@ const EditDistribution = ({ releaseData }: Props) => {
         />
         <Heading>Edit Distribution</Heading>
         <Text>Add or change info about the distributor.</Text>
-        <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+        <Stack as="form" onSubmit={handleSubmit(onUpdate)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
               <FormContent
@@ -91,7 +134,7 @@ const EditDistribution = ({ releaseData }: Props) => {
                   colorScheme="blue"
                   flexGrow={0}
                   leftIcon={<FiSave />}
-                  isLoading={loading}
+                  isLoading={createLoading || updateLoading}
                   type="submit"
                 >
                   Save

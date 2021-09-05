@@ -180,10 +180,10 @@ model Artwork {
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  user            User?      @relation(fields: [assignee], references: [id])
-  assignee        String?
-  contact         Contact?   @relation(fields: [completedBy], references: [id])
-  completedBy     String?
+  assignee        User?      @relation(fields: [assigneeId], references: [id])
+  assigneeId      String?
+  completedBy     Contact?   @relation(fields: [completedById], references: [id])
+  completedById   String?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
@@ -191,22 +191,30 @@ model Artwork {
 }
 
 model Distribution {
-  id              String     @id @default(cuid())
-  distributor     String?    @unique
+  id              String      @id @default(cuid())
+  distributor     Distributor @relation(fields: [distributorId], references: [id])
+  distributorId   String
   notes           String?
-  calendarEventId String?    @unique
+  calendarEventId String?     @unique
   dueDate         DateTime
   status          TaskStatus
-  release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  release         Release     @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  user            User?      @relation(fields: [assignee], references: [id])
-  assignee        String?
-  contact         Contact?   @relation(fields: [completedBy], references: [id])
-  completedBy     String?
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  assignee        User?       @relation(fields: [assigneeId], references: [id])
+  assigneeId      String?
+  completedBy     Contact?    @relation(fields: [completedById], references: [id])
+  completedById   String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 
   @@unique([releaseId])
+}
+
+model Distributor {
+  id           String         @id @default(cuid())
+  name         String
+  siteUrl      String?
+  Distribution Distribution[]
 }
 
 model Marketing {
@@ -218,10 +226,10 @@ model Marketing {
   status          TaskStatus
   release         Release         @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  user            User?           @relation(fields: [assignee], references: [id])
-  assignee        String?
-  contact         Contact?        @relation(fields: [completedBy], references: [id])
-  completedBy     String?
+  assignee        User?           @relation(fields: [assigneeId], references: [id])
+  assigneeId      String?
+  completedBy     Contact?        @relation(fields: [completedById], references: [id])
+  completedById   String?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
@@ -245,10 +253,10 @@ model MusicVideo {
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  user            User?      @relation(fields: [assignee], references: [id])
-  assignee        String?
-  contact         Contact?   @relation(fields: [completedBy], references: [id])
-  completedBy     String?
+  assignee        User?      @relation(fields: [assigneeId], references: [id])
+  assigneeId      String?
+  completedBy     Contact?   @relation(fields: [completedById], references: [id])
+  completedById   String?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
@@ -264,10 +272,10 @@ model Mastering {
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  user            User?      @relation(fields: [assignee], references: [id])
-  assignee        String?
-  contact         Contact?   @relation(fields: [completedBy], references: [id])
-  completedBy     String?
+  assignee        User?      @relation(fields: [assigneeId], references: [id])
+  assigneeId      String?
+  completedBy     Contact?   @relation(fields: [completedById], references: [id])
+  completedById   String?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 

@@ -19,6 +19,7 @@ import requiresAuth from 'backend/apiUtils/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { SortByOptions, SortOrder } from 'queries/types';
+import { CreateDistributionDto } from 'backend/models/distribution/create';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -106,6 +107,24 @@ class ReleaseListHandler {
     const result = await prisma.release.delete({
       where: {
         id,
+      },
+    });
+    return result;
+  }
+
+  @Post('/:id/distribution')
+  async createDistribution(
+    @Param('id') id: string,
+    @Body(ValidationPipe) body: CreateDistributionDto
+  ) {
+    const result = await prisma.distribution.create({
+      data: {
+        assignee: { connect: { id: body.assignee } },
+        distributor: { connect: { id: body.distributor } },
+        release: { connect: { id } },
+        status: body.status,
+        notes: body.notes,
+        dueDate: body.dueDate,
       },
     });
     return result;
