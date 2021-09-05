@@ -29,7 +29,11 @@ export const AccountSwitcher = () => {
   return (
     <Menu>
       <Skeleton isLoaded={!loading && !isLoading}>
-        <AccountSwitcherButton />
+        <AccountSwitcherButton
+          teamName={response?.teams[0].team.name as string}
+          userName={session?.user?.name as string}
+          photoUrl={session?.user?.image as string}
+        />
       </Skeleton>
       <MenuList
         shadow="lg"
@@ -48,8 +52,7 @@ export const AccountSwitcher = () => {
           ))}
         </MenuOptionGroup>
         <MenuDivider />
-        {/* <MenuItem rounded="md">Add an account</MenuItem>
-        <MenuDivider /> */}
+
         <MenuItem icon={<BiLogOut />} onClick={onLogout}>
           Log out
         </MenuItem>
