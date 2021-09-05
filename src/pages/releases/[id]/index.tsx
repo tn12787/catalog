@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 
-import { EnrichedRelease, Release } from 'types';
+import { EnrichedRelease } from 'types';
 import withReleaseData from 'HOCs/withReleaseData';
 import Artwork from 'components/releases/specific/Artwork';
 import Distribution from 'components/releases/specific/Distribution';

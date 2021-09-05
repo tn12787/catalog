@@ -12,31 +12,54 @@ import Card from 'components/Card';
 import React, { useRef } from 'react';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { SummaryField } from './Summary';
-import { Distribution as ReleaseDistribution } from 'types';
+import { Distribution as ReleaseDistribution, EnrichedRelease } from 'types';
 import { useRouter } from 'next/router';
+import { TaskStatus } from '.prisma/client';
+import dayjs from 'dayjs';
+
+import utc from 'dayjs/plugin/utc';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(utc);
+dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: any;
+  releaseData: EnrichedRelease;
 }
 
-const buildFields = (isComplete: boolean): SummaryField[] => [
-  { name: 'Distributor', value: 'distributor' },
-  { name: `${isComplete ? 'Original ' : ''}Due Date`, value: 'dueDate' },
-  { name: 'Completed On', value: 'completedOn', hidden: !isComplete },
-];
+const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
+  const isComplete = releaseData.distribution?.status === TaskStatus.COMPLETE;
+  return [
+    {
+      name: 'Distributor',
+      content: (
+        <Text fontSize="sm">{releaseData.distribution?.distributor}</Text>
+      ),
+    },
+    {
+      name: `${isComplete ? 'Original ' : ''}Due Date`,
+      content: (
+        <Text fontSize="sm">
+          {dayjs.utc(releaseData.distribution?.dueDate).format('LL')}
+        </Text>
+      ),
+    },
+    {
+      name: 'Completed On',
+      content: (
+        <Text fontSize="sm">
+          {dayjs.utc(releaseData.distribution?.completedOn).format('LL')}
+        </Text>
+      ),
+      hidden: !isComplete,
+    },
+  ];
+};
 
 const Distribution = ({ releaseData }: Props) => {
   const router = useRouter();
-  const distribRef = useRef(
-    useFirestore().collection('distributions').doc(releaseData.distribution)
-  );
-
-  const { status, data: docData } = useFirestoreDocData<ReleaseDistribution>(
-    distribRef.current,
-    {
-      idField: 'id',
-    }
-  );
 
   if (status === 'loading' && releaseData.distribution) {
     return (
@@ -61,7 +84,7 @@ const Distribution = ({ releaseData }: Props) => {
             💿 Distribution
           </Heading>
           <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
-            {docData?.status}
+            {releaseData.distribution?.status}
           </Badge>
         </Flex>
         {releaseData.distribution && (
@@ -89,26 +112,26 @@ const Distribution = ({ releaseData }: Props) => {
             justify="space-between"
             direction="column"
           >
-            {buildFields(docData.status === 'Complete').map(
-              ({ name, value, hidden }) => {
-                return hidden ? null : (
-                  <Stack>
-                    <Text fontSize="md" fontWeight="bold">
-                      {name}
-                    </Text>
-                    <Text whiteSpace="pre-wrap">{docData[value]}</Text>
-                  </Stack>
-                );
-              }
-            )}
+            {buildFields(releaseData).map(({ name, content, hidden }) => {
+              return hidden ? null : (
+                <Stack>
+                  <Text fontSize="md" fontWeight="bold">
+                    {name}
+                  </Text>
+                  {content}
+                </Stack>
+              );
+            })}
           </Stack>
           <Stack width={['auto', 'auto', '50%']}>
-            {docData.notes ? (
+            {releaseData.distribution?.notes ? (
               <Stack>
                 <Text fontSize="md" fontWeight="bold">
                   Notes
                 </Text>
-                <Text whiteSpace="pre-wrap">{docData.notes}</Text>
+                <Text whiteSpace="pre-wrap">
+                  {releaseData.distribution?.notes}
+                </Text>
               </Stack>
             ) : null}
           </Stack>

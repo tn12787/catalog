@@ -1,3 +1,4 @@
+import { TaskStatus } from '.prisma/client';
 import {
   Button,
   Flex,
@@ -6,37 +7,63 @@ import {
   Spinner,
   Badge,
   Stack,
+  Link,
 } from '@chakra-ui/react';
 import Card from 'components/Card';
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
-import { Artwork as ReleaseArtwork } from 'types';
+import { EnrichedRelease } from 'types';
+
 import { SummaryField } from './Summary';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import React from 'react';
+import NextLink from 'next/link';
+
+dayjs.extend(utc);
+dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: any;
+  releaseData: EnrichedRelease;
 }
 
-const buildFields = (isComplete: boolean): SummaryField[] => [
-  { name: `${isComplete ? 'Completed By' : 'Assignee'}`, value: 'completedBy' },
-  { name: `${isComplete ? 'Original ' : ''}Due Date`, value: 'dueDate' },
-  { name: 'Completed On', value: 'completedOn', hidden: !isComplete },
-];
+const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
+  const isComplete = releaseData.artwork?.status === TaskStatus.COMPLETE;
+  return [
+    {
+      name: `${isComplete ? 'Completed By' : 'Assignee'}`,
+      content: (
+        <NextLink href={`/users/${releaseData.artwork?.completedBy}`} passHref>
+          <Link>{releaseData.artist.name}</Link>
+        </NextLink>
+      ),
+    },
+    {
+      name: `${isComplete ? 'Original ' : ''}Due Date`,
+      content: (
+        <Text fontSize="sm">
+          {dayjs.utc(releaseData.artwork?.dueDate).format('LL')}
+        </Text>
+      ),
+    },
+    {
+      name: 'Completed On',
+      content: (
+        <Text fontSize="sm">
+          {dayjs.utc(releaseData.artwork?.completedOn).format('LL')}
+        </Text>
+      ),
+      hidden: !isComplete,
+    },
+  ];
+};
 
 const Artwork = ({ releaseData }: Props) => {
-  const artworkRef = useRef(
-    useFirestore().collection('artwork').doc(releaseData.artwork)
-  );
-
   const router = useRouter();
 
   const editUrl = `${router.query.id}/artwork/edit`;
-
-  const { status, data: artworkData } = useFirestoreDocData<ReleaseArtwork>(
-    artworkRef.current,
-    { idField: 'id' }
-  );
 
   if (status === 'loading' && releaseData.artwork) {
     return (
@@ -59,7 +86,7 @@ const Artwork = ({ releaseData }: Props) => {
         <Flex align="center" direction={['column', 'column', 'row']}>
           <Heading fontSize="2xl">🎨 Artwork</Heading>
           <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
-            {artworkData?.status}
+            {releaseData?.artwork?.status}
           </Badge>
         </Flex>
         {releaseData.artwork && (
@@ -87,31 +114,31 @@ const Artwork = ({ releaseData }: Props) => {
           alignItems={['center', 'center', 'stretch']}
         >
           <Stack width={'100%'}>
-            {buildFields(artworkData.status === 'Complete').map(
-              ({ name, value, hidden }) => {
-                return hidden ? null : (
-                  <Flex
-                    mb={[3, 3, 0]}
-                    width="100%"
-                    align={['center', 'center', 'flex-start']}
-                    direction={['row', 'row', 'column']}
-                    justify={['space-between']}
-                  >
-                    <Text fontSize="md" fontWeight="bold">
-                      {name}
-                    </Text>
-                    <Text mt={[0, 0, 2]}>{artworkData[value]}</Text>
-                  </Flex>
-                );
-              }
-            )}
+            {buildFields(releaseData).map(({ name, content, hidden }) => {
+              return hidden ? null : (
+                <Flex
+                  mb={[3, 3, 0]}
+                  width="100%"
+                  align={['center', 'center', 'flex-start']}
+                  direction={['row', 'row', 'column']}
+                  justify={['space-between']}
+                >
+                  <Text fontSize="md" fontWeight="bold">
+                    {name}
+                  </Text>
+                  {content}
+                </Flex>
+              );
+            })}
             <Stack>
-              {artworkData.notes ? (
+              {releaseData.artwork?.notes ? (
                 <Stack>
                   <Text fontSize="md" fontWeight="bold">
                     Notes
                   </Text>
-                  <Text whiteSpace="pre-wrap">{artworkData.notes}</Text>
+                  <Text whiteSpace="pre-wrap">
+                    {releaseData.artwork?.notes}
+                  </Text>
                 </Stack>
               ) : null}
             </Stack>

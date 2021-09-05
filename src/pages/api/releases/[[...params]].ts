@@ -1,6 +1,7 @@
 import {
   Body,
   createHandler,
+  Delete,
   Get,
   HttpCode,
   NotFoundException,
@@ -95,6 +96,16 @@ class ReleaseListHandler {
         name: body.name,
         type: body.type as ReleaseType,
         targetDate: body.targetDate,
+      },
+    });
+    return result;
+  }
+
+  @Delete('/:id')
+  async deleteRelease(@Param('id') id: string) {
+    const result = await prisma.release.delete({
+      where: {
+        id,
       },
     });
     return result;

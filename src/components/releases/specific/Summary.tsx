@@ -15,7 +15,7 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: any;
+  releaseData: EnrichedRelease;
 }
 
 export interface SummaryField {

@@ -1,7 +1,7 @@
 import { SortByOptions } from './../types';
 import { EnrichedRelease } from 'types';
 import axios, { AxiosResponse } from 'axios';
-import { SingleReleaseVars } from './types';
+import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
 
 export const fetchReleases = async (
   search: string,
@@ -27,5 +27,21 @@ export const updateBasicReleaseInfo = async ({
   const { data: response } = await axios.put(`/api/releases/${id}`, {
     ...rest,
   });
+  return response;
+};
+
+export const createSingleRelease = async ({
+  ...rest
+}: CreateSingleReleaseVars): Promise<EnrichedRelease | void> => {
+  const { data: response } = await axios.post(`/api/releases`, {
+    ...rest,
+  });
+  return response;
+};
+
+export const deleteSingleRelease = async (
+  id: string
+): Promise<EnrichedRelease | void> => {
+  const { data: response } = await axios.delete(`/api/releases/${id}`);
   return response;
 };

@@ -1,9 +1,9 @@
 import React from 'react';
-import BasicInfo from '../../../components/releases/NewRelease/BasicInfo';
+import BasicInfoForm from '../../../components/releases/NewRelease/BasicInfoForm';
 interface Props {}
 
 const NewRelease = (props: Props) => {
-  return <BasicInfo />;
+  return <BasicInfoForm />;
 };
 
 export default NewRelease;

@@ -5,3 +5,8 @@ export interface SingleReleaseVars
   artist: string;
   targetDate: Date;
 }
+
+export interface CreateSingleReleaseVars
+  extends Omit<SingleReleaseVars, 'id'> {}
+
+export type DeleteSingleReleaseVars = Pick<SingleReleaseVars, 'id'>;
