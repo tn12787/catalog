@@ -3,7 +3,7 @@ import { EnrichedRelease } from 'types';
 import withReleaseData from 'HOCs/withReleaseData';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { ReleaseType } from '.prisma/client';
-import BasicInfoForm from 'components/releases/NewRelease/BasicInfoForm';
+import BasicInfoForm from 'components/releases/BasicInfoForm';
 
 interface Props {
   releaseData: EnrichedRelease;
