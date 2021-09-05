@@ -1,9 +1,12 @@
+import DashboardLayout from 'components/layouts/DashboardLayout';
 import React from 'react';
-import BasicInfo from '../../../components/releases/NewRelease/BasicInfo';
+import BasicInfoForm from 'components/releases/BasicInfoForm';
 interface Props {}
 
 const NewRelease = (props: Props) => {
-  return <BasicInfo />;
+  return <BasicInfoForm />;
 };
+
+NewRelease.getLayout = () => DashboardLayout;
 
 export default NewRelease;

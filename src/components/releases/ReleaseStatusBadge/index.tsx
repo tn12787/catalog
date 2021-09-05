@@ -1,13 +1,13 @@
 import { Tag } from '@chakra-ui/react';
 import React from 'react';
-import { Release } from 'types';
+import { EnrichedRelease } from 'types';
 
 interface Props {
-  releaseData: Release;
+  releaseData: EnrichedRelease;
 }
 
 const ReleaseStatusBadge = ({ releaseData }: Props) => {
-  const deriveProps = (releaseData: Release) => {
+  const deriveProps = (releaseData: EnrichedRelease) => {
     if (!['artist', 'distribution'].every((item) => releaseData[item])) {
       return { label: 'Incomplete', color: 'yellow' };
     } else if (new Date(releaseData.targetDate).valueOf() < Date.now()) {
@@ -18,7 +18,13 @@ const ReleaseStatusBadge = ({ releaseData }: Props) => {
 
   const { label, color } = deriveProps(releaseData);
   return (
-    <Tag size="sm" borderRadius={30} flexGrow={0} variant="solid" colorScheme={color}>
+    <Tag
+      size="sm"
+      borderRadius={30}
+      flexGrow={0}
+      variant="solid"
+      colorScheme={color}
+    >
       {label}
     </Tag>
   );

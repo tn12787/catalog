@@ -10,13 +10,24 @@
     "@emotion/styled": "^11.0.0",
     "@fontsource/inter": "^4.4.5",
     "@hookform/error-message": "^0.0.5",
+    "@next-auth/prisma-adapter": "^0.5.2",
+    "@prisma/client": "^2.30.3",
+    "@storyofams/next-api-decorators": "^1.5.6",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "add": "^2.0.6",
+    "axios": "^0.21.1",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
+    "dayjs": "^1.10.6",
     "firebase": "^8.2.1",
     "firebase-functions": "^3.13.0",
+    "focus-visible": "^5.2.0",
     "framer-motion": "^3.1.1",
     "next": "11.0.1",
+    "next-auth": "^3.27.2",
+    "path-to-regexp": "^6.2.0",
     "query-string": "^6.13.8",
     "react": "^17.0.1",
     "react-dom": "^17.0.2",
@@ -24,39 +35,32 @@
     "react-google-button": "^0.7.2",
     "react-hook-form": "^6.13.1",
     "react-icons": "^4.2.0",
-    "reactfire": "^3.0.0-rc.0",
+    "react-query": "^3.21.1",
     "typescript": "^4.3.5",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "yarn": "^1.22.11"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/plugin-proposal-decorators": "^7.14.5",
     "@types/gapi": "^0.0.39",
     "@types/gapi.auth2": "^0.0.54",
     "@types/gapi.client.calendar": "^3.0.10",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.1",
+    "babel-plugin-parameter-decorator": "^1.0.16",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "eslint": "^7.30.0",
-    "eslint-config-next": "^11.0.1"
+    "eslint-config-next": "^11.0.1",
+    "prisma": "^2.30.3"
   },
   "scripts": {
-    "start": "next dev",
-    "start-production": "next start",
+    "dev": "next dev",
+    "start": "next start",
     "build": "next build",
-    "deploy": "yarn build && firebase deploy",
-    "deploy:hosting": "yarn build && firebase deploy --only hosting",
-    "deploy:functions": "cd functions && npm run deploy",
+    "migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
     "test": "jest test"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }

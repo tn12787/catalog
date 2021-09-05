@@ -7,7 +7,7 @@ const DashboardLayout: React.FC = ({ children }) => {
   return (
     <Flex minH="100vh">
       <Nav links={appLinks} />
-      <Flex width="100%" ml={[0, 0, '300px']} overflowY="auto">
+      <Flex width="100%" ml={{ base: 0, md: '300px' }} overflowY="auto">
         {children}
       </Flex>
     </Flex>

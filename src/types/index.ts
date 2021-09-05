@@ -1,6 +1,12 @@
-interface BaseRelease {
+import { Distributor, TaskStatus } from '.prisma/client';
+
+interface DataModel {
+  id: string;
+}
+
+interface BaseRelease extends DataModel {
   [key: string]: any;
-  targetDate: string;
+  targetDate: Date | string;
   name: string;
   type: ReleaseType;
 }
@@ -15,32 +21,32 @@ export interface Release extends BaseRelease {
 
 export interface EnrichedRelease extends BaseRelease {
   artist: Artist;
-  artwork: Artwork;
-  distribution: Distribution;
+  artwork?: Artwork;
+  distribution?: Distribution;
   mastering?: Mastering;
   musicVideo?: MusicVideo;
 }
 
-export type ReleaseType = 'Single' | 'EP' | 'Album';
-
-export enum ReleaseTaskType {
-  DISTRIBUTION = 'Distribution',
-  ARTWORK = 'Artwork',
-  MASTERING = 'Mastering',
-  MUSIC_VIDEO = 'Music Video',
+export enum ReleaseType {
+  SINGLE = 'Single',
+  EP = 'EP',
+  ALBUM = 'Album',
 }
 
-interface Artist {
+export interface Artist extends DataModel {
   name: string;
+  spotifyUrl?: string;
+  legalName?: string;
+  instagramUrl?: string;
 }
 
-export interface Contact {
+export interface Contact extends DataModel {
   name: string;
   email?: string;
   phone?: string;
 }
 
-export interface User {
+export interface User extends DataModel {
   name: string;
   email: string;
 }
@@ -51,17 +57,17 @@ export type ReleaseTaskStatus =
   | 'Waiting'
   | 'Complete';
 
-export interface ReleaseTask {
+export interface ReleaseTask extends DataModel {
   [key: string]: any;
-  dueDate: string;
-  status: ReleaseTaskStatus;
+  dueDate: Date;
+  status: TaskStatus;
   completedOn?: string;
   notes?: string;
   calendarEventId?: string;
 }
 
 export interface Distribution extends ReleaseTask {
-  distributor: string;
+  distributor: Distributor;
 }
 
 interface OutSourceableReleaseTask extends ReleaseTask {

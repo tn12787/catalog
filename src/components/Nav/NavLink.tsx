@@ -15,6 +15,7 @@ const NavLink = ({ href, text, activeRegex }: NavBarLink) => {
         borderRadius={6}
         bg={isActive ? 'grey' : 'transparent'}
         fontWeight={'bold'}
+        fontSize="sm"
       >
         {text}
       </Link>

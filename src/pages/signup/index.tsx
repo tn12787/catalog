@@ -3,15 +3,12 @@ import FormContent from 'components/FormContent';
 import { SignUpData } from 'data/signup/types';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuth, useFirestore } from 'reactfire';
 import { signupConfig } from 'data/signup/signupConfig';
 
 const SignUp = () => {
   const { register, errors, handleSubmit, setError } = useForm<SignUpData>();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const auth = useAuth();
-  const firestore = useFirestore();
   const onSubmit = async ({
     name,
     email,
@@ -25,20 +22,13 @@ const SignUp = () => {
 
     try {
       setLoading(true);
-      const userData = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      const userRef = firestore.collection('users').doc(userData.user?.uid);
-      userRef.set({
-        name,
-      });
+
       toast({
         status: 'success',
         title: 'Success',
         description: 'Account created successfully!',
       });
-    } catch (e) {
+    } catch (e: any) {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
       setLoading(false);

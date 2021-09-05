@@ -5,9 +5,10 @@ export interface FormDatum<T, K = any> {
   type?: string;
   label: string;
   registerArgs?: RegisterOptions;
-  options?: K[];
+  options?: { label: string; value: K }[];
   extraProps?: { [key: string]: any };
   helperText?: string;
   defaultValue?: K;
   hidden?: boolean;
+  isLoading?: boolean;
 }
