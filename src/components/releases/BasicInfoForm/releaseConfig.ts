@@ -45,26 +45,3 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<Release>[] => [
     },
   },
 ];
-
-export const releaseConfig: FormDatum<Release>[] = [
-  {
-    name: 'artist',
-    label: 'Artist',
-    type: 'text',
-    registerArgs: {
-      required: 'Please enter an artist.',
-    },
-  },
-  {
-    name: 'type',
-    label: 'Release Type',
-    type: 'select',
-    registerArgs: {
-      required: 'Please select a type',
-    },
-    options: ['Single', 'EP', 'Album'],
-    extraProps: {
-      min: new Date(),
-    },
-  },
-];
