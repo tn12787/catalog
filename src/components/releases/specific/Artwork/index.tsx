@@ -13,7 +13,7 @@ import Card from 'components/Card';
 import { useRouter } from 'next/router';
 import { EnrichedRelease } from 'types';
 
-import { SummaryField } from './Summary';
+import { SummaryField } from '../Summary';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';

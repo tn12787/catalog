@@ -18,8 +18,10 @@ import { Release, ReleaseType } from '@prisma/client';
 import requiresAuth from 'backend/apiUtils/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
-import { SortByOptions, SortOrder } from 'queries/types';
+import { SortOrder } from 'queries/types';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
+import { CreateArtworkDto } from 'backend/models/artwork/create';
+import { pickBy } from 'lodash';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -159,6 +161,72 @@ class ReleaseListHandler {
   @Delete('/:id/distribution')
   async deleteDistribution(@Param('id') id: string) {
     const result = await prisma.distribution.delete({
+      where: {
+        releaseId: id,
+      },
+    });
+    return result;
+  }
+
+  @Post('/:id/artwork')
+  async createArtwork(
+    @Param('id') id: string,
+    @Body(ValidationPipe) body: CreateArtworkDto
+  ) {
+    console.log(body);
+    const optionalArgs = pickBy(
+      {
+        assignee: body.assignee
+          ? { connect: { id: body.assignee } }
+          : undefined,
+        url: body.url,
+      },
+      (v) => v !== undefined
+    );
+    const result = await prisma.artwork.create({
+      data: {
+        ...optionalArgs,
+        release: { connect: { id } },
+        status: body.status,
+        notes: body.notes,
+        dueDate: body.dueDate,
+      },
+    });
+    return result;
+  }
+
+  @Put('/:id/artwork')
+  async updateArtwork(
+    @Param('id') id: string,
+    @Body(ValidationPipe) body: CreateArtworkDto
+  ) {
+    const optionalArgs = pickBy(
+      {
+        assignee: body.assignee
+          ? { connect: { id: body.assignee } }
+          : undefined,
+        url: body.url,
+      },
+      (v) => v !== undefined
+    );
+
+    const result = await prisma.artwork.update({
+      where: {
+        releaseId: id,
+      },
+      data: {
+        ...optionalArgs,
+        status: body.status,
+        notes: body.notes,
+        dueDate: body.dueDate,
+      },
+    });
+    return result;
+  }
+
+  @Delete('/:id/artwork')
+  async deleteArtwork(@Param('id') id: string) {
+    const result = await prisma.artwork.delete({
       where: {
         releaseId: id,
       },

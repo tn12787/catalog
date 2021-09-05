@@ -4,7 +4,7 @@ import Card from 'components/Card';
 import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { EnrichedRelease } from 'types';
-import { buildDistribConfig } from 'components/releases/specific/DistributionInfo/distribConfig';
+import { buildDistribConfig } from 'components/releases/specific/Distribution/distribConfig';
 import FormContent from 'components/FormContent';
 import { useRouter } from 'next/router';
 import withReleaseData from 'HOCs/withReleaseData';

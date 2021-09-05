@@ -4,6 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/analytics';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 const CLIENT_ID =
   '419424197757-7n7f5frs3qof0mk9gh0h04ntiu7d36kc.apps.googleusercontent.com';
@@ -35,5 +36,10 @@ export const initClient = async () => {
     });
   });
 };
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+firebase.storage();
+
+export default firebase;
 
 // initClient();

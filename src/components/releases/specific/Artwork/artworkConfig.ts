@@ -1,19 +1,20 @@
+import { TaskStatus } from '@prisma/client';
 import { Artwork, ReleaseTaskStatus } from 'types';
 import { FormDatum } from 'types/forms';
 
 export const buildArtworkConfig = (
   alreadyCompleted: boolean
-): FormDatum<Artwork, ReleaseTaskStatus>[] => [
-  {
-    name: 'completedBy',
-    label: 'Assignee',
-    registerArgs: {
-      required: 'Please a team or person that will complete the artwork.',
-    },
-    extraProps: {
-      maxLength: 60,
-    },
-  },
+): FormDatum<Artwork, TaskStatus>[] => [
+  // {
+  //   name: 'completedBy',
+  //   label: 'Assignee',
+  //   registerArgs: {
+  //     required: 'Please a team or person that will complete the artwork.',
+  //   },
+  //   extraProps: {
+  //     maxLength: 60,
+  //   },
+  // },
   {
     name: 'dueDate',
     label: 'Due on',
@@ -34,7 +35,11 @@ export const buildArtworkConfig = (
     registerArgs: {
       required: 'Please select a type',
     },
-    options: ['Outstanding', 'In progress', 'Waiting', 'Complete'],
+    options: [
+      { label: 'Outstanding', value: TaskStatus.OUTSTANDING },
+      { label: 'In progress', value: TaskStatus.IN_PROGRESS },
+      { label: 'Complete', value: TaskStatus.COMPLETE },
+    ],
   },
   {
     name: 'completedOn',
@@ -56,7 +61,7 @@ export const buildArtworkConfig = (
     },
   },
   {
-    name: 'albumArt',
+    name: 'artworkData',
     label: 'Artwork File',
     type: 'file',
     hidden: !alreadyCompleted,
