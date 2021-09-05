@@ -11,25 +11,38 @@ import {
 } from '@chakra-ui/react';
 import { signOut, useSession } from 'next-auth/client';
 import { fetchMe } from 'queries/me';
-import * as React from 'react';
+import { useEffect } from 'react';
+import { useMemo } from 'react';
+import { useState } from 'react';
 import { BiLogOut } from 'react-icons/bi';
 import { useQuery } from 'react-query';
 import { AccountSwitcherButton } from './AccountSwitcherButton';
 
 export const AccountSwitcher = () => {
   const [session, loading] = useSession();
-
   const onLogout = async () => {
     signOut();
   };
 
   const { data: response, isLoading } = useQuery('me', fetchMe);
 
+  const [selectedTeam, setSelectedTeam] = useState(response?.teams[0].teamId);
+
+  const activeTeam = useMemo(() => {
+    return response?.teams.find((item) => item.teamId === selectedTeam);
+  }, [selectedTeam, response?.teams]);
+
+  useEffect(() => {
+    if (response?.teams) {
+      setSelectedTeam(response?.teams[0].teamId);
+    }
+  }, [response?.teams]);
+
   return (
     <Menu>
       <Skeleton rounded="lg" isLoaded={!loading && !isLoading}>
         <AccountSwitcherButton
-          teamName={(response?.teams[0].team.name as string) ?? 'loadingTeam'}
+          teamName={(activeTeam?.team.name as string) ?? 'loadingTeam'}
           userName={(session?.user?.name as string) ?? 'loadingUser'}
           photoUrl={session?.user?.image as string}
         />
@@ -43,13 +56,18 @@ export const AccountSwitcher = () => {
         <Text fontWeight="medium" mb="2">
           {session?.user?.email}
         </Text>
-        <MenuOptionGroup defaultValue={response?.teams[0].team.id}>
-          {response?.teams.map(({ team }) => (
+        <MenuOptionGroup
+          defaultValue={selectedTeam as string}
+          value={selectedTeam as string}
+          onChange={(val) => setSelectedTeam(val as string)}
+        >
+          {response?.teams.map(({ team }, index) => (
             <MenuItemOption
-              key={team.id}
+              key={index.toString()}
               value={team.id}
               fontWeight="semibold"
               rounded="md"
+              type="radio"
             >
               {team.name}
             </MenuItemOption>
