@@ -1,12 +1,19 @@
+import { Button } from '@chakra-ui/button';
+import { Stack, Heading, Text } from '@chakra-ui/layout';
 import DashboardLayout from 'components/layouts/DashboardLayout';
-import { fetchArtists } from 'queries/artists';
+import { useRouter } from 'next/router';
+import { fetchSingleArtist } from 'queries/artists';
 import React from 'react';
-import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
+import artists from '..';
+
 interface Props {}
 
-const Artists = (props: Props) => {
-  const { data: artists } = useQuery('artists', fetchArtists);
+const SingleArtist = (props: Props) => {
+  const router = useRouter();
+  const { data: response } = useQuery('artists', () =>
+    fetchSingleArtist(router.query.id as string)
+  );
   return (
     <Stack
       flex={1}
@@ -19,24 +26,22 @@ const Artists = (props: Props) => {
       <Stack spacing={4} width="90%" maxW="900px">
         <Stack direction="row" align="center" justify="space-between">
           <Heading py={4} color="orange.400" alignSelf="flex-start">
-            Artists
+            {response?.data?.name}
           </Heading>
           <Button href={'/releases/new'} as={'a'}>
             Create New Release
           </Button>
         </Stack>
         <Stack>
-          {artists?.map((artist) => (
-            <Text key={artist.id}>
-              {artist.name} ({artist.legalName})
-            </Text>
-          ))}
+          <Text>
+            {response?.data?.name} ({response?.data?.legalName})
+          </Text>
         </Stack>
       </Stack>
     </Stack>
   );
 };
 
-Artists.getLayout = () => DashboardLayout;
+SingleArtist.getLayout = () => DashboardLayout;
 
-export default Artists;
+export default SingleArtist;
