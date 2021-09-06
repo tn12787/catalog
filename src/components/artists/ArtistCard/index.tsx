@@ -22,7 +22,7 @@ interface Props {
 
 const ArtistCard = ({ artist, loading }: Props) => {
   const router = useRouter();
-  const { border } = useAppColors();
+  const { border, bgSecondary } = useAppColors();
   return (
     <Stack
       borderRadius="lg"
@@ -34,6 +34,7 @@ const ArtistCard = ({ artist, loading }: Props) => {
       cursor="pointer"
       border="1px solid"
       borderColor={border}
+      bg={bgSecondary}
     >
       <Skeleton isLoaded={!loading}>
         <Image

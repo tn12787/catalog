@@ -2,6 +2,7 @@ import { Button } from '@chakra-ui/button';
 import { Stack, Heading, Text } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import DashboardLayout from 'components/layouts/DashboardLayout';
+import useAppColors from 'hooks/useAppColors';
 import { useRouter } from 'next/router';
 import { fetchSingleArtist } from 'queries/artists';
 import React from 'react';
@@ -13,6 +14,7 @@ interface Props {}
 const SingleArtist = (props: Props) => {
   const router = useRouter();
   const artistId = router.query['id'] as string;
+  const { bgPrimary } = useAppColors();
 
   const { data: response, isLoading } = useQuery(['artists', artistId], () =>
     fetchSingleArtist(artistId)
@@ -20,8 +22,8 @@ const SingleArtist = (props: Props) => {
 
   return (
     <Stack
+      bg={bgPrimary}
       flex={1}
-      
       align="center"
       py={6}
       direction="column"
