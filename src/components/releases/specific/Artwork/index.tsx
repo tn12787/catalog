@@ -36,7 +36,7 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
       name: `${isComplete ? 'Completed By' : 'Assignee'}`,
       content: (
         <NextLink href={`/users/${releaseData.artwork?.completedBy}`} passHref>
-          <Link>{releaseData.artist.name}</Link>
+          <Link fontSize="sm">{releaseData.artist.name}</Link>
         </NextLink>
       ),
     },
@@ -77,7 +77,7 @@ const Artwork = ({ releaseData }: Props) => {
   }
 
   return (
-    <Card alignItems={['center', 'center', 'stretch']}>
+    <Card flex={1} alignItems={['center', 'center', 'stretch']}>
       <Flex
         align="center"
         justify="space-between"
@@ -146,9 +146,7 @@ const Artwork = ({ releaseData }: Props) => {
         </Flex>
       ) : (
         <Flex py={4} align="center" direction="column" justify="space-between">
-          <Text color="charcoal" mb={3}>
-            This release has no artwork info yet.
-          </Text>
+          <Text mb={3}>This release has no artwork info yet.</Text>
           <Button flexGrow={0} as={'a'} colorScheme="purple" href={editUrl}>
             Add now
           </Button>

@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@ajna/pagination@^1.4.13":
+  version "1.4.13"
+  resolved "https://registry.yarnpkg.com/@ajna/pagination/-/pagination-1.4.13.tgz#47d99eebd779a4a23aca714a297e3ae3cd6ed484"
+  integrity sha512-sEG1oIT8aYevMc2YJ1grihKb/PHykWAby/oVt1aUZntQwAQishyhdyPOAmRbx58KQS+nkqXRmPLp2CYi0FMJgA==
+  dependencies:
+    lodash.union "^4.6.0"
+
 "@babel/code-frame@7.12.11", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
@@ -4335,6 +4342,11 @@ lodash.truncate@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.truncate/-/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
+
+lodash.union@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.union/-/lodash.union-4.6.0.tgz#48bb5088409f16f1821666641c44dd1aaae3cd88"
+  integrity sha1-SLtQiECfFvGCFmZkHETdGqrjzYg=
 
 lodash@^4.17.13:
   version "4.17.21"

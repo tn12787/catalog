@@ -73,13 +73,14 @@ const Distribution = ({ releaseData }: Props) => {
   }
 
   return (
-    <Card>
+    <Card flex={1}>
       <Flex
         direction={['column', 'column', 'row']}
         align="center"
         justify="space-between"
+        flexWrap="wrap"
       >
-        <Flex align="center" direction={['column', 'column', 'row']}>
+        <Flex align="center" direction={{ base: 'column', md: 'row' }}>
           <Heading whiteSpace="nowrap" fontSize="2xl">
             💿 Distribution
           </Heading>
@@ -108,19 +109,24 @@ const Distribution = ({ releaseData }: Props) => {
         <Flex py={4} direction={['column', 'column', 'row']}>
           <Stack
             width={['auto', 'auto', '50%']}
-            spacing={3}
             pb={2}
             justify="space-between"
             direction="column"
           >
             {buildFields(releaseData).map(({ name, content, hidden }) => {
               return hidden ? null : (
-                <Stack>
+                <Flex
+                  mb={[3, 3, 0]}
+                  width="100%"
+                  align={['center', 'center', 'flex-start']}
+                  direction={['row', 'row', 'column']}
+                  justify={['space-between']}
+                >
                   <Text fontSize="md" fontWeight="bold">
                     {name}
                   </Text>
                   {content}
-                </Stack>
+                </Flex>
               );
             })}
           </Stack>
@@ -139,9 +145,7 @@ const Distribution = ({ releaseData }: Props) => {
         </Flex>
       ) : (
         <Flex py={4} align="center" direction="column" justify="space-between">
-          <Text color="charcoal" mb={3}>
-            This release has no distribution info yet.
-          </Text>
+          <Text mb={3}>This release has no distribution info yet.</Text>
           <NextLink passHref href={`${router.query.id}/distribution/edit`}>
             <Button flexGrow={0} as={Link as any} colorScheme="purple">
               Add now

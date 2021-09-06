@@ -1,14 +1,15 @@
-import { SortByOptions } from './../types';
+import { FilterOptions, SortByOptions } from './../types';
 import { EnrichedRelease } from 'types';
 import axios, { AxiosResponse } from 'axios';
 import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
 
-export const fetchReleases = async (
-  search: string,
-  sortBy: SortByOptions<EnrichedRelease>
-) => {
+export const fetchReleases = async ({
+  search,
+  pagination,
+  sorting,
+}: FilterOptions<EnrichedRelease>) => {
   return await axios.get<EnrichedRelease[]>(
-    `/api/releases?search=${search}&sortBy=${sortBy.key}&sortOrder=${sortBy.order}`
+    `/api/releases?search=${search}&sortBy=${sorting?.key}&sortOrder=${sorting?.order}`
   );
 };
 

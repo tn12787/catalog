@@ -9,7 +9,7 @@ interface Props {
 
 const ReleaseType = ({ releaseData }: Props) => {
   return (
-    <HStack align="center" color="mist">
+    <HStack align="center" >
       <Icon fontSize="22px" as={FiDisc} />
       <Text fontSize="sm">{releaseData.type}</Text>
     </HStack>

@@ -1,39 +1,59 @@
-import { Divider, Link, Stack, Text } from '@chakra-ui/react';
+import {
+  Divider,
+  HStack,
+  Link,
+  Stack,
+  Switch,
+  Text,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import React from 'react';
 import CurrentUser from './CurrentUser';
 import { NavBarLink } from './types';
 import NextLink from 'next/link';
 import NavLink from './NavLink';
 import { AccountSwitcher } from './AccountSwitcher';
+import { NavLinkConfig } from 'appLinks';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
-  links: NavBarLink[];
+  links: NavLinkConfig;
 }
 
 const Nav = ({ links }: Props) => {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const selectedBg = useColorModeValue('gray.200', 'gray.700');
+  const lightModeText = useColorModeValue('gray.500', 'gray.500');
   return (
     <Stack
       display={['none', 'none', 'flex']}
       px={5}
-      pt={5}
+      py={5}
       height="100%"
       w={'300px'}
       position="fixed"
-      bg="#1c1624"
-      color="white"
+      justifyContent="space-between"
     >
       <Stack flex={'1 1 auto'} spacing={'30px'}>
         <AccountSwitcher />
         <Stack>
-          {links.map((link, index) => (
+          {links.main.links.map((link, index) => (
             <NavLink {...link} key={index.toString()} />
           ))}
         </Stack>
       </Stack>
-      <Divider
-        backgroundColor="rgba(255,255,255,0.1)"
-        borderColor="rgba(255,255,255,0.1)"
-      />
+      <Stack>
+        {links.settings.links.map((link, index) => (
+          <NavLink {...link} key={index.toString()} />
+        ))}
+      </Stack>
+      <HStack bg={selectedBg} borderRadius="2xl" p={5} justify="center">
+        <Text fontSize="xs" color={lightModeText} textTransform="uppercase">
+          Light mode
+        </Text>
+        <Switch isChecked={colorMode === 'light'} onChange={toggleColorMode} />
+      </HStack>
     </Stack>
   );
 };

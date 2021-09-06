@@ -16,13 +16,10 @@ const withReleaseData = <T extends ComponentWithReleaseData>(
 ) => {
   const Wrapper = (props: Omit<T, 'releaseData'>) => {
     const router = useRouter();
-    const releaseId = router.query.id as string;
+    const releaseId = router.query['id'] as string;
     const { data: response, isLoading } = useQuery(
       ['releases', releaseId],
-      () => fetchSingleRelease(releaseId),
-      {
-        retry: false,
-      }
+      () => fetchSingleRelease(releaseId)
     );
 
     if (isLoading) {
@@ -30,7 +27,6 @@ const withReleaseData = <T extends ComponentWithReleaseData>(
         <Stack
           flex={1}
           height={'100vh'}
-          bg="#eee"
           align="center"
           justify="center"
           direction="column"

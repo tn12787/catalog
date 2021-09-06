@@ -4,6 +4,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@ajna/pagination": "^1.4.13",
     "@chakra-ui/icons": "^1.0.2",
     "@chakra-ui/react": "^1.0.4",
     "@emotion/react": "^11.1.4",

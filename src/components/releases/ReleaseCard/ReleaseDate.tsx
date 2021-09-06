@@ -17,7 +17,7 @@ interface Props {
 
 const ReleaseDate = ({ releaseData }: Props) => {
   return (
-    <HStack align="center" color="mist">
+    <HStack align="center" >
       <Icon fontSize="22px" as={FiCalendar} />
       <HStack>
         <Text fontSize="sm">

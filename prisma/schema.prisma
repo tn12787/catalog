@@ -132,8 +132,8 @@ model Artist {
   legalName    String?
   spotifyUrl   String?
   instagramUrl String?
-  team         Team      @relation(fields: [managedBy], references: [id], onDelete: Cascade)
-  managedBy    String
+  team         Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId       String
   releases     Release[]
 }
 

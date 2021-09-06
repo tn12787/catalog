@@ -13,6 +13,7 @@ import { EnrichedRelease } from 'types';
 import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
 import ReleaseType from './ReleaseType';
+import useAppColors from 'hooks/useAppColors';
 
 interface ReleaseCardProps {
   releaseData: EnrichedRelease;
@@ -20,17 +21,20 @@ interface ReleaseCardProps {
 }
 
 const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
+  const { border, bgSecondary } = useAppColors();
+
   return (
     <Flex
       my={'11px'}
       overflow="hidden"
       alignItems="center"
       direction={['column', 'column', 'row']}
-      bg="white"
       borderRadius={'13px'}
-      border="1px solid #ddd"
+      border="1px solid"
+      borderColor={border}
       width="100%"
-      maxH={['auto', 'auto', '150px']}
+      bg={bgSecondary}
+      // maxH={['auto', 'auto', '150px']}
     >
       <Skeleton isLoaded={!loading}>
         <Image
@@ -39,24 +43,23 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
             'https://semantic-ui.com/images/wireframe/image.png'
           }
           alt="this is an image"
-          width={['100%', '100%', '150px']}
-          minW={['100%', '100%', '150px']}
-          height="150px"
+          width={['100%', '100%', '170px']}
+          minW={['100%', '100%', '170px']}
+          height="170px"
           backgroundSize="cover"
           objectFit="cover"
         />
       </Skeleton>
-      <Stack spacing={1} width="100%" direction="column" p={5} py={1}>
+      <Stack spacing={2} width="100%" direction="column" px={5}>
         <Flex
           flex={1}
           align="center"
           direction={['column', 'column', 'row']}
           justify="space-between"
-          py={1}
         >
           <HStack alignItems="center" direction={['column', 'column', 'row']}>
             <Skeleton isLoaded={!loading}>
-              <Text fontSize="25px" color="charcoal" fontWeight="semibold">
+              <Text fontSize="25px" fontWeight="semibold">
                 {releaseData.name}
               </Text>
             </Skeleton>
@@ -80,15 +83,17 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
             </Button>
           </Skeleton>
         </Flex>
-        <Skeleton isLoaded={!loading} alignSelf="flex-start">
-          <ReleaseArtist releaseData={releaseData} />
-        </Skeleton>
-        <Skeleton isLoaded={!loading} alignSelf="flex-start">
-          <ReleaseType releaseData={releaseData} />
-        </Skeleton>
-        <Skeleton isLoaded={!loading} alignSelf="flex-start">
-          <ReleaseDate releaseData={releaseData} />
-        </Skeleton>
+        <Stack>
+          <Skeleton isLoaded={!loading} alignSelf="flex-start">
+            <ReleaseArtist releaseData={releaseData} />
+          </Skeleton>
+          <Skeleton isLoaded={!loading} alignSelf="flex-start">
+            <ReleaseType releaseData={releaseData} />
+          </Skeleton>
+          <Skeleton isLoaded={!loading} alignSelf="flex-start">
+            <ReleaseDate releaseData={releaseData} />
+          </Skeleton>
+        </Stack>
       </Stack>
     </Flex>
   );

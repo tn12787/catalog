@@ -63,7 +63,7 @@ const CurrentUser = (props: Props) => {
             variant="ghost"
           />
         </Box>
-        <MenuList color="charcoal">
+        <MenuList color=>
           <MenuItem icon={<BiLogOut />} onClick={onLogout}>
             Log out
           </MenuItem>

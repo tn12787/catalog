@@ -68,8 +68,7 @@ const HeaderSection = ({ releaseData }: Props) => {
   return (
     <Flex
       width={['100%', '100%', '90%']}
-      maxWidth={'900px'}
-      flex={1}
+      maxWidth={'container.lg'}
       direction="column"
     >
       <Flex position="relative" overflow="hidden">

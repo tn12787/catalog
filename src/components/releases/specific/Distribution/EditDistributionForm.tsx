@@ -133,13 +133,13 @@ const EditDistributionForm = ({ releaseData }: Props) => {
   return (
     <Stack
       flex={1}
-      bg="#eee"
+      
       align="center"
       direction="column"
       width="100%"
       height="100%"
     >
-      <Stack py={8} spacing={3} width="90%" maxW="900px">
+      <Stack py={8} spacing={3} width="90%" maxW="container.lg">
         <BackButton
           alignSelf="flex-start"
           href={`/releases/${releaseData.id}`}
