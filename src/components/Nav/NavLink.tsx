@@ -9,7 +9,7 @@ const NavLink = ({ href, text, activeRegex, icon }: NavBarLink) => {
   const isActive = activeRegex.test(router.pathname);
 
   const selectedBg = useColorModeValue('gray.200', 'gray.700');
-  const textColor = useColorModeValue('gray.900', null);
+  const textColor = useColorModeValue('gray.900', '');
 
   return (
     <NextLink href={href} passHref>
