@@ -38,12 +38,14 @@ const ArtistCard = ({ artist, loading }: Props) => {
     >
       <Skeleton isLoaded={!loading}>
         <Image
-          minHeight="150px"
+          height="80px"
+          w="100%"
+          objectFit="cover"
           alt="artistPic"
           src={'https://semantic-ui.com/images/wireframe/image.png'}
         ></Image>
       </Skeleton>
-      <HStack p={5} px={3} justifyContent="space-between">
+      <HStack p={3} px={3} justifyContent="space-between">
         <Skeleton isLoaded={!loading}>
           <Text fontWeight="semibold" fontSize="xl">
             {artist.name}
