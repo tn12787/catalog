@@ -1,4 +1,8 @@
-import { Distributor, TaskStatus } from '.prisma/client';
+import {
+  Distributor,
+  TaskStatus,
+  Artist as PrismaArtist,
+} from '.prisma/client';
 
 interface DataModel {
   id: string;
@@ -33,11 +37,8 @@ export enum ReleaseType {
   ALBUM = 'Album',
 }
 
-export interface Artist extends DataModel {
+export interface Artist extends PrismaArtist {
   name: string;
-  spotifyUrl?: string;
-  legalName?: string;
-  instagramUrl?: string;
 }
 
 export interface Contact extends DataModel {

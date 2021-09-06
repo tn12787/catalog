@@ -26,7 +26,7 @@ const Account = (props: Props) => {
   // };
 
   return (
-    <Stack bg={'#eee'} flex={1} align="center" direction="column">
+    <Stack flex={1} align="center" direction="column">
       <Heading>Account</Heading>
       <Button
         isLoading={loading}

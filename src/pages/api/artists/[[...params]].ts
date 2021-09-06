@@ -23,6 +23,11 @@ class ArtistHandler {
       orderBy: {
         name: 'asc',
       },
+      include: {
+        _count: {
+          select: { releases: true },
+        },
+      },
     });
     return artists;
   }
@@ -35,6 +40,7 @@ class ArtistHandler {
       where: {
         id,
       },
+      include: { releases: true },
     });
     return artist;
   }

@@ -5,7 +5,6 @@ import {
   Button,
   Flex,
   Input,
-  Skeleton,
   InputGroup,
   Icon,
   InputRightElement,
@@ -21,12 +20,13 @@ import DashboardLayout from 'components/layouts/DashboardLayout';
 import { EnrichedRelease, ReleaseType } from 'types';
 import { useQuery } from 'react-query';
 import { fetchReleases } from 'queries/releases';
-import { getSession } from 'next-auth/client';
-import { GetServerSideProps } from 'next';
 import { BiSearch } from 'react-icons/bi';
 import useDebounce from 'hooks/useDebounce';
-import ReleaseList from 'components/ReleaseList';
+import ReleaseList from 'components/releases/ReleaseList';
 import { SortByOptions, SortOrder } from 'queries/types';
+import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
+import { Artist } from '.prisma/client';
+import useAppColors from 'hooks/useAppColors';
 
 interface SortBySelectOption<T> {
   label: string;
@@ -69,53 +69,63 @@ const Releases = () => {
   const [sortBy, setSortBy] = useState<SortBySelectOption<EnrichedRelease>>(
     sortOptions[0]
   );
+
+  const { bgPrimary } = useAppColors();
+
   const debouncedSearch = useDebounce(search, 300);
-  const { data: response, isLoading } = useQuery(
-    ['releases', debouncedSearch, sortBy],
-    () => fetchReleases(debouncedSearch, sortBy.value)
+
+  const queryArgs = {
+    search: debouncedSearch,
+    sorting: {
+      key: sortBy.value.key,
+      order: sortBy.value.order,
+    },
+  };
+
+  const { data: response, isLoading } = useQuery(['releases', queryArgs], () =>
+    fetchReleases(queryArgs)
   );
 
   return (
     <Stack
+      bg={bgPrimary}
       flex={1}
-      bg="#eee"
       align="center"
       py={6}
       direction="column"
       width="100%"
     >
-      <Stack spacing={4} width="90%" maxW="900px">
+      <Stack spacing={4} width="90%" maxW="container.lg">
         <Flex align="center" justify="space-between">
-          <Heading py={4} color="green.400" alignSelf="flex-start">
+          <Heading
+            py={4}
+            size="2xl"
+            color={'red'}
+            fontWeight="black"
+            alignSelf="flex-start"
+          >
             All Releases
           </Heading>
-          <Button href={'/releases/new'} as={'a'}>
+          <Button href={'/releases/new'} colorScheme="purple" as={'a'}>
             Create New Release
           </Button>
         </Flex>
         <HStack justifyContent="space-between">
           <InputGroup maxW="400px">
             <Input
-              bg="smoke"
               placeholder="Search releases..."
               onChange={(e) => setSearch(e.target.value)}
               value={search}
             />
             <InputRightElement>
-              <Icon color="mist" as={BiSearch} />
+              <Icon as={BiSearch} />
             </InputRightElement>
           </InputGroup>
           <HStack>
-            <Text
-              whiteSpace="nowrap"
-              fontSize="sm"
-              fontWeight="bold"
-              color="mist"
-            >
+            <Text whiteSpace="nowrap" fontSize="sm" fontWeight="bold">
               Sort by:
             </Text>
             <Select
-              bg="white"
               value={JSON.stringify(sortBy)}
               onChange={(e) => {
                 const valueAsObj = JSON.parse(e.target.value);
@@ -138,7 +148,7 @@ const Releases = () => {
           <ReleaseCard
             releaseData={{
               id: 'release_loading',
-              artist: { name: 'me', id: 'loading' },
+              artist: { name: 'me', id: 'loading' } as Artist,
               targetDate: new Date().toISOString(),
               name: 'Loading',
               type: ReleaseType.ALBUM,
@@ -153,22 +163,7 @@ const Releases = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { session },
-  };
-};
+export const getServerSideProps = getServerSideSessionOrRedirect;
 
 Releases.getLayout = () => DashboardLayout;
 

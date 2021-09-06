@@ -79,7 +79,7 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
                 {isLoading && (
                   <InputRightElement>
                     <Box>
-                      <Spinner color="mist" size="sm"></Spinner>
+                      <Spinner  size="sm"></Spinner>
                     </Box>
                   </InputRightElement>
                 )}

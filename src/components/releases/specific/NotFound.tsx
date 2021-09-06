@@ -8,7 +8,7 @@ const NotFound = (props: Props) => {
   return (
     <Stack
       flex={1}
-      bg="#eee"
+      
       align="center"
       justify="center"
       spacing={7}

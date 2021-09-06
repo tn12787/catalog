@@ -6,6 +6,7 @@ import {
   Img,
   useMenuButton,
 } from '@chakra-ui/react';
+import useAppColors from 'hooks/useAppColors';
 import * as React from 'react';
 import { HiSelector } from 'react-icons/hi';
 
@@ -22,6 +23,7 @@ export const AccountSwitcherButton = ({
   ...rest
 }: Props) => {
   const buttonProps = useMenuButton(rest);
+  const { bgPrimary, bgSecondary } = useAppColors();
   return (
     <Flex
       as="button"
@@ -30,7 +32,7 @@ export const AccountSwitcherButton = ({
       display="flex"
       alignItems="center"
       rounded="lg"
-      bg="gray.700"
+      bg={bgPrimary}
       px="3"
       py="2"
       fontSize="sm"
@@ -38,7 +40,7 @@ export const AccountSwitcherButton = ({
       cursor="pointer"
       outline="0"
       transition="all 0.2s"
-      _active={{ bg: 'gray.600' }}
+      _active={{ bg: bgSecondary }}
       _focus={{ shadow: 'outline' }}
     >
       <HStack flex="1" spacing="3">
