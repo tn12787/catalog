@@ -13,7 +13,7 @@ interface Props {
 const ArtistList = ({ search, artists, loading }: Props) => {
   if ((!loading && !artists) || artists?.length === 0) {
     return search ? (
-      <Stack spacing={5} py={'40px'}  align="center">
+      <Stack spacing={5} py={'40px'} align="center">
         <Icon as={BiSearch} fontSize="7xl" />
         <Text fontSize="sm">
           No items match your search. Try entering another query.
@@ -40,7 +40,7 @@ const ArtistList = ({ search, artists, loading }: Props) => {
             legalName: 'Legal Name',
             spotifyUrl: '',
             instagramUrl: '',
-            managedBy: '',
+            teamId: '',
             _count: { releases: 4 },
           }}
           loading
