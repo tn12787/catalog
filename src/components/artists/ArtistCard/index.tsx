@@ -38,7 +38,7 @@ const ArtistCard = ({ artist, loading }: Props) => {
     >
       <Skeleton isLoaded={!loading}>
         <Image
-          height="80px"
+          height="100px"
           w="100%"
           objectFit="cover"
           alt="artistPic"
