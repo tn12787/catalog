@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Button,
   Heading,
+  HStack,
   Link,
   Stack,
   Tab,
@@ -18,51 +19,69 @@ import NextLink from 'next/link';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 
 import useAppColors from 'hooks/useAppColors';
+import { fetchReleaseEvents } from 'queries/events';
+import Calendar from 'components/Calendar';
+import { ReleaseEvent } from 'types';
 
-const tabData = () => [
+const tabData = (events: ReleaseEvent[]) => [
+  { label: 'Calendar View', content: <Calendar events={events} /> },
   { label: 'List View', content: <Text>List View</Text> },
-  { label: 'Calendar View', content: <Text>Calendar View</Text> },
 ];
 
 const Planner = (props: Props) => {
   const { bgPrimary } = useAppColors();
+  const { data, isLoading, error } = useQuery(
+    'releaseEvents',
+    fetchReleaseEvents
+  );
 
-  const tabsToRender = tabData();
+  const tabsToRender = tabData(data ?? []);
+
   return (
     <Stack
       bg={bgPrimary}
       flex={1}
       align="center"
-      py={6}
       direction="column"
+      py={6}
       width="100%"
     >
-      <Stack spacing={4} width="90%" maxW="container.lg">
-        <Stack direction="row" align="center" justify="space-between">
-          <Heading
-            size="2xl"
-            py={4}
-            as="h1"
-            fontWeight="black"
-            alignSelf="flex-start"
-          >
-            Planner
-          </Heading>
-        </Stack>
-       <Stack alignItems="center">
-          <Tabs align="center" colorScheme="purple">
-            <TabList alignSelf="center">
-              {tabsToRender.map((item) => (
-                <Tab key={item.label}>{item.label}</Tab>
-              ))}
-            </TabList>
+      <Stack spacing={4} width="95%" maxW="container.full">
+        <Stack w="100%" alignItems="center">
+          <Tabs w="100%" align="center" colorScheme="purple">
+            <HStack justifyContent="space-between">
+              <Heading
+                size="2xl"
+                py={4}
+                as="h1"
+                fontWeight="black"
+                alignSelf="flex-start"
+              >
+                Planner
+              </Heading>
+              <TabList borderBottom="none" alignSelf="center">
+                {tabsToRender.map((item) => (
+                  <Tab
+                    fontWeight="semibold"
+                    py={0}
+                    px={0}
+                    mx={2}
+                    key={item.label}
+                  >
+                    {item.label}
+                  </Tab>
+                ))}
+              </TabList>
+            </HStack>
             <TabPanels>
               {tabsToRender.map((item) => (
-                <TabPanel key={item.label}>{item.content}</TabPanel>
+                <TabPanel px={0} key={item.label}>
+                  {item.content}
+                </TabPanel>
               ))}
             </TabPanels>
           </Tabs>
-       </Stack>
+        </Stack>
       </Stack>
     </Stack>
   );
