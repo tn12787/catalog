@@ -5,6 +5,7 @@ import {
   Heading,
   HStack,
   Link,
+  Spinner,
   Stack,
   Tab,
   TabList,
@@ -29,7 +30,7 @@ const tabData = (events: ReleaseEvent[]) => [
 ];
 
 const Planner = (props: Props) => {
-  const { bgPrimary } = useAppColors();
+  const { bgPrimary, primary } = useAppColors();
   const { data, isLoading, error } = useQuery(
     'releaseEvents',
     fetchReleaseEvents
@@ -50,15 +51,19 @@ const Planner = (props: Props) => {
         <Stack w="100%" alignItems="center">
           <Tabs w="100%" align="center" colorScheme="purple">
             <HStack justifyContent="space-between">
-              <Heading
-                size="2xl"
-                py={4}
-                as="h1"
-                fontWeight="black"
-                alignSelf="flex-start"
-              >
-                Planner
-              </Heading>
+              <HStack spacing={4} alignItems="center">
+                <Heading size="2xl" py={4} as="h1" fontWeight="black">
+                  Planner
+                </Heading>
+                {isLoading && (
+                  <Spinner
+                    thickness="3px"
+                    color={primary}
+                    speed="1s"
+                    spacing
+                  ></Spinner>
+                )}
+              </HStack>
               <TabList borderBottom="none" alignSelf="center">
                 {tabsToRender.map((item) => (
                   <Tab

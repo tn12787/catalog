@@ -90,4 +90,16 @@ export interface MusicVideo extends OutSourceableReleaseTask {
 export interface ReleaseEvent {
   name: string;
   date: string;
+  type: EventType;
+  release: EnrichedRelease;
+  data: ReleaseTask;
+}
+
+export enum EventType {
+  ARTWORK = 'artwork',
+  DISTRIBUTION = 'distribution',
+  MARKETING = 'marketing',
+  MASTERING = 'mastering',
+  MUSIC_VIDEO = 'musicVideo',
+  RELEASE = 'release',
 }
