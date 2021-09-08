@@ -86,3 +86,8 @@ export interface Mastering extends OutSourceableReleaseTask {
 export interface MusicVideo extends OutSourceableReleaseTask {
   url: string;
 }
+
+export interface ReleaseEvent {
+  name: string;
+  date: string;
+}
