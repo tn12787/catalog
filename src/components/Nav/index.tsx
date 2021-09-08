@@ -27,7 +27,6 @@ const Nav = ({ links }: Props) => {
   const lightModeText = useColorModeValue('gray.500', 'gray.500');
   return (
     <Stack
-      display={['none', 'none', 'flex']}
       px={5}
       py={5}
       height="100%"
