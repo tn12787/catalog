@@ -15,6 +15,7 @@ import {
   SingleReleaseVars,
 } from 'queries/releases/types';
 import dayjs from 'dayjs';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   existingRelease?: EnrichedRelease;
@@ -106,8 +107,11 @@ const BasicInfoForm = ({ existingRelease }: Props) => {
     });
   }, [existingRelease, artists, properDateFormat, reset]);
 
+  const { bgPrimary } = useAppColors();
+
   return (
     <Stack
+      bg={bgPrimary}
       flex={1}
       align="center"
       direction="column"

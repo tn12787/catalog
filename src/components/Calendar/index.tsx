@@ -1,29 +1,25 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-  Badge,
-  Box,
   Button,
-  Flex,
-  Heading,
   HStack,
   IconButton,
   Stack,
   Table,
   TableCaption,
   Tbody,
-  Td,
   Text,
   Th,
   Thead,
   Tr,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import useCalendar from '@veccu/react-calendar';
 import Card from 'components/Card';
 import { format } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
+import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import { ReleaseEvent } from 'types';
+import CalendarSquare from './CalendarSquare';
 
 interface Props {
   events: ReleaseEvent[];
@@ -31,9 +27,7 @@ interface Props {
 
 const Calendar = ({ events }: Props) => {
   const { cursorDate, headers, body, navigation, view } = useCalendar();
-
-  const borderColor = useColorModeValue('gray.50', 'gray.900');
-
+  const router = useRouter();
   const enrichedBody = useMemo(() => {
     return {
       ...body,
@@ -136,61 +130,14 @@ const Calendar = ({ events }: Props) => {
             return (
               <Tr display="flex" minH="130px" key={key}>
                 {days.map((day, index) => {
-                  const {
-                    key,
-                    date,
-                    isCurrentDate,
-                    isCurrentMonth,
-                    isWeekend,
-                  } = day;
-
                   return (
-                    <Td
-                      display="flex"
-                      flex={1}
-                      flexDirection="column"
-                      fontSize="xs"
-                      borderRightColor={borderColor}
-                      borderRightWidth={`1px`}
-                      key={key}
-                      py={1}
-                      px={2}
-                      opacity={isCurrentMonth ? 1 : 0.2}
-                      textAlign="center"
-                      // alignItems="center"
-                    >
-                      <Text
-                        display="flex"
-                        justifyContent="center"
-                        alignSelf="center"
-                        alignItems="center"
-                        borderRadius="full"
-                        fontWeight={isCurrentDate ? 'bold' : 'normal'}
-                        bg={isCurrentDate ? 'purple.500' : 'transparent'}
-                        color={
-                          isCurrentDate
-                            ? 'white'
-                            : isWeekend
-                            ? 'gray.400'
-                            : 'default'
-                        }
-                        w="25px"
-                        h="25px"
-                      >
-                        {date}
-                      </Text>
-                      {day.events.map((event, index) => (
-                        <HStack textAlign="left" key={index.toString()}>
-                          <Box
-                            w="10px"
-                            h="10px"
-                            borderRadius="full"
-                            bg={'purple.500'}
-                          ></Box>
-                          <Text>{event.name}</Text>
-                        </HStack>
-                      ))}
-                    </Td>
+                    <CalendarSquare
+                      key={index.toString()}
+                      day={day}
+                      onEventClicked={(event) =>
+                        router.push(`/releases/${event.release.id}`)
+                      }
+                    />
                   );
                 })}
               </Tr>

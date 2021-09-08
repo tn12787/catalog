@@ -84,7 +84,7 @@ const Artwork = ({ releaseData }: Props) => {
         direction={['column', 'column', 'row']}
       >
         <Flex align="center" direction={['column', 'column', 'row']}>
-          <Heading fontSize="2xl">🎨 Artwork</Heading>
+          <Heading fontSize="2xl" fontWeight="bold">🎨 Artwork</Heading>
           <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
             {releaseData?.artwork?.status}
           </Badge>
