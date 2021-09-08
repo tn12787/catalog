@@ -1,6 +1,6 @@
 import { NavBarLink } from 'components/Nav/types';
 import React from 'react';
-import { BiDisc } from 'react-icons/bi';
+import { BiCalendar, BiDisc } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
 import { RiTeamLine } from 'react-icons/ri';
@@ -26,6 +26,12 @@ export const appLinks: NavLinkConfig = {
         href: '/releases',
         text: 'Releases',
         activeRegex: /^\/releases/,
+      },
+      {
+        icon: BiCalendar,
+        href: '/planner',
+        text: 'Planner',
+        activeRegex: /^\/planner/,
       },
     ],
   },

@@ -22,7 +22,7 @@ const NavLink = ({ href, text, activeRegex, icon }: NavBarLink) => {
         fontSize="sm"
       >
         <HStack color={textColor}>
-          <Icon as={icon} fontSize="md" />
+          <Icon as={icon} fontSize="xl" />
           <Text>{text}</Text>
         </HStack>
       </Link>
