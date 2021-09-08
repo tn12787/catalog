@@ -70,9 +70,9 @@ const Releases = () => {
     sortOptions[0]
   );
 
-  const { bgPrimary } = useAppColors();
+  const { bgPrimary, primary, bgSecondary } = useAppColors();
 
-  const debouncedSearch = useDebounce(search, 300);
+  const debouncedSearch = useDebounce(search, 150);
 
   const queryArgs = {
     search: debouncedSearch,
@@ -99,8 +99,9 @@ const Releases = () => {
         <Flex align="center" justify="space-between">
           <Heading
             py={4}
+            color={primary}
+            as="h1"
             size="2xl"
-            color={'red'}
             fontWeight="black"
             alignSelf="flex-start"
           >
@@ -111,7 +112,7 @@ const Releases = () => {
           </Button>
         </Flex>
         <HStack justifyContent="space-between">
-          <InputGroup maxW="400px">
+          <InputGroup maxW="400px" bg={bgSecondary}>
             <Input
               placeholder="Search releases..."
               onChange={(e) => setSearch(e.target.value)}
@@ -126,6 +127,7 @@ const Releases = () => {
               Sort by:
             </Text>
             <Select
+              bg={bgSecondary}
               value={JSON.stringify(sortBy)}
               onChange={(e) => {
                 const valueAsObj = JSON.parse(e.target.value);

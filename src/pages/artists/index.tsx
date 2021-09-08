@@ -24,7 +24,7 @@ const Artists = (props: Props) => {
     >
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
-          <Heading py={4} color="orange.400" alignSelf="flex-start">
+          <Heading size="2xl" fontWeight="black" py={4} alignSelf="flex-start">
             Artists
           </Heading>
           <Button href={'/releases/new'} as={'a'}>

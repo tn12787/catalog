@@ -12,7 +12,7 @@ interface Props {
 const ReleaseList = ({ search, releases }: Props) => {
   if (!releases || releases?.length === 0) {
     return search ? (
-      <Stack spacing={5} py={'40px'}  align="center">
+      <Stack spacing={5} py={'40px'} align="center">
         <Icon as={BiSearch} fontSize="7xl" />
         <Text fontSize="sm">
           No items match your search. Try entering another query.
@@ -34,4 +34,4 @@ const ReleaseList = ({ search, releases }: Props) => {
   );
 };
 
-export default ReleaseList;
+export default React.memo<Props>(ReleaseList);

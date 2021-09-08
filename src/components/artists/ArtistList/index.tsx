@@ -54,4 +54,4 @@ const ArtistList = ({ search, artists, loading }: Props) => {
   );
 };
 
-export default ArtistList;
+export default React.memo<Props>(ArtistList);
