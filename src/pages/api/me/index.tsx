@@ -17,8 +17,8 @@ import { Session } from 'next-auth';
 import { getSession } from 'next-auth/client';
 import { JWT } from 'next-auth/jwt';
 
+import requiresAuth from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
-import requiresAuth from 'backend/apiUtils/auth';
 
 @requiresAuth()
 class MeHandler {

@@ -9,9 +9,9 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { ReleaseType } from '@prisma/client';
+import requiresAuth from 'backend/apiUtils/decorators/auth';
 
 import { CreateArtistDto } from 'backend/models/artists/create';
-import requiresAuth from 'backend/apiUtils/auth';
 import prisma from 'backend/prisma/client';
 
 @requiresAuth()

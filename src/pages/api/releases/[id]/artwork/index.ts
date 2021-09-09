@@ -2,37 +2,27 @@ import {
   Body,
   createHandler,
   Delete,
-  Get,
-  HttpCode,
-  NotFoundException,
-  Param,
   Post,
   Put,
-  Query,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { Release, ReleaseType } from '@prisma/client';
 import { pickBy } from 'lodash';
 import { NextApiRequest } from 'next';
 
-import { CreateReleaseDto } from 'backend/models/releases/create';
-import requiresAuth from 'backend/apiUtils/auth';
+import requiresAuth from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
-import { UpdateReleaseDto } from 'backend/models/releases/update';
-import { SortOrder } from 'queries/types';
-import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
-
+import { PathParam } from 'backend/apiUtils/decorators/routing';
 
 @requiresAuth()
 class ReleaseListHandler {
   @Post()
   async createArtwork(
     @Req() req: NextApiRequest,
-    @Body(ValidationPipe) body: CreateArtworkDto
+    @Body(ValidationPipe) body: CreateArtworkDto,
+    @PathParam('id') id: string
   ) {
-    const { id } = req.query as { id: string };
     const optionalArgs = pickBy(
       {
         assignee: body.assignee
@@ -57,9 +47,9 @@ class ReleaseListHandler {
   @Put()
   async updateArtwork(
     @Req() req: NextApiRequest,
-    @Body(ValidationPipe) body: CreateArtworkDto
+    @Body(ValidationPipe) body: CreateArtworkDto,
+    @PathParam('id') id: string
   ) {
-    const { id } = req.query as { id: string };
     const optionalArgs = pickBy(
       {
         assignee: body.assignee
@@ -85,8 +75,7 @@ class ReleaseListHandler {
   }
 
   @Delete()
-  async deleteArtwork(@Req() req: NextApiRequest) {
-    const { id } = req.query as { id: string };
+  async deleteArtwork(@Req() req: NextApiRequest, @PathParam('id') id: string) {
     const result = await prisma.artwork.delete({
       where: {
         releaseId: id,
