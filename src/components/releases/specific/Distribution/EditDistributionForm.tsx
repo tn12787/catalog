@@ -21,8 +21,6 @@ import {
   updateSingleDistribution,
 } from 'queries/distribution';
 
-
-
 interface Props {
   releaseData: EnrichedRelease;
 }
@@ -116,7 +114,6 @@ const EditDistributionForm = ({ releaseData }: Props) => {
     } catch (e: any) {
       console.log(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
-    } finally {
     }
   };
 

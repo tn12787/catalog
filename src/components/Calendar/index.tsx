@@ -20,27 +20,24 @@ import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 
 import CalendarSquare from './CalendarSquare';
+import { BaseEvent } from './types';
 
-import { ReleaseEvent } from 'types';
 import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
 
-interface Props {
-  events: ReleaseEvent[];
-  onEventClicked?: (event: ReleaseEvent) => void;
-  onEventDropped?: (
-    event: ReleaseEvent,
-    targetDate: Date
-  ) => void | Promise<void>;
+interface Props<T> {
+  events: T[];
+  onEventClicked?: (event: T) => void;
+  onEventDropped?: (event: T, targetDate: Date) => void | Promise<void>;
   loading?: boolean;
 }
 
-const Calendar = ({
+const Calendar = <T extends BaseEvent>({
   events,
   onEventClicked,
   onEventDropped,
   loading,
-}: Props) => {
+}: Props<T>) => {
   const { cursorDate, headers, body, navigation, view } = useCalendar();
   const router = useRouter();
   const enrichedBody = useMemo(() => {

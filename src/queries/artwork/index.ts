@@ -56,5 +56,7 @@ export const uploadImageToFirebase = async (
     await artworkFileRef.put(artworkData);
     const downloadUrl = await artworkFileRef.getDownloadURL();
     return downloadUrl;
-  } catch {}
+  } catch (e) {
+    console.error('Error uploading artwork image', e);
+  }
 };
