@@ -1,9 +1,9 @@
+import { BaseEvent } from './types';
 import { TaskStatus } from '.prisma/client';
-import { ReleaseEvent } from 'types';
 
-export const deriveBadgeColorFromStatus = (event: ReleaseEvent) => {
+export const deriveBadgeColorFromStatus = <T extends BaseEvent>(event: T) => {
   if (
-    new Date().getTime() > new Date(event?.date).getTime() &&
+    new Date().getTime() > new Date(event.date).getTime() &&
     event.data.status !== TaskStatus.COMPLETE
   ) {
     return 'red.500';
