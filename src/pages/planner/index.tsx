@@ -24,8 +24,21 @@ import { fetchReleaseEvents } from 'queries/events';
 import Calendar from 'components/Calendar';
 import { ReleaseEvent } from 'types';
 
-const tabData = (events: ReleaseEvent[]) => [
-  { label: 'Calendar View', content: <Calendar events={events} /> },
+const tabData = (
+  events: ReleaseEvent[],
+  onCalendarEventClicked: (event: ReleaseEvent) => void,
+  isLoading: boolean
+) => [
+  {
+    label: 'Calendar View',
+    content: (
+      <Calendar
+        events={events}
+        loading={isLoading}
+        onEventClicked={onCalendarEventClicked}
+      />
+    ),
+  },
   { label: 'List View', content: <Text>List View</Text> },
 ];
 
@@ -36,7 +49,9 @@ const Planner = (props: Props) => {
     fetchReleaseEvents
   );
 
-  const tabsToRender = tabData(data ?? []);
+  const onCalendarEventClicked = (event: ReleaseEvent) => {};
+
+  const tabsToRender = tabData(data ?? [], onCalendarEventClicked, isLoading);
 
   return (
     <Stack
@@ -50,18 +65,20 @@ const Planner = (props: Props) => {
       <Stack spacing={4} width="95%" maxW="container.full">
         <Stack w="100%" alignItems="center">
           <Tabs w="100%" align="center" colorScheme="purple">
-            <HStack justifyContent="space-between">
-              <HStack spacing={4} alignItems="center">
+            <Stack
+              justifyContent="space-between"
+              direction={{ base: 'column', md: 'row' }}
+            >
+              <HStack
+                spacing={4}
+                alignItems="center"
+                alignSelf={{ base: 'center', md: 'stretch' }}
+              >
                 <Heading size="2xl" py={4} as="h1" fontWeight="black">
                   Planner
                 </Heading>
                 {isLoading && (
-                  <Spinner
-                    thickness="3px"
-                    color={primary}
-                    speed="1s"
-                    spacing
-                  ></Spinner>
+                  <Spinner thickness="3px" color={primary} speed="1s"></Spinner>
                 )}
               </HStack>
               <TabList borderBottom="none" alignSelf="center">
@@ -77,7 +94,7 @@ const Planner = (props: Props) => {
                   </Tab>
                 ))}
               </TabList>
-            </HStack>
+            </Stack>
             <TabPanels>
               {tabsToRender.map((item) => (
                 <TabPanel px={0} key={item.label}>
