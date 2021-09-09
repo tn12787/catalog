@@ -15,7 +15,7 @@ import { useDrop } from 'react-dnd';
 import { useMutation, useQueryClient } from 'react-query';
 import { ReleaseEvent } from 'types';
 import CalendarEvent from './CalendarEvent';
-import { EventType } from './types';
+import { BaseEvent, EventType } from './types';
 import { cloneDeep } from 'lodash';
 import { formatISO, formatRFC3339 } from 'date-fns';
 import dayjs from 'dayjs';
@@ -23,7 +23,7 @@ import utc from 'dayjs/plugin/utc';
 import UndoToast from './UndoToast';
 dayjs.extend(utc);
 
-interface Props {
+interface Props<T> {
   day: {
     value: Date;
     isCurrentDate: boolean;
@@ -32,16 +32,17 @@ interface Props {
     isWeekend: boolean;
     date: number;
   } & {
-    events: ReleaseEvent[];
+    events: T[];
   };
-  onEventClicked?: (event: ReleaseEvent) => void;
-  onEventDropped?: (
-    event: ReleaseEvent,
-    targetDate: Date
-  ) => void | Promise<void>;
+  onEventClicked?: (event: T) => void;
+  onEventDropped?: (event: T, targetDate: Date) => void | Promise<void>;
 }
 
-const CalendarSquare = ({ day, onEventClicked, onEventDropped }: Props) => {
+const CalendarSquare = <T extends BaseEvent>({
+  day,
+  onEventClicked,
+  onEventDropped,
+}: Props<T>) => {
   const { key, date, isCurrentDate, isCurrentMonth, isWeekend, value } = day;
 
   const borderColor = useColorModeValue('gray.50', 'gray.900');
@@ -50,7 +51,7 @@ const CalendarSquare = ({ day, onEventClicked, onEventDropped }: Props) => {
   const [{ isOver }, drop] = useDrop(
     () => ({
       accept: [EventType.ARTWORK],
-      drop: (item: ReleaseEvent) => {
+      drop: (item: T) => {
         onEventDropped?.(item, value);
       },
       collect: (monitor) => ({

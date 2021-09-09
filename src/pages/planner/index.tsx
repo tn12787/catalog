@@ -11,6 +11,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -24,6 +25,7 @@ import { ReleaseEvent } from 'types';
 import UndoToast from 'components/Calendar/UndoToast';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
+import ReleaseEventDrawer from 'components/planner/ReleaseEventDrawer';
 
 const tabData = (
   events: ReleaseEvent[],
@@ -122,7 +124,11 @@ const Planner = (props: Props) => {
     }
   };
 
-  const onCalendarEventClicked = (event: ReleaseEvent) => {};
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const onCalendarEventClicked = (event: ReleaseEvent) => {
+    onOpen();
+  };
 
   const tabsToRender = tabData(
     data ?? [],
@@ -141,6 +147,7 @@ const Planner = (props: Props) => {
       width="100%"
     >
       <Stack spacing={4} width="95%" maxW="container.full">
+        <ReleaseEventDrawer isOpen={isOpen} onClose={onClose} />
         <Stack w="100%" alignItems="center">
           <Tabs w="100%" align="center" colorScheme="purple">
             <Stack

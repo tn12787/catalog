@@ -2,17 +2,20 @@ import { HStack, Box, Text, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import { ReleaseEvent } from 'types';
 import { useDrag } from 'react-dnd';
-import { EventType } from './types';
+import { BaseEvent, EventType } from './types';
 import useAppColors from 'hooks/useAppColors';
 import { deriveBadgeColorFromStatus } from './utils';
 import { TaskStatus } from '.prisma/client';
 
-interface Props {
-  event: ReleaseEvent;
-  onClick?: (event: ReleaseEvent) => void | Promise<void>;
+interface Props<T> {
+  event: T;
+  onClick?: (event: T) => void | Promise<void>;
 }
 
-const CalendarEvent = ({ event, onClick }: Props) => {
+const CalendarEvent = <T extends BaseEvent = ReleaseEvent>({
+  event,
+  onClick,
+}: Props<T>) => {
   const [{ opacity }, dragRef] = useDrag(
     () => ({
       type: EventType.ARTWORK,
@@ -26,7 +29,7 @@ const CalendarEvent = ({ event, onClick }: Props) => {
   const { bgPrimary } = useAppColors();
 
   const isOutstanding =
-    new Date().getTime() > new Date(event?.date).getTime() &&
+    new Date().getTime() > new Date(event.date).getTime() &&
     event.data.status !== TaskStatus.COMPLETE;
 
   return (
