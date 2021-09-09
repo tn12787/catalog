@@ -1,12 +1,13 @@
 import { Button } from '@chakra-ui/button';
 import { Stack, Heading, Text } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
-import DashboardLayout from 'components/layouts/DashboardLayout';
-import useAppColors from 'hooks/useAppColors';
 import { useRouter } from 'next/router';
-import { fetchSingleArtist } from 'queries/artists';
 import React from 'react';
 import { useQuery } from 'react-query';
+
+import DashboardLayout from 'components/layouts/DashboardLayout';
+import useAppColors from 'hooks/useAppColors';
+import { fetchSingleArtist } from 'queries/artists';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 
 interface Props {}

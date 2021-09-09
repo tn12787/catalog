@@ -1,4 +1,5 @@
 import { BaseEvent } from './types';
+
 import { TaskStatus } from '.prisma/client';
 
 export const deriveBadgeColorFromStatus = <T extends BaseEvent>(event: T) => {

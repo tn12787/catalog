@@ -1,9 +1,10 @@
-import { NavBarLink } from 'components/Nav/types';
 import React from 'react';
 import { BiCalendar, BiDisc } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
 import { RiTeamLine } from 'react-icons/ri';
+
+import { NavBarLink } from 'components/Nav/types';
 
 export interface NavLinkConfig {
   main: {

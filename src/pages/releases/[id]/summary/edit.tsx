@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { EnrichedRelease } from 'types';
 import withReleaseData from 'HOCs/withReleaseData';
 import DashboardLayout from 'components/layouts/DashboardLayout';

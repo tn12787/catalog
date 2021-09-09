@@ -14,14 +14,16 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import useCalendar from '@veccu/react-calendar';
-import Card from 'components/Card';
 import { format } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
-import useAppColors from 'hooks/useAppColors';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
-import { ReleaseEvent } from 'types';
+
 import CalendarSquare from './CalendarSquare';
+
+import { ReleaseEvent } from 'types';
+import useAppColors from 'hooks/useAppColors';
+import Card from 'components/Card';
 
 interface Props {
   events: ReleaseEvent[];

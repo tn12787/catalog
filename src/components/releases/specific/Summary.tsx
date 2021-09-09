@@ -1,14 +1,14 @@
 import { Button, Flex, Heading, Link, Text } from '@chakra-ui/react';
-import Card from 'components/Card';
-import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import { EnrichedRelease } from 'types';
-
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import { EnrichedRelease } from 'types';
+import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
+import Card from 'components/Card';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);

@@ -1,8 +1,9 @@
 import { Link, Text, HStack, Icon, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
-import { NavBarLink } from './types';
 import { useRouter } from 'next/router';
+
+import { NavBarLink } from './types';
 
 const NavLink = ({ href, text, activeRegex, icon }: NavBarLink) => {
   const router = useRouter();

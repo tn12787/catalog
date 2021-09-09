@@ -1,8 +1,9 @@
 import { Button, Flex, Stack, Text, useToast } from '@chakra-ui/react';
-import FormContent from 'components/FormContent';
-import { SignUpData } from 'data/signup/types';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+
+import FormContent from 'components/FormContent';
+import { SignUpData } from 'data/signup/types';
 import { signupConfig } from 'data/signup/signupConfig';
 
 const SignUp = () => {

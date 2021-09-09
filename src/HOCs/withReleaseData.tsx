@@ -1,11 +1,13 @@
 import { Spinner, Stack } from '@chakra-ui/react';
-import NotFound from 'components/releases/specific/NotFound';
 import { useRouter } from 'next/router';
-import { fetchSingleRelease } from 'queries/releases';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { EnrichedRelease } from 'types';
+
 import { LayoutablePage } from './types';
+
+import { EnrichedRelease } from 'types';
+import { fetchSingleRelease } from 'queries/releases';
+import NotFound from 'components/releases/specific/NotFound';
 
 interface ComponentWithReleaseData {
   releaseData: EnrichedRelease;

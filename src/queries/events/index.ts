@@ -1,6 +1,8 @@
-import { EventType } from './../../components/Calendar/types';
-import { ReleaseEvent } from 'types';
 import axios from 'axios';
+
+import { EventType } from './../../components/Calendar/types';
+
+import { ReleaseEvent } from 'types';
 
 export const fetchReleaseEvents = async () => {
   const { data: response } = await axios.get<ReleaseEvent[]>(

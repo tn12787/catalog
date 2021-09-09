@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+
 import prisma from 'backend/prisma/client';
 
 export const createDefaultTeamForUser = async (user: User) => {

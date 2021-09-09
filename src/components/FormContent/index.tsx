@@ -11,8 +11,9 @@ import {
   Box,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FormDatum } from 'types/forms';
 import { FieldError, FieldErrors, UseFormMethods } from 'react-hook-form';
+
+import { FormDatum } from 'types/forms';
 
 interface Props<T> {
   config: FormDatum<T>[];

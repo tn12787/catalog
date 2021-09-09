@@ -1,25 +1,27 @@
 import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiSave } from 'react-icons/fi';
-import Card from 'components/Card';
 import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { format } from 'date-fns';
+
+import { EditDistributionFormData } from './types';
+
+import Card from 'components/Card';
 import { EnrichedRelease } from 'types';
 import { buildDistribConfig } from 'components/releases/specific/Distribution/distribConfig';
 import FormContent from 'components/FormContent';
-import { useRouter } from 'next/router';
 import withReleaseData from 'HOCs/withReleaseData';
 import BackButton from 'components/BackButton';
 import { TaskStatus } from '.prisma/client';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   createSingleDistribution,
   fetchDistributors,
   updateSingleDistribution,
 } from 'queries/distribution';
-import dayjs from 'dayjs';
-import { EditDistributionFormData } from './types';
-import artists from 'pages/artists';
-import { format } from 'date-fns';
+
+
 
 interface Props {
   releaseData: EnrichedRelease;

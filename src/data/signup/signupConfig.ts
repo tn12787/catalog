@@ -1,5 +1,6 @@
-import { FormDatum } from 'types/forms';
 import { SignUpData } from './types';
+
+import { FormDatum } from 'types/forms';
 // TODO: move this types file to somewhere generic
 
 export const signupConfig: FormDatum<SignUpData>[] = [

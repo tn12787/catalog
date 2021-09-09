@@ -1,7 +1,8 @@
 import { Stack, Text, Icon } from '@chakra-ui/react';
-import ReleaseCard from 'components/releases/ReleaseCard';
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
+
+import ReleaseCard from 'components/releases/ReleaseCard';
 import { EnrichedRelease } from 'types';
 
 interface Props {

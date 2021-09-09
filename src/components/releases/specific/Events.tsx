@@ -1,6 +1,7 @@
 import { Flex, Heading } from '@chakra-ui/react';
-import Card from 'components/Card';
 import React from 'react';
+
+import Card from 'components/Card';
 import { EnrichedRelease } from 'types';
 
 interface Props {

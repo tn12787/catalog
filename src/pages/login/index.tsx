@@ -7,13 +7,14 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import FormContent from 'components/FormContent';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { loginConfig } from 'data/login/loginConfig';
-import { LoginData } from 'data/login/types';
 import GoogleButton from 'react-google-button';
 import { signIn } from 'next-auth/client';
+
+import { loginConfig } from 'data/login/loginConfig';
+import { LoginData } from 'data/login/types';
+import FormContent from 'components/FormContent';
 
 const Login = () => {
   const { register, errors, handleSubmit } = useForm<LoginData>();

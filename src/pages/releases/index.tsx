@@ -13,14 +13,13 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { isEqual } from 'lodash';
+import { useQuery } from 'react-query';
+import { BiSearch } from 'react-icons/bi';
 
 import ReleaseCard from 'components/releases/ReleaseCard';
-
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { EnrichedRelease, ReleaseType } from 'types';
-import { useQuery } from 'react-query';
 import { fetchReleases } from 'queries/releases';
-import { BiSearch } from 'react-icons/bi';
 import useDebounce from 'hooks/useDebounce';
 import ReleaseList from 'components/releases/ReleaseList';
 import { SortByOptions, SortOrder } from 'queries/types';

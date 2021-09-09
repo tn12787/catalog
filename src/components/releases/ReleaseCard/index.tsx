@@ -7,12 +7,14 @@ import {
   HStack,
   Stack,
 } from '@chakra-ui/react';
-import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import React from 'react';
-import { EnrichedRelease } from 'types';
+
 import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
 import ReleaseType from './ReleaseType';
+
+import { EnrichedRelease } from 'types';
+import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import useAppColors from 'hooks/useAppColors';
 
 interface ReleaseCardProps {

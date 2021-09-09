@@ -1,6 +1,9 @@
-import { Artwork } from 'types';
 import axios from 'axios';
+
 import { ArtworkVars } from './types';
+
+import { Artwork } from 'types';
+import firebase from 'firebase-details';
 
 export const updateSingleArtwork = async ({
   releaseId,
@@ -38,8 +41,6 @@ export const deleteSingleArtwork = async (
   );
   return response;
 };
-
-import firebase from 'firebase-details';
 
 export const uploadImageToFirebase = async (
   releaseId: string,

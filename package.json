@@ -65,6 +65,7 @@
     "build": "next build",
     "migrate": "prisma migrate dev",
     "db:push": "prisma db push",
-    "test": "jest test"
+    "test": "jest test",
+    "lint": "yarn eslint ."
   }
 }

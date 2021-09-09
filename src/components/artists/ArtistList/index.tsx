@@ -1,8 +1,9 @@
 import { Stack, Text, Icon, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
-import ArtistCard from '../ArtistCard';
 import { Artist } from '@prisma/client';
+
+import ArtistCard from '../ArtistCard';
 
 interface Props {
   search: string;

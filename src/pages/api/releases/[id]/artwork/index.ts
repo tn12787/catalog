@@ -12,18 +12,18 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
+import { Release, ReleaseType } from '@prisma/client';
+import { pickBy } from 'lodash';
+import { NextApiRequest } from 'next';
 
 import { CreateReleaseDto } from 'backend/models/releases/create';
-
-import { Release, ReleaseType } from '@prisma/client';
 import requiresAuth from 'backend/apiUtils/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { SortOrder } from 'queries/types';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
-import { pickBy } from 'lodash';
-import { NextApiRequest } from 'next';
+
 
 @requiresAuth()
 class ReleaseListHandler {

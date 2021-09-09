@@ -1,7 +1,9 @@
-import { FilterOptions, SortByOptions } from './../types';
-import { EnrichedRelease } from 'types';
 import axios, { AxiosResponse } from 'axios';
+
+import { FilterOptions, SortByOptions } from './../types';
 import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
+
+import { EnrichedRelease } from 'types';
 
 export const fetchReleases = async ({
   search,

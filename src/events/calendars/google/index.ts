@@ -1,6 +1,7 @@
+import firebase from 'firebase';
+
 import { initClient } from 'firebase-details';
 import { Release, ReleaseTask } from 'types';
-import firebase from 'firebase';
 
 export const listUserCalendars = async () => {
   const calendars = await gapi.client.calendar.calendarList.list();

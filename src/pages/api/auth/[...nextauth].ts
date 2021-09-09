@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { User } from '@prisma/client';
+
 import { createDefaultTeamForUser } from 'backend/apiUtils/teams';
 import prisma from 'backend/prisma/client';
 

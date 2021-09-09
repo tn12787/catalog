@@ -1,6 +1,7 @@
 import { Stack, StackProps } from '@chakra-ui/react';
-import useAppColors from 'hooks/useAppColors';
 import React from 'react';
+
+import useAppColors from 'hooks/useAppColors';
 
 interface Props extends StackProps {}
 

@@ -1,5 +1,6 @@
-import DashboardLayout from 'components/layouts/DashboardLayout';
 import React from 'react';
+
+import DashboardLayout from 'components/layouts/DashboardLayout';
 import BasicInfoForm from 'components/releases/BasicInfoForm';
 interface Props {}
 

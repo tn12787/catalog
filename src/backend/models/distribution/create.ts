@@ -1,5 +1,6 @@
-import { TaskStatus } from '.prisma/client';
 import { IsNotEmpty, IsDate, IsEnum, IsString, IsOptional } from 'class-validator';
+
+import { TaskStatus } from '.prisma/client';
 
 export class CreateDistributionDto {
   @IsNotEmpty()

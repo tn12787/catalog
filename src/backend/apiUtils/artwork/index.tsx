@@ -1,4 +1,5 @@
 import { InternalServerErrorException } from '@storyofams/next-api-decorators';
+
 import firebase from 'firebase-details';
 
 export const uploadImageToFirebase = async (
