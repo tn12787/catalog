@@ -1,5 +1,6 @@
-import EditArtworkForm from 'components/releases/specific/Artwork/EditArtworkForm';
 import React from 'react';
+
+import EditArtworkForm from 'components/releases/specific/Artwork/EditArtworkForm';
 
 interface Props {}
 

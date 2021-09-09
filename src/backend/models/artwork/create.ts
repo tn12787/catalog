@@ -1,4 +1,3 @@
-import { TaskStatus } from '.prisma/client';
 import {
   IsNotEmpty,
   IsDate,
@@ -7,6 +6,8 @@ import {
   IsOptional,
   IsUrl,
 } from 'class-validator';
+
+import { TaskStatus } from '.prisma/client';
 
 export class CreateArtworkDto {
   @IsNotEmpty()

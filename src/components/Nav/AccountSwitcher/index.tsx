@@ -10,13 +10,15 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { signOut, useSession } from 'next-auth/client';
-import { fetchMe } from 'queries/me';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { useState } from 'react';
 import { BiLogOut } from 'react-icons/bi';
 import { useQuery } from 'react-query';
+
 import { AccountSwitcherButton } from './AccountSwitcherButton';
+
+import { fetchMe } from 'queries/me';
 
 export const AccountSwitcher = () => {
   const [session, loading] = useSession();

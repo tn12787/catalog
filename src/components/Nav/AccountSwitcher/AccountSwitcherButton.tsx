@@ -6,9 +6,10 @@ import {
   Img,
   useMenuButton,
 } from '@chakra-ui/react';
-import useAppColors from 'hooks/useAppColors';
 import * as React from 'react';
 import { HiSelector } from 'react-icons/hi';
+
+import useAppColors from 'hooks/useAppColors';
 
 interface Props extends FlexProps {
   teamName: string;

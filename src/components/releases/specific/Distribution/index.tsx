@@ -8,18 +8,19 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import Card from 'components/Card';
 import React from 'react';
-import { SummaryField } from '../Summary';
-import { EnrichedRelease } from 'types';
 import { useRouter } from 'next/router';
-import { TaskStatus } from '.prisma/client';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
-
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import { SummaryField } from '../Summary';
+
+import { TaskStatus } from '.prisma/client';
+import { EnrichedRelease } from 'types';
+import Card from 'components/Card';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);

@@ -1,7 +1,8 @@
 import { Button, Text } from '@chakra-ui/react';
 import { Stack, HStack } from '@chakra-ui/layout';
-import useAppColors from 'hooks/useAppColors';
 import React from 'react';
+
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   onUndo: () => void;

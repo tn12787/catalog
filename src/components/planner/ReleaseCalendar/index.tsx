@@ -1,13 +1,15 @@
 import { useToast, useDisclosure } from '@chakra-ui/react';
-import Calendar from 'components/Calendar';
-import UndoToast from 'components/Calendar/UndoToast';
 import dayjs from 'dayjs';
-import { updateEventInCalendar } from 'queries/events';
 import React from 'react';
 import { useQueryClient, useMutation } from 'react-query';
-import { ReleaseEvent } from 'types';
 import { cloneDeep } from 'lodash';
+
 import ReleaseEventDrawer from '../ReleaseEventDrawer';
+
+import { ReleaseEvent } from 'types';
+import { updateEventInCalendar } from 'queries/events';
+import UndoToast from 'components/Calendar/UndoToast';
+import Calendar from 'components/Calendar';
 
 interface Props {
   events: ReleaseEvent[];

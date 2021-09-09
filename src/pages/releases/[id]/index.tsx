@@ -1,4 +1,5 @@
 import { HStack, Stack } from '@chakra-ui/react';
+import React from 'react';
 
 import { EnrichedRelease } from 'types';
 import withReleaseData from 'HOCs/withReleaseData';
@@ -9,7 +10,6 @@ import HeaderSection from 'components/releases/specific/HeaderSection';
 import Summary from 'components/releases/specific/Summary';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import React from 'react';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

@@ -1,8 +1,9 @@
 import { HStack, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FiCalendar, FiDisc } from 'react-icons/fi';
-import { EnrichedRelease } from 'types';
 import { format, formatDistanceToNow } from 'date-fns';
+
+import { EnrichedRelease } from 'types';
 
 interface Props {
   releaseData: EnrichedRelease;

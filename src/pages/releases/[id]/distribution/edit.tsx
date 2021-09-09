@@ -1,5 +1,6 @@
-import EditDistributionForm from 'components/releases/specific/Distribution/EditDistributionForm';
 import React from 'react';
+
+import EditDistributionForm from 'components/releases/specific/Distribution/EditDistributionForm';
 
 interface Props {}
 

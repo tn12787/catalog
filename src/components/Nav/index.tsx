@@ -7,8 +7,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
+
 import NavLink from './NavLink';
 import { AccountSwitcher } from './AccountSwitcher';
+
 import { NavLinkConfig } from 'appLinks';
 
 interface Props {

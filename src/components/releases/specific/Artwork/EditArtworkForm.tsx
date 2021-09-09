@@ -7,29 +7,32 @@ import {
   Heading,
   Image,
 } from '@chakra-ui/react';
-import Card from 'components/Card';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiSave } from 'react-icons/fi';
-import { Artwork, EnrichedRelease } from 'types';
-import { buildArtworkConfig } from 'components/releases/specific/Artwork/artworkConfig';
-import FormContent from 'components/FormContent';
-import 'firebase/storage';
-import withReleaseData from 'HOCs/withReleaseData';
 import { useRouter } from 'next/router';
-import BackButton from 'components/BackButton';
-import { TaskStatus } from '.prisma/client';
+import { useQueryClient, useMutation } from 'react-query';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+import 'firebase/storage';
+
+import { EditArtworkFormData } from './types';
+
+import Card from 'components/Card';
 import {
   createSingleArtwork,
   updateSingleArtwork,
   uploadImageToFirebase,
 } from 'queries/artwork';
-import { useQueryClient, useMutation } from 'react-query';
-import { EditArtworkFormData } from './types';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import { TaskStatus } from '.prisma/client';
+import BackButton from 'components/BackButton';
+import withReleaseData from 'HOCs/withReleaseData';
+import FormContent from 'components/FormContent';
+import { buildArtworkConfig } from 'components/releases/specific/Artwork/artworkConfig';
+import { Artwork, EnrichedRelease } from 'types';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -151,7 +154,6 @@ const EditArtworkForm = ({ releaseData }: Props) => {
   return (
     <Stack
       flex={1}
-      
       align="center"
       direction="column"
       width="100%"

@@ -12,14 +12,13 @@ import {
   Request,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-
-import requiresAuth from 'backend/apiUtils/auth';
-import prisma from 'backend/prisma/client';
 import { NextApiRequest } from 'next';
 import { Session } from 'next-auth';
-
 import { getSession } from 'next-auth/client';
 import { JWT } from 'next-auth/jwt';
+
+import prisma from 'backend/prisma/client';
+import requiresAuth from 'backend/apiUtils/auth';
 
 @requiresAuth()
 class MeHandler {

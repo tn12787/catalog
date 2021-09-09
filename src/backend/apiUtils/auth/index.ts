@@ -3,7 +3,6 @@ import {
   NextFunction,
   UnauthorizedException,
 } from '@storyofams/next-api-decorators';
-
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
 

@@ -13,11 +13,12 @@ import {
   Input,
   useDisclosure,
 } from '@chakra-ui/react';
+import React from 'react';
+import { BiMenu } from 'react-icons/bi';
+
 import { appLinks } from 'appLinks';
 import Nav from 'components/Nav';
 import useAppColors from 'hooks/useAppColors';
-import React from 'react';
-import { BiMenu } from 'react-icons/bi';
 
 const DashboardLayout: React.FC = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

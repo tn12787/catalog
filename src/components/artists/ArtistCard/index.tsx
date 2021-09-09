@@ -13,6 +13,7 @@ import NextLink from 'next/link';
 import { Link } from '@chakra-ui/react';
 import { BiDisc } from 'react-icons/bi';
 import { useRouter } from 'next/router';
+
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

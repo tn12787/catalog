@@ -1,14 +1,16 @@
-import DashboardLayout from 'components/layouts/DashboardLayout';
-import { fetchArtists } from 'queries/artists';
 import React from 'react';
 import { Button, Heading, Link, Stack, Text } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-interface Props {}
 import NextLink from 'next/link';
+
+import { fetchArtists } from 'queries/artists';
+import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import ArtistCard from 'components/artists/ArtistCard';
 import ArtistList from 'components/artists/ArtistList';
 import useAppColors from 'hooks/useAppColors';
+
+interface Props {}
 
 const Artists = (props: Props) => {
   const { bgPrimary } = useAppColors();

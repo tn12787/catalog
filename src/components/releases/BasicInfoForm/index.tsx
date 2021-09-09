@@ -1,20 +1,22 @@
 import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { FiArrowRight } from 'react-icons/fi';
-import Card from 'components/Card';
 import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { EnrichedRelease, ReleaseType } from 'types';
-import { basicInfoConfig } from './releaseConfig';
-import FormContent from 'components/FormContent';
 import { useRouter } from 'next/router';
-import { fetchArtists } from 'queries/artists';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import dayjs from 'dayjs';
+
+import { basicInfoConfig } from './releaseConfig';
+
+import Card from 'components/Card';
+import { EnrichedRelease, ReleaseType } from 'types';
+import FormContent from 'components/FormContent';
+import { fetchArtists } from 'queries/artists';
 import { createSingleRelease, updateBasicReleaseInfo } from 'queries/releases';
 import {
   CreateSingleReleaseVars,
   SingleReleaseVars,
 } from 'queries/releases/types';
-import dayjs from 'dayjs';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

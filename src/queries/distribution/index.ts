@@ -1,8 +1,13 @@
-import { Distributor } from '.prisma/client';
-import { SortByOptions } from '../types';
-import { EnrichedRelease, Distribution } from 'types';
 import axios, { AxiosResponse } from 'axios';
+
+import { SortByOptions } from '../types';
+
 import { DistributionVars } from './types';
+
+import { Distributor } from '.prisma/client';
+import { EnrichedRelease, Distribution } from 'types';
+
+
 
 export const updateSingleDistribution = async ({
   releaseId,

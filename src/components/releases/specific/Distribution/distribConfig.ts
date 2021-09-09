@@ -1,6 +1,7 @@
+import { EditDistributionFormData } from './types';
+
 import { FormDatum } from 'types/forms';
 import { Distributor, TaskStatus } from '.prisma/client';
-import { EditDistributionFormData } from './types';
 
 export const buildDistribConfig = (
   alreadyCompleted: boolean,
