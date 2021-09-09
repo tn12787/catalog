@@ -1,16 +1,10 @@
 import {
   Box,
-  Button,
   Drawer,
-  DrawerBody,
-  DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   Flex,
   IconButton,
-  Input,
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
