@@ -19,6 +19,7 @@ import {
 import dayjs from 'dayjs';
 import { EditDistributionFormData } from './types';
 import artists from 'pages/artists';
+import { format } from 'date-fns';
 
 interface Props {
   releaseData: EnrichedRelease;
@@ -28,14 +29,18 @@ const EditDistributionForm = ({ releaseData }: Props) => {
   const router = useRouter();
 
   const formattedDueDate = useMemo(
-    () => dayjs(releaseData.distribution?.dueDate).format('YYYY-MM-DD'),
+    () =>
+      format(
+        new Date(releaseData.distribution?.dueDate as string),
+        'yyyy-MM-dd'
+      ),
     [releaseData.distribution?.dueDate]
   );
 
   const formattedCompletedOn = useMemo(
     () =>
       releaseData.distribution?.completedOn
-        ? dayjs(releaseData.distribution?.completedOn).format('YYYY-MM-DD')
+        ? format(new Date(releaseData.distribution?.completedOn), 'yyyy-MM-dd')
         : undefined,
     [releaseData.distribution?.completedOn]
   );
@@ -133,7 +138,6 @@ const EditDistributionForm = ({ releaseData }: Props) => {
   return (
     <Stack
       flex={1}
-      
       align="center"
       direction="column"
       width="100%"

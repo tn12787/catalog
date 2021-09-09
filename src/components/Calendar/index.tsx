@@ -26,10 +26,19 @@ import CalendarSquare from './CalendarSquare';
 interface Props {
   events: ReleaseEvent[];
   onEventClicked?: (event: ReleaseEvent) => void;
+  onEventDropped?: (
+    event: ReleaseEvent,
+    targetDate: Date
+  ) => void | Promise<void>;
   loading?: boolean;
 }
 
-const Calendar = ({ events, onEventClicked, loading }: Props) => {
+const Calendar = ({
+  events,
+  onEventClicked,
+  onEventDropped,
+  loading,
+}: Props) => {
   const { cursorDate, headers, body, navigation, view } = useCalendar();
   const router = useRouter();
   const enrichedBody = useMemo(() => {
@@ -142,7 +151,7 @@ const Calendar = ({ events, onEventClicked, loading }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {enrichedBody.value.map((week) => {
+          {enrichedBody.value.map((week, rowIndex) => {
             const { key, value: days } = week;
 
             return (
@@ -153,6 +162,7 @@ const Calendar = ({ events, onEventClicked, loading }: Props) => {
                       key={index.toString()}
                       day={day}
                       onEventClicked={onEventClicked}
+                      onEventDropped={onEventDropped}
                     />
                   );
                 })}

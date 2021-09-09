@@ -60,7 +60,7 @@ export type ReleaseTaskStatus =
 
 export interface ReleaseTask extends DataModel {
   [key: string]: any;
-  dueDate: Date;
+  dueDate: Date | string;
   status: TaskStatus;
   completedOn?: string;
   notes?: string;
