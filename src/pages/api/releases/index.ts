@@ -13,9 +13,9 @@ import {
 } from '@storyofams/next-api-decorators';
 import { Release, ReleaseType } from '@prisma/client';
 import { pickBy } from 'lodash';
+import requiresAuth from 'backend/apiUtils/decorators/auth';
 
 import { CreateReleaseDto } from 'backend/models/releases/create';
-import requiresAuth from 'backend/apiUtils/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { SortOrder } from 'queries/types';
