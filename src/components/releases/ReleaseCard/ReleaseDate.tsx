@@ -12,12 +12,16 @@ const ReleaseDate = ({ releaseData }: Props) => {
   return (
     <HStack align="center">
       <Icon fontSize="22px" as={FiCalendar} />
-      <HStack>
+      <HStack alignItems="center">
         <Text fontSize="sm">
-          {format(new Date(releaseData.targetDate), 'LL')}
+          {format(new Date(releaseData.targetDate), 'PP')}
         </Text>
         <Text fontSize="xs">
-          ({formatDistanceToNow(new Date(releaseData.targetDate))})
+          (
+          {formatDistanceToNow(new Date(releaseData.targetDate), {
+            addSuffix: true,
+          })}
+          )
         </Text>
       </HStack>
     </HStack>

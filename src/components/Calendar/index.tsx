@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
+  Box,
   Button,
   HStack,
   IconButton,
@@ -16,6 +17,7 @@ import useCalendar from '@veccu/react-calendar';
 import Card from 'components/Card';
 import { format } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
+import useAppColors from 'hooks/useAppColors';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import { ReleaseEvent } from 'types';
@@ -23,9 +25,11 @@ import CalendarSquare from './CalendarSquare';
 
 interface Props {
   events: ReleaseEvent[];
+  onEventClicked?: (event: ReleaseEvent) => void;
+  loading?: boolean;
 }
 
-const Calendar = ({ events }: Props) => {
+const Calendar = ({ events, onEventClicked, loading }: Props) => {
   const { cursorDate, headers, body, navigation, view } = useCalendar();
   const router = useRouter();
   const enrichedBody = useMemo(() => {
@@ -49,9 +53,23 @@ const Calendar = ({ events }: Props) => {
     };
   }, [events, body]);
 
+  const { bgPrimary } = useAppColors();
+
   return (
     <Card p={0} w="100%" overflowX="auto">
-      <Table variant="simple" w="100%">
+      <Table variant="simple" w="100%" position="relative">
+        {loading && (
+          <Box
+            w="100%"
+            h="100%"
+            position="absolute"
+            bg={bgPrimary}
+            top={0}
+            left={0}
+            opacity={0.5}
+            zIndex={500}
+          ></Box>
+        )}
         <TableCaption placement="top">
           <nav>
             <HStack justify="space-between">
@@ -134,9 +152,7 @@ const Calendar = ({ events }: Props) => {
                     <CalendarSquare
                       key={index.toString()}
                       day={day}
-                      onEventClicked={(event) =>
-                        router.push(`/releases/${event.release.id}`)
-                      }
+                      onEventClicked={onEventClicked}
                     />
                   );
                 })}

@@ -1,7 +1,5 @@
 import {
-  Divider,
   HStack,
-  Link,
   Stack,
   Switch,
   Text,
@@ -9,13 +7,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
-import CurrentUser from './CurrentUser';
-import { NavBarLink } from './types';
-import NextLink from 'next/link';
 import NavLink from './NavLink';
 import { AccountSwitcher } from './AccountSwitcher';
 import { NavLinkConfig } from 'appLinks';
-import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   links: NavLinkConfig;

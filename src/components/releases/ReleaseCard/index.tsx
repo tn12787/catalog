@@ -28,23 +28,23 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
       my={'11px'}
       overflow="hidden"
       alignItems="center"
-      direction={['column', 'column', 'row']}
+      direction={{ base: 'column', md: 'row' }}
       borderRadius={'13px'}
       border="1px solid"
       borderColor={border}
       width="100%"
       bg={bgSecondary}
-      // maxH={['auto', 'auto', '150px']}
+      pb={{ base: '10px', md: 0 }}
     >
-      <Skeleton isLoaded={!loading}>
+      <Skeleton isLoaded={!loading} w={{ base: '100%', md: 'auto' }}>
         <Image
           src={
             releaseData.artwork?.url ||
             'https://semantic-ui.com/images/wireframe/image.png'
           }
           alt="this is an image"
-          width={['100%', '100%', '170px']}
-          minW={['100%', '100%', '170px']}
+          width={{ base: '100%', md: '170px' }}
+          minW={{ base: '100%', md: '170px' }}
           height="170px"
           backgroundSize="cover"
           objectFit="cover"
@@ -54,12 +54,12 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
         <Flex
           flex={1}
           align="center"
-          direction={['column', 'column', 'row']}
+          direction={{ base: 'column', md: 'row' }}
           justify="space-between"
         >
-          <HStack alignItems="center" direction={['column', 'column', 'row']}>
+          <HStack alignItems="center" direction={{ base: 'column', md: 'row' }}>
             <Skeleton isLoaded={!loading}>
-              <Text fontSize="25px" fontWeight="semibold">
+              <Text fontSize="25px" isTruncated fontWeight="semibold">
                 {releaseData.name}
               </Text>
             </Skeleton>

@@ -33,8 +33,10 @@ const DashboardLayout: React.FC = ({ children }) => {
           icon={<BiMenu />}
           rounded="full"
           position="fixed"
-          bottom={20}
-          right={20}
+          bottom={'20px'}
+          right={'20px'}
+          zIndex={1000}
+          boxShadow="xl"
           colorScheme="purple"
           onClick={onOpen}
         >
