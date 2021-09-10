@@ -133,6 +133,8 @@ model Artist {
   releases     Release[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime? @updatedAt
+
+  @@unique([name, teamId])
 }
 
 model Release {
