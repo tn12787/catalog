@@ -31,8 +31,8 @@ const Artists = (props: Props) => {
           <Heading size="2xl" fontWeight="black" py={4} alignSelf="flex-start">
             Artists
           </Heading>
-          <Button href={'/releases/new'} as={'a'}>
-            Create New Release
+          <Button href={'/artists/new'} colorScheme="purple" as={'a'}>
+            Add Artist
           </Button>
         </Stack>
         <Stack>
