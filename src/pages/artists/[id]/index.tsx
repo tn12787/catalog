@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/button';
-import { Stack, Heading, Text } from '@chakra-ui/layout';
+import { Stack, Heading, Text, Link } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -42,6 +42,9 @@ const SingleArtist = (props: Props) => {
           <Text>
             {response?.data?.name} ({response?.data?.legalName})
           </Text>
+          <Link href={response?.data.spotifyUrl as string} isExternal>
+            Spotify
+          </Link>
         </Stack>
       </Stack>
     </Stack>
