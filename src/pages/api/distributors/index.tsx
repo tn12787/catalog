@@ -1,6 +1,6 @@
 import { createHandler, Get } from '@storyofams/next-api-decorators';
-import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 
+import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 
 @requiresAuth()

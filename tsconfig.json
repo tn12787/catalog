@@ -23,6 +23,6 @@
     "files": true,
     "compilerOptions": { "isolatedModules": false, "module": "commonjs" }
   },
-  "include": ["src", "prisma"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
