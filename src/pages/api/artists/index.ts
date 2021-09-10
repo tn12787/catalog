@@ -6,19 +6,25 @@ import {
   NotFoundException,
   Param,
   Post,
+  Query,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { ReleaseType } from '@prisma/client';
-import requiresAuth from 'backend/apiUtils/decorators/auth';
 
+import requiresAuth from 'backend/apiUtils/decorators/auth';
 import { CreateArtistDto } from 'backend/models/artists/create';
 import prisma from 'backend/prisma/client';
 
 @requiresAuth()
 class ArtistHandler {
   @Get()
-  async artists() {
+  async artists(@Query('team') teamId: string) {
     const artists = await prisma.artist.findMany({
+      where: {
+        team: {
+          id: teamId,
+        },
+      },
       orderBy: {
         name: 'asc',
       },
@@ -29,19 +35,6 @@ class ArtistHandler {
       },
     });
     return artists;
-  }
-
-  @Get('/:id')
-  async singleArtist(@Param('id') id: string) {
-    if (!id) throw new NotFoundException();
-
-    const artist = await prisma.artist.findUnique({
-      where: {
-        id,
-      },
-      include: { releases: true },
-    });
-    return artist;
   }
 
   @Post()

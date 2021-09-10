@@ -6,12 +6,13 @@ import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
 import { EnrichedRelease } from 'types';
 
 export const fetchReleases = async ({
+  team,
   search,
   pagination,
   sorting,
 }: FilterOptions<EnrichedRelease>) => {
   return await axios.get<EnrichedRelease[]>(
-    `/api/releases?search=${search}&sortBy=${sorting?.key}&sortOrder=${sorting?.order}`
+    `/api/releases?team=${team}&search=${search}&sortBy=${sorting?.key}&sortOrder=${sorting?.order}`
   );
 };
 

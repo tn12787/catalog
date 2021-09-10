@@ -14,11 +14,12 @@ import {
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical, BsTrash } from 'react-icons/bs';
 import { BiLogOut } from 'react-icons/bi';
-import { signOut, useSession } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/react';
 
 interface Props {}
 const CurrentUser = (props: Props) => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
 
   const onLogout = async () => {
     signOut();

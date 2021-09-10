@@ -1,5 +1,5 @@
 import { Button, Stack, Heading } from '@chakra-ui/react';
-import { signOut } from 'next-auth/client';
+import { signOut } from 'next-auth/react';
 import React, { useState } from 'react';
 
 interface Props {}

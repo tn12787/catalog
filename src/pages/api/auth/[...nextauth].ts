@@ -1,5 +1,5 @@
+import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { User } from '@prisma/client';
 
@@ -11,32 +11,33 @@ export default NextAuth({
     signIn: '/login',
   },
   providers: [
-    Providers.Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       scope:
         'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events',
-    }),
+    } as any) as any, // TODO: Fix this when the library is updated
   ],
   secret: process.env.SECRET,
   session: {
     jwt: true,
   },
   callbacks: {
-    async jwt(token, user, account, profile, isNewUser) {
-      const userTeams = await prisma.teamUser.count({
+    async jwt({ token, user, profile, isNewUser }) {
+      const userTeams = await prisma.teamUser.findMany({
         where: { userId: user?.id as string },
+        include: { team: true },
       });
-      if (isNewUser || !userTeams) {
+
+      if (isNewUser || !userTeams?.length) {
         await createDefaultTeamForUser(user as User);
       }
 
-      return { ...token, userData: { user, profile } };
+      return { ...token, userData: { user, profile, teams: userTeams } };
     },
-    async session(session, token) {
-      // Add property to session, like an access_token from a provider.
+    async session({ session, token, user }) {
       session.accessToken = token.accessToken;
-      return { ...session, token };
+      return { ...session, token, user };
     },
   },
   adapter: PrismaAdapter(prisma),

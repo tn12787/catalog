@@ -13,8 +13,8 @@ import {
 } from '@storyofams/next-api-decorators';
 import { Release, ReleaseType } from '@prisma/client';
 import { pickBy } from 'lodash';
-import requiresAuth from 'backend/apiUtils/decorators/auth';
 
+import requiresAuth from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
@@ -22,11 +22,11 @@ import { SortOrder } from 'queries/types';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 
-
 @requiresAuth()
 class ReleaseListHandler {
   @Get()
   async releases(
+    @Query('team') team: string,
     @Query('search') search: string,
     @Query('sortBy') sortBy: keyof Release,
     @Query('sortOrder') sortOrder: SortOrder
@@ -34,6 +34,7 @@ class ReleaseListHandler {
     const releases = await prisma.release.findMany({
       where: {
         name: { contains: search, mode: 'insensitive' },
+        team: { id: team },
       },
       orderBy: {
         [sortBy]: sortOrder ?? 'asc',
