@@ -7,12 +7,14 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
+import { uniq } from 'lodash';
 
 import NavLink from './NavLink';
 import { AccountSwitcher } from './AccountSwitcher';
 
 import { NavLinkConfig } from 'appLinks';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 interface Props {
   links: NavLinkConfig;
@@ -20,10 +22,13 @@ interface Props {
 
 const Nav = ({ links }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { token, currentTeam } = useExtendedSession();
-  const roles = token?.userData.teams.find(
-    (item) => item.teamId === currentTeam
-  )?.roles;
+  const { currentTeam, teams } = useExtendedSession();
+
+  const canManageTeam = hasRequiredPermissions(
+    ['UPDATE_TEAM'],
+    teams?.[currentTeam]
+  );
+
   const selectedBg = useColorModeValue('gray.200', 'gray.700');
   const lightModeText = useColorModeValue('gray.500', 'gray.500');
   return (
@@ -43,11 +48,13 @@ const Nav = ({ links }: Props) => {
           ))}
         </Stack>
       </Stack>
-      <Stack>
-        {links.settings.links.map((link, index) => (
-          <NavLink {...link} key={index.toString()} />
-        ))}
-      </Stack>
+      {canManageTeam && (
+        <Stack>
+          {links.settings(currentTeam).links.map((link, index) => (
+            <NavLink {...link} key={index.toString()} />
+          ))}
+        </Stack>
+      )}
       <HStack bg={selectedBg} borderRadius="2xl" p={5} justify="center">
         <Text fontSize="xs" color={lightModeText} textTransform="uppercase">
           Light mode

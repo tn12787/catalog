@@ -11,10 +11,14 @@ import {
 import { ReleaseType } from '@prisma/client';
 import { NextApiRequest } from 'next';
 
-import requiresAuth from 'backend/apiUtils/decorators/auth';
+import {
+  requiresAuth,
+  requiresTeamMembership,
+} from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -39,6 +43,7 @@ class ReleaseListHandler {
   }
 
   @Put()
+  @requiresTeamMembership()
   async updateRelease(
     @Req() req: NextApiRequest,
     @Body(ValidationPipe) body: UpdateReleaseDto,
@@ -62,6 +67,19 @@ class ReleaseListHandler {
 
   @Delete()
   async deleteRelease(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+      },
+    });
+
+    await checkRequiredPermissions(
+      req,
+      ['DELETE_RELEASES'],
+      releaseTeam?.teamId
+    );
+
     const result = await prisma.release.delete({
       where: {
         id,

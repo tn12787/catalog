@@ -26,7 +26,7 @@ export default NextAuth({
     async jwt({ token, user, profile, isNewUser }) {
       const userTeams = await prisma.teamUser.findMany({
         where: { userId: user?.id as string },
-        include: { team: true },
+        include: { team: true, roles: { include: { permissions: true } } },
       });
 
       if (isNewUser || !userTeams?.length) {

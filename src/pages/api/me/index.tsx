@@ -17,7 +17,7 @@ import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import { JWT } from 'next-auth/jwt';
 
-import requiresAuth from 'backend/apiUtils/decorators/auth';
+import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 
 @requiresAuth()

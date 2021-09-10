@@ -1,8 +1,10 @@
+import { useQueryClient } from 'react-query';
 import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import create from 'zustand';
+import router from 'next/router';
 
-import { ExtendedSession } from 'types';
+import { EnrichedTeamUser, ExtendedSession } from 'types';
 
 interface UseTeamPreferenceState {
   currentTeam: string;
@@ -29,6 +31,17 @@ const useExtendedSession = () => {
     )
   );
 
+  const teamMap = useMemo(() => {
+    const teams = token?.userData?.teams;
+
+    return teams?.reduce((acc, team) => {
+      acc[team.teamId] = team;
+      return acc;
+    }, {} as { [key: string]: EnrichedTeamUser });
+  }, [token?.userData?.teams]);
+
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     const teams = token?.userData?.teams;
     const storedTeam = localStorage.getItem('team');
@@ -50,14 +63,16 @@ const useExtendedSession = () => {
       if (typeof window !== 'undefined') {
         localStorage.setItem('activeTeam', val as string);
       }
-      console.log('switching!', val);
+      queryClient.clear();
       setCurrentTeam(val as string);
+      router.replace('/releases');
     },
-    [setCurrentTeam]
+    [setCurrentTeam, queryClient]
   );
 
   return {
     token,
+    teams: teamMap,
     currentTeam,
     onChangeTeam,
     status,

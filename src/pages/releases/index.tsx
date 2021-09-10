@@ -27,6 +27,7 @@ import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedire
 import { Artist } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 interface SortBySelectOption<T> {
   label: string;
@@ -70,7 +71,7 @@ const Releases = () => {
     sortOptions[0]
   );
 
-  const { currentTeam } = useExtendedSession();
+  const { currentTeam, teams } = useExtendedSession();
 
   const { bgPrimary, primary, bgSecondary } = useAppColors();
 
@@ -89,7 +90,10 @@ const Releases = () => {
     fetchReleases(queryArgs)
   );
 
-  console.log(currentTeam);
+  const canCreateRelease = hasRequiredPermissions(
+    ['CREATE_RELEASES'],
+    teams?.[currentTeam]
+  );
 
   return (
     <Stack
@@ -112,9 +116,11 @@ const Releases = () => {
           >
             All Releases
           </Heading>
-          <Button href={'/releases/new'} colorScheme="purple" as={'a'}>
-            Create New Release
-          </Button>
+          {canCreateRelease && (
+            <Button href={'/releases/new'} colorScheme="purple" as={'a'}>
+              Create New Release
+            </Button>
+          )}
         </Flex>
         <HStack justifyContent="space-between">
           <InputGroup maxW="400px" bg={bgSecondary}>

@@ -10,7 +10,7 @@ export interface NavLinkConfig {
   main: {
     links: NavBarLink[];
   };
-  settings: { links: NavBarLink[] };
+  settings: (currentTeam: string) => { links: NavBarLink[] };
 }
 
 export const appLinks: NavLinkConfig = {
@@ -36,20 +36,20 @@ export const appLinks: NavLinkConfig = {
       },
     ],
   },
-  settings: {
+  settings: (currentTeam) => ({
     links: [
       {
         icon: RiTeamLine,
-        href: '/team/overview',
+        href: `/teams/${currentTeam}/overview`,
         text: 'Team Overview',
         activeRegex: /^\/team\/overview/,
       },
       {
         icon: BsGear,
-        href: '/team/settings',
+        href: `/teams/${currentTeam}/settings`,
         text: 'Team Settings',
         activeRegex: /^\/team\/overview/,
       },
     ],
-  },
+  }),
 };

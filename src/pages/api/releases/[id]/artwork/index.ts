@@ -10,7 +10,7 @@ import {
 import { pickBy } from 'lodash';
 import { NextApiRequest } from 'next';
 
-import requiresAuth from 'backend/apiUtils/decorators/auth';
+import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';

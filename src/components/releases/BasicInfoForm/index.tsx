@@ -77,6 +77,7 @@ const BasicInfoForm = ({ existingRelease }: Props) => {
     try {
       const result = await createRelease({
         ...data,
+        team: currentTeam,
       } as CreateSingleReleaseVars);
       toast({
         status: 'success',
