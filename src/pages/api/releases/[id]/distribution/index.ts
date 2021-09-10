@@ -16,7 +16,7 @@ import { Release, ReleaseType } from '@prisma/client';
 import { pickBy } from 'lodash';
 import { NextApiRequest } from 'next';
 
-import requiresAuth from 'backend/apiUtils/decorators/auth';
+import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';

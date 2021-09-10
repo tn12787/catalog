@@ -4,6 +4,8 @@ import {
   Distributor,
   TaskStatus,
   Artist as PrismaArtist,
+  Role,
+  Permission,
 } from '.prisma/client';
 
 interface DataModel {
@@ -106,11 +108,16 @@ export enum EventType {
   RELEASE = 'release',
 }
 
+export type EnrichedTeamUser = TeamUser & {
+  team: Team;
+  roles: Role & { permissions: Permission[] }[];
+};
+
 export interface ExtendedSession {
   email: string;
   name: string;
   picture: string;
   userData: {
-    teams: (TeamUser & { team: Team })[];
+    teams: EnrichedTeamUser[];
   };
 }

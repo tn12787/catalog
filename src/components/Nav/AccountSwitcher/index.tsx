@@ -22,7 +22,7 @@ import { ExtendedSession } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 export const AccountSwitcher = () => {
-  const { session, currentTeam, onChangeTeam, status } = useExtendedSession();
+  const { token, currentTeam, onChangeTeam, status } = useExtendedSession();
 
   const sessionLoading = status === 'loading';
 
@@ -31,7 +31,6 @@ export const AccountSwitcher = () => {
     signOut();
   };
 
-  const token = session?.token as ExtendedSession | undefined;
   const userTeams = token?.userData?.teams;
 
   const activeTeam = useMemo(() => {

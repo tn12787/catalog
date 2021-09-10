@@ -19,6 +19,10 @@
     "baseUrl": "./src",
     "experimentalDecorators": true
   },
-  "include": ["src"],
+  "ts-node": {
+    "files": true,
+    "compilerOptions": { "isolatedModules": false, "module": "commonjs" }
+  },
+  "include": ["src", "prisma"],
   "exclude": ["node_modules"]
 }

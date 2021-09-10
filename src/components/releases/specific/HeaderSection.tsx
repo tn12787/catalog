@@ -25,6 +25,8 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { deleteSingleRelease } from 'queries/releases';
 import { EnrichedRelease } from 'types';
+import { hasRequiredPermissions } from 'utils/auth';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
   releaseData: EnrichedRelease;
@@ -45,6 +47,13 @@ const HeaderSection = ({ releaseData }: Props) => {
         queryClient.invalidateQueries(['releases']);
       },
     }
+  );
+
+  const { teams, currentTeam } = useExtendedSession();
+
+  const canDeleteRelease = hasRequiredPermissions(
+    ['DELETE_RELEASES'],
+    teams?.[currentTeam]
   );
 
   const onDelete = async () => {
@@ -114,9 +123,11 @@ const HeaderSection = ({ releaseData }: Props) => {
           </HStack>
           <Heading>{releaseData.name}</Heading>
         </HStack>
-        <Button colorScheme="red" onClick={onOpen}>
-          Delete
-        </Button>
+        {canDeleteRelease && (
+          <Button colorScheme="red" onClick={onOpen}>
+            Delete
+          </Button>
+        )}
       </Flex>
       <AlertDialog
         motionPreset="slideInBottom"
