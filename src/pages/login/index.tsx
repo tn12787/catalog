@@ -10,7 +10,8 @@ import {
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import GoogleButton from 'react-google-button';
-import { signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 
 import { loginConfig } from 'data/login/loginConfig';
 import { LoginData } from 'data/login/types';
@@ -86,6 +87,19 @@ const Login = () => {
       </Stack>
     </Flex>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (session) {
+    return {
+      redirect: {
+        destination: '/releases',
+        permanent: false,
+      },
+    };
+  }
+  return { props: {} };
 };
 
 export default Login;

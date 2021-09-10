@@ -18,6 +18,7 @@ import {
   SingleReleaseVars,
 } from 'queries/releases/types';
 import useAppColors from 'hooks/useAppColors';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
   existingRelease?: EnrichedRelease;
@@ -48,7 +49,11 @@ const BasicInfoForm = ({ existingRelease }: Props) => {
     },
   });
 
-  const { data: artists } = useQuery('artists', fetchArtists);
+  const { currentTeam } = useExtendedSession();
+
+  const { data: artists } = useQuery(['artists', currentTeam], () =>
+    fetchArtists(currentTeam)
+  );
   const queryClient = useQueryClient();
   const { mutateAsync: createRelease, isLoading: createLoading } = useMutation(
     createSingleRelease,

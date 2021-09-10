@@ -13,6 +13,7 @@ import {
 import React from 'react';
 import { FieldError, FieldErrors, UseFormMethods } from 'react-hook-form';
 
+import useAppColors from 'hooks/useAppColors';
 import { FormDatum } from 'types/forms';
 
 interface Props<T> {
@@ -41,6 +42,7 @@ const deriveComponent = (type?: string): InputComponentType => {
 };
 
 const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
+  const { primary } = useAppColors();
   return (
     <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
       {config.map(
@@ -80,7 +82,7 @@ const FormContent = <T extends any>({ errors, config, register }: Props<T>) => {
                 {isLoading && (
                   <InputRightElement>
                     <Box>
-                      <Spinner  size="sm"></Spinner>
+                      <Spinner color={primary} size="sm"></Spinner>
                     </Box>
                   </InputRightElement>
                 )}

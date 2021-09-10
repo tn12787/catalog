@@ -12,6 +12,7 @@ import NavLink from './NavLink';
 import { AccountSwitcher } from './AccountSwitcher';
 
 import { NavLinkConfig } from 'appLinks';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
   links: NavLinkConfig;
@@ -19,6 +20,10 @@ interface Props {
 
 const Nav = ({ links }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { token, currentTeam } = useExtendedSession();
+  const roles = token?.userData.teams.find(
+    (item) => item.teamId === currentTeam
+  )?.roles;
   const selectedBg = useColorModeValue('gray.200', 'gray.700');
   const lightModeText = useColorModeValue('gray.500', 'gray.500');
   return (

@@ -11,9 +11,14 @@ export const fetchReleases = async ({
   pagination,
   sorting,
 }: FilterOptions<EnrichedRelease>) => {
-  return await axios.get<EnrichedRelease[]>(
-    `/api/releases?team=${team}&search=${search}&sortBy=${sorting?.key}&sortOrder=${sorting?.order}`
-  );
+  return await axios.get<EnrichedRelease[]>(`/api/releases`, {
+    params: {
+      team,
+      search,
+      sortBy: sorting?.key,
+      sortOrder: sorting?.order,
+    },
+  });
 };
 
 export const fetchSingleRelease = async (id: string) => {

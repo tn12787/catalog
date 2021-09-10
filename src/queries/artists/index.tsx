@@ -3,7 +3,9 @@ import axios from 'axios';
 import { Artist } from '.prisma/client';
 
 export const fetchArtists = async (teamId: string): Promise<Artist[]> => {
-  const { data } = await axios.get(`/api/artists?team=${teamId}`);
+  const { data } = await axios.get(`/api/artists`, {
+    params: { team: teamId },
+  });
   return data;
 };
 

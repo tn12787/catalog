@@ -20,6 +20,7 @@ import useAppColors from 'hooks/useAppColors';
 import { fetchReleaseEvents } from 'queries/events';
 import { ReleaseEvent } from 'types';
 import ReleaseCalendar from 'components/planner/ReleaseCalendar';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 const tabData = (
   events: ReleaseEvent[],
@@ -35,9 +36,11 @@ const tabData = (
 
 const Planner = (props: Props) => {
   const { bgPrimary, primary } = useAppColors();
+
+  const { currentTeam } = useExtendedSession();
   const { data, isLoading, error } = useQuery(
-    'releaseEvents',
-    fetchReleaseEvents
+    ['releaseEvents', currentTeam],
+    () => fetchReleaseEvents(currentTeam)
   );
 
   const tabsToRender = tabData(data ?? [], isLoading);
