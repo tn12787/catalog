@@ -121,3 +121,24 @@ export interface ExtendedSession {
     teams: EnrichedTeamUser[];
   };
 }
+
+export type PermissionType =
+  | 'CREATE_RELEASES'
+  | 'UPDATE_RELEASES'
+  | 'DELETE_RELEASES'
+  | 'VIEW_RELEASES'
+  | 'CREATE_ARTISTS'
+  | 'UPDATE_ARTISTS'
+  | 'DELETE_ARTISTS'
+  | 'VIEW_ARTISTS'
+  | 'CREATE_ROLES'
+  | 'UPDATE_ROLES'
+  | 'DELETE_ROLES'
+  | 'VIEW_ROLES'
+  | 'INVITE_USERS'
+  | 'DELETE_USERS'
+  | 'UPDATE_USERS'
+  | 'VIEW_USERS'
+  | 'VIEW_TEAM'
+  | 'UPDATE_TEAM'
+  | 'DELETE_TEAM';

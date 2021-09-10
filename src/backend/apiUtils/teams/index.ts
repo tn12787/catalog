@@ -5,7 +5,7 @@ import { NextApiRequest } from 'next';
 import { getSession } from 'next-auth/react';
 
 import prisma from 'backend/prisma/client';
-import { ExtendedSession } from 'types';
+import { ExtendedSession, PermissionType } from 'types';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 export const createDefaultTeamForUser = async (user: User) => {
@@ -29,7 +29,7 @@ export const createDefaultTeamForUser = async (user: User) => {
 
 export const checkRequiredPermissions = async (
   req: NextApiRequest,
-  permissions: string[],
+  permissions: PermissionType[],
   resourceTeam?: string
 ) => {
   const session = (await getSession({ req })) as any as {
@@ -51,7 +51,9 @@ export const checkRequiredPermissions = async (
   );
 
   if (
-    !permissionsForTeam.some((permission) => permissions.includes(permission))
+    !permissionsForTeam.some((permission) =>
+      permissions.includes(permission as PermissionType)
+    )
   ) {
     throw new ForbiddenException();
   }
