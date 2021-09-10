@@ -1,4 +1,4 @@
-import { createHandler, Get } from '@storyofams/next-api-decorators';
+import { createHandler, Get, Query } from '@storyofams/next-api-decorators';
 
 import requiresAuth from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -7,8 +7,9 @@ import { EventType } from 'types';
 @requiresAuth()
 class ReleaseListHandler {
   @Get()
-  async releaseEvents() {
+  async releaseEvents(@Query('team') team: string) {
     const releases = await prisma.release.findMany({
+      where: { team: { id: team } },
       include: {
         artist: true,
         artwork: { include: { assignee: true } },

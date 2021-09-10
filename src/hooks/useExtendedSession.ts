@@ -45,16 +45,19 @@ const useExtendedSession = () => {
     }
   }, [token?.userData?.teams, setCurrentTeam]);
 
-  const onChangeTeam = useCallback((val: string) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('activeTeam', val as string);
-    }
-    console.log('switching!', val);
-    setCurrentTeam(val as string);
-  }, []);
+  const onChangeTeam = useCallback(
+    (val: string) => {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('activeTeam', val as string);
+      }
+      console.log('switching!', val);
+      setCurrentTeam(val as string);
+    },
+    [setCurrentTeam]
+  );
 
   return {
-    session,
+    token,
     currentTeam,
     onChangeTeam,
     status,

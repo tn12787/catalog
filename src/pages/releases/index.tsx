@@ -85,9 +85,8 @@ const Releases = () => {
     team: currentTeam ?? '',
   };
 
-  const { data: response, isLoading } = useQuery(
-    ['releases', currentTeam, queryArgs],
-    () => fetchReleases(queryArgs)
+  const { data: response, isLoading } = useQuery(['releases', queryArgs], () =>
+    fetchReleases(queryArgs)
   );
 
   console.log(currentTeam);
