@@ -9,7 +9,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { signOut, useSession } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { useState } from 'react';
@@ -18,35 +18,33 @@ import { useQuery } from 'react-query';
 
 import { AccountSwitcherButton } from './AccountSwitcherButton';
 
-import { fetchMe } from 'queries/me';
+import { ExtendedSession } from 'types';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 export const AccountSwitcher = () => {
-  const [session, loading] = useSession();
+  const { session, currentTeam, onChangeTeam, status } = useExtendedSession();
+
+  const sessionLoading = status === 'loading';
+
   const onLogout = async () => {
+    localStorage.removeItem('activeTeam');
     signOut();
   };
 
-  const { data: response, isLoading } = useQuery('me', fetchMe);
-
-  const [selectedTeam, setSelectedTeam] = useState(response?.teams[0].teamId);
+  const token = session?.token as ExtendedSession | undefined;
+  const userTeams = token?.userData?.teams;
 
   const activeTeam = useMemo(() => {
-    return response?.teams.find((item) => item.teamId === selectedTeam);
-  }, [selectedTeam, response?.teams]);
-
-  useEffect(() => {
-    if (response?.teams) {
-      setSelectedTeam(response?.teams[0].teamId);
-    }
-  }, [response?.teams]);
+    return userTeams?.find((item) => item.teamId === currentTeam);
+  }, [currentTeam, userTeams]);
 
   return (
     <Menu>
-      <Skeleton rounded="lg" isLoaded={!loading && !isLoading}>
+      <Skeleton rounded="lg" isLoaded={!sessionLoading}>
         <AccountSwitcherButton
           teamName={(activeTeam?.team.name as string) ?? 'loadingTeam'}
-          userName={(session?.user?.name as string) ?? 'loadingUser'}
-          photoUrl={session?.user?.image as string}
+          userName={(token?.name as string) ?? 'loadingUser'}
+          photoUrl={token?.picture as string}
         />
       </Skeleton>
       <MenuList
@@ -55,16 +53,16 @@ export const AccountSwitcher = () => {
         color={useColorModeValue('gray.600', 'gray.200')}
         px="3"
       >
-        <Text fontWeight="medium" mb="2">
-          {session?.user?.email}
+        <Text fontWeight="medium" mb="2" fontSize="sm">
+          {token?.email}
         </Text>
         <MenuOptionGroup
           type="radio"
-          defaultValue={selectedTeam as string}
-          value={selectedTeam as string}
-          onChange={(val) => setSelectedTeam(val as string)}
+          defaultValue={currentTeam as string}
+          value={currentTeam as string}
+          onChange={(val) => onChangeTeam(val as string)}
         >
-          {response?.teams.map(({ team }, index) => (
+          {userTeams?.map(({ team }, index) => (
             <MenuItemOption
               key={index.toString()}
               value={team.id}

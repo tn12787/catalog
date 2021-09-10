@@ -26,6 +26,7 @@ import { SortByOptions, SortOrder } from 'queries/types';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import { Artist } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 interface SortBySelectOption<T> {
   label: string;
@@ -69,6 +70,8 @@ const Releases = () => {
     sortOptions[0]
   );
 
+  const { currentTeam } = useExtendedSession();
+
   const { bgPrimary, primary, bgSecondary } = useAppColors();
 
   const debouncedSearch = useDebounce(search, 150);
@@ -79,11 +82,15 @@ const Releases = () => {
       key: sortBy.value.key,
       order: sortBy.value.order,
     },
+    team: currentTeam ?? '',
   };
 
-  const { data: response, isLoading } = useQuery(['releases', queryArgs], () =>
-    fetchReleases(queryArgs)
+  const { data: response, isLoading } = useQuery(
+    ['releases', currentTeam, queryArgs],
+    () => fetchReleases(queryArgs)
   );
+
+  console.log(currentTeam);
 
   return (
     <Stack

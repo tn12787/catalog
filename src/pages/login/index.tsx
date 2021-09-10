@@ -10,7 +10,7 @@ import {
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import GoogleButton from 'react-google-button';
-import { signIn } from 'next-auth/client';
+import { signIn } from 'next-auth/react';
 
 import { loginConfig } from 'data/login/loginConfig';
 import { LoginData } from 'data/login/types';

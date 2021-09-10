@@ -1,3 +1,5 @@
+import { Team, TeamUser } from '@prisma/client';
+
 import {
   Distributor,
   TaskStatus,
@@ -102,4 +104,13 @@ export enum EventType {
   MASTERING = 'mastering',
   MUSIC_VIDEO = 'musicVideo',
   RELEASE = 'release',
+}
+
+export interface ExtendedSession {
+  email: string;
+  name: string;
+  picture: string;
+  userData: {
+    teams: (TeamUser & { team: Team })[];
+  };
 }

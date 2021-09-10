@@ -7,12 +7,16 @@ import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import ArtistList from 'components/artists/ArtistList';
 import useAppColors from 'hooks/useAppColors';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {}
 
 const Artists = (props: Props) => {
   const { bgPrimary } = useAppColors();
-  const { data: artists, isLoading } = useQuery('artists', fetchArtists);
+  const { currentTeam } = useExtendedSession();
+  const { data: artists, isLoading } = useQuery(['artists', currentTeam], () =>
+    fetchArtists(currentTeam)
+  );
   return (
     <Stack
       bg={bgPrimary}

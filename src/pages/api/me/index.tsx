@@ -14,7 +14,7 @@ import {
 } from '@storyofams/next-api-decorators';
 import { NextApiRequest } from 'next';
 import { Session } from 'next-auth';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 import { JWT } from 'next-auth/jwt';
 
 import requiresAuth from 'backend/apiUtils/decorators/auth';

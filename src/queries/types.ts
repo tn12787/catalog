@@ -9,6 +9,7 @@ export interface SortByOptions<T> {
 }
 
 export interface FilterOptions<T> {
+  team: string;
   search?: string;
   pagination?: {
     pageSize: number;

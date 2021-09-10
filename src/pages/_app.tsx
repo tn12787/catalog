@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Hydrate } from 'react-query/hydration';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import { SessionProvider } from 'next-auth/react';
 
 import { appTheme } from 'customTheme';
 
@@ -29,17 +30,19 @@ const MyApp = ({ Component, pageProps }: Props) => {
 
   return (
     <React.StrictMode>
-      <DndProvider backend={HTML5Backend}>
-        <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydratedState}>
-            <ChakraProvider theme={appTheme}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </ChakraProvider>
-          </Hydrate>
-        </QueryClientProvider>
-      </DndProvider>
+      <SessionProvider session={pageProps.session}>
+        <DndProvider backend={HTML5Backend}>
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              <ChakraProvider theme={appTheme}>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </ChakraProvider>
+            </Hydrate>
+          </QueryClientProvider>
+        </DndProvider>
+      </SessionProvider>
     </React.StrictMode>
   );
 };
