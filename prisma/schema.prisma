@@ -5,7 +5,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 enum ReleaseType {
@@ -211,12 +211,14 @@ model Distribution {
 }
 
 model Distributor {
-  id           String         @id @default(cuid())
-  name         String
-  siteUrl      String?
-  Distribution Distribution[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime?      @updatedAt
+  id        String         @id @default(cuid())
+  name      String         @unique
+  siteUrl   String?        @unique
+  usedFor   Distribution[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime?      @updatedAt
+
+  @@unique([name, siteUrl])
 }
 
 model Marketing {
