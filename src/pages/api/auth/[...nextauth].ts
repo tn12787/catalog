@@ -29,34 +29,37 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, isNewUser }) {
       try {
-        const userTeams = await prisma.teamUser.findMany({
+        const numberOfUserTeams = await prisma.teamUser.count({
           where: { userId: token.sub as string },
-          select: {
-            teamId: true,
-            team: {
-              select: { name: true, id: true },
-            },
-            roles: {
-              select: { name: true, permissions: { select: { name: true } } },
-            },
-          },
         });
 
-        if (isNewUser || !userTeams?.length) {
+        if (isNewUser || !numberOfUserTeams) {
           await createDefaultTeamForUser(
             token.name as string,
             token.sub as string
           );
         }
 
-        return { ...token, teams: userTeams };
+        return { ...token };
       } catch (e) {
         return { error: e };
       }
     },
     async session({ session, token, user }) {
+      const userTeams = await prisma.teamUser.findMany({
+        where: { userId: token.sub as string },
+        select: {
+          teamId: true,
+          team: {
+            select: { name: true, id: true },
+          },
+          roles: {
+            select: { name: true, permissions: { select: { name: true } } },
+          },
+        },
+      });
       session.accessToken = token.accessToken;
-      return { ...session, token, user };
+      return { ...session, token: { ...token, teams: userTeams }, user };
     },
   },
   adapter: PrismaAdapter(prisma),
