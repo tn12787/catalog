@@ -6,11 +6,9 @@ export class CreateArtistDto {
   name: string;
 
   @IsOptional()
-  @IsUrl()
   spotifyUrl?: string;
 
   @IsOptional()
-  @IsUrl()
   instagramUrl?: ReleaseType;
 
   @IsNotEmpty()
