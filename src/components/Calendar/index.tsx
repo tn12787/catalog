@@ -28,6 +28,7 @@ import Card from 'components/Card';
 interface Props<T> {
   events: T[];
   onEventClicked?: (event: T) => void;
+  canDropEvent?: (event: T, targetDate: Date) => boolean;
   onEventDropped?: (event: T, targetDate: Date) => void | Promise<void>;
   loading?: boolean;
 }
@@ -36,6 +37,7 @@ const Calendar = <T extends BaseEvent>({
   events,
   onEventClicked,
   onEventDropped,
+  canDropEvent,
   loading,
 }: Props<T>) => {
   const { cursorDate, headers, body, navigation, view } = useCalendar();
@@ -162,6 +164,7 @@ const Calendar = <T extends BaseEvent>({
                       day={day}
                       onEventClicked={onEventClicked}
                       onEventDropped={onEventDropped}
+                      canDropEvent={canDropEvent}
                     />
                   );
                 })}
