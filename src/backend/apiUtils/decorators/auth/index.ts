@@ -36,9 +36,7 @@ const requiresTeamMembership = createMiddlewareDecorator(
       throw new NotFoundException();
     }
 
-    if (
-      !session.token.userData.teams.find((userTeam) => userTeam.teamId === team)
-    ) {
+    if (!session.token.teams.find((userTeam) => userTeam.teamId === team)) {
       throw new NotFoundException();
     }
 
