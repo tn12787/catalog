@@ -1,9 +1,12 @@
-import { Stack, Text, Icon, SimpleGrid } from '@chakra-ui/react';
+import { Stack, Text, Icon, SimpleGrid, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { Artist } from '@prisma/client';
+import NextImage from 'next/image';
 
 import ArtistCard from '../ArtistCard';
+
+import profilePic from 'images/no-artists-yet.svg';
 
 interface Props {
   search: string;
@@ -21,8 +24,18 @@ const ArtistList = ({ search, artists, loading }: Props) => {
         </Text>
       </Stack>
     ) : (
-      <Stack>
-        <Text>No items found.</Text>
+      <Stack
+        margin="0 auto"
+        alignItems="center"
+        py={{ base: '20px', md: '50px' }}
+        spacing={4}
+        maxW={{ base: '90%', md: '400px' }}
+      >
+        <NextImage src={profilePic} alt="No artists yet" />
+        <Heading fontWeight="semibold" size="lg">
+          No artists yet
+        </Heading>
+        <Text>Create your first artist now to start building releases.</Text>
       </Stack>
     );
   }

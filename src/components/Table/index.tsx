@@ -20,7 +20,7 @@ interface Props<T extends object> {
 
 const Table = <T extends object>({ columns, data }: Props<T>) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy, useFlexLayout);
+    useTable({ columns, data }, useSortBy);
 
   const { bgPrimary, border } = useAppColors();
 
