@@ -35,7 +35,7 @@ export const checkRequiredPermissions = async (
     token: ExtendedSession;
   };
 
-  const team = session?.token.userData.teams.find(
+  const team = session?.token.teams.find(
     (userTeam) => userTeam.teamId === resourceTeam
   );
 
