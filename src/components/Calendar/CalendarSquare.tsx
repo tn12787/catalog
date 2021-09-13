@@ -18,10 +18,7 @@ import utc from 'dayjs/plugin/utc';
 
 import { BaseEvent, EventType } from './types';
 import CalendarEvent from './CalendarEvent';
-import UndoToast from './UndoToast';
 
-import { ReleaseEvent } from 'types';
-import { updateEventInCalendar } from 'queries/events';
 import useAppColors from 'hooks/useAppColors';
 dayjs.extend(utc);
 
@@ -50,22 +47,45 @@ const CalendarSquare = <T extends BaseEvent>({
   const { key, date, isCurrentDate, isCurrentMonth, isWeekend, value } = day;
 
   const borderColor = useColorModeValue('gray.50', 'gray.900');
-  const { bgSecondary, bgPrimary } = useAppColors();
+  const { bgSecondary, bgPrimary, border } = useAppColors();
 
-  const [{ isOver, canDrop }, drop] = useDrop(
+  const [{ item, isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [EventType.ARTWORK],
       drop: (item: T) => {
         onEventDropped?.(item, value);
       },
       canDrop: (item: T) => canDropEvent?.(item, value) ?? false,
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver(),
-        canDrop: !!monitor.canDrop(),
-      }),
+      collect: (monitor) => {
+        return {
+          isOver: !!monitor.isOver(),
+          canDrop: !!monitor.canDrop(),
+          item: monitor.getItem(),
+        };
+      },
     }),
-    [onEventDropped]
+    [onEventDropped, day.events]
   );
+
+  const deriveBgSquare = ({
+    isOver,
+    canDrop,
+    item,
+  }: {
+    isOver: boolean;
+    canDrop: boolean;
+    item: any;
+  }) => {
+    if (!item) return bgSecondary;
+
+    if (!canDrop) return border;
+
+    if (isOver) {
+      return bgPrimary;
+    }
+
+    return bgSecondary;
+  };
 
   return (
     <Td
@@ -82,7 +102,7 @@ const CalendarSquare = <T extends BaseEvent>({
       px={2}
       opacity={isCurrentMonth ? 1 : 0.2}
       textAlign="center"
-      bg={isOver && canDrop ? bgPrimary : bgSecondary}
+      bg={deriveBgSquare({ isOver, canDrop, item })}
     >
       <Text
         display="flex"

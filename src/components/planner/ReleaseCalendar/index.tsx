@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import { cloneDeep } from 'lodash';
+import { format } from 'date-fns';
 
 import ReleaseEventDrawer from '../ReleaseEventDrawer';
 
@@ -10,6 +11,7 @@ import { ReleaseEvent } from 'types';
 import { updateEventInCalendar } from 'queries/events';
 import UndoToast from 'components/Calendar/UndoToast';
 import Calendar from 'components/Calendar';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
   events: ReleaseEvent[];
@@ -18,13 +20,14 @@ interface Props {
 
 const ReleaseCalendar = ({ events, loading }: Props) => {
   const queryClient = useQueryClient();
+  const { currentTeam } = useExtendedSession();
 
   const { mutateAsync: updateReleaseEvent } = useMutation(
     updateEventInCalendar,
     {
       onMutate: async ({ event, targetDate }) => {
-        await queryClient.cancelQueries('releaseEvents');
-        const events = queryClient.getQueryData('releaseEvents');
+        // await queryClient.cancelQueries(['releaseEvents', currentTeam]);
+        const events = queryClient.getQueryData(['releaseEvents', currentTeam]);
 
         const data = cloneDeep(events) as ReleaseEvent[];
         data?.forEach((item) => {
@@ -33,17 +36,20 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
           }
         });
 
-        await queryClient.setQueryData('releaseEvents', data);
+        queryClient.setQueryData(['releaseEvents', currentTeam], data);
 
         return { events };
       },
 
       onError: (err, newTodo, context: any) => {
-        queryClient.setQueryData('releaseEvents', context?.events);
+        queryClient.setQueryData(
+          ['releaseEvents', currentTeam],
+          context?.events
+        );
       },
 
       onSettled: (_, __, ___, context: any) => {
-        queryClient.invalidateQueries(['releaseEvents']);
+        queryClient.invalidateQueries(['releaseEvents', currentTeam]);
       },
     }
   );
@@ -58,12 +64,22 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
   };
 
   const canDropEvent = (item: ReleaseEvent, targetDate: Date) => {
-    const eventDate = new Date(item.date);
-    return dayjs(eventDate).isBefore(dayjs(targetDate));
+    switch (item.type) {
+      case 'release':
+        return dayjs(targetDate).isAfter(dayjs());
+      default:
+        return dayjs(targetDate).isBefore(dayjs(item.release.targetDate));
+    }
   };
 
   const onItemDropped = async (item: ReleaseEvent, targetDate: Date) => {
     const backupItem = cloneDeep(item);
+    if (
+      format(new Date(item.date), 'yyyy-MM-dd') ===
+      format(targetDate, 'yyyy-MM-dd')
+    ) {
+      return;
+    }
     try {
       await updateReleaseEvent({
         event: item,

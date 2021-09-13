@@ -28,7 +28,7 @@ class TeamHandler {
     const team = await prisma.team.findUnique({
       where: { id },
       include: {
-        users: { include: { team: true } },
+        users: { include: { roles: true, user: true } },
       },
     });
 

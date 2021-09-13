@@ -1,4 +1,3 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -18,6 +17,7 @@ import { format } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
+import { BiArrowToLeft, BiArrowToRight } from 'react-icons/bi';
 
 import CalendarSquare from './CalendarSquare';
 import { BaseEvent } from './types';
@@ -41,7 +41,7 @@ const Calendar = <T extends BaseEvent>({
   loading,
 }: Props<T>) => {
   const { cursorDate, headers, body, navigation, view } = useCalendar();
-  const router = useRouter();
+
   const enrichedBody = useMemo(() => {
     return {
       ...body,
@@ -114,11 +114,11 @@ const Calendar = <T extends BaseEvent>({
                     D
                   </Button>
                 </Stack>
-                <Stack direction="row" gutter={8}>
+                <Stack direction="row">
                   <IconButton
                     size="xs"
                     aria-label="button for navigating to prev calendar"
-                    icon={<ChevronLeftIcon />}
+                    icon={<BiArrowToLeft />}
                     onClick={navigation.toPrev}
                   />
                   <Button
@@ -132,7 +132,7 @@ const Calendar = <T extends BaseEvent>({
                   <IconButton
                     size="xs"
                     aria-label="button for navigating to next calendar"
-                    icon={<ChevronRightIcon />}
+                    icon={<BiArrowToRight />}
                     onClick={navigation.toNext}
                   />
                 </Stack>
