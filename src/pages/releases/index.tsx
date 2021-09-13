@@ -95,6 +95,9 @@ const Releases = () => {
     teams?.[currentTeam]
   );
 
+  const shouldHideControls =
+    response?.data?.length === 0 && !debouncedSearch && !isLoading;
+
   return (
     <Stack
       bg={bgPrimary}
@@ -116,47 +119,49 @@ const Releases = () => {
           >
             All Releases
           </Heading>
-          {canCreateRelease && (
+          {canCreateRelease && !shouldHideControls && (
             <Button href={'/releases/new'} colorScheme="purple" as={'a'}>
               Create New Release
             </Button>
           )}
         </Flex>
-        <HStack justifyContent="space-between">
-          <InputGroup maxW="400px" bg={bgSecondary}>
-            <Input
-              placeholder="Search releases..."
-              onChange={(e) => setSearch(e.target.value)}
-              value={search}
-            />
-            <InputRightElement>
-              <Icon as={BiSearch} />
-            </InputRightElement>
-          </InputGroup>
-          <HStack>
-            <Text whiteSpace="nowrap" fontSize="sm" fontWeight="bold">
-              Sort by:
-            </Text>
-            <Select
-              bg={bgSecondary}
-              value={JSON.stringify(sortBy)}
-              onChange={(e) => {
-                const valueAsObj = JSON.parse(e.target.value);
-                const item = sortOptions.find((item) =>
-                  isEqual(item, valueAsObj)
-                );
+        {!shouldHideControls && (
+          <HStack justifyContent="space-between">
+            <InputGroup maxW="400px" bg={bgSecondary}>
+              <Input
+                placeholder="Search releases..."
+                onChange={(e) => setSearch(e.target.value)}
+                value={search}
+              />
+              <InputRightElement>
+                <Icon as={BiSearch} />
+              </InputRightElement>
+            </InputGroup>
+            <HStack>
+              <Text whiteSpace="nowrap" fontSize="sm" fontWeight="bold">
+                Sort by:
+              </Text>
+              <Select
+                bg={bgSecondary}
+                value={JSON.stringify(sortBy)}
+                onChange={(e) => {
+                  const valueAsObj = JSON.parse(e.target.value);
+                  const item = sortOptions.find((item) =>
+                    isEqual(item, valueAsObj)
+                  );
 
-                setSortBy(item ?? sortOptions[0]);
-              }}
-            >
-              {sortOptions.map((item) => (
-                <option key={item.label} value={JSON.stringify(item)}>
-                  {item.label}
-                </option>
-              ))}
-            </Select>
+                  setSortBy(item ?? sortOptions[0]);
+                }}
+              >
+                {sortOptions.map((item) => (
+                  <option key={item.label} value={JSON.stringify(item)}>
+                    {item.label}
+                  </option>
+                ))}
+              </Select>
+            </HStack>
           </HStack>
-        </HStack>
+        )}
         {isLoading ? (
           <ReleaseCard
             releaseData={{

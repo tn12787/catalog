@@ -15,6 +15,7 @@ import {
   FormLabel,
   InputLeftElement,
   FormControl,
+  Skeleton,
 } from '@chakra-ui/react';
 import {
   Stat,
@@ -60,9 +61,11 @@ const TeamOverview = (props: Props) => {
     >
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
-          <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-            {teamData?.name}
-          </Heading>
+          <Skeleton isLoaded={!isLoading}>
+            <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
+              {isLoading ? 'Loading team name' : teamData?.name}
+            </Heading>
+          </Skeleton>
         </Stack>
         <Stack spacing={4}>
           <Stack spacing={4} direction={{ base: 'column', md: 'row' }}>
