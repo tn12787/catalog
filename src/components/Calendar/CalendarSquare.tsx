@@ -38,26 +38,30 @@ interface Props<T> {
   };
   onEventClicked?: (event: T) => void;
   onEventDropped?: (event: T, targetDate: Date) => void | Promise<void>;
+  canDropEvent?: (event: T, targetDate: Date) => boolean;
 }
 
 const CalendarSquare = <T extends BaseEvent>({
   day,
   onEventClicked,
   onEventDropped,
+  canDropEvent,
 }: Props<T>) => {
   const { key, date, isCurrentDate, isCurrentMonth, isWeekend, value } = day;
 
   const borderColor = useColorModeValue('gray.50', 'gray.900');
   const { bgSecondary, bgPrimary } = useAppColors();
 
-  const [{ isOver }, drop] = useDrop(
+  const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [EventType.ARTWORK],
       drop: (item: T) => {
         onEventDropped?.(item, value);
       },
+      canDrop: (item: T) => canDropEvent?.(item, value) ?? false,
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop(),
       }),
     }),
     [onEventDropped]
@@ -78,7 +82,7 @@ const CalendarSquare = <T extends BaseEvent>({
       px={2}
       opacity={isCurrentMonth ? 1 : 0.2}
       textAlign="center"
-      bg={isOver ? bgPrimary : bgSecondary}
+      bg={isOver && canDrop ? bgPrimary : bgSecondary}
     >
       <Text
         display="flex"

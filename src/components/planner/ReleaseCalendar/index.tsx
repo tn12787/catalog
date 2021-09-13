@@ -57,6 +57,11 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
     });
   };
 
+  const canDropEvent = (item: ReleaseEvent, targetDate: Date) => {
+    const eventDate = new Date(item.date);
+    return dayjs(eventDate).isBefore(dayjs(targetDate));
+  };
+
   const onItemDropped = async (item: ReleaseEvent, targetDate: Date) => {
     const backupItem = cloneDeep(item);
     try {
@@ -98,6 +103,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
         loading={loading}
         onEventClicked={onCalendarEventClicked}
         onEventDropped={onItemDropped}
+        canDropEvent={canDropEvent}
       />
     </>
   );
