@@ -39,7 +39,7 @@ const Table = <T extends object>({ columns, data }: Props<T>) => {
               {headerGroup.headers.map((column, index) => (
                 <Th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  isNumeric={column.isNumeric}
+                  // isNumeric={column.isNumeric}
                   key={index.toString()}
                 >
                   {column.render('Header')}
@@ -66,7 +66,7 @@ const Table = <T extends object>({ columns, data }: Props<T>) => {
                   <Td
                     {...cell.getCellProps()}
                     key={index.toString()}
-                    isNumeric={cell.column.isNumeric}
+                    // isNumeric={cell.column.isNumeric}
                   >
                     {cell.render('Cell')}
                   </Td>
