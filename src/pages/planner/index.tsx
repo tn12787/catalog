@@ -21,13 +21,30 @@ import { fetchReleaseEvents } from 'queries/events';
 import { ReleaseEvent } from 'types';
 import ReleaseCalendar from 'components/planner/ReleaseCalendar';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { EventList } from 'components/releases/specific/Events/EventList';
+import { EventListItem } from 'components/releases/specific/Events/EventListItem';
+import Card from 'components/Card';
 
 const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
   {
     label: 'Calendar View',
     content: <ReleaseCalendar events={events} loading={isLoading} />,
   },
-  { label: 'List View', content: <Text>List View</Text> },
+  {
+    label: 'List View',
+    content: (
+      <Card spacing={6} alignItems="flex-start">
+        <Heading fontSize="2xl" as="h4" fontWeight="semibold">
+          Events
+        </Heading>
+        <EventList spacing="8">
+          {events?.map((event, i) => (
+            <EventListItem includeReleaseName event={event} key={i.toString()} />
+          ))}
+        </EventList>
+      </Card>
+    ),
+  },
 ];
 
 const Planner = (props: Props) => {

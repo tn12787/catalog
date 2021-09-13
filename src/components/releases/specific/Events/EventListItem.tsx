@@ -17,6 +17,7 @@ import { ReleaseEvent } from 'types';
 
 export interface EventListItemProps extends StackProps {
   event: ReleaseEvent;
+  includeReleaseName?: boolean;
   isLastItem?: boolean;
 }
 
@@ -46,9 +47,13 @@ const deriveEventTitle = (type: ReleaseEvent['type']) => {
   }
 };
 
-export const EventListItem = (props: EventListItemProps) => {
-  const { event, isLastItem, children, ...stackProps } = props;
-
+export const EventListItem = ({
+  event,
+  isLastItem,
+  includeReleaseName,
+  children,
+  ...stackProps
+}: EventListItemProps) => {
   const icon = deriveEventIcon(event.type);
   const title = deriveEventTitle(event.type);
 
@@ -66,16 +71,13 @@ export const EventListItem = (props: EventListItemProps) => {
         </Circle>
         {!isLastItem && <Flex flex="1" borderRightWidth="1px" mb="-12" />}
       </Flex>
-      <Stack spacing="4" pt="1" flex="1">
-        <Flex direction="column">
-          <Heading fontSize="md" fontWeight="semibold">
-            {title}
-          </Heading>
-          <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>
-            {format(new Date(event.date), 'MMMM d, yyyy')}
-          </Text>
-        </Flex>
-        <Flex>{children}</Flex>
+      <Stack alignItems="flex-start" spacing="1" pt="1" flex="1">
+        <Heading fontSize="md" fontWeight="semibold">
+          {includeReleaseName ? `${event.release.name}: ${title}` : title}
+        </Heading>
+        <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>
+          {format(new Date(event.date), 'MMMM d, yyyy')}
+        </Text>
       </Stack>
     </Stack>
   );
