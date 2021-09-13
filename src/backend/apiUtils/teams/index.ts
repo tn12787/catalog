@@ -8,23 +8,22 @@ import prisma from 'backend/prisma/client';
 import { ExtendedSession, PermissionType } from 'types';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
-export const createDefaultTeamForUser = async (user: User) => {
-  try {
-    const team = await prisma.team.create({
-      data: {
-        name: `${user?.name}'s Team`,
-        provider: 'GSUITE',
-        users: {
-          create: {
-            user: { connect: { id: user?.id as string } },
-            roles: { connect: { name: 'Admin' } },
-          },
+export const createDefaultTeamForUser = async (
+  name: string,
+  userId: string
+) => {
+  const team = await prisma.team.create({
+    data: {
+      name: `${name}'s Team`,
+      provider: 'GSUITE',
+      users: {
+        create: {
+          user: { connect: { id: userId } },
+          roles: { connect: { name: 'Admin' } },
         },
       },
-    });
-  } catch (e) {
-    console.log(e);
-  }
+    },
+  });
 };
 
 export const checkRequiredPermissions = async (

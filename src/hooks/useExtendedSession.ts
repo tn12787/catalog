@@ -32,31 +32,31 @@ const useExtendedSession = () => {
   );
 
   const teamMap = useMemo(() => {
-    const teams = token?.userData?.teams;
+    const teams = token?.teams;
 
     return teams?.reduce((acc, team) => {
       acc[team.teamId] = team;
       return acc;
     }, {} as { [key: string]: EnrichedTeamUser });
-  }, [token?.userData?.teams]);
+  }, [token?.teams]);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const teams = token?.userData?.teams;
+    const teams = token?.teams;
     const storedTeam = localStorage.getItem('team');
     if (Array.isArray(teams) && storedTeam) {
-      if (!token?.userData?.teams.find((team) => team.id === storedTeam)) {
+      if (!token?.teams.find((team) => team.id === storedTeam)) {
         localStorage.removeItem('activeTeam');
       }
     }
 
     if (teams) {
       setCurrentTeam(
-        localStorage.getItem('activeTeam') || token?.userData?.teams?.[0].teamId
+        localStorage.getItem('activeTeam') || token?.teams?.[0]?.teamId
       );
     }
-  }, [token?.userData?.teams, setCurrentTeam]);
+  }, [token?.teams, setCurrentTeam]);
 
   const onChangeTeam = useCallback(
     (val: string) => {

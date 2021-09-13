@@ -31,7 +31,7 @@ export const AccountSwitcher = () => {
     signOut();
   };
 
-  const userTeams = token?.userData?.teams;
+  const userTeams = token?.teams;
 
   const activeTeam = useMemo(() => {
     return userTeams?.find((item) => item.teamId === currentTeam);
