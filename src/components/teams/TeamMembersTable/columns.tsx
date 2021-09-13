@@ -2,7 +2,7 @@ import { Column } from 'react-table';
 
 import { TeamUserWithUser } from './types';
 
-export const teamMembersColumns: Column<TeamUserWithUser> = [
+export const teamMembersColumns: Column<TeamUserWithUser>[] = [
   {
     Header: 'Name',
     accessor: (d: TeamUserWithUser) => d.user?.name,
