@@ -110,7 +110,6 @@ const TeamOverview = (props: Props) => {
                         <BsSearch />
                       </InputLeftElement>
                       <Input
-                        rounded="base"
                         type="search"
                         placeholder="Filter by name or email..."
                       />
