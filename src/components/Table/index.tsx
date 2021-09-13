@@ -1,4 +1,4 @@
-import { useColorModeValue, Text } from '@chakra-ui/react';
+import { Text, Box } from '@chakra-ui/react';
 import {
   Thead,
   Tr,
@@ -7,64 +7,76 @@ import {
   Td,
   Table as ChakraTable,
 } from '@chakra-ui/table';
-import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { Column, useSortBy, useTable } from 'react-table';
+import { Column, useSortBy, useTable, useFlexLayout } from 'react-table';
+import { BiDownArrow, BiUpArrow } from 'react-icons/bi';
 
-interface Props<T extends { id: string }> {
-  columns: Array<Column<T>>;
+import useAppColors from 'hooks/useAppColors';
+
+interface Props<T extends object> {
+  columns: Column<T>[];
   data: Array<T>;
 }
 
-const Table = <T extends { id: string }>({ columns, data }: Props<T>) => {
+const Table = <T extends object>({ columns, data }: Props<T>) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy);
+    useTable({ columns, data }, useSortBy, useFlexLayout);
+
+  const { bgPrimary, border } = useAppColors();
 
   return (
-    <ChakraTable my="8" borderWidth="1px" fontSize="sm" {...getTableProps()}>
-      <Thead bg={useColorModeValue('gray.50', 'gray.800')}>
-        {headerGroups.map((headerGroup, i) => (
-          <Tr {...headerGroup.getHeaderGroupProps()} key={i.toString()}>
-            {headerGroup.headers.map((column, index) => (
-              <Th
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                isNumeric={column.isNumeric}
-                key={index.toString()}
-              >
-                {column.render('Header')}
-                <Text pl="4">
-                  {column.isSorted ? (
-                    column.isSortedDesc ? (
-                      <TriangleDownIcon aria-label="sorted descending" />
-                    ) : (
-                      <TriangleUpIcon aria-label="sorted ascending" />
-                    )
-                  ) : null}
-                </Text>
-              </Th>
-            ))}
-          </Tr>
-        ))}
-      </Thead>
-      <Tbody {...getTableBodyProps()}>
-        {rows.map((row, index) => {
-          prepareRow(row);
-          return (
-            <Tr {...row.getRowProps()} key={index.toString()}>
-              {row.cells.map((cell, index) => (
-                <Td
-                  {...cell.getCellProps()}
+    <Box borderRadius="lg" borderColor={border} borderWidth="1px">
+      <ChakraTable
+        variant="simple"
+        borderRadius="lg"
+        overflow="hidden"
+        fontSize="sm"
+        {...getTableProps()}
+      >
+        <Thead bg={bgPrimary}>
+          {headerGroups.map((headerGroup, i) => (
+            <Tr {...headerGroup.getHeaderGroupProps()} key={i.toString()}>
+              {headerGroup.headers.map((column, index) => (
+                <Th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  isNumeric={column.isNumeric}
                   key={index.toString()}
-                  isNumeric={cell.column.isNumeric}
                 >
-                  {cell.render('Cell')}
-                </Td>
+                  {column.render('Header')}
+                  <Text display="inline-block" pl="1">
+                    {column.isSorted ? (
+                      column.isSortedDesc ? (
+                        <BiUpArrow aria-label="sorted descending" />
+                      ) : (
+                        <BiDownArrow aria-label="sorted ascending" />
+                      )
+                    ) : null}
+                  </Text>
+                </Th>
               ))}
             </Tr>
-          );
-        })}
-      </Tbody>
-    </ChakraTable>
+          ))}
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
+          {rows.map((row, index) => {
+            prepareRow(row);
+            return (
+              <Tr {...row.getRowProps()} key={index.toString()}>
+                {row.cells.map((cell, index) => (
+                  <Td
+                    {...cell.getCellProps()}
+                    key={index.toString()}
+                    isNumeric={cell.column.isNumeric}
+                  >
+                    {cell.render('Cell')}
+                  </Td>
+                ))}
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </ChakraTable>
+    </Box>
   );
 };
 
