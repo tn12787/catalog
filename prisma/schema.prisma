@@ -33,9 +33,16 @@ enum ReleaseTaskType {
   MUSIC_VIDEO
 }
 
+enum TeamPlan {
+  Artist
+  Indie
+  Major
+}
+
 model Team {
   id       String        @id @default(cuid())
   name     String
+  plan     TeamPlan      @default(Artist)
   provider CloudProvider
   users    TeamUser[]
   artists  Artist[]
