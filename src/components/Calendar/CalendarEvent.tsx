@@ -26,7 +26,7 @@ const CalendarEvent = <T extends BaseEvent = ReleaseEvent>({
         opacity: monitor.isDragging() ? 0.5 : 1,
       }),
     }),
-    []
+    [event]
   );
   const { bgPrimary } = useAppColors();
 

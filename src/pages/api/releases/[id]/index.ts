@@ -43,7 +43,6 @@ class ReleaseListHandler {
   }
 
   @Put()
-  @requiresTeamMembership()
   async updateRelease(
     @Req() req: NextApiRequest,
     @Body(ValidationPipe) body: UpdateReleaseDto,

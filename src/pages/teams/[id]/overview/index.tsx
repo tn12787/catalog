@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { Stack, Heading } from '@chakra-ui/layout';
+import { Stack, Heading, Text, Button } from '@chakra-ui/react';
 import {
   Stat,
   StatLabel,
@@ -15,6 +15,8 @@ import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedire
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
+import Table from 'components/Table';
+import TeamMembersTable from 'components/teams/TeamMembersTable';
 
 interface Props {}
 
@@ -22,7 +24,7 @@ const TeamOverview = (props: Props) => {
   const router = useRouter();
   const teamId = router.query.id as string;
 
-  const { bgPrimary } = useAppColors();
+  const { bgPrimary, primary } = useAppColors();
 
   const { data: teamData, isLoading } = useQuery(['team', teamId], () =>
     fetchTeam(teamId)
@@ -54,16 +56,29 @@ const TeamOverview = (props: Props) => {
             <Card w="100%">
               <Stat>
                 <StatLabel>Plan</StatLabel>
-                <StatNumber>{teamData.plan}</StatNumber>
+                <StatNumber>{teamData?.plan}</StatNumber>
               </Stat>
             </Card>
-            <Card w="100%">
-              <Stat>
-                <StatLabel>Sent</StatLabel>
-                <StatNumber>345,670</StatNumber>
-              </Stat>
+            <Card
+              w="100%"
+              bgGradient="linear(to-r, purple.300, blue.500)"
+              color={'white'}
+            >
+              <Text fontWeight="bold">Upgrade now</Text>
+              <Text fontSize="sm">
+                Upgrade now for more members, and stuff!
+              </Text>
+              <Button colorScheme="purple">Upgrade now</Button>
             </Card>
           </Stack>
+          <Card>
+            <Heading fontSize="2xl" as="h4" fontWeight="semibold">
+              Members
+            </Heading>
+            <TeamMembersTable
+              teamMembers={teamData?.users ?? []}
+            ></TeamMembersTable>
+          </Card>
         </Stack>
       </Stack>
     </Stack>

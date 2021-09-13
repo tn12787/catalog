@@ -1,7 +1,10 @@
 import { ReleaseType } from '@prisma/client';
-import { IsNotEmpty, IsDate, IsEnum, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsUrl } from 'class-validator';
 
-export class CreateArtistDto {
+export class UpdateArtistDto {
+  @IsNotEmpty()
+  id: string;
+
   @IsNotEmpty()
   name: string;
 

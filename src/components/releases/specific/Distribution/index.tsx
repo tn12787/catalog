@@ -66,7 +66,7 @@ const Distribution = ({ releaseData }: Props) => {
     return (
       <Card>
         <Flex direction="row" justify="space-between">
-          <Heading fontSize="2xl">💿 Distribution</Heading>
+          <Heading fontSize="2xl" fontWeight="semibold">💿 Distribution</Heading>
         </Flex>
         <Spinner alignSelf="center" />
       </Card>
@@ -82,7 +82,7 @@ const Distribution = ({ releaseData }: Props) => {
         flexWrap="wrap"
       >
         <Flex align="center" direction={{ base: 'column', md: 'row' }}>
-          <Heading whiteSpace="nowrap" fontSize="2xl">
+          <Heading whiteSpace="nowrap" fontWeight="semibold" fontSize="2xl">
             💿 Distribution
           </Heading>
           <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>

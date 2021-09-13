@@ -56,7 +56,9 @@ const Summary = ({ releaseData }: Props) => {
         direction={['column', 'column', 'row']}
       >
         <Flex align="center" direction={['column', 'column', 'row']}>
-          <Heading fontSize="2xl">Summary</Heading>
+          <Heading fontWeight="semibold" fontSize="2xl">
+            Summary
+          </Heading>
         </Flex>
 
         <Button

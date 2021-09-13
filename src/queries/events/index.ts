@@ -13,6 +13,14 @@ export const fetchReleaseEvents = async (teamId: string) => {
   return response;
 };
 
+export const fetchSpecificReleaseEvents = async (id: string) => {
+  const { data: response } = await axios.get<ReleaseEvent[]>(
+    `/api/releases/${id}/events`
+  );
+
+  return response;
+};
+
 export const updateEventInCalendar = async ({
   event,
   targetDate,
