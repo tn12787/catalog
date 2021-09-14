@@ -173,7 +173,7 @@ const EditDistributionForm = ({ releaseData }: Props) => {
               />
               <Flex justify="flex-end">
                 <Button
-                  colorScheme="blue"
+                  colorScheme="purple"
                   flexGrow={0}
                   leftIcon={<FiSave />}
                   isLoading={createLoading || updateLoading}

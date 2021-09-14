@@ -79,11 +79,11 @@ const Login = () => {
           </Text>
         </Stack>
         <HStack width="100%">
-          <Divider colorScheme="blue" orientation="horizontal" />
+          <Divider colorScheme="purple" orientation="horizontal" />
           <Text color={'gray.400'} textTransform="uppercase">
             OR
           </Text>
-          <Divider colorScheme="blue" orientation="horizontal" />
+          <Divider colorScheme="purple" orientation="horizontal" />
         </HStack>
         <GoogleButton onClick={signInWithGoogle} />
       </Stack>

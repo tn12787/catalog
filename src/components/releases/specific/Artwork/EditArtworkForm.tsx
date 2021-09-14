@@ -195,7 +195,7 @@ const EditArtworkForm = ({ releaseData }: Props) => {
               />
               <Flex justify="flex-end">
                 <Button
-                  colorScheme="blue"
+                  colorScheme="purple"
                   flexGrow={0}
                   rightIcon={<FiSave />}
                   isLoading={createLoading || updateLoading}
@@ -212,4 +212,5 @@ const EditArtworkForm = ({ releaseData }: Props) => {
   );
 };
 
+export { EditArtworkForm as EditArtworkFormWithoutData };
 export default withReleaseData(EditArtworkForm);

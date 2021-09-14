@@ -134,7 +134,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
               />
               <Flex justify="flex-end">
                 <Button
-                  colorScheme="blue"
+                  colorScheme="purple"
                   flexGrow={0}
                   rightIcon={<FiArrowRight />}
                   isLoading={createLoading || updateLoading}
