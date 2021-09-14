@@ -22,6 +22,8 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
   const queryClient = useQueryClient();
   const { currentTeam } = useExtendedSession();
 
+  const [selectedEvent, setSelectedEvent] = React.useState<ReleaseEvent>();
+
   const { mutateAsync: updateReleaseEvent } = useMutation(
     updateEventInCalendar,
     {
@@ -108,12 +110,22 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const onCalendarEventClicked = (event: ReleaseEvent) => {
+    setSelectedEvent(event);
     onOpen();
+  };
+
+  const onModalClose = () => {
+    setSelectedEvent(undefined);
+    onClose();
   };
 
   return (
     <>
-      <ReleaseEventDrawer isOpen={isOpen} onClose={onClose} />
+      <ReleaseEventDrawer
+        event={selectedEvent}
+        isOpen={isOpen}
+        onClose={onModalClose}
+      />
       <Calendar
         events={events}
         loading={loading}

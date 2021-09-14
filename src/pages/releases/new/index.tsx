@@ -1,12 +1,13 @@
 import React from 'react';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
-import BasicInfoForm from 'components/releases/BasicInfoForm';
+import NewReleaseForm from 'components/releases/NewReleaseForm';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
+import NewReleaseWizard from 'components/releases/NewReleaseWizard';
 interface Props {}
 
 const NewRelease = (props: Props) => {
-  return <BasicInfoForm />;
+  return <NewReleaseWizard />;
 };
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
