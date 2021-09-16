@@ -1,5 +1,4 @@
 import { Stack, Flex, Button } from '@chakra-ui/react';
-import { onUpdate } from 'firebase-functions/lib/providers/remoteConfig';
 import React, { useEffect, useMemo } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
@@ -9,7 +8,6 @@ import { useQuery } from 'react-query';
 import { basicInfoConfig } from './releaseConfig';
 import { BasicInfoFormData } from './types';
 
-import artists from 'pages/artists';
 import FormContent from 'components/FormContent';
 import Card from 'components/Card';
 import { EnrichedRelease } from 'types';
@@ -67,7 +65,7 @@ const BasicInfoFormBody = ({ onSubmit, existingRelease, loading }: Props) => {
               isLoading={loading}
               type="submit"
             >
-              {existingRelease ? 'Save' : 'Create'}
+              {existingRelease ? 'Save' : 'Next'}
             </Button>
           </Flex>
         </Stack>

@@ -5,7 +5,7 @@ import { Step } from './Step';
 
 interface Step {
   name: string;
-  content: JSX.Element;
+  content: (props: any) => JSX.Element;
 }
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
   getState: (index: number) => 'active' | 'complete' | 'incomplete';
 }
 
-const WizardSteps = ({ steps, currentStep, getState }: Props) => {
+const WizardSteps = ({ steps, currentStep }: Props) => {
   return (
     <Box>
       <Box as="nav" aria-label="Steps" position="relative">

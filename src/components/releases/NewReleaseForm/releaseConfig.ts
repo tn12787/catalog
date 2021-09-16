@@ -5,7 +5,7 @@ import { FormDatum } from 'types/forms';
 export const basicInfoConfig = (artists: Artist[]): FormDatum<Release>[] => [
   {
     name: 'name',
-    label: 'Name',
+    label: 'Release Title',
     type: 'text',
     registerArgs: { required: 'Please enter a name for your release.' },
   },
