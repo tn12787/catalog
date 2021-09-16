@@ -21,19 +21,6 @@ export const buildDistribConfig = (
     isLoading: !distributors.length,
   },
   {
-    name: 'dueDate',
-    label: 'Due on',
-    type: 'date',
-    helperText:
-      'We recommend aiming to complete distribution at least 4 weeks before your target release date.',
-    registerArgs: {
-      required: 'Please enter a due date.',
-    },
-    extraProps: {
-      min: new Date(),
-    },
-  },
-  {
     name: 'status',
     label: 'Status',
     type: 'select',
@@ -46,6 +33,20 @@ export const buildDistribConfig = (
       { label: 'Complete', value: TaskStatus.COMPLETE },
     ],
   },
+  {
+    name: 'dueDate',
+    label: 'Due on',
+    type: 'date',
+    helperText:
+      'We recommend aiming to complete distribution at least 4 weeks before your target release date.',
+    registerArgs: {
+      required: 'Please enter a due date.',
+    },
+    extraProps: {
+      min: new Date(),
+    },
+  },
+
   {
     name: 'completedOn',
     label: 'Completed On',

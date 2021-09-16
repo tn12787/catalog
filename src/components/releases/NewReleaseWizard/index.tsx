@@ -22,10 +22,12 @@ const buildSteps = () => [
   },
   {
     name: 'Artwork',
+    isSkippable: true,
     content: EditArtworkFormBody,
   },
   {
     name: 'Distribution',
+    isSkippable: true,
     content: EditDistributionFormBody,
   },
   {
@@ -68,7 +70,13 @@ const NewReleaseWizard = (props: Props) => {
           getState={getState}
           currentStep={currentStep}
         ></WizardSteps>
-        <StepComponent onSubmit={onSubmit} />
+        <Stack>
+          <StepComponent
+            isSkippable={activeItem.isSkippable}
+            onSkip={activeItem.isSkippable ? () => next() : undefined}
+            onSubmit={onSubmit}
+          />
+        </Stack>
       </Stack>
     </Stack>
   );

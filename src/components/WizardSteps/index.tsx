@@ -3,9 +3,11 @@ import React from 'react';
 
 import { Step } from './Step';
 
+import { FormBodyProps } from 'components/releases/NewReleaseWizard/types';
+
 interface Step {
   name: string;
-  content: (props: any) => JSX.Element;
+  content: React.FC<FormBodyProps<any>>;
 }
 
 interface Props {
