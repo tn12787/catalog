@@ -8,6 +8,7 @@ import { LayoutablePage } from './types';
 import { EnrichedRelease } from 'types';
 import { fetchSingleRelease } from 'queries/releases';
 import NotFound from 'components/releases/specific/NotFound';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 interface ComponentWithReleaseData {
   releaseData: EnrichedRelease;
@@ -19,8 +20,9 @@ const withReleaseData = <T extends ComponentWithReleaseData>(
   const Wrapper = (props: Omit<T, 'releaseData'>) => {
     const router = useRouter();
     const releaseId = router.query['id'] as string;
+    const { currentTeam } = useExtendedSession();
     const { data: response, isLoading } = useQuery(
-      ['releases', releaseId],
+      ['releases', currentTeam, releaseId],
       () => fetchSingleRelease(releaseId)
     );
 
