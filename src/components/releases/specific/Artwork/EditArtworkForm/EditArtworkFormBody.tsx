@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { Artwork, TaskStatus } from '@prisma/client';
+import { TaskStatus } from '@prisma/client';
 
 import { buildArtworkConfig } from '../artworkConfig';
 import { EditArtworkFormData } from '../types';
@@ -11,7 +11,6 @@ import { EditArtworkFormData } from '../types';
 import FormContent from 'components/FormContent';
 import Card from 'components/Card';
 import { EnrichedRelease } from 'types';
-import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
   onSubmit: (data: EditArtworkFormData) => void;

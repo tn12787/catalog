@@ -14,6 +14,7 @@ import {
   createSingleDistribution,
   updateSingleDistribution,
 } from 'queries/distribution';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
   releaseData: EnrichedRelease;
@@ -24,17 +25,27 @@ const EditDistributionForm = ({ releaseData }: Props) => {
 
   const queryClient = useQueryClient();
 
+  const { currentTeam } = useExtendedSession();
+
   const { mutateAsync: createDistribution, isLoading: createLoading } =
     useMutation(createSingleDistribution, {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases']);
+        queryClient.invalidateQueries([
+          'releases',
+          currentTeam,
+          releaseData.id,
+        ]);
       },
     });
 
   const { mutateAsync: updateDistribution, isLoading: updateLoading } =
     useMutation(updateSingleDistribution, {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases']);
+        queryClient.invalidateQueries([
+          'releases',
+          currentTeam,
+          releaseData.id,
+        ]);
       },
     });
 

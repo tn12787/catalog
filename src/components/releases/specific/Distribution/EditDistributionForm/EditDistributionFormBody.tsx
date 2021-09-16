@@ -1,9 +1,8 @@
-import { Stack, Flex, Button, Image } from '@chakra-ui/react';
+import { Stack, Flex, Button } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import dayjs from 'dayjs';
-import { Artwork, TaskStatus } from '@prisma/client';
+import { TaskStatus } from '@prisma/client';
 import { format } from 'date-fns';
 import { useQuery } from 'react-query';
 

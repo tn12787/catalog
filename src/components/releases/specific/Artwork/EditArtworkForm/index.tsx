@@ -44,7 +44,11 @@ const EditArtworkForm = ({ releaseData }: Props) => {
     createSingleArtwork,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam]);
+        queryClient.invalidateQueries([
+          'releases',
+          currentTeam,
+          releaseData.id,
+        ]);
       },
     }
   );
@@ -53,7 +57,11 @@ const EditArtworkForm = ({ releaseData }: Props) => {
     updateSingleArtwork,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam]);
+        queryClient.invalidateQueries([
+          'releases',
+          currentTeam,
+          releaseData.id,
+        ]);
       },
     }
   );
