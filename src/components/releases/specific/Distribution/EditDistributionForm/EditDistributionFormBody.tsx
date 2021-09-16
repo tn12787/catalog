@@ -5,43 +5,31 @@ import { useForm } from 'react-hook-form';
 import { TaskStatus } from '@prisma/client';
 import { format } from 'date-fns';
 import { useQuery } from 'react-query';
+import dayjs from 'dayjs';
 
 import { buildDistribConfig } from '../distribConfig';
 import { EditDistributionFormData } from '../types';
 
 import FormContent from 'components/FormContent';
 import Card from 'components/Card';
-import { EnrichedRelease } from 'types';
 import { fetchDistributors } from 'queries/distribution';
-
-interface Props {
-  onSubmit: (data: EditDistributionFormData) => void;
-  existingRelease?: EnrichedRelease;
-  loading?: boolean;
-}
+import { FormBodyProps } from 'components/releases/NewReleaseWizard/types';
 
 const EditDistributionFormBody = ({
   onSubmit,
+  onSkip,
+  isSkippable,
   existingRelease,
   loading,
-}: Props) => {
+}: FormBodyProps<EditDistributionFormData>) => {
   const formattedDueDate = useMemo(
-    () =>
-      format(
-        new Date(existingRelease?.distribution?.dueDate as string),
-        'yyyy-MM-dd'
-      ),
+    () => dayjs(existingRelease?.distribution?.dueDate).format('YYYY-MM-DD'),
     [existingRelease?.distribution?.dueDate]
   );
 
   const formattedCompletedOn = useMemo(
     () =>
-      existingRelease?.distribution?.completedOn
-        ? format(
-            new Date(existingRelease?.distribution?.completedOn),
-            'yyyy-MM-dd'
-          )
-        : undefined,
+      dayjs(existingRelease?.distribution?.completedOn).format('YYYY-MM-DD'),
     [existingRelease?.distribution?.completedOn]
   );
 
@@ -62,10 +50,7 @@ const EditDistributionFormBody = ({
       : {},
   });
 
-  const { data: distributors, isLoading: isDistributorsLoading } = useQuery(
-    'distributors',
-    fetchDistributors
-  );
+  const { data: distributors } = useQuery('distributors', fetchDistributors);
 
   const status = watch('status');
 
@@ -96,7 +81,19 @@ const EditDistributionFormBody = ({
             errors={errors}
             register={register}
           />
-          <Flex justify="flex-end">
+          <Flex justify="space-between">
+            <Flex>
+              {isSkippable && (
+                <Button
+                  colorScheme="purple"
+                  variant="link"
+                  flexGrow={0}
+                  onClick={onSkip}
+                >
+                  Skip
+                </Button>
+              )}
+            </Flex>
             <Button
               colorScheme="purple"
               flexGrow={0}

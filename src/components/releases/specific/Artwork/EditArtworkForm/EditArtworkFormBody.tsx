@@ -1,4 +1,4 @@
-import { Stack, Flex, Button, Image } from '@chakra-ui/react';
+import { Stack, Flex, Button, Image, HStack } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
@@ -10,15 +10,15 @@ import { EditArtworkFormData } from '../types';
 
 import FormContent from 'components/FormContent';
 import Card from 'components/Card';
-import { EnrichedRelease } from 'types';
+import { FormBodyProps } from 'components/releases/NewReleaseWizard/types';
 
-interface Props {
-  onSubmit: (data: EditArtworkFormData) => void;
-  existingRelease?: EnrichedRelease;
-  loading?: boolean;
-}
-
-const EditArtworkFormBody = ({ onSubmit, existingRelease, loading }: Props) => {
+const EditArtworkFormBody = ({
+  onSubmit,
+  isSkippable,
+  onSkip,
+  existingRelease,
+  loading,
+}: FormBodyProps<EditArtworkFormData>) => {
   const formattedDueDate = useMemo(
     () => dayjs(existingRelease?.artwork?.dueDate).format('YYYY-MM-DD'),
     [existingRelease?.artwork?.dueDate]
@@ -78,7 +78,19 @@ const EditArtworkFormBody = ({ onSubmit, existingRelease, loading }: Props) => {
             errors={errors}
             register={register}
           />
-          <Flex justify="flex-end">
+          <HStack justify="space-between">
+            <Flex>
+              {isSkippable && (
+                <Button
+                  colorScheme="purple"
+                  variant="ghost"
+                  flexGrow={0}
+                  onClick={onSkip}
+                >
+                  Skip
+                </Button>
+              )}
+            </Flex>
             <Button
               colorScheme="purple"
               flexGrow={0}
@@ -88,7 +100,7 @@ const EditArtworkFormBody = ({ onSubmit, existingRelease, loading }: Props) => {
             >
               Save
             </Button>
-          </Flex>
+          </HStack>
         </Stack>
       </Card>
     </Stack>
