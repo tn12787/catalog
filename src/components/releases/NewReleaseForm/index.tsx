@@ -30,7 +30,11 @@ const NewReleaseForm = ({ existingRelease }: Props) => {
     createSingleRelease,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam]);
+        queryClient.invalidateQueries([
+          'releases',
+          currentTeam,
+          existingRelease?.id,
+        ]);
       },
     }
   );
@@ -39,7 +43,11 @@ const NewReleaseForm = ({ existingRelease }: Props) => {
     updateBasicReleaseInfo,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam]);
+        queryClient.invalidateQueries([
+          'releases',
+          currentTeam,
+          existingRelease?.id,
+        ]);
       },
     }
   );
