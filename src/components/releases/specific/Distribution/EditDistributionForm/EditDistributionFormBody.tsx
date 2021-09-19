@@ -1,4 +1,4 @@
-import { Stack, Flex, Button } from '@chakra-ui/react';
+import { Stack, Flex, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
@@ -6,6 +6,7 @@ import { TaskStatus } from '@prisma/client';
 import { format } from 'date-fns';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
+import { BiArrowBack } from 'react-icons/bi';
 
 import { buildDistribConfig } from '../distribConfig';
 import { EditDistributionFormData } from '../types';
@@ -19,6 +20,8 @@ const EditDistributionFormBody = ({
   onSubmit,
   onSkip,
   isSkippable,
+  canGoBack,
+  onBack,
   existingRelease,
   loading,
 }: FormBodyProps<EditDistributionFormData>) => {
@@ -71,41 +74,50 @@ const EditDistributionFormBody = ({
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-      <Card width="100%">
-        <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
-          <FormContent
-            config={buildDistribConfig(
-              status === TaskStatus.COMPLETE,
-              distributors ?? []
+      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+        <FormContent
+          config={buildDistribConfig(
+            status === TaskStatus.COMPLETE,
+            distributors ?? []
+          )}
+          errors={errors}
+          register={register}
+        />
+        <HStack justify="space-between">
+          <Flex>
+            {canGoBack && (
+              <Button
+                variant="link"
+                onClick={onBack}
+                leftIcon={<BiArrowBack />}
+              >
+                Back
+              </Button>
             )}
-            errors={errors}
-            register={register}
-          />
-          <Flex justify="space-between">
-            <Flex>
-              {isSkippable && (
-                <Button
-                  colorScheme="purple"
-                  variant="link"
-                  flexGrow={0}
-                  onClick={onSkip}
-                >
-                  Skip
-                </Button>
-              )}
-            </Flex>
+          </Flex>
+          <ButtonGroup>
+            {isSkippable && (
+              <Button
+                colorScheme="purple"
+                variant="ghost"
+                flexGrow={0}
+                onClick={onSkip}
+              >
+                Skip
+              </Button>
+            )}
             <Button
               colorScheme="purple"
               flexGrow={0}
-              leftIcon={<FiSave />}
+              rightIcon={<FiSave />}
               isLoading={loading}
               type="submit"
             >
               Save
             </Button>
-          </Flex>
-        </Stack>
-      </Card>
+          </ButtonGroup>
+        </HStack>
+      </Stack>
     </Stack>
   );
 };

@@ -50,6 +50,16 @@ class ReleaseListHandler {
   @Post()
   @HttpCode(201)
   async createRelease(@Body(ValidationPipe) body: CreateReleaseDto) {
+    const optionalArgs = pickBy(
+      {
+        artwork: body.artwork ? { create: { ...body.artwork } } : undefined,
+        distribution: body.distribution
+          ? { create: { ...body.artwork } }
+          : undefined,
+      },
+      (v) => v !== undefined
+    );
+
     const result = await prisma.release.create({
       data: {
         artist: { connect: { id: body.artist } },
@@ -59,6 +69,7 @@ class ReleaseListHandler {
         team: {
           connect: { id: body.team },
         },
+        ...optionalArgs,
       },
     });
     return result;

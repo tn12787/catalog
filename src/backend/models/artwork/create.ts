@@ -10,11 +10,11 @@ import {
 import { TaskStatus } from '.prisma/client';
 
 export class CreateArtworkDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsDate()
   dueDate: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(TaskStatus)
   status: TaskStatus;
 

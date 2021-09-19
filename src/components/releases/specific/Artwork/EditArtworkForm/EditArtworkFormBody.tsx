@@ -56,53 +56,51 @@ const EditArtworkFormBody = ({
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-      <Card width="100%">
-        <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
-          {status === TaskStatus.COMPLETE &&
-            (existingRelease?.artwork?.url || watchedAlbumArt?.length) && (
-              <Image
-                borderRadius="5px"
-                width="100%"
-                height="500px"
-                objectFit="cover"
-                alt="completed artwork"
-                src={
-                  watchedAlbumArt?.length
-                    ? URL.createObjectURL(watchedAlbumArt[0])
-                    : existingRelease?.artwork?.url
-                }
-              />
+      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+        {status === TaskStatus.COMPLETE &&
+          (existingRelease?.artwork?.url || watchedAlbumArt?.length) && (
+            <Image
+              borderRadius="5px"
+              width="100%"
+              height="500px"
+              objectFit="cover"
+              alt="completed artwork"
+              src={
+                watchedAlbumArt?.length
+                  ? URL.createObjectURL(watchedAlbumArt[0])
+                  : existingRelease?.artwork?.url
+              }
+            />
+          )}
+        <FormContent
+          config={buildArtworkConfig(status === TaskStatus.COMPLETE)}
+          errors={errors}
+          register={register}
+        />
+        <HStack justify="space-between">
+          <Flex>
+            {isSkippable && (
+              <Button
+                colorScheme="purple"
+                variant="ghost"
+                flexGrow={0}
+                onClick={onSkip}
+              >
+                Skip
+              </Button>
             )}
-          <FormContent
-            config={buildArtworkConfig(status === TaskStatus.COMPLETE)}
-            errors={errors}
-            register={register}
-          />
-          <HStack justify="space-between">
-            <Flex>
-              {isSkippable && (
-                <Button
-                  colorScheme="purple"
-                  variant="ghost"
-                  flexGrow={0}
-                  onClick={onSkip}
-                >
-                  Skip
-                </Button>
-              )}
-            </Flex>
-            <Button
-              colorScheme="purple"
-              flexGrow={0}
-              rightIcon={<FiSave />}
-              isLoading={loading}
-              type="submit"
-            >
-              Save
-            </Button>
-          </HStack>
-        </Stack>
-      </Card>
+          </Flex>
+          <Button
+            colorScheme="purple"
+            flexGrow={0}
+            rightIcon={<FiSave />}
+            isLoading={loading}
+            type="submit"
+          >
+            Save
+          </Button>
+        </HStack>
+      </Stack>
     </Stack>
   );
 };
