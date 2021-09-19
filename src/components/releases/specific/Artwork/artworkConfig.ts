@@ -48,9 +48,6 @@ export const buildArtworkConfig = (
     label: 'Completed On',
     hidden: !alreadyCompleted,
     type: 'date',
-    registerArgs: {
-      required: 'Please enter the date completed',
-    },
   },
   {
     name: 'notes',
@@ -69,5 +66,32 @@ export const buildArtworkConfig = (
     hidden: !alreadyCompleted,
     registerArgs: {},
     extraProps: { accept: 'image/jpeg, image/png' },
+  },
+];
+
+export const buildNewArtworkConfig = (
+): FormDatum<Artwork, TaskStatus>[] => [
+  // {
+  //   name: 'completedBy',
+  //   label: 'Assignee',
+  //   registerArgs: {
+  //     required: 'Please a team or person that will complete the artwork.',
+  //   },
+  //   extraProps: {
+  //     maxLength: 60,
+  //   },
+  // },
+  {
+    name: 'dueDate',
+    label: 'Due on',
+    type: 'date',
+    helperText:
+      'We recommend aiming to complete artwork at least 4 weeks before your target release date.',
+    registerArgs: {
+      required: 'Please enter a due date.',
+    },
+    extraProps: {
+      min: new Date(),
+    },
   },
 ];

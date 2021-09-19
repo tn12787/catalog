@@ -1,6 +1,6 @@
 import { Stack, Flex, Button } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { useQuery } from 'react-query';
@@ -11,7 +11,6 @@ import { basicInfoConfig } from './releaseConfig';
 import { BasicInfoFormData } from './types';
 
 import FormContent from 'components/FormContent';
-import Card from 'components/Card';
 import { EnrichedRelease } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchArtists } from 'queries/artists';
@@ -51,26 +50,24 @@ const BasicInfoFormBody = ({
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-      <Card width="100%">
-        <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
-          <FormContent
-            config={basicInfoConfig(artists ?? [])}
-            errors={errors}
-            register={register}
-          />
-          <Flex justify="flex-end">
-            <Button
-              colorScheme="purple"
-              flexGrow={0}
-              rightIcon={<FiArrowRight />}
-              isLoading={loading}
-              type="submit"
-            >
-              {existingRelease ? 'Save' : 'Next'}
-            </Button>
-          </Flex>
-        </Stack>
-      </Card>
+      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+        <FormContent
+          config={basicInfoConfig(artists ?? [])}
+          errors={errors}
+          register={register}
+        />
+        <Flex justify="flex-end">
+          <Button
+            colorScheme="purple"
+            flexGrow={0}
+            rightIcon={existingRelease ? <FiSave /> : <FiArrowRight />}
+            isLoading={loading}
+            type="submit"
+          >
+            {existingRelease ? 'Save' : 'Next'}
+          </Button>
+        </Flex>
+      </Stack>
     </Stack>
   );
 };
