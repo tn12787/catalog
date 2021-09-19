@@ -185,7 +185,7 @@ model Artwork {
   url             String?    @unique
   notes           String?
   calendarEventId String?    @unique
-  dueDate         DateTime
+  dueDate         DateTime?
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
@@ -205,7 +205,7 @@ model Distribution {
   distributorId   String
   notes           String?
   calendarEventId String?     @unique
-  dueDate         DateTime
+  dueDate         DateTime?
   status          TaskStatus
   release         Release     @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
@@ -235,7 +235,7 @@ model Marketing {
   links           MarketingLink[]
   notes           String?
   calendarEventId String?         @unique
-  dueDate         DateTime
+  dueDate         DateTime?
   status          TaskStatus
   release         Release         @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
@@ -264,7 +264,7 @@ model MusicVideo {
   url             String?    @unique
   notes           String?
   calendarEventId String?    @unique
-  dueDate         DateTime
+  dueDate         DateTime?
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
@@ -283,7 +283,7 @@ model Mastering {
   url             String?    @unique
   notes           String?
   calendarEventId String?    @unique
-  dueDate         DateTime
+  dueDate         DateTime?
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
