@@ -26,18 +26,6 @@ const NewReleaseForm = ({ existingRelease }: Props) => {
   const { currentTeam } = useExtendedSession();
 
   const queryClient = useQueryClient();
-  const { mutateAsync: createRelease, isLoading: createLoading } = useMutation(
-    createSingleRelease,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([
-          'releases',
-          currentTeam,
-          existingRelease?.id,
-        ]);
-      },
-    }
-  );
 
   const { mutateAsync: updateInfo, isLoading: updateLoading } = useMutation(
     updateBasicReleaseInfo,
@@ -51,23 +39,6 @@ const NewReleaseForm = ({ existingRelease }: Props) => {
       },
     }
   );
-
-  const onCreate = async (data: BasicInfoFormData) => {
-    try {
-      const result = await createRelease({
-        ...data,
-        team: currentTeam,
-      } as CreateSingleReleaseVars);
-      toast({
-        status: 'success',
-        title: 'Success',
-        description: 'Your changes were saved.',
-      });
-      router.push(`/releases/${result?.id}`);
-    } catch (e: any) {
-      toast({ status: 'error', title: 'Oh no...', description: e.toString() });
-    }
-  };
 
   const onUpdate = async (data: BasicInfoFormData) => {
     try {
@@ -108,8 +79,8 @@ const NewReleaseForm = ({ existingRelease }: Props) => {
         </Text>
         <BasicInfoFormBody
           existingRelease={existingRelease}
-          onSubmit={existingRelease ? onUpdate : onCreate}
-          loading={createLoading || updateLoading}
+          onSubmit={existingRelease ? onUpdate : () => {}}
+          loading={updateLoading}
         />
       </Stack>
     </Stack>

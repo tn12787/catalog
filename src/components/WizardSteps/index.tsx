@@ -3,17 +3,16 @@ import React from 'react';
 
 import { Step } from './Step';
 
-import { FormBodyProps } from 'components/releases/NewReleaseWizard/types';
+import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 
 interface Step {
   name: string;
-  content: React.FC<FormBodyProps<any>>;
+  content: React.FC<ReleaseWizardComponentProps<any>>;
 }
 
 interface Props {
   steps: Step[];
   currentStep: number;
-  getState: (index: number) => 'active' | 'complete' | 'incomplete';
 }
 
 const WizardSteps = ({ steps, currentStep }: Props) => {

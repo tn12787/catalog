@@ -8,71 +8,59 @@ import {
   ButtonGroup,
 } from '@chakra-ui/react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { FiArrowRight, FiSave } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
 import { Controller, useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { BiArrowBack } from 'react-icons/bi';
 
-import { buildArtworkConfig, buildNewArtworkConfig } from '../artworkConfig';
+import { buildNewArtworkConfig } from '../artworkConfig';
 import { EditArtworkFormData } from '../types';
 
 import FormContent from 'components/FormContent';
-import { FormBodyProps } from 'components/releases/NewReleaseWizard/types';
+import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 import ImageDropzone from 'components/ImageDropper';
 import useAppColors from 'hooks/useAppColors';
+import { TaskStatus } from '.prisma/client';
+import { uploadImageToFirebase } from 'queries/artwork';
 
 const WizardArtworkFormBody = ({
   onSubmit,
   isSkippable,
   onSkip,
-  existingRelease,
   loading,
   canGoBack,
   onBack,
-}: FormBodyProps<EditArtworkFormData>) => {
+}: ReleaseWizardComponentProps<EditArtworkFormData>) => {
   const [showForm, setShowForm] = useState(true);
-
+  const [uploading, setUploading] = useState(false);
   const { bodySub } = useAppColors();
 
-  const formattedDueDate = useMemo(
-    () => dayjs(existingRelease?.artwork?.dueDate).format('YYYY-MM-DD'),
-    [existingRelease?.artwork?.dueDate]
-  );
-
-  const formattedCompletedOn = useMemo(
-    () =>
-      existingRelease?.artwork?.completedOn
-        ? dayjs(existingRelease?.artwork?.completedOn).format('YYYY-MM-DD')
-        : undefined,
-    [existingRelease?.artwork?.completedOn]
-  );
-
-  const { register, errors, control, handleSubmit, watch, reset } =
+  const { register, errors, control, handleSubmit, setValue, watch, reset } =
     useForm<EditArtworkFormData>({
       shouldUnregister: false,
-      defaultValues: existingRelease?.artwork
-        ? {
-            ...existingRelease?.artwork,
-            dueDate: formattedDueDate,
-            completedOn: formattedCompletedOn,
-          }
-        : {},
     });
 
   const watchedAlbumArt = watch('artworkData');
 
-  console.log(watchedAlbumArt);
+  const onSubmitFn = async (data: EditArtworkFormData) => {
+    const { artworkData, ...rest } = data;
+    setUploading(true);
+    console.log(artworkData);
+    const url: string = await uploadImageToFirebase(artworkData as File);
+    setUploading(false);
+
+    onSubmit({ ...rest, url });
+  };
 
   useEffect(() => {
-    reset({
-      ...existingRelease?.artwork,
-      dueDate: formattedDueDate,
-      completedOn: formattedCompletedOn,
-    });
-  }, [existingRelease?.artwork, formattedDueDate, formattedCompletedOn, reset]);
+    setValue(
+      'status',
+      watchedAlbumArt ? TaskStatus.COMPLETE : TaskStatus.OUTSTANDING
+    );
+  }, [setValue, watchedAlbumArt]);
 
   return (
-    <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
+    <Stack as="form" onSubmit={handleSubmit(onSubmitFn)} width="100%">
       <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
         {showForm ? (
           <Stack>
@@ -108,7 +96,7 @@ const WizardArtworkFormBody = ({
               src={watchedAlbumArt && URL.createObjectURL(watchedAlbumArt)}
             />
             <Button
-              onClick={() => reset({ artworkData: null })}
+              onClick={() => reset({ artworkData: undefined })}
               colorScheme="purple"
               fontWeight="normal"
               variant="link"
@@ -156,7 +144,7 @@ const WizardArtworkFormBody = ({
                 colorScheme="purple"
                 variant="ghost"
                 flexGrow={0}
-                onClick={onSkip}
+                onClick={() => onSkip?.('artwork')}
               >
                 Skip
               </Button>
@@ -165,7 +153,7 @@ const WizardArtworkFormBody = ({
               colorScheme="purple"
               flexGrow={0}
               rightIcon={<FiArrowRight />}
-              isLoading={loading}
+              isLoading={loading || uploading}
               type="submit"
             >
               Next
