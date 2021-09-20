@@ -13,7 +13,6 @@ export const appTheme = extendTheme({
     },
   },
 
-  config: { initialColorMode: 'dark' },
   colors: {
     pink: {
       '50': '#FDE8F2',

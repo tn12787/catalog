@@ -8,7 +8,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { SessionProvider } from 'next-auth/react';
 
-import ChakraSSRProvider from 'components/ChakraSSRProvider';
+import ChakraSSRProvider, {
+  getServerSideProps,
+} from 'components/ChakraSSRProvider';
 
 import 'focus-visible/dist/focus-visible';
 import '../index.css';
@@ -46,5 +48,8 @@ const MyApp = ({ Component, pageProps }: Props) => {
     </React.StrictMode>
   );
 };
+
+// re-export the reusable `getServerSideProps` function
+MyApp.getServerSideProps = getServerSideProps;
 
 export default MyApp;
