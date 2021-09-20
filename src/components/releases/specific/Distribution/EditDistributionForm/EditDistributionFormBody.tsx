@@ -14,7 +14,7 @@ import { EditDistributionFormData } from '../types';
 import FormContent from 'components/FormContent';
 import Card from 'components/Card';
 import { fetchDistributors } from 'queries/distribution';
-import { FormBodyProps } from 'components/releases/NewReleaseWizard/types';
+import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 
 const EditDistributionFormBody = ({
   onSubmit,
@@ -24,7 +24,7 @@ const EditDistributionFormBody = ({
   onBack,
   existingRelease,
   loading,
-}: FormBodyProps<EditDistributionFormData>) => {
+}: ReleaseWizardComponentProps<EditDistributionFormData>) => {
   const formattedDueDate = useMemo(
     () => dayjs(existingRelease?.distribution?.dueDate).format('YYYY-MM-DD'),
     [existingRelease?.distribution?.dueDate]
@@ -101,7 +101,7 @@ const EditDistributionFormBody = ({
                 colorScheme="purple"
                 variant="ghost"
                 flexGrow={0}
-                onClick={onSkip}
+                onClick={() => onSkip?.('distribution')}
               >
                 Skip
               </Button>

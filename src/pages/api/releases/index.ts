@@ -54,7 +54,12 @@ class ReleaseListHandler {
       {
         artwork: body.artwork ? { create: { ...body.artwork } } : undefined,
         distribution: body.distribution
-          ? { create: { ...body.artwork } }
+          ? {
+              create: {
+                ...body.distribution,
+                distributor: { connect: { id: body.distribution.distributor } },
+              },
+            }
           : undefined,
       },
       (v) => v !== undefined

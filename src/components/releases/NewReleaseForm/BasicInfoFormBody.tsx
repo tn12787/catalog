@@ -5,13 +5,12 @@ import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { useQuery } from 'react-query';
 
-import { FormBodyProps } from '../NewReleaseWizard/types';
+import { ReleaseWizardComponentProps } from '../NewReleaseWizard/types';
 
 import { basicInfoConfig } from './releaseConfig';
 import { BasicInfoFormData } from './types';
 
 import FormContent from 'components/FormContent';
-import { EnrichedRelease } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchArtists } from 'queries/artists';
 
@@ -20,7 +19,7 @@ const BasicInfoFormBody = ({
   existingRelease,
   isSkippable,
   loading,
-}: FormBodyProps<BasicInfoFormData>) => {
+}: ReleaseWizardComponentProps<BasicInfoFormData>) => {
   const { currentTeam } = useExtendedSession();
 
   const { data: artists } = useQuery(['artists', currentTeam], () =>

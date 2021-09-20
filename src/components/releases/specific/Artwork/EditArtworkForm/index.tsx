@@ -67,11 +67,9 @@ const EditArtworkForm = ({ releaseData }: Props) => {
   );
 
   const onCreate = async (data: EditArtworkFormData) => {
+    const artworkData: File[] = data.artworkData as File[];
     try {
-      const url = await uploadImageToFirebase(
-        releaseData.id,
-        data.artworkData?.[0]
-      );
+      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id);
       await createArtwork({
         ...data,
         url,
@@ -92,10 +90,8 @@ const EditArtworkForm = ({ releaseData }: Props) => {
 
   const onUpdate = async (data: EditArtworkFormData) => {
     try {
-      const url = await uploadImageToFirebase(
-        releaseData.id,
-        data.artworkData?.[0]
-      );
+      const artworkData: File[] = data.artworkData as File[];
+      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id);
 
       await updateArtwork({
         ...data,

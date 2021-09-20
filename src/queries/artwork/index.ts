@@ -1,4 +1,5 @@
 import axios from 'axios';
+import cuid from 'cuid';
 
 import { ArtworkVars } from './types';
 
@@ -43,8 +44,8 @@ export const deleteSingleArtwork = async (
 };
 
 export const uploadImageToFirebase = async (
-  releaseId: string,
-  artworkData: File
+  artworkData: File,
+  releaseId?: string
 ) => {
   try {
     if (!artworkData) return;
@@ -52,7 +53,7 @@ export const uploadImageToFirebase = async (
     const artworkFileRef = firebase
       .storage()
       .ref()
-      .child(`artwork/${releaseId}`);
+      .child(`artwork/${releaseId ?? cuid()}`);
     await artworkFileRef.put(artworkData);
     const downloadUrl = await artworkFileRef.getDownloadURL();
     return downloadUrl;

@@ -51,7 +51,7 @@ export const AccountSwitcherButton = ({
           rounded="md"
           objectFit="cover"
           src={photoUrl}
-          referrerpolicy="no-referrer"
+          referrerPolicy="no-referrer"
           alt="Chakra UI"
         />
         <Box textAlign="start">

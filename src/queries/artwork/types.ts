@@ -5,6 +5,6 @@ export interface ArtworkVars
     Artwork,
     'dueDate' | 'status' | 'notes' | 'completedOn' | 'url'
   > {
-  artworkData: any;
+  artworkData?: File | File[];
   releaseId: string;
 }

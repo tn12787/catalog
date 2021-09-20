@@ -69,18 +69,7 @@ export const buildArtworkConfig = (
   },
 ];
 
-export const buildNewArtworkConfig = (
-): FormDatum<Artwork, TaskStatus>[] => [
-  // {
-  //   name: 'completedBy',
-  //   label: 'Assignee',
-  //   registerArgs: {
-  //     required: 'Please a team or person that will complete the artwork.',
-  //   },
-  //   extraProps: {
-  //     maxLength: 60,
-  //   },
-  // },
+export const buildNewArtworkConfig = (): FormDatum<Artwork, TaskStatus>[] => [
   {
     name: 'dueDate',
     label: 'Due on',

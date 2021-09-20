@@ -10,7 +10,7 @@ import { EditArtworkFormData } from '../types';
 
 import FormContent from 'components/FormContent';
 import Card from 'components/Card';
-import { FormBodyProps } from 'components/releases/NewReleaseWizard/types';
+import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 
 const EditArtworkFormBody = ({
   onSubmit,
@@ -18,7 +18,7 @@ const EditArtworkFormBody = ({
   onSkip,
   existingRelease,
   loading,
-}: FormBodyProps<EditArtworkFormData>) => {
+}: ReleaseWizardComponentProps<EditArtworkFormData>) => {
   const formattedDueDate = useMemo(
     () => dayjs(existingRelease?.artwork?.dueDate).format('YYYY-MM-DD'),
     [existingRelease?.artwork?.dueDate]
@@ -58,7 +58,8 @@ const EditArtworkFormBody = ({
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
         {status === TaskStatus.COMPLETE &&
-          (existingRelease?.artwork?.url || watchedAlbumArt?.length) && (
+          (existingRelease?.artwork?.url ||
+            (watchedAlbumArt as File[])?.length) && (
             <Image
               borderRadius="5px"
               width="100%"
@@ -66,8 +67,8 @@ const EditArtworkFormBody = ({
               objectFit="cover"
               alt="completed artwork"
               src={
-                watchedAlbumArt?.length
-                  ? URL.createObjectURL(watchedAlbumArt[0])
+                (watchedAlbumArt as File[])?.length
+                  ? URL.createObjectURL((watchedAlbumArt as File[])[0])
                   : existingRelease?.artwork?.url
               }
             />
@@ -78,18 +79,7 @@ const EditArtworkFormBody = ({
           register={register}
         />
         <HStack justify="space-between">
-          <Flex>
-            {isSkippable && (
-              <Button
-                colorScheme="purple"
-                variant="ghost"
-                flexGrow={0}
-                onClick={onSkip}
-              >
-                Skip
-              </Button>
-            )}
-          </Flex>
+          <Flex></Flex>
           <Button
             colorScheme="purple"
             flexGrow={0}

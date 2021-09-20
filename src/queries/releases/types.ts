@@ -1,3 +1,4 @@
+import { Artwork, Distribution } from '.prisma/client';
 import { EnrichedRelease } from 'types';
 
 export interface SingleReleaseVars
@@ -6,7 +7,9 @@ export interface SingleReleaseVars
   targetDate: Date;
 }
 
-export interface CreateSingleReleaseVars
-  extends Omit<SingleReleaseVars, 'id'> {}
+export interface CreateSingleReleaseVars extends Omit<SingleReleaseVars, 'id'> {
+  artwork?: Artwork;
+  distribution?: Distribution;
+}
 
 export type DeleteSingleReleaseVars = Pick<SingleReleaseVars, 'id'>;
