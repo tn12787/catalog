@@ -8,7 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { SessionProvider } from 'next-auth/react';
 
-import { appTheme } from 'customTheme';
+import ChakraSSRProvider from 'components/ChakraSSRProvider';
 
 import 'focus-visible/dist/focus-visible';
 import '../index.css';
@@ -34,11 +34,11 @@ const MyApp = ({ Component, pageProps }: Props) => {
         <DndProvider backend={HTML5Backend}>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
-              <ChakraProvider theme={appTheme}>
+              <ChakraSSRProvider>
                 <Layout>
                   <Component {...pageProps} />
                 </Layout>
-              </ChakraProvider>
+              </ChakraSSRProvider>
             </Hydrate>
           </QueryClientProvider>
         </DndProvider>
