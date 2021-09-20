@@ -16,7 +16,7 @@ export const getEventsForRelease = (release: EnrichedRelease) => {
       data: release.artwork,
       release,
     },
-    release.distribution && {
+    release.distribution?.dueDate && {
       name: `${release.name}: distribution`,
       date: release.distribution.dueDate,
       type: EventType.DISTRIBUTION,
