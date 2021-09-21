@@ -1,27 +1,23 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
-import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { BasicInfoFormData } from './types';
 import BasicInfoFormBody from './BasicInfoFormBody';
 
 import { EnrichedRelease } from 'types';
-import { createSingleRelease, updateBasicReleaseInfo } from 'queries/releases';
-import {
-  CreateSingleReleaseVars,
-  SingleReleaseVars,
-} from 'queries/releases/types';
+import { updateBasicReleaseInfo } from 'queries/releases';
+import { SingleReleaseVars } from 'queries/releases/types';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
   existingRelease?: EnrichedRelease;
+  onSubmitSuccess?: () => void;
 }
 
-const NewReleaseForm = ({ existingRelease }: Props) => {
+const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
   const toast = useToast();
-  const router = useRouter();
 
   const { currentTeam } = useExtendedSession();
 
@@ -40,7 +36,7 @@ const NewReleaseForm = ({ existingRelease }: Props) => {
     }
   );
 
-  const onUpdate = async (data: BasicInfoFormData) => {
+  const onSubmit = async (data: BasicInfoFormData) => {
     try {
       await updateInfo({
         ...data,
@@ -51,7 +47,7 @@ const NewReleaseForm = ({ existingRelease }: Props) => {
         title: 'Success',
         description: 'Your changes were saved.',
       });
-      router.push(`/releases/${existingRelease?.id}`);
+      onSubmitSuccess?.();
     } catch (e: any) {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     }
@@ -79,7 +75,7 @@ const NewReleaseForm = ({ existingRelease }: Props) => {
         </Text>
         <BasicInfoFormBody
           existingRelease={existingRelease}
-          onSubmit={existingRelease ? onUpdate : () => {}}
+          onSubmit={existingRelease ? onSubmit : () => {}}
           loading={updateLoading}
         />
       </Stack>

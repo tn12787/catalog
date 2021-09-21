@@ -4,9 +4,13 @@ import {
   Flex,
   Heading,
   Link,
+  Modal,
+  ModalContent,
+  ModalOverlay,
   Spinner,
   Stack,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
@@ -18,9 +22,12 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { SummaryField } from '../Summary';
 
+import EditDistributionForm from './EditDistributionForm';
+
 import { TaskStatus } from '.prisma/client';
 import { EnrichedRelease } from 'types';
 import Card from 'components/Card';
+import NewReleaseForm from 'components/releases/NewReleaseForm';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -61,17 +68,7 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
 
 const Distribution = ({ releaseData }: Props) => {
   const router = useRouter();
-
-  if (status === 'loading' && releaseData.distribution) {
-    return (
-      <Card>
-        <Flex direction="row" justify="space-between">
-          <Heading fontSize="2xl" fontWeight="semibold">💿 Distribution</Heading>
-        </Flex>
-        <Spinner alignSelf="center" />
-      </Card>
-    );
-  }
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Card flex={1}>
@@ -90,20 +87,18 @@ const Distribution = ({ releaseData }: Props) => {
           </Badge>
         </Flex>
         {releaseData.distribution && (
-          <NextLink passHref href={`${router.query.id}/distribution/edit`}>
             <Button
               mt={[2, 2, 0]}
               flexGrow={0}
               height="auto"
               py={1}
               px={12}
-              as={Link as any}
+              onClick={onOpen}
               colorScheme="purple"
               variant="outline"
             >
               Edit
             </Button>
-          </NextLink>
         )}
       </Flex>
       {releaseData.distribution ? (
@@ -147,13 +142,20 @@ const Distribution = ({ releaseData }: Props) => {
       ) : (
         <Flex py={4} align="center" direction="column" justify="space-between">
           <Text mb={3}>This release has no distribution info yet.</Text>
-          <NextLink passHref href={`${router.query.id}/distribution/edit`}>
-            <Button flexGrow={0} as={Link as any} colorScheme="purple">
-              Add now
-            </Button>
-          </NextLink>
+          <Button flexGrow={0} onClick={onOpen} colorScheme="purple">
+            Add now
+          </Button>
         </Flex>
       )}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay></ModalOverlay>
+        <ModalContent>
+          <EditDistributionForm
+            releaseData={releaseData}
+            onSubmitSuccess={onClose}
+          />
+        </ModalContent>
+      </Modal>
     </Card>
   );
 };

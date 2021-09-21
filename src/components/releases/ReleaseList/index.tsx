@@ -57,7 +57,7 @@ const ReleaseList = ({ search, releases }: Props) => {
   }
 
   return (
-    <Stack>
+    <Stack spacing={4}>
       {releases.map((datum, index) => {
         return <ReleaseCard key={index.toString()} releaseData={datum} />;
       })}

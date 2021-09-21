@@ -12,7 +12,6 @@ import { buildDistribConfig } from '../distribConfig';
 import { EditDistributionFormData } from '../types';
 
 import FormContent from 'components/FormContent';
-import Card from 'components/Card';
 import { fetchDistributors } from 'queries/distribution';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 

@@ -27,11 +27,10 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
 
   return (
     <Flex
-      my={'11px'}
       overflow="hidden"
       alignItems="center"
       direction={{ base: 'column', md: 'row' }}
-      borderRadius={'13px'}
+      borderRadius={'lg'}
       border="1px solid"
       borderColor={border}
       width="100%"
@@ -50,6 +49,9 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           height="170px"
           backgroundSize="cover"
           objectFit="cover"
+          borderRadius="md"
+          borderRight="1px solid"
+          borderColor={border}
         />
       </Skeleton>
       <Stack spacing={2} width="100%" direction="column" px={5}>
