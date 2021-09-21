@@ -17,6 +17,7 @@ import {
   ReleaseWizardKey,
   ReleaseWizardStep,
 } from './types';
+import ReviewData from './ReviewData';
 
 import useAppColors from 'hooks/useAppColors';
 import { useSteps } from 'hooks/useSteps';
@@ -52,7 +53,7 @@ const buildSteps = (): ReleaseWizardStep[] => [
     name: 'Review',
     canGoBack: true,
     key: 'review',
-    content: EditDistributionFormBody,
+    content: ReviewData,
   },
 ];
 
@@ -87,7 +88,7 @@ const NewReleaseWizard = (props: Props) => {
       toast({
         status: 'success',
         title: 'Success',
-        description: 'Your changes were saved.',
+        description: 'Release created successfully.',
       });
       router.push(`/releases/${result?.id}`);
     } catch (e: any) {
@@ -139,6 +140,7 @@ const NewReleaseWizard = (props: Props) => {
             <StepComponent
               completeState={allState}
               isSkippable={currentStep.isSkippable}
+              loading={createLoading}
               onSkip={
                 currentStep.isSkippable
                   ? (stepKey: ReleaseWizardKey) => {
