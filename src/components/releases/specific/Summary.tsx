@@ -1,10 +1,23 @@
-import { Button, Flex, Heading, Link, Text } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Heading,
+  Link,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import React from 'react';
+
+import NewReleaseForm from '../NewReleaseForm';
 
 import { EnrichedRelease } from 'types';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
@@ -48,6 +61,9 @@ const fields = (releaseData: EnrichedRelease): SummaryField[] => [
 const Summary = ({ releaseData }: Props) => {
   const router = useRouter();
   const editUrl = `${router.query.id}/summary/edit`;
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Card alignItems={['center', 'center', 'stretch']}>
       <Flex
@@ -67,10 +83,9 @@ const Summary = ({ releaseData }: Props) => {
           height="auto"
           py={1}
           px={12}
-          as={'a'}
           colorScheme="purple"
           variant="outline"
-          href={editUrl}
+          onClick={onOpen}
         >
           Edit
         </Button>
@@ -100,6 +115,15 @@ const Summary = ({ releaseData }: Props) => {
           );
         })}
       </Flex>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay></ModalOverlay>
+        <ModalContent>
+          <NewReleaseForm
+            existingRelease={releaseData}
+            onSubmitSuccess={onClose}
+          />
+        </ModalContent>
+      </Modal>
     </Card>
   );
 };

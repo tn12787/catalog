@@ -6,6 +6,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Box,
   Button,
   Flex,
   Heading,
@@ -13,13 +14,14 @@ import {
   Icon,
   Image,
   Link as ChakraLink,
+  Stack,
   Text,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -27,6 +29,7 @@ import { deleteSingleRelease } from 'queries/releases';
 import { EnrichedRelease } from 'types';
 import { hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   releaseData: EnrichedRelease;
@@ -48,6 +51,8 @@ const HeaderSection = ({ releaseData }: Props) => {
       },
     }
   );
+
+  const { bgPrimary } = useAppColors();
 
   const { teams, currentTeam } = useExtendedSession();
 
@@ -76,10 +81,9 @@ const HeaderSection = ({ releaseData }: Props) => {
   };
 
   return (
-    <Flex
+    <Stack
       width={['100%', '100%', '90%']}
       maxWidth={'container.lg'}
-      direction="column"
     >
       <Flex position="relative" overflow="hidden">
         <Image
@@ -94,7 +98,7 @@ const HeaderSection = ({ releaseData }: Props) => {
             'https://semantic-ui.com/images/wireframe/image.png'
           }
         />
-        <Flex
+        <Box
           position="absolute"
           top={0}
           left={0}
@@ -102,10 +106,8 @@ const HeaderSection = ({ releaseData }: Props) => {
           bottom={0}
           height={'100%'}
           width="100%"
-          background={
-            'linear-gradient(to bottom,  rgba(255,255,255,0) 0%,#eee 100%)'
-          }
-        ></Flex>
+          bgGradient={`linear(to-b, transparent, ${bgPrimary})`}
+        ></Box>
       </Flex>
       <Flex align="center" justify="space-between">
         <HStack
@@ -160,7 +162,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </Flex>
+    </Stack>
   );
 };
 

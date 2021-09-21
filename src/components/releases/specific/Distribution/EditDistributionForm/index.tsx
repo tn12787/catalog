@@ -18,9 +18,10 @@ import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
   releaseData: EnrichedRelease;
+  onSubmitSuccess?: () => void;
 }
 
-const EditDistributionForm = ({ releaseData }: Props) => {
+const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const router = useRouter();
 
   const queryClient = useQueryClient();
@@ -60,7 +61,7 @@ const EditDistributionForm = ({ releaseData }: Props) => {
         title: 'Success',
         description: 'Your changes were saved.',
       });
-      router.push(`/releases/${releaseData.id}`);
+      onSubmitSuccess?.();
     } catch (e: any) {
       console.log(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
@@ -76,7 +77,8 @@ const EditDistributionForm = ({ releaseData }: Props) => {
         title: 'Success',
         description: 'Your changes were saved.',
       });
-      router.push(`/releases/${releaseData.id}`);
+
+      onSubmitSuccess?.();
     } catch (e: any) {
       console.log(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
@@ -92,10 +94,6 @@ const EditDistributionForm = ({ releaseData }: Props) => {
       height="100%"
     >
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <BackButton
-          alignSelf="flex-start"
-          href={`/releases/${releaseData.id}`}
-        />
         <Heading>
           {releaseData.distribution ? 'Edit' : 'Add'} Distribution
         </Heading>
@@ -113,4 +111,4 @@ const EditDistributionForm = ({ releaseData }: Props) => {
   );
 };
 
-export default withReleaseData(EditDistributionForm);
+export default EditDistributionForm;
