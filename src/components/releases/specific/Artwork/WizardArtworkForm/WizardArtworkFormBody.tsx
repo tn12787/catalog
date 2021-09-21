@@ -10,7 +10,6 @@ import {
 import React, { useEffect, useMemo, useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { Controller, useForm } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { BiArrowBack } from 'react-icons/bi';
 
 import { buildNewArtworkConfig } from '../artworkConfig';
@@ -30,8 +29,11 @@ const WizardArtworkFormBody = ({
   loading,
   canGoBack,
   onBack,
+  completeState,
 }: ReleaseWizardComponentProps<EditArtworkFormData>) => {
-  const [showForm, setShowForm] = useState(true);
+  const [showForm, setShowForm] = useState(
+    completeState?.artwork?.status !== TaskStatus.COMPLETE
+  );
   const [uploading, setUploading] = useState(false);
   const { bodySub } = useAppColors();
 
@@ -45,19 +47,25 @@ const WizardArtworkFormBody = ({
   const onSubmitFn = async (data: EditArtworkFormData) => {
     const { artworkData, ...rest } = data;
     setUploading(true);
-    console.log(artworkData);
     const url: string = await uploadImageToFirebase(artworkData as File);
     setUploading(false);
 
-    onSubmit({ ...rest, url });
+    onSubmit({ ...rest, url: url ?? completeState?.artwork?.url });
   };
 
+  console.log(completeState?.artwork);
+
   useEffect(() => {
-    setValue(
-      'status',
-      watchedAlbumArt ? TaskStatus.COMPLETE : TaskStatus.OUTSTANDING
-    );
-  }, [setValue, watchedAlbumArt]);
+    const newStatus =
+      watchedAlbumArt || completeState?.artwork?.url
+        ? TaskStatus.COMPLETE
+        : TaskStatus.OUTSTANDING;
+    if (completeState?.artwork) {
+      reset({ ...completeState?.artwork, status: newStatus });
+    } else {
+      setValue('status', newStatus);
+    }
+  }, [setValue, watchedAlbumArt, completeState?.artwork, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmitFn)} width="100%">
@@ -85,7 +93,7 @@ const WizardArtworkFormBody = ({
               </Button>
             </HStack>
           </Stack>
-        ) : watchedAlbumArt ? (
+        ) : watchedAlbumArt || completeState?.artwork?.url ? (
           <Stack>
             <Image
               borderRadius="5px"
@@ -93,7 +101,11 @@ const WizardArtworkFormBody = ({
               height="600px"
               objectFit="cover"
               alt="completed artwork"
-              src={watchedAlbumArt && URL.createObjectURL(watchedAlbumArt)}
+              src={
+                watchedAlbumArt
+                  ? URL.createObjectURL(watchedAlbumArt)
+                  : completeState?.artwork?.url
+              }
             />
             <Button
               onClick={() => reset({ artworkData: undefined })}
