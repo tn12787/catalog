@@ -1,13 +1,11 @@
-import {
-  Text,
-  Image,
-  Flex,
-  Button,
-  Skeleton,
-  HStack,
-  Stack,
-} from '@chakra-ui/react';
 import React from 'react';
+import NextLink from 'next/link';
+import { Skeleton } from '@chakra-ui/skeleton';
+import { Button } from '@chakra-ui/button';
+import { Flex, Stack, HStack, Link, Text } from '@chakra-ui/layout';
+import { Image } from '@chakra-ui/image';
+import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
+import { FiChevronDown } from 'react-icons/fi';
 
 import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
@@ -16,6 +14,8 @@ import ReleaseType from './ReleaseType';
 import { EnrichedRelease } from 'types';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import useAppColors from 'hooks/useAppColors';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 interface ReleaseCardProps {
   releaseData: EnrichedRelease;
@@ -24,6 +24,12 @@ interface ReleaseCardProps {
 
 const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
   const { border, bgSecondary } = useAppColors();
+
+  const { currentTeam, teams } = useExtendedSession();
+  const canDeleteRelease = hasRequiredPermissions(
+    ['DELETE_RELEASES'],
+    teams?.[currentTeam]
+  );
 
   return (
     <Flex
@@ -54,38 +60,55 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
         />
       </Skeleton>
       <Stack spacing={2} width="100%" direction="column" px={5}>
-        <Flex
-          flex={1}
+        <Stack
           align="center"
           direction={{ base: 'column', md: 'row' }}
           justify="space-between"
         >
           <HStack alignItems="center" direction={{ base: 'column', md: 'row' }}>
             <Skeleton isLoaded={!loading}>
-              <Text fontSize="25px" isTruncated fontWeight="semibold">
-                {releaseData.name}
-              </Text>
+              <NextLink passHref href={`/releases/${releaseData.id}`}>
+                <Text
+                  fontSize="25px"
+                  as={Link}
+                  Text
+                  isTruncated
+                  fontWeight="semibold"
+                >
+                  {releaseData.name}
+                </Text>
+              </NextLink>
             </Skeleton>
             <Skeleton display="flex" alignItems="center" isLoaded={!loading}>
               <ReleaseStatusBadge releaseData={releaseData} />
             </Skeleton>
           </HStack>
-          <Skeleton isLoaded={!loading}>
-            <Button
-              py={'6px'}
-              px={6}
-              mt={[2, 2, 0]}
-              as={'a'}
-              href={`/releases/${releaseData.id}`}
-              height="auto"
-              fontSize="15px"
-              variant="outline"
-              colorScheme="purple"
-            >
-              View Details
-            </Button>
-          </Skeleton>
-        </Flex>
+          {canDeleteRelease && (
+            <Skeleton isLoaded={!loading}>
+              <Menu size="sm">
+                <MenuButton
+                  as={Button}
+                  href={`/releases/${releaseData.id}`}
+                  variant="outline"
+                  colorScheme="purple"
+                  rightIcon={<FiChevronDown />}
+                  size="sm"
+                >
+                  Actions
+                </MenuButton>
+                <MenuList>
+                  {/* <MenuItem
+                  onClick={() => router.push(`/releases/${releaseData.id}`)}
+                >
+                  View Details
+                </MenuItem> */}
+                  {/* <MenuDivider /> */}
+                  <MenuItem color="red">Delete</MenuItem>
+                </MenuList>
+              </Menu>
+            </Skeleton>
+          )}
+        </Stack>
         <Stack>
           <Skeleton isLoaded={!loading} alignSelf="flex-start">
             <ReleaseArtist releaseData={releaseData} />
