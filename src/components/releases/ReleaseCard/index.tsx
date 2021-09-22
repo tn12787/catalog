@@ -49,7 +49,6 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           height="170px"
           backgroundSize="cover"
           objectFit="cover"
-          borderRadius="md"
           borderRight="1px solid"
           borderColor={border}
         />
