@@ -5,8 +5,9 @@ import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { TaskStatus } from '@prisma/client';
 
-import { buildArtworkConfig } from '../artworkConfig';
-import { EditArtworkFormData } from '../types';
+import { EditArtworkFormData } from '../../specific/Artwork/types';
+
+import { buildArtworkConfig } from './artworkConfig';
 
 import FormContent from 'components/FormContent';
 import Card from 'components/Card';

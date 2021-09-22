@@ -4,7 +4,7 @@ import { Stack } from '@chakra-ui/layout';
 
 import { basicInfoDataConfig, renderReviewData } from './data';
 
-import { BasicInfoFormData } from 'components/releases/NewReleaseForm/types';
+import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
 import { fetchSingleArtist } from 'queries/artists';
 
 interface Props {

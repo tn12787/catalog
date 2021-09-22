@@ -11,7 +11,7 @@ import BasicInfoReview from './BasicInfoReview';
 import ArtworkReview from './ArtworkReview';
 import DistributionReview from './DistributionReview';
 
-import { BasicInfoFormData } from 'components/releases/NewReleaseForm/types';
+import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
 import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
 import { EditDistributionFormData } from 'components/releases/specific/Distribution/types';
 

@@ -17,7 +17,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import React from 'react';
 
-import NewReleaseForm from '../NewReleaseForm';
+import NewReleaseForm from '../forms/NewReleaseForm';
 
 import { EnrichedRelease } from 'types';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';

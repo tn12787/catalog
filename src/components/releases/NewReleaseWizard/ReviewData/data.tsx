@@ -6,9 +6,9 @@ import { EditArtworkFormData } from '../../specific/Artwork/types';
 
 import { ReviewConfigItem } from './types';
 
-import { BasicInfoFormData } from 'components/releases/NewReleaseForm/types';
-import { basicInfoConfig } from 'components/releases/NewReleaseForm/releaseConfig';
-import { buildDistribConfig } from 'components/releases/specific/Distribution/distribConfig';
+import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
+import { basicInfoConfig } from 'components/releases/forms/NewReleaseForm/releaseConfig';
+import { buildDistribConfig } from 'components/releases/forms/EditDistributionForm/distribConfig';
 
 export const renderReviewData = <
   T extends BasicInfoFormData | EditArtworkFormData | EditDistributionFormData

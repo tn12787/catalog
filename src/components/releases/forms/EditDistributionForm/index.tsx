@@ -3,7 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { EditDistributionFormData } from '../types';
+import { EditDistributionFormData } from '../../specific/Distribution/types';
 
 import EditDistributionFormBody from './EditDistributionFormBody';
 

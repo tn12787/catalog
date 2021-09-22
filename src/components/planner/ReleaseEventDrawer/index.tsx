@@ -14,7 +14,7 @@ import {
 import React from 'react';
 
 import { EventType } from 'components/Calendar/types';
-import { EditArtworkFormWithoutData } from 'components/releases/specific/Artwork/EditArtworkForm';
+import EditArtworkForm from 'components/releases/forms/EditArtworkForm';
 import { ReleaseEvent } from 'types';
 
 interface Props extends Omit<DrawerProps, 'children'> {
@@ -39,7 +39,10 @@ const ReleaseEventDrawer = ({ event, isOpen, onClose, ...rest }: Props) => {
         <DrawerCloseButton />
         <DrawerBody>
           {event?.type === EventType.ARTWORK ? (
-            <EditArtworkFormWithoutData releaseData={event.release} />
+            <EditArtworkForm
+              releaseData={event.release}
+              onSubmitSuccess={onClose}
+            />
           ) : (
             'form'
           )}

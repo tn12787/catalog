@@ -12,8 +12,8 @@ import { FiArrowRight } from 'react-icons/fi';
 import { Controller, useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';
 
-import { buildNewArtworkConfig } from '../artworkConfig';
-import { EditArtworkFormData } from '../types';
+import { buildNewArtworkConfig } from '../EditArtworkForm/artworkConfig';
+import { EditArtworkFormData } from '../../specific/Artwork/types';
 
 import FormContent from 'components/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';

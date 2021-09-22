@@ -7,6 +7,10 @@ import {
   Badge,
   Stack,
   Link,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
@@ -17,6 +21,8 @@ import React from 'react';
 import NextLink from 'next/link';
 
 import { SummaryField } from '../Summary';
+import EditDistributionForm from '../../forms/EditDistributionForm';
+import EditArtworkForm from '../../forms/EditArtworkForm';
 
 import { EnrichedRelease } from 'types';
 import Card from 'components/Card';
@@ -67,6 +73,8 @@ const Artwork = ({ releaseData }: Props) => {
   const router = useRouter();
 
   const editUrl = `${router.query.id}/artwork/edit`;
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { currentTeam, teams } = useExtendedSession();
   const canUpdateRelease = hasRequiredPermissions(
@@ -165,6 +173,15 @@ const Artwork = ({ releaseData }: Props) => {
           )}
         </Flex>
       )}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay></ModalOverlay>
+        <ModalContent>
+          <EditArtworkForm
+            releaseData={releaseData}
+            onSubmitSuccess={onClose}
+          />
+        </ModalContent>
+      </Modal>
     </Card>
   );
 };

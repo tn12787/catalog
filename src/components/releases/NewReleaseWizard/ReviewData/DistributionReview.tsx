@@ -8,7 +8,7 @@ import {
   renderReviewData,
 } from './data';
 
-import { BasicInfoFormData } from 'components/releases/NewReleaseForm/types';
+import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
 import { fetchSingleArtist } from 'queries/artists';
 import { EditDistributionFormData } from 'components/releases/specific/Distribution/types';
 import { fetchDistributors } from 'queries/distribution';
