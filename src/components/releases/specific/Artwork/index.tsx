@@ -115,10 +115,9 @@ const Artwork = ({ releaseData }: Props) => {
             height="auto"
             py={1}
             px={12}
-            as={'a'}
+            onClick={onOpen}
             colorScheme="purple"
             variant="outline"
-            href={editUrl}
           >
             Edit
           </Button>
@@ -167,7 +166,7 @@ const Artwork = ({ releaseData }: Props) => {
         <Flex py={4} align="center" direction="column" justify="space-between">
           <Text mb={3}>This release has no artwork info yet.</Text>
           {canUpdateRelease && (
-            <Button flexGrow={0} as={'a'} colorScheme="purple" href={editUrl}>
+            <Button flexGrow={0} colorScheme="purple" onClick={onOpen}>
               Add now
             </Button>
           )}
