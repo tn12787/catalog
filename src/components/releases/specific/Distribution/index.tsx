@@ -21,13 +21,12 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { SummaryField } from '../Summary';
-
-import EditDistributionForm from './EditDistributionForm';
+import EditDistributionForm from '../../forms/EditDistributionForm';
 
 import { TaskStatus } from '.prisma/client';
 import { EnrichedRelease } from 'types';
 import Card from 'components/Card';
-import NewReleaseForm from 'components/releases/NewReleaseForm';
+import NewReleaseForm from 'components/releases/forms/NewReleaseForm';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { BasicInfoFormData } from './types';
-import BasicInfoFormBody from './BasicInfoFormBody';
+import NewReleaseFormBody from './NewReleaseFormBody';
 
 import { EnrichedRelease } from 'types';
 import { updateBasicReleaseInfo } from 'queries/releases';
@@ -73,7 +73,7 @@ const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
             ? 'Add or change basic info about the release.'
             : 'Enter the basic info about your release.'}
         </Text>
-        <BasicInfoFormBody
+        <NewReleaseFormBody
           existingRelease={existingRelease}
           onSubmit={existingRelease ? onSubmit : () => {}}
           loading={updateLoading}

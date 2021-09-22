@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { useQuery } from 'react-query';
 
-import { ReleaseWizardComponentProps } from '../NewReleaseWizard/types';
+import { ReleaseWizardComponentProps } from '../../NewReleaseWizard/types';
 
 import { basicInfoConfig } from './releaseConfig';
 import { BasicInfoFormData } from './types';
@@ -14,7 +14,7 @@ import FormContent from 'components/FormContent';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchArtists } from 'queries/artists';
 
-const BasicInfoFormBody = ({
+const NewReleaseFormBody = ({
   onSubmit,
   existingRelease,
   isSkippable,
@@ -71,4 +71,4 @@ const BasicInfoFormBody = ({
   );
 };
 
-export default BasicInfoFormBody;
+export default NewReleaseFormBody;

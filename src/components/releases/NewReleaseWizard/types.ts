@@ -1,4 +1,4 @@
-import { BasicInfoFormData } from '../NewReleaseForm/types';
+import { BasicInfoFormData } from '../forms/NewReleaseForm/types';
 import { EditArtworkFormData } from '../specific/Artwork/types';
 import { EditDistributionFormData } from '../specific/Distribution/types';
 

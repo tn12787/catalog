@@ -5,12 +5,12 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useToast } from '@chakra-ui/toast';
 import { useRouter } from 'next/router';
 
-import EditDistributionFormBody from '../specific/Distribution/EditDistributionForm/EditDistributionFormBody';
-import BasicInfoFormBody from '../NewReleaseForm/BasicInfoFormBody';
-import { BasicInfoFormData } from '../NewReleaseForm/types';
+import EditDistributionFormBody from '../forms/EditDistributionForm/EditDistributionFormBody';
+import NewReleaseFormBody from '../forms/NewReleaseForm/NewReleaseFormBody';
+import { BasicInfoFormData } from '../forms/NewReleaseForm/types';
 import { EditArtworkFormData } from '../specific/Artwork/types';
 import { EditDistributionFormData } from '../specific/Distribution/types';
-import WizardArtworkFormBody from '../specific/Artwork/WizardArtworkForm/WizardArtworkFormBody';
+import WizardArtworkFormBody from '../forms/WizardArtworkForm/WizardArtworkFormBody';
 
 import {
   CombinedFormState,
@@ -33,7 +33,7 @@ const buildSteps = (): ReleaseWizardStep[] => [
   {
     name: 'Basics',
     key: 'basics',
-    content: BasicInfoFormBody,
+    content: NewReleaseFormBody,
   },
   {
     name: 'Artwork',

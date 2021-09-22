@@ -9,7 +9,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 import 'firebase/storage';
 
-import { EditArtworkFormData } from '../types';
+import { EditArtworkFormData } from '../../specific/Artwork/types';
 
 import EditArtworkFormBody from './EditArtworkFormBody';
 
@@ -29,9 +29,10 @@ dayjs.extend(localizedFormat);
 
 interface Props {
   releaseData: EnrichedRelease;
+  onSubmitSuccess?: () => void;
 }
 
-const EditArtworkForm = ({ releaseData }: Props) => {
+const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const router = useRouter();
 
   const toast = useToast();
@@ -81,7 +82,7 @@ const EditArtworkForm = ({ releaseData }: Props) => {
         title: 'Success',
         description: 'Your changes were saved.',
       });
-      router.push(`/releases/${releaseData.id}`);
+      onSubmitSuccess?.();
     } catch (e: any) {
       console.log(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
@@ -104,7 +105,7 @@ const EditArtworkForm = ({ releaseData }: Props) => {
         title: 'Success',
         description: 'Your changes were saved.',
       });
-      router.push(`/releases/${releaseData.id}`);
+      onSubmitSuccess?.();
     } catch (e: any) {
       console.log(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
@@ -137,5 +138,4 @@ const EditArtworkForm = ({ releaseData }: Props) => {
   );
 };
 
-export { EditArtworkForm as EditArtworkFormWithoutData };
-export default withReleaseData(EditArtworkForm);
+export default EditArtworkForm;

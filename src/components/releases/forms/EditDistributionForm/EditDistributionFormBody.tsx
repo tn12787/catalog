@@ -8,8 +8,9 @@ import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 import { BiArrowBack } from 'react-icons/bi';
 
-import { buildDistribConfig } from '../distribConfig';
-import { EditDistributionFormData } from '../types';
+import { EditDistributionFormData } from '../../specific/Distribution/types';
+
+import { buildDistribConfig } from './distribConfig';
 
 import FormContent from 'components/FormContent';
 import { fetchDistributors } from 'queries/distribution';
