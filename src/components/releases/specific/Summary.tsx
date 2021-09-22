@@ -22,6 +22,8 @@ import NewReleaseForm from '../NewReleaseForm';
 import { EnrichedRelease } from 'types';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import Card from 'components/Card';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -64,6 +66,12 @@ const Summary = ({ releaseData }: Props) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { currentTeam, teams } = useExtendedSession();
+  const canUpdateRelease = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    teams?.[currentTeam]
+  );
+
   return (
     <Card alignItems={['center', 'center', 'stretch']}>
       <Flex
@@ -77,18 +85,20 @@ const Summary = ({ releaseData }: Props) => {
           </Heading>
         </Flex>
 
-        <Button
-          mt={[2, 2, 0]}
-          flexGrow={0}
-          height="auto"
-          py={1}
-          px={12}
-          colorScheme="purple"
-          variant="outline"
-          onClick={onOpen}
-        >
-          Edit
-        </Button>
+        {canUpdateRelease && (
+          <Button
+            mt={[2, 2, 0]}
+            flexGrow={0}
+            height="auto"
+            py={1}
+            px={12}
+            colorScheme="purple"
+            variant="outline"
+            onClick={onOpen}
+          >
+            Edit
+          </Button>
+        )}
       </Flex>
       <Flex
         direction={['column', 'column', 'row']}

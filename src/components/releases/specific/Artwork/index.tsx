@@ -21,6 +21,8 @@ import { SummaryField } from '../Summary';
 import { EnrichedRelease } from 'types';
 import Card from 'components/Card';
 import { TaskStatus } from '.prisma/client';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -66,6 +68,12 @@ const Artwork = ({ releaseData }: Props) => {
 
   const editUrl = `${router.query.id}/artwork/edit`;
 
+  const { currentTeam, teams } = useExtendedSession();
+  const canUpdateRelease = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    teams?.[currentTeam]
+  );
+
   if (status === 'loading' && releaseData.artwork) {
     return (
       <Card>
@@ -92,7 +100,7 @@ const Artwork = ({ releaseData }: Props) => {
             {releaseData?.artwork?.status}
           </Badge>
         </Flex>
-        {releaseData.artwork && (
+        {releaseData.artwork && canUpdateRelease && (
           <Button
             mt={[2, 2, 0]}
             flexGrow={0}
@@ -150,9 +158,11 @@ const Artwork = ({ releaseData }: Props) => {
       ) : (
         <Flex py={4} align="center" direction="column" justify="space-between">
           <Text mb={3}>This release has no artwork info yet.</Text>
-          <Button flexGrow={0} as={'a'} colorScheme="purple" href={editUrl}>
-            Add now
-          </Button>
+          {canUpdateRelease && (
+            <Button flexGrow={0} as={'a'} colorScheme="purple" href={editUrl}>
+              Add now
+            </Button>
+          )}
         </Flex>
       )}
     </Card>

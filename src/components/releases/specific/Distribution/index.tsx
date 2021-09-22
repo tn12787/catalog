@@ -28,6 +28,8 @@ import { TaskStatus } from '.prisma/client';
 import { EnrichedRelease } from 'types';
 import Card from 'components/Card';
 import NewReleaseForm from 'components/releases/NewReleaseForm';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -70,6 +72,12 @@ const Distribution = ({ releaseData }: Props) => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { currentTeam, teams } = useExtendedSession();
+  const canUpdateRelease = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    teams?.[currentTeam]
+  );
+
   return (
     <Card flex={1}>
       <Flex
@@ -86,19 +94,19 @@ const Distribution = ({ releaseData }: Props) => {
             {releaseData.distribution?.status}
           </Badge>
         </Flex>
-        {releaseData.distribution && (
-            <Button
-              mt={[2, 2, 0]}
-              flexGrow={0}
-              height="auto"
-              py={1}
-              px={12}
-              onClick={onOpen}
-              colorScheme="purple"
-              variant="outline"
-            >
-              Edit
-            </Button>
+        {releaseData.distribution && canUpdateRelease && (
+          <Button
+            mt={[2, 2, 0]}
+            flexGrow={0}
+            height="auto"
+            py={1}
+            px={12}
+            onClick={onOpen}
+            colorScheme="purple"
+            variant="outline"
+          >
+            Edit
+          </Button>
         )}
       </Flex>
       {releaseData.distribution ? (
@@ -142,9 +150,11 @@ const Distribution = ({ releaseData }: Props) => {
       ) : (
         <Flex py={4} align="center" direction="column" justify="space-between">
           <Text mb={3}>This release has no distribution info yet.</Text>
-          <Button flexGrow={0} onClick={onOpen} colorScheme="purple">
-            Add now
-          </Button>
+          {canUpdateRelease && (
+            <Button flexGrow={0} onClick={onOpen} colorScheme="purple">
+              Add now
+            </Button>
+          )}
         </Flex>
       )}
       <Modal isOpen={isOpen} onClose={onClose}>
