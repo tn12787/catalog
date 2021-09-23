@@ -35,6 +35,7 @@ import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
 import Table from 'components/Table';
 import TeamMembersTable from 'components/teams/TeamMembersTable';
+import TeamInformation from 'components/teams/settings/TeamInformation';
 
 interface Props {}
 
@@ -60,83 +61,10 @@ const TeamOverview = (props: Props) => {
       width="100%"
     >
       <Stack spacing={4} width="90%" maxW="container.lg">
-        <Stack direction="row" align="center" justify="space-between">
-          <Skeleton isLoaded={!isLoading}>
-            <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-              {isLoading ? 'Loading team name' : teamData?.name}
-            </Heading>
-          </Skeleton>
-        </Stack>
-        <Stack spacing={4}>
-          <Stack spacing={4} direction={{ base: 'column', md: 'row' }}>
-            <Card w="100%">
-              <Stat>
-                <StatLabel>Members</StatLabel>
-                <StatNumber>{teamData?.users?.length}</StatNumber>
-              </Stat>
-            </Card>
-            <Card w="100%">
-              <Stat>
-                <StatLabel>Plan</StatLabel>
-                <StatNumber>{teamData?.plan}</StatNumber>
-              </Stat>
-            </Card>
-            <Card
-              w="100%"
-              bgGradient="linear(to-r, purple.300, blue.500)"
-              color={'white'}
-            >
-              <Text fontWeight="bold">Upgrade now</Text>
-              <Text fontSize="sm">
-                Upgrade now for more members, and stuff!
-              </Text>
-              <Button colorScheme="purple">Upgrade now</Button>
-            </Card>
-          </Stack>
-          <Card spacing={6}>
-            <Heading fontSize="2xl" as="h4" fontWeight="semibold">
-              Members
-            </Heading>
-            <Stack spacing={4}>
-              <HStack
-                direction={{ base: 'column', md: 'row' }}
-                justify="space-between"
-              >
-                <HStack>
-                  <FormControl minW={{ md: '320px' }} id="search">
-                    <InputGroup size="sm">
-                      <FormLabel srOnly>Filter by name or email</FormLabel>
-                      <InputLeftElement pointerEvents="none" color="gray.400">
-                        <BsSearch />
-                      </InputLeftElement>
-                      <Input
-                        type="search"
-                        placeholder="Filter by name or email..."
-                      />
-                    </InputGroup>
-                  </FormControl>
-                </HStack>
-                <ButtonGroup size="sm" variant="outline">
-                  <Button
-                    iconSpacing="1"
-                    leftIcon={<RiAddFill fontSize="1.25em" />}
-                  >
-                    New member
-                  </Button>
-                  <Button
-                    iconSpacing="1"
-                    leftIcon={<RiArrowRightUpLine fontSize="1.25em" />}
-                  >
-                    Export CSV
-                  </Button>
-                </ButtonGroup>
-              </HStack>
-              <TeamMembersTable
-                teamMembers={teamData?.users ?? []}
-              ></TeamMembersTable>
-            </Stack>
-          </Card>
-        </Stack>
+        <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
+          Team Settings
+        </Heading>
+        <TeamInformation team={teamData} />
       </Stack>
     </Stack>
   );

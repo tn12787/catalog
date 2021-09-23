@@ -20,6 +20,7 @@ import { JWT } from 'next-auth/jwt';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
+import { UpdateTeamDto } from 'backend/models/teams/update';
 
 @requiresAuth()
 class TeamHandler {
@@ -29,6 +30,22 @@ class TeamHandler {
       where: { id },
       include: {
         users: { include: { roles: true, user: true } },
+      },
+    });
+
+    return team;
+  }
+
+  @Put()
+  async updateTeam(
+    @PathParam('teamId') id: string,
+    @Body(ValidationPipe) body: UpdateTeamDto,
+    @Request() req: NextApiRequest
+  ) {
+    const team = await prisma.team.update({
+      where: { id },
+      data: {
+        name: body.name,
       },
     });
 
