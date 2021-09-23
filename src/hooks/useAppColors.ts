@@ -6,7 +6,7 @@ const useAppColors = () => {
     bgSecondary: useColorModeValue('white', 'gray.800'),
     border: useColorModeValue('gray.200', 'gray.700'),
     primary: useColorModeValue('#504DFF', '#7673FF'),
-    bodySub: useColorModeValue('gray.400', 'gray.600'),
+    bodySub: useColorModeValue('gray.600', 'gray.400'),
   };
 };
 

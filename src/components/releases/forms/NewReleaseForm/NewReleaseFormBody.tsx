@@ -26,10 +26,12 @@ const NewReleaseFormBody = ({
     fetchArtists(currentTeam)
   );
 
-  const properDateFormat = useMemo(
-    () => dayjs(existingRelease?.targetDate).format('YYYY-MM-DD'),
-    [existingRelease?.targetDate]
-  );
+  const properDateFormat = useMemo(() => {
+    const existingDate =
+      existingRelease?.targetDate ??
+      new Date(Date.now() + 1209600000 * 2).toDateString();
+    return dayjs(existingDate).format('YYYY-MM-DD');
+  }, [existingRelease?.targetDate]);
 
   const { register, errors, handleSubmit, reset } = useForm<BasicInfoFormData>({
     defaultValues: {
