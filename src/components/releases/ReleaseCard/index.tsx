@@ -6,6 +6,9 @@ import { Flex, Stack, HStack, Link, Text } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
 import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { FiChevronDown } from 'react-icons/fi';
+import { useDisclosure } from '@chakra-ui/hooks';
+
+import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
 import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
@@ -24,6 +27,7 @@ interface ReleaseCardProps {
 
 const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
   const { border, bgSecondary } = useAppColors();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { currentTeam, teams } = useExtendedSession();
   const canDeleteRelease = hasRequiredPermissions(
@@ -103,7 +107,9 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
                   View Details
                 </MenuItem> */}
                   {/* <MenuDivider /> */}
-                  <MenuItem color="red">Delete</MenuItem>
+                  <MenuItem color="red" onClick={onOpen}>
+                    Delete
+                  </MenuItem>
                 </MenuList>
               </Menu>
             </Skeleton>
@@ -121,6 +127,13 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           </Skeleton>
         </Stack>
       </Stack>
+      <DeleteReleaseDialog
+        onConfirm={onClose}
+        isOpen={isOpen}
+        onCancel={onClose}
+        onClose={onClose}
+        releaseData={releaseData}
+      />
     </Flex>
   );
 };

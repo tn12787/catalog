@@ -1,11 +1,4 @@
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Box,
   Button,
   Flex,
@@ -23,9 +16,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
-import { useMutation, useQueryClient } from 'react-query';
 
-import { deleteSingleRelease } from 'queries/releases';
+import DeleteReleaseDialog from '../DeleteReleaseDialog';
+
 import { EnrichedRelease } from 'types';
 import { hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
@@ -36,21 +29,9 @@ interface Props {
 }
 
 const HeaderSection = ({ releaseData }: Props) => {
-  const toast = useToast();
   const router = useRouter();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef<HTMLButtonElement>();
-
-  const queryClient = useQueryClient();
-  const { mutateAsync: deleteRelease, isLoading } = useMutation(
-    deleteSingleRelease,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['releases']);
-      },
-    }
-  );
 
   const { bgPrimary } = useAppColors();
 
@@ -61,30 +42,8 @@ const HeaderSection = ({ releaseData }: Props) => {
     teams?.[currentTeam]
   );
 
-  const onDelete = async () => {
-    try {
-      await deleteRelease(releaseData.id);
-      toast({
-        status: 'success',
-        title: 'Deleted',
-        description: 'Your release was deleted successfully.',
-      });
-      onClose();
-      router.push(`/releases`);
-    } catch (error: any) {
-      toast({
-        status: 'error',
-        title: 'Oh no...',
-        description: error.toString(),
-      });
-    }
-  };
-
   return (
-    <Stack
-      width={['100%', '100%', '90%']}
-      maxWidth={'container.lg'}
-    >
+    <Stack width={['100%', '100%', '90%']} maxWidth={'container.lg'}>
       <Flex position="relative" overflow="hidden">
         <Image
           filter="blur(5px)"
@@ -131,37 +90,16 @@ const HeaderSection = ({ releaseData }: Props) => {
           </Button>
         )}
       </Flex>
-      <AlertDialog
-        motionPreset="slideInBottom"
-        leastDestructiveRef={cancelRef as any}
-        onClose={onClose}
+      <DeleteReleaseDialog
+        onConfirm={() => {
+          onClose();
+          router.push('/releases');
+        }}
         isOpen={isOpen}
-        isCentered
-      >
-        <AlertDialogOverlay />
-
-        <AlertDialogContent>
-          <AlertDialogHeader>Remove Release?</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
-            Are you sure you want to delete your release? This change cannot be
-            undone.
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef as any} onClick={onClose}>
-              No
-            </Button>
-            <Button
-              colorScheme="red"
-              isLoading={isLoading}
-              ml={3}
-              onClick={onDelete}
-            >
-              Yes
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        onCancel={onClose}
+        onClose={onClose}
+        releaseData={releaseData}
+      />
     </Stack>
   );
 };

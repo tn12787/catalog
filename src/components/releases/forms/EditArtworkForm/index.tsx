@@ -1,6 +1,5 @@
 import { Stack, Text, useToast, Heading } from '@chakra-ui/react';
 import React from 'react';
-import { useRouter } from 'next/router';
 import { useQueryClient, useMutation } from 'react-query';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -19,7 +18,6 @@ import {
   uploadImageToFirebase,
 } from 'queries/artwork';
 import BackButton from 'components/BackButton';
-import withReleaseData from 'HOCs/withReleaseData';
 import { EnrichedRelease } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 
@@ -33,8 +31,6 @@ interface Props {
 }
 
 const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
-  const router = useRouter();
-
   const toast = useToast();
 
   const queryClient = useQueryClient();
