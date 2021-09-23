@@ -1,10 +1,8 @@
 import { Stack, Button, Input } from '@chakra-ui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { BiRocket } from 'react-icons/bi';
 import { FiEdit, FiSave } from 'react-icons/fi';
 import { useMutation, useQueryClient } from 'react-query';
-import { getSession } from 'next-auth/react';
 
 import FormField from 'components/FormContent/FormField';
 import DataList from 'components/DataList';
