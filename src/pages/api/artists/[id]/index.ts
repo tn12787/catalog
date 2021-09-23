@@ -30,7 +30,7 @@ class ArtistHandler {
       where: {
         id,
       },
-      include: { releases: true },
+      include: { releases: { include: { artwork: true } } },
     });
     return artist;
   }

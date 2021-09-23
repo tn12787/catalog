@@ -4,11 +4,14 @@ import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useQuery } from 'react-query';
+import { Table } from '@chakra-ui/table';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
 import { fetchSingleArtist } from 'queries/artists';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
+import Card from 'components/Card';
+import ReleaseTable from 'components/artists/ReleaseTable';
 
 interface Props {}
 
@@ -45,6 +48,10 @@ const SingleArtist = (props: Props) => {
           <Link href={response?.data.spotifyUrl as string} isExternal>
             Spotify
           </Link>
+          <Card spacing={5}>
+            <Heading size="md">Catalog</Heading>
+            <ReleaseTable releases={response?.data?.releases ?? []} />
+          </Card>
         </Stack>
       </Stack>
     </Stack>
