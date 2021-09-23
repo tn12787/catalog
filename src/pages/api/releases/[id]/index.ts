@@ -50,6 +50,19 @@ class ReleaseListHandler {
   ) {
     if (!id) throw new NotFoundException();
 
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+      },
+    });
+
+    await checkRequiredPermissions(
+      req,
+      ['UPDATE_RELEASES'],
+      releaseTeam?.teamId
+    );
+
     const result = await prisma.release.update({
       where: {
         id,

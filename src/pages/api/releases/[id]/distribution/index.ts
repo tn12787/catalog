@@ -24,6 +24,7 @@ import { SortOrder } from 'queries/types';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -33,6 +34,20 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateDistributionDto,
     @PathParam('id') id: string
   ) {
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+        targetDate: true,
+      },
+    });
+
+    await checkRequiredPermissions(
+      req,
+      ['UPDATE_RELEASES'],
+      releaseTeam?.teamId
+    );
+
     const optionalArgs = body.assignee
       ? { assignee: { connect: { id: body.assignee } } }
       : {};
@@ -55,6 +70,20 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateDistributionDto,
     @PathParam('id') id: string
   ) {
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+        targetDate: true,
+      },
+    });
+
+    await checkRequiredPermissions(
+      req,
+      ['UPDATE_RELEASES'],
+      releaseTeam?.teamId
+    );
+
     const optionalArgs = body.assignee
       ? { assignee: { connect: { id: body.assignee } } }
       : {};
@@ -78,6 +107,20 @@ class ReleaseListHandler {
     @Req() req: NextApiRequest,
     @PathParam('id') id: string
   ) {
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+        targetDate: true,
+      },
+    });
+
+    await checkRequiredPermissions(
+      req,
+      ['UPDATE_RELEASES'],
+      releaseTeam?.teamId
+    );
+
     const result = await prisma.distribution.delete({
       where: {
         releaseId: id,

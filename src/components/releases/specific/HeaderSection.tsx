@@ -68,7 +68,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           bgGradient={`linear(to-b, transparent, ${bgPrimary})`}
         ></Box>
       </Flex>
-      <Flex align="center" justify="space-between">
+      <Flex pb={3} align="center" justify="space-between">
         <HStack
           alignItems="center"
           w={['90%', '90%', '100%']}
