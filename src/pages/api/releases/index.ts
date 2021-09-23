@@ -1,26 +1,22 @@
 import {
   Body,
   createHandler,
-  Delete,
   Get,
   HttpCode,
-  NotFoundException,
-  Param,
   Post,
-  Put,
   Query,
+  Request,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { Release, ReleaseType } from '@prisma/client';
 import { pickBy } from 'lodash';
+import { NextApiRequest } from 'next';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';
 import prisma from 'backend/prisma/client';
-import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { SortOrder } from 'queries/types';
-import { CreateDistributionDto } from 'backend/models/distribution/create';
-import { CreateArtworkDto } from 'backend/models/artwork/create';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -49,7 +45,14 @@ class ReleaseListHandler {
 
   @Post()
   @HttpCode(201)
-  async createRelease(@Body(ValidationPipe) body: CreateReleaseDto) {
+  async createRelease(
+    @Body(ValidationPipe) body: CreateReleaseDto,
+    @Request() req: NextApiRequest
+  ) {
+    const team = await prisma.team.findUnique({ where: { id: body.team } });
+
+    await checkRequiredPermissions(req, ['CREATE_RELEASES'], team?.id);
+
     const optionalArgs = pickBy(
       {
         artwork: body.artwork ? { create: { ...body.artwork } } : undefined,

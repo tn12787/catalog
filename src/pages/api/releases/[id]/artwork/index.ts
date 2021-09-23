@@ -14,6 +14,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -23,12 +24,27 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateArtworkDto,
     @PathParam('id') id: string
   ) {
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+        targetDate: true,
+      },
+    });
+
+    await checkRequiredPermissions(
+      req,
+      ['UPDATE_RELEASES'],
+      releaseTeam?.teamId
+    );
+
     const optionalArgs = pickBy(
       {
         assignee: body.assignee
           ? { connect: { id: body.assignee } }
           : undefined,
         url: body.url,
+        dueDate: body.dueDate,
       },
       (v) => v !== undefined
     );
@@ -38,7 +54,6 @@ class ReleaseListHandler {
         release: { connect: { id } },
         status: body.status,
         notes: body.notes,
-        dueDate: body.dueDate,
       },
     });
     return result;
@@ -50,6 +65,20 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateArtworkDto,
     @PathParam('id') id: string
   ) {
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+        targetDate: true,
+      },
+    });
+
+    await checkRequiredPermissions(
+      req,
+      ['UPDATE_RELEASES'],
+      releaseTeam?.teamId
+    );
+
     const optionalArgs = pickBy(
       {
         assignee: body.assignee
@@ -76,6 +105,19 @@ class ReleaseListHandler {
 
   @Delete()
   async deleteArtwork(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+      },
+    });
+
+    await checkRequiredPermissions(
+      req,
+      ['DELETE_ARTWORK'],
+      releaseTeam?.teamId
+    );
+
     const result = await prisma.artwork.delete({
       where: {
         releaseId: id,

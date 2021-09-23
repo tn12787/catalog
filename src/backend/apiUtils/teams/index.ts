@@ -39,7 +39,7 @@ export const checkRequiredPermissions = async (
     (userTeam) => userTeam.teamId === resourceTeam
   );
 
-  if (!team) {
+  if (!team || !resourceTeam) {
     throw new NotFoundException();
   }
 
