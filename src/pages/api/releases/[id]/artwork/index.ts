@@ -114,7 +114,7 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(
       req,
-      ['DELETE_ARTWORK'],
+      ['UPDATE_RELEASES'],
       releaseTeam?.teamId
     );
 
