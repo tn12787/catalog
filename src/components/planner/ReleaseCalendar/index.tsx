@@ -12,6 +12,7 @@ import { updateEventInCalendar } from 'queries/events';
 import UndoToast from 'components/Calendar/UndoToast';
 import Calendar from 'components/Calendar';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 interface Props {
   events: ReleaseEvent[];
@@ -20,7 +21,7 @@ interface Props {
 
 const ReleaseCalendar = ({ events, loading }: Props) => {
   const queryClient = useQueryClient();
-  const { currentTeam } = useExtendedSession();
+  const { currentTeam, teams } = useExtendedSession();
 
   const [selectedEvent, setSelectedEvent] = React.useState<ReleaseEvent>();
 
@@ -54,6 +55,11 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
         queryClient.invalidateQueries(['releaseEvents', currentTeam]);
       },
     }
+  );
+
+  const canEditReleases = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    teams?.[currentTeam]
   );
 
   const toast = useToast();
@@ -129,6 +135,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
       <Calendar
         events={events}
         loading={loading}
+        isDragDisabled={!canEditReleases}
         onEventClicked={onCalendarEventClicked}
         onEventDropped={onItemDropped}
         canDropEvent={canDropEvent}

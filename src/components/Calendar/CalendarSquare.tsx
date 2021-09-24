@@ -33,6 +33,7 @@ interface Props<T> {
   } & {
     events: T[];
   };
+  isDragDisabled?: boolean;
   onEventClicked?: (event: T) => void;
   onEventDropped?: (event: T, targetDate: Date) => void | Promise<void>;
   canDropEvent?: (event: T, targetDate: Date) => boolean;
@@ -40,6 +41,7 @@ interface Props<T> {
 
 const CalendarSquare = <T extends BaseEvent>({
   day,
+  isDragDisabled,
   onEventClicked,
   onEventDropped,
   canDropEvent,
@@ -118,13 +120,16 @@ const CalendarSquare = <T extends BaseEvent>({
       >
         {date}
       </Text>
-      {day.events.map((event, index) => (
-        <CalendarEvent
-          event={event}
-          key={index.toString()}
-          onClick={onEventClicked}
-        />
-      ))}
+      <Stack spacing={'2px'}>
+        {day.events.map((event, index) => (
+          <CalendarEvent
+            isDragDisabled={isDragDisabled}
+            event={event}
+            key={index.toString()}
+            onClick={onEventClicked}
+          />
+        ))}
+      </Stack>
     </Td>
   );
 };
