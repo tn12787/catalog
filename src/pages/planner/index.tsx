@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Badge,
   Heading,
   HStack,
   Spinner,
@@ -24,6 +25,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { EventList } from 'components/releases/specific/Events/EventList';
 import { EventListItem } from 'components/releases/specific/Events/EventListItem';
 import Card from 'components/Card';
+import { hasRequiredPermissions } from 'utils/auth';
 
 const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
   {
@@ -39,7 +41,11 @@ const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
         </Heading>
         <EventList spacing="8">
           {events?.map((event, i) => (
-            <EventListItem includeReleaseName event={event} key={i.toString()} />
+            <EventListItem
+              includeReleaseName
+              event={event}
+              key={i.toString()}
+            />
           ))}
         </EventList>
       </Card>
@@ -50,9 +56,14 @@ const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
 const Planner = (props: Props) => {
   const { bgPrimary, primary } = useAppColors();
 
-  const { currentTeam } = useExtendedSession();
+  const { currentTeam, teams } = useExtendedSession();
   const { data, isLoading } = useQuery(['releaseEvents', currentTeam], () =>
     fetchReleaseEvents(currentTeam)
+  );
+
+  const canEditReleases = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    teams?.[currentTeam]
   );
 
   const tabsToRender = tabData(data ?? [], isLoading);
@@ -81,6 +92,9 @@ const Planner = (props: Props) => {
                 <Heading size="2xl" py={4} as="h1" fontWeight="black">
                   Planner
                 </Heading>
+                {!canEditReleases && !isLoading && (
+                  <Badge colorScheme="gray">Read-only</Badge>
+                )}
                 {isLoading && (
                   <Spinner thickness="3px" color={primary} speed="1s"></Spinner>
                 )}

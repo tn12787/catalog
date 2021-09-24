@@ -11,16 +11,19 @@ import { TaskStatus } from '.prisma/client';
 
 interface Props<T> {
   event: T;
+  isDragDisabled?: boolean;
   onClick?: (event: T) => void | Promise<void>;
 }
 
 const CalendarEvent = <T extends BaseEvent = ReleaseEvent>({
   event,
+  isDragDisabled,
   onClick,
 }: Props<T>) => {
   const [{ opacity }, dragRef] = useDrag(
     () => ({
       type: EventType.ARTWORK,
+      canDrag: !isDragDisabled,
       item: event,
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1,
