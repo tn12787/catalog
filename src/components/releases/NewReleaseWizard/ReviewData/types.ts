@@ -1,5 +1,5 @@
 export interface ReviewConfigItem<T> {
   key: keyof T;
-  label: string;
+  label?: string;
   customContent?: JSX.Element;
 }
