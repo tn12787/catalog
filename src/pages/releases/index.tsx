@@ -28,6 +28,7 @@ import { Artist } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import PageHead from 'components/PageHead';
 
 interface SortBySelectOption<T> {
   label: string;
@@ -107,6 +108,7 @@ const Releases = () => {
       direction="column"
       width="100%"
     >
+      <PageHead title="All Releases" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Flex align="center" justify="space-between">
           <Heading

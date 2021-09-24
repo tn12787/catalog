@@ -12,6 +12,7 @@ import { fetchSingleArtist } from 'queries/artists';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import Card from 'components/Card';
 import ReleaseTable from 'components/artists/ReleaseTable';
+import PageHead from 'components/PageHead';
 
 interface Props {}
 
@@ -33,6 +34,7 @@ const SingleArtist = (props: Props) => {
       direction="column"
       width="100%"
     >
+      <PageHead title={response?.data?.name ?? 'Artist Overview'} />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isLoading}>

@@ -11,6 +11,7 @@ import Summary from 'components/releases/specific/Summary';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import useAppColors from 'hooks/useAppColors';
+import PageHead from 'components/PageHead';
 
 interface Props {
   releaseData: EnrichedRelease;
@@ -20,6 +21,7 @@ const SpecificRelease = ({ releaseData }: Props) => {
   const { bgPrimary } = useAppColors();
   return (
     <Stack flex={1} bg={bgPrimary} align="center" direction="column">
+      <PageHead title={`${releaseData.artist.name} - ${releaseData.name}`} />
       <HeaderSection releaseData={releaseData} />
       <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
         <Summary releaseData={releaseData} />

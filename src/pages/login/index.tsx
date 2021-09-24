@@ -16,6 +16,7 @@ import { GetServerSideProps } from 'next';
 import { loginConfig } from 'data/login/loginConfig';
 import { LoginData } from 'data/login/types';
 import FormContent from 'components/FormContent';
+import PageHead from 'components/PageHead';
 
 const Login = () => {
   const { register, errors, handleSubmit } = useForm<LoginData>();
@@ -56,6 +57,7 @@ const Login = () => {
       flex={1}
       minH="100vh"
     >
+      <PageHead title="Sign in" />
       <Stack w={'80%'} maxW="400px" spacing={'40px'} alignItems="center">
         <Stack
           w="100%"

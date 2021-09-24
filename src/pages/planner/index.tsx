@@ -26,6 +26,7 @@ import { EventList } from 'components/releases/specific/Events/EventList';
 import { EventListItem } from 'components/releases/specific/Events/EventListItem';
 import Card from 'components/Card';
 import { hasRequiredPermissions } from 'utils/auth';
+import PageHead from 'components/PageHead';
 
 const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
   {
@@ -77,6 +78,7 @@ const Planner = (props: Props) => {
       py={6}
       width="100%"
     >
+      <PageHead title="Planner" />
       <Stack spacing={4} width="95%" maxW="container.full">
         <Stack w="100%" alignItems="center">
           <Tabs w="100%" align="center" colorScheme="purple">
