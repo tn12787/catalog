@@ -36,6 +36,7 @@ import Card from 'components/Card';
 import Table from 'components/Table';
 import TeamMembersTable from 'components/teams/TeamMembersTable';
 import TeamInformation from 'components/teams/settings/TeamInformation';
+import PageHead from 'components/PageHead';
 
 interface Props {}
 
@@ -60,6 +61,7 @@ const TeamOverview = (props: Props) => {
       direction="column"
       width="100%"
     >
+      <PageHead title="Team Settings" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
           Team Settings
