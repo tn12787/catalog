@@ -58,8 +58,12 @@ const Planner = (props: Props) => {
   const { bgPrimary, primary } = useAppColors();
 
   const { currentTeam, teams } = useExtendedSession();
-  const { data, isLoading } = useQuery(['releaseEvents', currentTeam], () =>
-    fetchReleaseEvents(currentTeam)
+  const { data, isLoading } = useQuery(
+    ['releaseEvents', currentTeam],
+    () => fetchReleaseEvents(currentTeam),
+    {
+      refetchInterval: 2000,
+    }
   );
 
   const canEditReleases = hasRequiredPermissions(

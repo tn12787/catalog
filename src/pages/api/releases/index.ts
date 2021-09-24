@@ -36,8 +36,8 @@ class ReleaseListHandler {
         [sortBy]: sortOrder ?? 'asc',
       },
       include: {
-        artist: true,
-        artwork: true,
+        artist: { select: { id: true, name: true } },
+        artwork: { select: { url: true } },
       },
     });
     return releases;

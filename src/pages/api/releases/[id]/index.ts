@@ -21,7 +21,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 
 @requiresAuth()
-class ReleaseListHandler {
+class SingleReleaseHandler {
   @Get()
   async singleRelease(@Req() req: NextApiRequest, @PathParam('id') id: string) {
     if (!id) throw new NotFoundException();
@@ -101,4 +101,4 @@ class ReleaseListHandler {
   }
 }
 
-export default createHandler(ReleaseListHandler);
+export default createHandler(SingleReleaseHandler);
