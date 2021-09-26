@@ -71,17 +71,15 @@ const FormField = <T extends any>({
   const InputComponent = deriveComponent(type);
   return hidden ? null : (
     <Stack key={name as string}>
-      <FormControl id={name as string} isInvalid={!!errors[name]}>
+      <FormControl id={name as string} isInvalid={!!errors?.[name]}>
         {showLabel && <FormLabel>{label}</FormLabel>}
         <InputGroup>
           <InputComponent
             width="100%"
             focusBorderColor={primary}
-            isInvalid={!!errors[name]}
-            name={name as string}
             type={type}
             icon={isLoading ? <></> : undefined}
-            ref={register({ ...registerArgs })}
+            {...register(name as any, { ...registerArgs })}
             {...extraProps}
           >
             {options?.map((option: SelectOption) => (
@@ -105,7 +103,7 @@ const FormField = <T extends any>({
           </FormHelperText>
         )}
       </FormControl>
-      <ErrorMessage
+      {/* <ErrorMessage
         render={({ message }) => (
           <Text fontSize="sm" color="red.400">
             {message}
@@ -115,7 +113,7 @@ const FormField = <T extends any>({
           name as FieldName<FieldValuesFromFieldErrors<DeepMap<T, FieldError>>>
         }
         errors={errors}
-      ></ErrorMessage>
+      ></ErrorMessage> */}
     </Stack>
   );
 };
