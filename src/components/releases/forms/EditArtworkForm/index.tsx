@@ -118,10 +118,6 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       height="100%"
     >
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <BackButton
-          alignSelf="flex-start"
-          href={`/releases/${releaseData.id}`}
-        />
         <Heading>Artwork</Heading>
         <Text>Edit your artwork task and tracking the status</Text>
         <EditArtworkFormBody
