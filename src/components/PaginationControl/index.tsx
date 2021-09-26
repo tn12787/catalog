@@ -10,6 +10,8 @@ import {
   BiChevronsRight,
 } from 'react-icons/bi';
 
+import useAppColors from 'hooks/useAppColors';
+
 interface Props {
   currentPage: number;
   totalItems: number;
@@ -27,6 +29,7 @@ const PaginationControl = ({
   onPageChange,
   onPageSizeChange,
 }: Props) => {
+  const { bgSecondary } = useAppColors();
   const numberOfPages = Math.ceil(totalItems / pageSize);
 
   const buttonsToRender = [
@@ -48,13 +51,13 @@ const PaginationControl = ({
             onClick={() => onPageChange(1)}
             icon={<BiChevronsLeft />}
           ></IconButton>
-          <IconButton
+          {/* <IconButton
             size="sm"
             aria-label="first page"
             isDisabled={currentPage === 1}
             onClick={() => onPageChange(currentPage - 1)}
             icon={<BiChevronLeft />}
-          ></IconButton>
+          ></IconButton> */}
           {buttonsToRender.map((item) => (
             <Button
               size="sm"
@@ -65,17 +68,17 @@ const PaginationControl = ({
               {item}
             </Button>
           ))}
-          <IconButton
+          {/* <IconButton
             size="sm"
             aria-label="first page"
             isDisabled={currentPage === numberOfPages}
             onClick={() => onPageChange(currentPage - 1)}
             icon={<BiChevronRight />}
-          ></IconButton>
+          ></IconButton> */}
 
           <IconButton
             size="sm"
-            aria-label="first page"
+            aria-label="last page"
             isDisabled={currentPage === 1}
             onClick={() => onPageChange(numberOfPages)}
             icon={<BiChevronsRight />}
@@ -86,6 +89,7 @@ const PaginationControl = ({
         <HStack>
           <Text fontSize="sm">Show</Text>
           <Select
+            bg={bgSecondary}
             size="sm"
             rounded="md"
             onChange={(e) => onPageSizeChange(Number(e.currentTarget.value))}
