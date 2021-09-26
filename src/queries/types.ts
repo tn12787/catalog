@@ -17,3 +17,8 @@ export interface FilterOptions<T> {
   };
   sorting?: SortByOptions<T>;
 }
+
+export interface PaginatedQueryResult<T> {
+  total: number;
+  results: T[];
+}

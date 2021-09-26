@@ -29,22 +29,30 @@ class ReleaseListHandler {
     @Query('pageSize') pageSize: number,
     @Query('page') page: number
   ) {
-    const releases = await prisma.release.findMany({
-      skip: (pageSize ?? 10) * ((page ?? 1) - 1),
-      take: pageSize ?? 10,
+    const commonArgs = {
       where: {
-        name: { contains: search, mode: 'insensitive' },
+        name: { contains: search, mode: 'insensitive' } as any,
         team: { id: team },
       },
-      orderBy: {
-        [sortBy]: sortOrder ?? 'asc',
-      },
-      include: {
-        artist: { select: { id: true, name: true } },
-        artwork: { select: { url: true } },
-      },
-    });
-    return releases;
+    };
+
+    const [releases, totalCount] = await prisma.$transaction([
+      prisma.release.findMany({
+        ...commonArgs,
+        skip: (pageSize ?? 10) * ((page ?? 1) - 1),
+        take: pageSize ?? 10,
+        include: {
+          artist: { select: { id: true, name: true } },
+          artwork: { select: { url: true } },
+        },
+        orderBy: {
+          [sortBy]: sortOrder ?? 'asc',
+        },
+      }),
+      prisma.release.count(commonArgs),
+    ]);
+
+    return { total: totalCount, results: releases };
   }
 
   @Post()

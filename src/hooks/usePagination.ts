@@ -16,11 +16,13 @@ interface usePaginationOptions {
   initialState?: InitialState;
 }
 
-const usePagination = ({ total, initialState }: usePaginationOptions) => {
+const usePagination = (options?: usePaginationOptions) => {
   const [currentPage, setCurrentPage] = useState(
-    initialState?.currentPage || 1
+    options?.initialState?.currentPage || 1
   );
-  const [pageSize, setPageSize] = useState(initialState?.pageSize || 10);
+  const [pageSize, setPageSize] = useState(
+    options?.initialState?.pageSize || 10
+  );
 
   const offset = (currentPage - 1) * pageSize;
 
@@ -30,7 +32,6 @@ const usePagination = ({ total, initialState }: usePaginationOptions) => {
     setCurrentPage,
     pageSize,
     setPageSize,
-    total,
   };
 };
 
