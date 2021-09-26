@@ -25,19 +25,19 @@ class ReleaseListHandler {
     @Query('team') team: string,
     @Query('search') search: string,
     @Query('sortBy') sortBy: keyof Release,
-    @Query('sortOrder') sortOrder: SortOrder = SortOrder.ASC,
-    @Query('pageSize') pageSize: number = 10,
-    @Query('page') page: number = 1
+    @Query('sortOrder') sortOrder: SortOrder,
+    @Query('pageSize') pageSize: number,
+    @Query('page') page: number
   ) {
     const releases = await prisma.release.findMany({
-      skip: pageSize * (page - 1),
-      take: pageSize,
+      skip: (pageSize ?? 10) * ((page ?? 1) - 1),
+      take: pageSize ?? 10,
       where: {
         name: { contains: search, mode: 'insensitive' },
         team: { id: team },
       },
       orderBy: {
-        [sortBy]: sortOrder,
+        [sortBy]: sortOrder ?? 'asc',
       },
       include: {
         artist: { select: { id: true, name: true } },
