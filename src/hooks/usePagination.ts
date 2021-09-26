@@ -1,11 +1,5 @@
 import { useState } from 'react';
 
-interface usePaginationFields {
-  currentPage: number;
-  offset: number;
-  pageSize: number;
-}
-
 interface InitialState {
   pageSize?: number;
   currentPage?: number;
