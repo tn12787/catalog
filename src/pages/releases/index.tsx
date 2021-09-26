@@ -29,6 +29,8 @@ import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import PageHead from 'components/PageHead';
+import usePagination from 'hooks/usePagination';
+import PaginationControl from 'components/PaginationControl';
 
 interface SortBySelectOption<T> {
   label: string;
@@ -78,6 +80,9 @@ const Releases = () => {
 
   const debouncedSearch = useDebounce(search, 150);
 
+  const { pageSize, currentPage, setCurrentPage, setPageSize, offset } =
+    usePagination();
+
   const queryArgs = {
     search: debouncedSearch,
     sorting: {
@@ -85,6 +90,8 @@ const Releases = () => {
       order: sortBy.value.order,
     },
     team: currentTeam ?? '',
+    pageSize: pageSize,
+    offset: offset,
   };
 
   const { data: response, isLoading } = useQuery(['releases', queryArgs], () =>
@@ -97,7 +104,7 @@ const Releases = () => {
   );
 
   const shouldHideControls =
-    response?.data?.length === 0 && !debouncedSearch && !isLoading;
+    response?.results?.length === 0 && !debouncedSearch && !isLoading;
 
   return (
     <Stack
@@ -129,8 +136,9 @@ const Releases = () => {
         </Flex>
         {!shouldHideControls && (
           <HStack justifyContent="space-between">
-            <InputGroup maxW="400px" bg={bgSecondary}>
+            <InputGroup borderRadius="md" maxW="400px" bg={bgSecondary}>
               <Input
+                focusBorderColor={primary}
                 placeholder="Search releases..."
                 onChange={(e) => setSearch(e.target.value)}
                 value={search}
@@ -176,8 +184,16 @@ const Releases = () => {
             loading
           />
         ) : (
-          <ReleaseList releases={response?.data} search={debouncedSearch} />
+          <ReleaseList releases={response?.results} search={debouncedSearch} />
         )}
+        <PaginationControl
+          loading={isLoading}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+          totalItems={response?.total ?? 0}
+        />
       </Stack>
     </Stack>
   );

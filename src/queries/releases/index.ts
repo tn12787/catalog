@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { FilterOptions, SortByOptions } from './../types';
+import { FilterOptions, PaginatedQueryResult, SortByOptions } from './../types';
 import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
 
 import { EnrichedRelease } from 'types';
@@ -11,14 +11,21 @@ export const fetchReleases = async ({
   pagination,
   sorting,
 }: FilterOptions<EnrichedRelease>) => {
-  return await axios.get<EnrichedRelease[]>(`/api/releases`, {
-    params: {
-      team,
-      search,
-      sortBy: sorting?.key,
-      sortOrder: sorting?.order,
-    },
-  });
+  const response = await axios.get<PaginatedQueryResult<EnrichedRelease>>(
+    `/api/releases`,
+    {
+      params: {
+        team,
+        search,
+        sortBy: sorting?.key,
+        sortOrder: sorting?.order,
+        pageSize: pagination?.pageSize,
+        offset: pagination?.offset,
+      },
+    }
+  );
+
+  return response.data;
 };
 
 export const fetchSingleRelease = async (id: string) => {
