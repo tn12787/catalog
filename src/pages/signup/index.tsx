@@ -7,7 +7,12 @@ import { SignUpData } from 'data/signup/types';
 import { signupConfig } from 'data/signup/signupConfig';
 
 const SignUp = () => {
-  const { register, errors, handleSubmit, setError } = useForm<SignUpData>();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setError,
+  } = useForm<SignUpData>();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const onSubmit = async ({

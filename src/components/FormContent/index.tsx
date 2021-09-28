@@ -15,7 +15,7 @@ import {
   FormHelperText,
 } from '@chakra-ui/react';
 import React from 'react';
-import { UseFormMethods } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 
 import FormField from './FormField';
 
@@ -23,8 +23,8 @@ import { FormDatum } from 'types/forms';
 
 interface Props<T> extends StackProps {
   config: FormDatum<T>[];
-  register: UseFormMethods<T>['register'];
-  errors: UseFormMethods<T>['errors'];
+  register: UseFormReturn<T>['register'];
+  errors: UseFormReturn<T>['formState']['errors'];
 }
 
 const FormContent = <T extends any>({

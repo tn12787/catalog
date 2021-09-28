@@ -48,7 +48,7 @@ const EditDistributionFormBody = ({
           ...existingRelease?.distribution,
           distributor: existingRelease?.distribution?.distributor?.id,
           dueDate: formattedDueDate,
-          completedOn: formattedCompletedOn,
+          // completedOn: formattedCompletedOn,
         }
       : {},
   });
@@ -62,7 +62,7 @@ const EditDistributionFormBody = ({
       ...existingRelease?.distribution,
       distributor: existingRelease?.distribution?.distributorId,
       dueDate: formattedDueDate,
-      completedOn: formattedCompletedOn,
+      // completedOn: formattedCompletedOn,
     });
   }, [
     existingRelease?.distribution,

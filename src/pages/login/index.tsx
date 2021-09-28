@@ -19,7 +19,11 @@ import FormContent from 'components/FormContent';
 import PageHead from 'components/PageHead';
 
 const Login = () => {
-  const { register, errors, handleSubmit } = useForm<LoginData>();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<LoginData>();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 

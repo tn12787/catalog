@@ -20,7 +20,11 @@ interface EditTeamInfoFormData {
 }
 
 const EditTeamInfoForm = ({ onSubmit, onCancel, teamData }: Props) => {
-  const { register, handleSubmit, errors } = useForm<EditTeamInfoFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EditTeamInfoFormData>({
     defaultValues: { name: teamData?.name },
   });
 
