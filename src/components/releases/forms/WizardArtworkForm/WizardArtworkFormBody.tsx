@@ -81,6 +81,7 @@ const WizardArtworkFormBody = ({
         {showForm ? (
           <Stack>
             <FormContent
+              control={control}
               config={buildNewArtworkConfig()}
               errors={errors}
               register={register}

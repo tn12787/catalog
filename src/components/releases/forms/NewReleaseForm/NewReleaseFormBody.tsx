@@ -38,6 +38,7 @@ const NewReleaseFormBody = ({
     formState: { errors },
     handleSubmit,
     reset,
+    control,
   } = useForm<BasicInfoFormData>({
     defaultValues: {
       ...existingRelease,
@@ -61,6 +62,7 @@ const NewReleaseFormBody = ({
           config={basicInfoConfig(artists ?? [])}
           errors={errors}
           register={register}
+          control={control}
         />
         <Flex justify="flex-end">
           <Button

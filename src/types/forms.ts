@@ -1,4 +1,4 @@
-import { RegisterOptions } from 'react-hook-form';
+import { RegisterOptions, ControllerRenderProps } from 'react-hook-form';
 
 export interface FormDatum<T, K = any> {
   name: keyof T;
@@ -11,4 +11,5 @@ export interface FormDatum<T, K = any> {
   defaultValue?: K;
   hidden?: boolean;
   isLoading?: boolean;
+  renderCustomContent?: (props: ControllerRenderProps) => JSX.Element;
 }

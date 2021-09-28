@@ -42,6 +42,7 @@ const EditDistributionFormBody = ({
     handleSubmit,
     watch,
     reset,
+    control,
   } = useForm<EditDistributionFormData>({
     defaultValues: existingRelease?.distribution
       ? {
@@ -80,6 +81,7 @@ const EditDistributionFormBody = ({
             status === TaskStatus.COMPLETE,
             distributors ?? []
           )}
+          control={control}
           errors={errors}
           register={register}
         />

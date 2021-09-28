@@ -38,6 +38,7 @@ const EditArtworkFormBody = ({
     formState: { errors },
     handleSubmit,
     watch,
+    control,
     reset,
   } = useForm<EditArtworkFormData>({
     defaultValues: existingRelease?.artwork
@@ -82,6 +83,7 @@ const EditArtworkFormBody = ({
         <FormContent
           config={buildArtworkConfig(status === TaskStatus.COMPLETE)}
           errors={errors}
+          control={control}
           register={register}
         />
         <HStack justify="space-between">

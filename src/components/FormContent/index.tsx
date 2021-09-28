@@ -1,19 +1,4 @@
-import {
-  Input,
-  Textarea,
-  Select,
-  Stack,
-  Text,
-  ComponentWithAs,
-  InputGroup,
-  InputRightElement,
-  Spinner,
-  Box,
-  StackProps,
-  FormLabel,
-  FormControl,
-  FormHelperText,
-} from '@chakra-ui/react';
+import { Stack, StackProps } from '@chakra-ui/react';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
@@ -25,12 +10,14 @@ interface Props<T> extends StackProps {
   config: FormDatum<T>[];
   register: UseFormReturn<T>['register'];
   errors: UseFormReturn<T>['formState']['errors'];
+  control: UseFormReturn<T>['control'];
 }
 
 const FormContent = <T extends any>({
   errors,
   config,
   register,
+  control,
   ...rest
 }: Props<T>) => {
   return (
@@ -38,9 +25,10 @@ const FormContent = <T extends any>({
       {config.map((item) => (
         <FormField
           register={register}
+          errors={errors}
+          control={control}
           key={item.name as string}
           {...item}
-          errors={errors}
         />
       ))}
     </Stack>

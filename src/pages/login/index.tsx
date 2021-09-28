@@ -23,6 +23,7 @@ const Login = () => {
     register,
     formState: { errors },
     handleSubmit,
+    control,
   } = useForm<LoginData>();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -73,6 +74,7 @@ const Login = () => {
             Sign In
           </Text>
           <FormContent
+            control={control}
             config={loginConfig}
             errors={errors}
             register={register}

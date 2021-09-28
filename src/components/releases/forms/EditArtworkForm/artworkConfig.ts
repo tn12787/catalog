@@ -1,11 +1,12 @@
 import { TaskStatus } from '@prisma/client';
 
+import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
 import { Artwork, ReleaseTaskStatus } from 'types';
 import { FormDatum } from 'types/forms';
 
 export const buildArtworkConfig = (
   alreadyCompleted: boolean
-): FormDatum<Artwork, TaskStatus>[] => [
+): FormDatum<EditArtworkFormData, TaskStatus>[] => [
   // {
   //   name: 'completedBy',
   //   label: 'Assignee',
@@ -69,7 +70,10 @@ export const buildArtworkConfig = (
   },
 ];
 
-export const buildNewArtworkConfig = (): FormDatum<Artwork, TaskStatus>[] => [
+export const buildNewArtworkConfig = (): FormDatum<
+  EditArtworkFormData,
+  TaskStatus
+>[] => [
   {
     name: 'dueDate',
     label: 'Due on',
