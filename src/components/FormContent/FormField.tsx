@@ -55,7 +55,7 @@ const deriveComponent = (type?: string): InputComponentType => {
   }
 };
 
-const FormField = <T extends FieldValues>({
+const FormField = <T extends any>({
   name,
   type,
   hidden,
