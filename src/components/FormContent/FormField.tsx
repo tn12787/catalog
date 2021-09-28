@@ -8,7 +8,6 @@ import {
   Text,
   Spinner,
   FormHelperText,
-  ComponentWithAs,
   Input,
   Select,
   Textarea,
@@ -19,13 +18,14 @@ import {
 } from '@hookform/error-message';
 import React from 'react';
 import {
-  FieldName,
-  DeepMap,
-  FieldError,
   UseFormReturn,
   FieldValues,
+  Controller,
+  Control,
 } from 'react-hook-form';
 import { get } from 'lodash';
+
+import { InputComponentType } from './types';
 
 import useAppColors from 'hooks/useAppColors';
 import { FormDatum } from 'types/forms';
@@ -34,14 +34,8 @@ interface Props<T> extends FormDatum<T> {
   showLabel?: boolean;
   errors: UseFormReturn<T>['formState']['errors'];
   register: UseFormReturn<T>['register'];
+  control: UseFormReturn<T>['control'];
 }
-
-interface SelectOption {
-  label: string;
-  value: string;
-}
-
-type InputComponentType = ComponentWithAs<any, any>;
 
 const deriveComponent = (type?: string): InputComponentType => {
   switch (type) {
@@ -60,6 +54,7 @@ const FormField = <T extends any>({
   type,
   hidden,
   registerArgs,
+  renderCustomContent,
   label,
   options,
   extraProps,
@@ -68,6 +63,7 @@ const FormField = <T extends any>({
   isLoading,
   errors,
   register,
+  control,
 }: Props<T>) => {
   const { primary } = useAppColors();
   const InputComponent = deriveComponent(type);
@@ -75,29 +71,32 @@ const FormField = <T extends any>({
     <Stack key={name as string}>
       <FormControl id={name as string} isInvalid={!!get(errors, name) as any}>
         {showLabel && <FormLabel>{label}</FormLabel>}
-        <InputGroup>
-          <InputComponent
-            width="100%"
-            focusBorderColor={primary}
-            type={type}
-            icon={isLoading ? <></> : undefined}
-            {...register(name as any, { ...registerArgs })}
-            {...extraProps}
-          >
-            {options?.map((option: SelectOption) => (
-              <option key={option.label} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </InputComponent>
-          {isLoading && (
-            <InputRightElement>
-              <Box>
-                <Spinner color={primary} size="sm"></Spinner>
-              </Box>
-            </InputRightElement>
-          )}
-        </InputGroup>
+        {renderCustomContent ? (
+          <Controller
+            name={name as string}
+            control={control as Control<FieldValues>}
+            render={({ field }) => renderCustomContent?.(field)}
+          />
+        ) : (
+          <InputGroup>
+            <InputComponent
+              width="100%"
+              focusBorderColor={primary}
+              type={type}
+              icon={isLoading ? <></> : undefined}
+              options={options}
+              {...register(name as any, { ...registerArgs })}
+              {...extraProps}
+            ></InputComponent>
+            {isLoading && (
+              <InputRightElement>
+                <Box>
+                  <Spinner color={primary} size="sm"></Spinner>
+                </Box>
+              </InputRightElement>
+            )}
+          </InputGroup>
+        )}
 
         {helperText && (
           <FormHelperText color="grey" fontSize="sm">

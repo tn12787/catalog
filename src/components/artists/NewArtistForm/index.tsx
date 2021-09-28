@@ -35,6 +35,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
     formState: { errors },
     handleSubmit,
     reset,
+    control,
   } = useForm<FormArtist>({
     defaultValues: {
       ...existingArtist,
@@ -136,6 +137,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
                 config={newArtistConfig()}
                 errors={errors}
                 register={register}
+                control={control}
               />
               <Flex justify="flex-end">
                 <Button
