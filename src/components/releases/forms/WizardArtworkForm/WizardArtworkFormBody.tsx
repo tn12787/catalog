@@ -37,12 +37,20 @@ const WizardArtworkFormBody = ({
   const [uploading, setUploading] = useState(false);
   const { bodySub } = useAppColors();
 
-  const { register, errors, control, handleSubmit, setValue, watch, reset } =
-    useForm<EditArtworkFormData>({
-      shouldUnregister: false,
-    });
+  const {
+    register,
+    formState: { errors },
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+  } = useForm<EditArtworkFormData>({
+    shouldUnregister: false,
+  });
 
   const watchedAlbumArt = watch('artworkData');
+  console.log(watchedAlbumArt);
 
   const onSubmitFn = async (data: EditArtworkFormData) => {
     const { artworkData, ...rest } = data;
@@ -108,7 +116,7 @@ const WizardArtworkFormBody = ({
               }
             />
             <Button
-              onClick={() => reset({ artworkData: undefined })}
+              onClick={() => setValue('artworkData', undefined)}
               colorScheme="purple"
               fontWeight="normal"
               variant="link"
@@ -119,10 +127,10 @@ const WizardArtworkFormBody = ({
         ) : (
           <Stack>
             <Controller
-              render={({ onChange }) => (
+              render={({ field }: any) => (
                 <ImageDropzone
-                  onChange={(e) => onChange(e.target.files?.[0])}
-                  onDrop={(files) => onChange(files[0])}
+                  onChange={(e) => field.onChange(e.target.files?.[0])}
+                  onDrop={(files) => field.onChange(files[0])}
                 />
               )}
               name={'artworkData'}

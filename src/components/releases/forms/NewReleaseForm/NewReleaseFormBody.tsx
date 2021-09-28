@@ -33,7 +33,12 @@ const NewReleaseFormBody = ({
     return dayjs(existingDate).format('YYYY-MM-DD');
   }, [existingRelease?.targetDate]);
 
-  const { register, errors, handleSubmit, reset } = useForm<BasicInfoFormData>({
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<BasicInfoFormData>({
     defaultValues: {
       ...existingRelease,
       artist: existingRelease?.artistId,

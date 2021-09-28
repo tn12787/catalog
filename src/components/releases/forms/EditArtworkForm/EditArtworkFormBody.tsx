@@ -33,16 +33,21 @@ const EditArtworkFormBody = ({
     [existingRelease?.artwork?.completedOn]
   );
 
-  const { register, errors, handleSubmit, watch, reset } =
-    useForm<EditArtworkFormData>({
-      defaultValues: existingRelease?.artwork
-        ? {
-            ...existingRelease?.artwork,
-            dueDate: formattedDueDate,
-            completedOn: formattedCompletedOn,
-          }
-        : {},
-    });
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch,
+    reset,
+  } = useForm<EditArtworkFormData>({
+    defaultValues: existingRelease?.artwork
+      ? {
+          ...existingRelease?.artwork,
+          dueDate: formattedDueDate,
+          completedOn: formattedCompletedOn,
+        }
+      : {},
+  });
 
   const status = watch('status');
   const watchedAlbumArt = watch('artworkData');

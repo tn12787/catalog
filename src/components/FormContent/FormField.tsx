@@ -22,16 +22,18 @@ import {
   FieldName,
   DeepMap,
   FieldError,
-  UseFormMethods,
+  UseFormReturn,
+  FieldValues,
 } from 'react-hook-form';
+import { get } from 'lodash';
 
 import useAppColors from 'hooks/useAppColors';
 import { FormDatum } from 'types/forms';
 
 interface Props<T> extends FormDatum<T> {
   showLabel?: boolean;
-  errors: UseFormMethods<T>['errors'];
-  register: UseFormMethods<T>['register'];
+  errors: UseFormReturn<T>['formState']['errors'];
+  register: UseFormReturn<T>['register'];
 }
 
 interface SelectOption {
@@ -53,7 +55,7 @@ const deriveComponent = (type?: string): InputComponentType => {
   }
 };
 
-const FormField = <T extends any>({
+const FormField = <T extends FieldValues>({
   name,
   type,
   hidden,
@@ -71,7 +73,7 @@ const FormField = <T extends any>({
   const InputComponent = deriveComponent(type);
   return hidden ? null : (
     <Stack key={name as string}>
-      <FormControl id={name as string} isInvalid={!!errors?.[name]}>
+      <FormControl id={name as string} isInvalid={!!get(errors, name) as any}>
         {showLabel && <FormLabel>{label}</FormLabel>}
         <InputGroup>
           <InputComponent
@@ -103,17 +105,15 @@ const FormField = <T extends any>({
           </FormHelperText>
         )}
       </FormControl>
-      {/* <ErrorMessage
+      <ErrorMessage
         render={({ message }) => (
           <Text fontSize="sm" color="red.400">
             {message}
           </Text>
         )}
-        name={
-          name as FieldName<FieldValuesFromFieldErrors<DeepMap<T, FieldError>>>
-        }
+        name={name as any}
         errors={errors}
-      ></ErrorMessage> */}
+      ></ErrorMessage>
     </Stack>
   );
 };

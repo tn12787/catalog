@@ -30,7 +30,12 @@ const NewArtistForm = ({ existingArtist }: Props) => {
   const toast = useToast();
   const router = useRouter();
 
-  const { register, errors, handleSubmit, reset } = useForm<FormArtist>({
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<FormArtist>({
     defaultValues: {
       ...existingArtist,
     },
