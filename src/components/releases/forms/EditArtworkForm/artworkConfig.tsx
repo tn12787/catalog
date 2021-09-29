@@ -1,22 +1,23 @@
+import { Input } from '@chakra-ui/input';
+import { Menu, MenuButton } from '@chakra-ui/menu';
 import { TaskStatus } from '@prisma/client';
+import { BiChevronDown } from 'react-icons/bi';
 
 import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
-import { Artwork, ReleaseTaskStatus } from 'types';
 import { FormDatum } from 'types/forms';
+import AssigneeSelect from 'components/AssigneeSelect';
 
 export const buildArtworkConfig = (
   alreadyCompleted: boolean
 ): FormDatum<EditArtworkFormData, TaskStatus>[] => [
-  // {
-  //   name: 'completedBy',
-  //   label: 'Assignee',
-  //   registerArgs: {
-  //     required: 'Please a team or person that will complete the artwork.',
-  //   },
-  //   extraProps: {
-  //     maxLength: 60,
-  //   },
-  // },
+  {
+    name: 'assignee',
+    label: 'Assignee',
+    registerArgs: {
+      required: 'Please a team or person that will complete the artwork.',
+    },
+    // CustomComponent: AssigneeSelect,
+  },
   {
     name: 'status',
     label: 'Status',

@@ -9,8 +9,8 @@ import {
   Spinner,
   FormHelperText,
   Input,
-  Select,
   Textarea,
+  Select,
 } from '@chakra-ui/react';
 import {
   ErrorMessage,
@@ -54,7 +54,7 @@ const FormField = <T extends any>({
   type,
   hidden,
   registerArgs,
-  renderCustomContent,
+  CustomComponent: CustomComponent,
   label,
   options,
   extraProps,
@@ -71,11 +71,13 @@ const FormField = <T extends any>({
     <Stack key={name as string}>
       <FormControl id={name as string} isInvalid={!!get(errors, name) as any}>
         {showLabel && <FormLabel>{label}</FormLabel>}
-        {renderCustomContent ? (
+        {CustomComponent ? (
           <Controller
             name={name as string}
             control={control as Control<FieldValues>}
-            render={({ field }) => renderCustomContent?.(field)}
+            render={({ field }) => {
+              return <CustomComponent {...field} {...extraProps} />;
+            }}
           />
         ) : (
           <InputGroup>

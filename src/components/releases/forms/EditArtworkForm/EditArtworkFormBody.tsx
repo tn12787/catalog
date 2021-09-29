@@ -9,7 +9,7 @@ import { EditArtworkFormData } from '../../specific/Artwork/types';
 
 import { buildArtworkConfig } from './artworkConfig';
 
-import FormContent from 'components/FormContent';
+import FormContent from 'components/forms/FormContent';
 import Card from 'components/Card';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 

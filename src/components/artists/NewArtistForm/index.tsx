@@ -9,7 +9,7 @@ import { newArtistConfig } from './artistConfig';
 import { FormArtist } from './types';
 
 import Card from 'components/Card';
-import FormContent from 'components/FormContent';
+import FormContent from 'components/forms/FormContent';
 import {
   createSingleArtist,
   fetchArtists,
