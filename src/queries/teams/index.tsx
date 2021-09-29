@@ -9,7 +9,7 @@ export const fetchTeam = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
   const { data: response } = await axios.get<
-    Team & { users: TeamMemberWithUser[] }
+    Team & { members: TeamMemberWithUser[] }
   >(`/api/teams/${id}`);
 
   return response;
