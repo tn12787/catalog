@@ -15,7 +15,7 @@ import { GetServerSideProps } from 'next';
 
 import { loginConfig } from 'data/login/loginConfig';
 import { LoginData } from 'data/login/types';
-import FormContent from 'components/FormContent';
+import FormContent from 'components/forms/FormContent';
 import PageHead from 'components/PageHead';
 
 const Login = () => {

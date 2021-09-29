@@ -10,7 +10,7 @@ import { ReleaseWizardComponentProps } from '../../NewReleaseWizard/types';
 import { basicInfoConfig } from './releaseConfig';
 import { BasicInfoFormData } from './types';
 
-import FormContent from 'components/FormContent';
+import FormContent from 'components/forms/FormContent';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchArtists } from 'queries/artists';
 

@@ -15,7 +15,7 @@ import { BiArrowBack } from 'react-icons/bi';
 import { buildNewArtworkConfig } from '../EditArtworkForm/artworkConfig';
 import { EditArtworkFormData } from '../../specific/Artwork/types';
 
-import FormContent from 'components/FormContent';
+import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 import ImageDropzone from 'components/ImageDropper';
 import useAppColors from 'hooks/useAppColors';

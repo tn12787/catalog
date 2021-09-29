@@ -12,7 +12,7 @@ import { EditDistributionFormData } from '../../specific/Distribution/types';
 
 import { buildDistribConfig } from './distribConfig';
 
-import FormContent from 'components/FormContent';
+import FormContent from 'components/forms/FormContent';
 import { fetchDistributors } from 'queries/distribution';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 
