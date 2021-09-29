@@ -86,10 +86,15 @@ const FormField = <T extends any>({
               focusBorderColor={primary}
               type={type}
               icon={isLoading ? <></> : undefined}
-              options={options}
               {...register(name as any, { ...registerArgs })}
               {...extraProps}
-            ></InputComponent>
+            >
+              {options?.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </InputComponent>
             {isLoading && (
               <InputRightElement>
                 <Box>
