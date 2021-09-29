@@ -32,7 +32,7 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, isNewUser }) {
       try {
-        const numberOfUserTeams = await prisma.teamUser.count({
+        const numberOfUserTeams = await prisma.teamMember.count({
           where: { userId: token.sub as string },
         });
 
@@ -49,7 +49,7 @@ export default NextAuth({
       }
     },
     async session({ session, token, user }) {
-      const userTeams = await prisma.teamUser.findMany({
+      const userTeams = await prisma.teamMember.findMany({
         where: { userId: token.sub as string },
         select: {
           teamId: true,

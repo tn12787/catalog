@@ -1,3 +1,3 @@
-import { TeamUser, Role, User } from '@prisma/client';
+import { TeamMember, Role, User } from '@prisma/client';
 
-export type TeamUserWithUser = TeamUser & { user: User; roles: Role[] };
+export type TeamMemberWithUser = TeamMember & { user: User; roles: Role[] };

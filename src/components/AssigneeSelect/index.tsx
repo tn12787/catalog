@@ -19,7 +19,7 @@ import AssigneeItem from './AssigneeItem';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
-import { TeamUserWithUser } from 'components/teams/TeamMembersTable/types';
+import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
 
 interface Props extends ControllerRenderProps {}
 
@@ -34,7 +34,7 @@ const AssigneeSelect = React.forwardRef(({ value, onChange }: Props, ref) => {
   const [searchString, setSearchString] = React.useState('');
 
   const allTeamMembers =
-    teamData?.users.filter((item) =>
+    teamData?.members.filter((item) =>
       item.user.name?.toLowerCase().includes(searchString.toLowerCase())
     ) || [];
 
@@ -86,7 +86,7 @@ const AssigneeSelect = React.forwardRef(({ value, onChange }: Props, ref) => {
 
         <AssigneeSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
           {allTeamMembers.length ? (
-            allTeamMembers.map((item: TeamUserWithUser, index: number) => (
+            allTeamMembers.map((item: TeamMemberWithUser, index: number) => (
               <AssigneeItem
                 ref={ref}
                 {...getItemProps({ item, index })}

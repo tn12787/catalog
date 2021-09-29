@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { teamMembersColumns } from './columns';
-import { TeamUserWithUser } from './types';
+import { TeamMemberWithUser } from './types';
 
 import Table from 'components/Table';
 
 interface Props {
-  teamMembers: TeamUserWithUser[];
+  teamMembers: TeamMemberWithUser[];
 }
 
 const TeamMembersTable = ({ teamMembers }: Props) => {
