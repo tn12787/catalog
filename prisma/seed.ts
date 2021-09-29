@@ -57,8 +57,6 @@ async function seed() {
     },
   });
 
-  console.log({ permissions, viewer, teamMember, admin, seededDistributors });
-
   process.exit(0);
 }
 

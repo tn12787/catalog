@@ -3,20 +3,15 @@ import {
   InputGroup,
   Flex,
   FormControl,
-  FormErrorMessage,
   InputRightElement,
-  HStack,
-  Box,
   Text,
-  Spinner,
-  Button,
-  ListItem,
-  List,
+  IconButton,
 } from '@chakra-ui/react';
 import React from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { useCombobox } from 'downshift';
 import { useQuery } from 'react-query';
+import { BiChevronDown } from 'react-icons/bi';
 
 import AssigneeSelectList from './AssigneeSelectList';
 import AssigneeItem from './AssigneeItem';
@@ -28,9 +23,9 @@ import { TeamUserWithUser } from 'components/teams/TeamMembersTable/types';
 
 interface Props extends ControllerRenderProps {}
 
-const AssigneeSelect = ({ value, onChange }: Props) => {
+const AssigneeSelect = React.forwardRef(({ value, onChange }: Props, ref) => {
   const { currentTeam, teams } = useExtendedSession();
-
+  console.log(value);
   const { data: teamData, isLoading } = useQuery(
     ['team', currentTeam as string],
     () => fetchTeam(currentTeam as string)
@@ -38,9 +33,10 @@ const AssigneeSelect = ({ value, onChange }: Props) => {
 
   const [searchString, setSearchString] = React.useState('');
 
-  const allTeamMembers = teamData?.users || [];
-
-  console.log(allTeamMembers);
+  const allTeamMembers =
+    teamData?.users.filter((item) =>
+      item.user.name?.toLowerCase().includes(searchString.toLowerCase())
+    ) || [];
 
   const { border, bgPrimary, bgSecondary, primary, bodySub } = useAppColors();
 
@@ -51,6 +47,7 @@ const AssigneeSelect = ({ value, onChange }: Props) => {
     getMenuProps,
     getInputProps,
     getComboboxProps,
+    getToggleButtonProps,
     getItemProps,
     highlightedIndex,
     selectItem,
@@ -59,15 +56,9 @@ const AssigneeSelect = ({ value, onChange }: Props) => {
     onInputValueChange: ({ inputValue }) => {
       setSearchString(inputValue ?? '');
     },
+    onSelectedItemChange: (changes) => onChange(changes.selectedItem?.user.id),
     itemToString: (item) => (item?.user?.name ? item.user.name : ''),
   });
-
-  const setAssignee = (item: any) => {
-    const userItem = item ?? selectedItem;
-
-    onChange(userItem.user.id);
-    selectItem(null as any);
-  };
 
   return (
     <InputGroup borderRadius="md" w="full">
@@ -77,47 +68,54 @@ const AssigneeSelect = ({ value, onChange }: Props) => {
         w="100%"
         direction="column"
       >
-        <FormControl>
-          <Input
-            {...getInputProps()}
-            placeholder="Search for a user..."
-            border="1px solid"
-            focusBorderColor={primary}
+        <Input
+          {...getInputProps()}
+          placeholder="Search for a user..."
+          border="1px solid"
+          {...getToggleButtonProps()}
+          focusBorderColor={primary}
+        />
+        <InputRightElement>
+          <IconButton
+            fontSize="xl"
+            variant="ghost"
+            {...getToggleButtonProps()}
+            icon={<BiChevronDown />}
           />
-        </FormControl>
-        {
-          <AssigneeSelectList
-            {...getMenuProps()}
-            isOpen={isOpen && searchString.length > 0 && !isLoading}
-          >
-            {allTeamMembers.length ? (
-              allTeamMembers.map((item: TeamUserWithUser, index: number) => (
-                <AssigneeItem
-                  {...getItemProps({ item, index })}
-                  key={index}
-                  item={item}
-                  itemIndex={index}
-                  highlightedIndex={highlightedIndex}
-                  onClick={() => {
-                    setAssignee(item);
-                    // closeMenu();
-                  }}
-                />
-              ))
-            ) : (
-              <Text
-                p={3}
-                fontSize="md"
-                borderRadius="md"
-                cursor="pointer"
-                transition="background-color 220ms, color 220ms"
-                color={bodySub}
-              >
-                No users match your search.
-              </Text>
-            )}
-          </AssigneeSelectList>
-        }
+        </InputRightElement>
+
+        <AssigneeSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
+          {allTeamMembers.length ? (
+            allTeamMembers.map((item: TeamUserWithUser, index: number) => (
+              <AssigneeItem
+                ref={ref}
+                {...getItemProps({ item, index })}
+                _hover={{
+                  bgColor: bgPrimary,
+                }}
+                key={index}
+                item={item}
+                itemIndex={index}
+                highlightedIndex={highlightedIndex}
+                onClick={() => {
+                  selectItem(item);
+                  closeMenu();
+                }}
+              />
+            ))
+          ) : (
+            <Text
+              p={3}
+              fontSize="md"
+              borderRadius="md"
+              cursor="pointer"
+              transition="background-color 220ms, color 220ms"
+              color={bodySub}
+            >
+              No users match your search.
+            </Text>
+          )}
+        </AssigneeSelectList>
       </Flex>
       {/* <InputRightElement w="auto" flex={1}>
         <HStack>
@@ -142,6 +140,6 @@ const AssigneeSelect = ({ value, onChange }: Props) => {
       </InputRightElement> */}
     </InputGroup>
   );
-};
+});
 
 export default AssigneeSelect;
