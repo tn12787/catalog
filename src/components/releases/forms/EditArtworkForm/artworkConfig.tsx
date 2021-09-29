@@ -16,7 +16,7 @@ export const buildArtworkConfig = (
     registerArgs: {
       required: 'Please a team or person that will complete the artwork.',
     },
-    // CustomComponent: AssigneeSelect,
+    CustomComponent: AssigneeSelect,
   },
   {
     name: 'status',
