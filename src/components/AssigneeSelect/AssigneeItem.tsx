@@ -2,11 +2,11 @@ import { HStack, ListItem, ListItemProps, Text } from '@chakra-ui/layout';
 import React from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 
-import { TeamUserWithUser } from 'components/teams/TeamMembersTable/types';
+import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props extends ListItemProps {
-  item: TeamUserWithUser;
+  item: TeamMemberWithUser;
   itemIndex: number;
   highlightedIndex: number;
 }

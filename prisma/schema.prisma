@@ -5,8 +5,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialActions"]
+  provider = "prisma-client-js"
 }
 
 enum ReleaseType {
@@ -44,14 +43,14 @@ model Team {
   name     String
   plan     TeamPlan      @default(Artist)
   provider CloudProvider
-  users    TeamUser[]
+  members  TeamMember[]
   artists  Artist[]
   contacts Contact[]
   releases Release[]
   invites  Invite[]
 }
 
-model TeamUser {
+model TeamMember {
   id        String    @id @default(cuid())
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   team      Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
@@ -60,6 +59,7 @@ model TeamUser {
   roles     Role[]
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+
 
   @@unique([userId, teamId])
 }
@@ -82,7 +82,7 @@ model User {
   image                 String?
   accounts              Account[]
   sessions              Session[]
-  teams                 TeamUser[]
+  teams                 TeamMember[]
   artworksAssigned      Artwork[]
   distributionsAssigned Distribution[]
   marketingAssigned     Marketing[]
@@ -304,7 +304,7 @@ model Role {
   permissions Permission[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?    @updatedAt
-  users       TeamUser[]
+  users       TeamMember[]
 }
 
 model Permission {

@@ -78,7 +78,7 @@ const TeamOverview = (props: Props) => {
             <Card w="100%">
               <Stat>
                 <StatLabel>Members</StatLabel>
-                <StatNumber>{teamData?.users?.length}</StatNumber>
+                <StatNumber>{teamData?.members?.length}</StatNumber>
               </Stat>
             </Card>
             <Card w="100%">
@@ -139,7 +139,7 @@ const TeamOverview = (props: Props) => {
                 </ButtonGroup>
               </HStack>
               <TeamMembersTable
-                teamMembers={teamData?.users ?? []}
+                teamMembers={teamData?.members ?? []}
               ></TeamMembersTable>
             </Stack>
           </Card>

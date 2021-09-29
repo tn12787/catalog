@@ -1,4 +1,4 @@
-import { Team, TeamUser } from '@prisma/client';
+import { Team, TeamMember } from '@prisma/client';
 
 import {
   Distributor,
@@ -108,7 +108,7 @@ export enum EventType {
   RELEASE = 'release',
 }
 
-export type EnrichedTeamUser = TeamUser & {
+export type EnrichedTeamMember = TeamMember & {
   team: Team;
   roles: Role & { permissions: Permission[] }[];
 };
@@ -117,7 +117,7 @@ export interface ExtendedSession {
   email: string;
   name: string;
   picture: string;
-  teams: EnrichedTeamUser[];
+  teams: EnrichedTeamMember[];
 }
 
 export type PermissionType =

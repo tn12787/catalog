@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import create from 'zustand';
 import router from 'next/router';
 
-import { EnrichedTeamUser, ExtendedSession } from 'types';
+import { EnrichedTeamMember, ExtendedSession } from 'types';
 
 interface UseTeamPreferenceState {
   currentTeam: string;
@@ -37,7 +37,7 @@ const useExtendedSession = () => {
     return teams?.reduce((acc, team) => {
       acc[team.teamId] = team;
       return acc;
-    }, {} as { [key: string]: EnrichedTeamUser });
+    }, {} as { [key: string]: EnrichedTeamMember });
   }, [token?.teams]);
 
   const queryClient = useQueryClient();

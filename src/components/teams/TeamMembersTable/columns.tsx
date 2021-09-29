@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import { CellProps, Column } from 'react-table';
 
-import { TeamUserWithUser } from './types';
+import { TeamMemberWithUser } from './types';
 
 interface UserCard {
   name: string | null;
@@ -16,10 +16,10 @@ interface UserCard {
   email: string | null;
 }
 
-export const teamMembersColumns: Column<TeamUserWithUser>[] = [
+export const teamMembersColumns: Column<TeamMemberWithUser>[] = [
   {
     Header: 'Name',
-    accessor: (d: TeamUserWithUser): UserCard => ({
+    accessor: (d: TeamMemberWithUser): UserCard => ({
       name: d.user?.name,
       photo: d.user?.image,
       email: d.user?.email,
@@ -43,7 +43,7 @@ export const teamMembersColumns: Column<TeamUserWithUser>[] = [
   },
   {
     Header: 'Roles',
-    accessor: (d: TeamUserWithUser) =>
+    accessor: (d: TeamMemberWithUser) =>
       d.roles.map((item) => item.name).join(', '),
   },
 ];
