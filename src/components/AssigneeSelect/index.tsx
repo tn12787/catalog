@@ -24,7 +24,7 @@ import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
 interface Props extends ControllerRenderProps {}
 
 const AssigneeSelect = React.forwardRef(({ value, onChange }: Props, ref) => {
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentTeam } = useExtendedSession();
   console.log(value);
   const { data: teamData, isLoading } = useQuery(
     ['team', currentTeam as string],
