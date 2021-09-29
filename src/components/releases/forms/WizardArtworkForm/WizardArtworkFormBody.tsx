@@ -50,7 +50,6 @@ const WizardArtworkFormBody = ({
   });
 
   const watchedAlbumArt = watch('artworkData');
-  console.log(watchedAlbumArt);
 
   const onSubmitFn = async (data: EditArtworkFormData) => {
     const { artworkData, ...rest } = data;
@@ -61,7 +60,6 @@ const WizardArtworkFormBody = ({
     onSubmit({ ...rest, url: url ?? completeState?.artwork?.url });
   };
 
-  console.log(completeState?.artwork);
 
   useEffect(() => {
     const newStatus =
