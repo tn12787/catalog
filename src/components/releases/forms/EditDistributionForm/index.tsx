@@ -8,8 +8,6 @@ import { EditDistributionFormData } from '../../specific/Distribution/types';
 import EditDistributionFormBody from './EditDistributionFormBody';
 
 import { EnrichedRelease } from 'types';
-import withReleaseData from 'HOCs/withReleaseData';
-import BackButton from 'components/BackButton';
 import {
   createSingleDistribution,
   updateSingleDistribution,

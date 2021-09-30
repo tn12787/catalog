@@ -86,16 +86,7 @@ const Summary = ({ releaseData }: Props) => {
         </Flex>
 
         {canUpdateRelease && (
-          <Button
-            mt={[2, 2, 0]}
-            flexGrow={0}
-            height="auto"
-            py={1}
-            px={12}
-            colorScheme="purple"
-            variant="outline"
-            onClick={onOpen}
-          >
+          <Button size="sm" colorScheme="purple" variant="outline" onClick={onOpen}>
             Edit
           </Button>
         )}
