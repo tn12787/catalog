@@ -42,7 +42,7 @@ class ReleaseListHandler {
       {
         assignees: body.assignees
           ? {
-              connect: body.assignees.map((id) => ({
+              set: body.assignees.map((id) => ({
                 id,
               })),
             }
@@ -88,7 +88,7 @@ class ReleaseListHandler {
       {
         assignees: body.assignees
           ? {
-              connect: body.assignees.map((id) => ({
+              set: body.assignees.map((id) => ({
                 id,
               })),
             }

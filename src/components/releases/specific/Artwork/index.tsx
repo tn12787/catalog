@@ -24,8 +24,9 @@ import NextLink from 'next/link';
 import { SummaryField } from '../Summary';
 import EditDistributionForm from '../../forms/EditDistributionForm';
 import EditArtworkForm from '../../forms/EditArtworkForm';
+import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { EnrichedRelease } from 'types';
+import { EnrichedRelease, EventType } from 'types';
 import Card from 'components/Card';
 import { TaskStatus } from '.prisma/client';
 import useExtendedSession from 'hooks/useExtendedSession';
@@ -91,81 +92,14 @@ const Artwork = ({ releaseData }: Props) => {
   );
 
   return (
-    <Card flex={1} alignItems={['center', 'center', 'stretch']}>
-      <Flex
-        align="center"
-        justify="space-between"
-        direction={['column', 'column', 'row']}
-      >
-        <Flex align="center" direction={['column', 'column', 'row']}>
-          <Heading fontSize="2xl" fontWeight="bold">
-            🎨 Artwork
-          </Heading>
-          {releaseData?.artwork && (
-            <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
-              {releaseData?.artwork.status}
-            </Badge>
-          )}
-        </Flex>
-        {releaseData.artwork && canUpdateRelease && (
-          <Button
-            flexGrow={0}
-            size="sm"
-            onClick={onOpen}
-            colorScheme="purple"
-            variant="outline"
-          >
-            Edit
-          </Button>
-        )}
-      </Flex>
-      {releaseData.artwork ? (
-        <Flex
-          direction={['column', 'column', 'row']}
-          py={4}
-          width={'100%'}
-          justify="space-between"
-          alignItems={['center', 'center', 'stretch']}
-        >
-          <Stack width={'100%'}>
-            {buildFields(releaseData).map(({ name, content, hidden }) => {
-              return hidden ? null : (
-                <Stack
-                  align={['center', 'center', 'flex-start']}
-                  direction={['row']}
-                  justify={['space-between']}
-                >
-                  <Text fontSize="md" fontWeight="bold">
-                    {name}
-                  </Text>
-                  {content}
-                </Stack>
-              );
-            })}
-            <Stack>
-              {releaseData.artwork?.notes ? (
-                <Stack>
-                  <Text fontSize="md" fontWeight="bold">
-                    Notes
-                  </Text>
-                  <Text whiteSpace="pre-wrap">
-                    {releaseData.artwork?.notes}
-                  </Text>
-                </Stack>
-              ) : null}
-            </Stack>
-          </Stack>
-        </Flex>
-      ) : (
-        <Flex py={4} align="center" direction="column" justify="space-between">
-          <Text mb={3}>This release has no artwork info yet.</Text>
-          {canUpdateRelease && (
-            <Button flexGrow={0} colorScheme="purple" onClick={onOpen}>
-              Add now
-            </Button>
-          )}
-        </Flex>
-      )}
+    <>
+      <ReleaseTaskCard
+        heading={'🎨 Artwork '}
+        onEditClick={onOpen}
+        fields={buildFields(releaseData)}
+        taskType={EventType.ARTWORK}
+        data={releaseData.artwork}
+      />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalContent>
@@ -175,7 +109,7 @@ const Artwork = ({ releaseData }: Props) => {
           />
         </ModalContent>
       </Modal>
-    </Card>
+    </>
   );
 };
 

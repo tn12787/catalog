@@ -2,7 +2,6 @@ import { Input } from '@chakra-ui/input';
 import {
   InputGroup,
   Flex,
-  FormControl,
   InputRightElement,
   Text,
   IconButton,
@@ -22,7 +21,6 @@ import AssigneeItem from './AssigneeItem';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
-import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
 import AssigneeBadge from 'components/AssigneeBadge';
 import { User } from '.prisma/client';
 
@@ -88,7 +86,6 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
         <Wrap>
           {currentAssignees?.length
             ? currentAssignees?.map((assignee) => {
-                console.log(assignee);
                 return (
                   <AssigneeBadge
                     onRemoveClick={(removedUser) => {
