@@ -42,7 +42,7 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
   const isComplete = releaseData.artwork?.status === TaskStatus.COMPLETE;
   return [
     {
-      name: `${isComplete ? 'Completed By' : 'Assignee'}`,
+      name: 'Assignee',
       content: (
         <NextLink href={`/users/${releaseData.artwork?.completedBy}`} passHref>
           <Link fontSize="sm">{releaseData.artist.name}</Link>

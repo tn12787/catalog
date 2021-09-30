@@ -70,9 +70,9 @@ const AssigneeSelect = React.forwardRef(({ value, onChange }: Props, ref) => {
       >
         <Input
           {...getInputProps()}
+          {...getToggleButtonProps()}
           placeholder="Search for a user..."
           border="1px solid"
-          {...getToggleButtonProps()}
           focusBorderColor={primary}
         />
         <InputRightElement>
