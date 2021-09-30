@@ -6,40 +6,41 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import FormField from 'components/forms/FormContent/FormField';
 import DataList from 'components/DataList';
-import { Team } from '.prisma/client';
+import { User } from '.prisma/client';
 import { updateSingleTeam } from 'queries/teams';
+import { updateSingleUser } from 'queries/me';
 
 interface Props {
   onSubmit: () => void;
   onCancel: () => void;
-  teamData?: Team;
+  userData?: User;
 }
 
-interface EditTeamInfoFormData {
+interface EditUserFormData {
   name: string;
 }
 
-const EditTeamInfoForm = ({ onSubmit, onCancel, teamData }: Props) => {
+const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<EditTeamInfoFormData>({
-    defaultValues: { name: teamData?.name },
+  } = useForm<EditUserFormData>({
+    defaultValues: { name: userData?.name as string },
   });
 
   const config = [
     {
-      label: 'Team name',
+      label: 'Name',
       content: (
         <FormField
           register={register}
           errors={errors}
           showLabel={false}
-          control={control}
           name="name"
           type="text"
+          control={control}
         />
       ),
     },
@@ -47,16 +48,15 @@ const EditTeamInfoForm = ({ onSubmit, onCancel, teamData }: Props) => {
 
   const queryClient = useQueryClient();
 
-  const { mutateAsync: updateTeam, isLoading } = useMutation(updateSingleTeam, {
+  const { mutateAsync: updateMe, isLoading } = useMutation(updateSingleUser, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['team', teamData?.id]);
       queryClient.invalidateQueries(['me']);
     },
   });
 
-  const onSave = async (data: EditTeamInfoFormData) => {
+  const onSave = async (data: EditUserFormData) => {
     try {
-      await updateTeam({ id: teamData?.id as string, ...data });
+      await updateMe({ id: userData?.id as string, ...data });
 
       onSubmit();
     } catch (error) {
@@ -91,4 +91,4 @@ const EditTeamInfoForm = ({ onSubmit, onCancel, teamData }: Props) => {
   );
 };
 
-export default EditTeamInfoForm;
+export default EditUserInfoForm;

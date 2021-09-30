@@ -13,16 +13,20 @@ import { signOut, useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { useState } from 'react';
-import { BiLogOut } from 'react-icons/bi';
+import { BiCog, BiLogOut } from 'react-icons/bi';
 import { useQuery } from 'react-query';
+import { useRouter } from 'next/router';
 
 import { AccountSwitcherButton } from './AccountSwitcherButton';
 
 import { ExtendedSession } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
+import useUser from 'hooks/useUser';
 
 export const AccountSwitcher = () => {
   const { token, currentTeam, onChangeTeam, status } = useExtendedSession();
+  const router = useRouter();
+  const [userData] = useUser();
 
   const sessionLoading = status === 'loading';
 
@@ -31,7 +35,7 @@ export const AccountSwitcher = () => {
     signOut();
   };
 
-  const userTeams = token?.teams;
+  const userTeams = userData?.teams || token?.teams;
 
   const activeTeam = useMemo(() => {
     return userTeams?.find((item) => item.teamId === currentTeam);
@@ -42,7 +46,9 @@ export const AccountSwitcher = () => {
       <Skeleton rounded="lg" isLoaded={!sessionLoading}>
         <AccountSwitcherButton
           teamName={(activeTeam?.team.name as string) ?? 'loadingTeam'}
-          userName={(token?.name as string) ?? 'loadingUser'}
+          userName={
+            (userData?.name || (token?.name as string)) ?? 'loadingUser'
+          }
           photoUrl={token?.picture as string}
         />
       </Skeleton>
@@ -74,6 +80,12 @@ export const AccountSwitcher = () => {
           ))}
         </MenuOptionGroup>
         <MenuDivider />
+        <MenuItem
+          icon={<BiCog />}
+          onClick={() => router.push('/user/settings')}
+        >
+          User settings
+        </MenuItem>
 
         <MenuItem icon={<BiLogOut />} onClick={onLogout}>
           Log out
