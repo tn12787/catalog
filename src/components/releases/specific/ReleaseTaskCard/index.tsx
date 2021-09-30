@@ -10,6 +10,7 @@ import { Artwork, Distribution } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import { EventType } from 'types';
+import { TaskStatus } from '.prisma/client';
 
 interface Props<T> {
   heading: string | JSX.Element;
@@ -18,6 +19,19 @@ interface Props<T> {
   fields: SummaryField[];
   taskType: EventType;
 }
+
+const deriveBadgeColor = (status?: TaskStatus) => {
+  switch (status) {
+    case TaskStatus.OUTSTANDING:
+      return 'red';
+    case TaskStatus.IN_PROGRESS:
+      return 'orange';
+    case TaskStatus.COMPLETE:
+      return 'green';
+    default:
+      return 'gray';
+  }
+};
 
 const ReleaseTaskCard = <T extends Artwork | Distribution>({
   heading,
@@ -48,7 +62,11 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
           ) : (
             heading
           )}
-          <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
+          <Badge
+            colorScheme={deriveBadgeColor(data?.status)}
+            mt={[1, 1, 0]}
+            ml={[0, 0, 3]}
+          >
             {data?.status}
           </Badge>
         </Flex>
