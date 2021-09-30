@@ -48,8 +48,14 @@ class ReleaseListHandler {
       releaseTeam?.teamId
     );
 
-    const optionalArgs = body.assignee
-      ? { assignee: { connect: { id: body.assignee } } }
+    const optionalArgs = body.assignees
+      ? {
+          assignees: {
+            connect: body.assignees.map((id) => ({
+              id,
+            })),
+          },
+        }
       : {};
     const result = await prisma.distribution.create({
       data: {
@@ -84,8 +90,14 @@ class ReleaseListHandler {
       releaseTeam?.teamId
     );
 
-    const optionalArgs = body.assignee
-      ? { assignee: { connect: { id: body.assignee } } }
+    const optionalArgs = body.assignees
+      ? {
+          assignees: {
+            connect: body.assignees.map((id) => ({
+              id,
+            })),
+          },
+        }
       : {};
     const result = await prisma.distribution.update({
       where: {

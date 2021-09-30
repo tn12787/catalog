@@ -189,8 +189,7 @@ model Artwork {
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  assignee        User?      @relation(fields: [assigneeId], references: [id])
-  assigneeId      String?
+  assignees       User[]
   completedBy     Contact?   @relation(fields: [completedById], references: [id])
   completedById   String?
   createdAt       DateTime   @default(now())
@@ -209,8 +208,7 @@ model Distribution {
   status          TaskStatus
   release         Release     @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  assignee        User?       @relation(fields: [assigneeId], references: [id])
-  assigneeId      String?
+  assignees       User[]
   completedBy     Contact?    @relation(fields: [completedById], references: [id])
   completedById   String?
   createdAt       DateTime    @default(now())
@@ -239,8 +237,7 @@ model Marketing {
   status          TaskStatus
   release         Release         @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  assignee        User?           @relation(fields: [assigneeId], references: [id])
-  assigneeId      String?
+  assignees       User[]
   completedBy     Contact?        @relation(fields: [completedById], references: [id])
   completedById   String?
   createdAt       DateTime        @default(now())
@@ -268,8 +265,7 @@ model MusicVideo {
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  assignee        User?      @relation(fields: [assigneeId], references: [id])
-  assigneeId      String?
+  assignees       User[]
   completedBy     Contact?   @relation(fields: [completedById], references: [id])
   completedById   String?
   createdAt       DateTime   @default(now())
@@ -287,8 +283,7 @@ model Mastering {
   status          TaskStatus
   release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
-  assignee        User?      @relation(fields: [assigneeId], references: [id])
-  assigneeId      String?
+  assignees       User[]
   completedBy     Contact?   @relation(fields: [completedById], references: [id])
   completedById   String?
   createdAt       DateTime   @default(now())
