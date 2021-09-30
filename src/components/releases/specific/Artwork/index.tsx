@@ -11,6 +11,7 @@ import {
   ModalContent,
   ModalOverlay,
   useDisclosure,
+  Wrap,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
@@ -29,6 +30,7 @@ import Card from 'components/Card';
 import { TaskStatus } from '.prisma/client';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import AssigneeBadge from 'components/AssigneeBadge';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -42,11 +44,17 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
   const isComplete = releaseData.artwork?.status === TaskStatus.COMPLETE;
   return [
     {
-      name: 'Assignee',
+      name: 'Assignees',
       content: (
-        <NextLink href={`/users/${releaseData.artwork?.completedBy}`} passHref>
-          <Link fontSize="sm">{releaseData.artist.name}</Link>
-        </NextLink>
+        <Wrap justify="flex-end">
+          {releaseData.artwork?.assignees?.length ? (
+            releaseData.artwork?.assignees?.map((assignee) => (
+              <AssigneeBadge key={assignee.id} user={assignee} />
+            ))
+          ) : (
+            <Text fontSize="sm">No assignees</Text>
+          )}
+        </Wrap>
       ),
     },
     releaseData.artwork?.dueDate && {
@@ -82,17 +90,6 @@ const Artwork = ({ releaseData }: Props) => {
     teams?.[currentTeam]
   );
 
-  if (status === 'loading' && releaseData.artwork) {
-    return (
-      <Card>
-        <Flex direction="row" justify="space-between">
-          <Heading fontSize="2xl">🎨 Artwork</Heading>
-        </Flex>
-        <Spinner alignSelf="center" />
-      </Card>
-    );
-  }
-
   return (
     <Card flex={1} alignItems={['center', 'center', 'stretch']}>
       <Flex
@@ -104,17 +101,16 @@ const Artwork = ({ releaseData }: Props) => {
           <Heading fontSize="2xl" fontWeight="bold">
             🎨 Artwork
           </Heading>
-          <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
-            {releaseData?.artwork?.status}
-          </Badge>
+          {releaseData?.artwork && (
+            <Badge colorScheme="purple" mt={[1, 1, 0]} ml={[0, 0, 3]}>
+              {releaseData?.artwork.status}
+            </Badge>
+          )}
         </Flex>
         {releaseData.artwork && canUpdateRelease && (
           <Button
-            mt={[2, 2, 0]}
             flexGrow={0}
-            height="auto"
-            py={1}
-            px={12}
+            size="sm"
             onClick={onOpen}
             colorScheme="purple"
             variant="outline"
@@ -127,25 +123,23 @@ const Artwork = ({ releaseData }: Props) => {
         <Flex
           direction={['column', 'column', 'row']}
           py={4}
-          width={'90%'}
+          width={'100%'}
           justify="space-between"
           alignItems={['center', 'center', 'stretch']}
         >
           <Stack width={'100%'}>
             {buildFields(releaseData).map(({ name, content, hidden }) => {
               return hidden ? null : (
-                <Flex
-                  mb={[3, 3, 0]}
-                  width="100%"
+                <Stack
                   align={['center', 'center', 'flex-start']}
-                  direction={['row', 'row', 'column']}
+                  direction={['row']}
                   justify={['space-between']}
                 >
                   <Text fontSize="md" fontWeight="bold">
                     {name}
                   </Text>
                   {content}
-                </Flex>
+                </Stack>
               );
             })}
             <Stack>

@@ -57,6 +57,7 @@ class ReleaseListHandler {
           },
         }
       : {};
+
     const result = await prisma.distribution.create({
       data: {
         ...optionalArgs,

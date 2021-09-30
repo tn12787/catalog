@@ -1,20 +1,31 @@
-import { HStack, ListItem, ListItemProps, Text } from '@chakra-ui/layout';
+import {
+  Box,
+  Flex,
+  HStack,
+  ListItem,
+  ListItemProps,
+  Text,
+} from '@chakra-ui/layout';
 import React from 'react';
 import { Avatar } from '@chakra-ui/avatar';
+import { User } from '@prisma/client';
+import { BiCheck } from 'react-icons/bi';
+import Icon from '@chakra-ui/icon';
 
-import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props extends ListItemProps {
-  item: TeamMemberWithUser;
+  item: User;
   itemIndex: number;
   highlightedIndex: number;
+  selected?: boolean;
 }
 
 const AssigneeItem = ({
   item,
   itemIndex,
   highlightedIndex,
+  selected,
   ...rest
 }: Props) => {
   const isSelected = itemIndex === highlightedIndex;
@@ -22,13 +33,17 @@ const AssigneeItem = ({
   return (
     <ListItem
       cursor="pointer"
-      p={3}
+      py={3}
+      px={1}
       bg={isSelected ? bgPrimary : 'transparent'}
       {...rest}
     >
       <HStack>
-        <Avatar size="xs" src={item.user.image || ''} />
-        <Text fontSize="md"> {item.user.name}</Text>
+        <Flex minW="20px">
+          {selected && <Icon fontSize="lg" as={BiCheck} />}
+        </Flex>
+        <Avatar size="xs" src={item.image || ''} />
+        <Text fontSize="md"> {item.name}</Text>
       </HStack>
     </ListItem>
   );

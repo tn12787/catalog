@@ -11,6 +11,7 @@ import {
   Stack,
   Text,
   useDisclosure,
+  Wrap,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
@@ -29,6 +30,7 @@ import Card from 'components/Card';
 import NewReleaseForm from 'components/releases/forms/NewReleaseForm';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import AssigneeBadge from 'components/AssigneeBadge';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -41,6 +43,20 @@ interface Props {
 const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
   const isComplete = releaseData.distribution?.status === TaskStatus.COMPLETE;
   return [
+    {
+      name: 'Assignees',
+      content: (
+        <Wrap>
+          {releaseData.distribution?.assignees?.length ? (
+            releaseData.distribution?.assignees?.map((assignee) => (
+              <AssigneeBadge key={assignee.id} user={assignee} />
+            ))
+          ) : (
+            <Text fontSize="sm">No assignees</Text>
+          )}
+        </Wrap>
+      ),
+    },
     {
       name: 'Distributor',
       content: (
@@ -95,11 +111,7 @@ const Distribution = ({ releaseData }: Props) => {
         </Flex>
         {releaseData.distribution && canUpdateRelease && (
           <Button
-            mt={[2, 2, 0]}
-            flexGrow={0}
-            height="auto"
-            py={1}
-            px={12}
+            size="xs"
             onClick={onOpen}
             colorScheme="purple"
             variant="outline"
@@ -111,39 +123,38 @@ const Distribution = ({ releaseData }: Props) => {
       {releaseData.distribution ? (
         <Flex py={4} direction={['column', 'column', 'row']}>
           <Stack
-            width={['auto', 'auto', '50%']}
+            width={['auto', 'auto', '100%']}
             pb={2}
             justify="space-between"
             direction="column"
           >
             {buildFields(releaseData).map(({ name, content, hidden }) => {
               return hidden ? null : (
-                <Flex
-                  mb={[3, 3, 0]}
+                <Stack
                   width="100%"
                   align={['center', 'center', 'flex-start']}
-                  direction={['row', 'row', 'column']}
+                  direction={['row', 'row', 'row']}
                   justify={['space-between']}
                 >
                   <Text fontSize="md" fontWeight="bold">
                     {name}
                   </Text>
                   {content}
-                </Flex>
+                </Stack>
               );
             })}
-          </Stack>
-          <Stack width={['auto', 'auto', '50%']}>
-            {releaseData.distribution?.notes ? (
-              <Stack>
-                <Text fontSize="md" fontWeight="bold">
-                  Notes
-                </Text>
-                <Text whiteSpace="pre-wrap">
-                  {releaseData.distribution?.notes}
-                </Text>
-              </Stack>
-            ) : null}
+            <Stack width={['auto', 'auto', '50%']}>
+              {releaseData.distribution?.notes ? (
+                <Stack>
+                  <Text fontSize="md" fontWeight="bold">
+                    Notes
+                  </Text>
+                  <Text whiteSpace="pre-wrap">
+                    {releaseData.distribution?.notes}
+                  </Text>
+                </Stack>
+              ) : null}
+            </Stack>
           </Stack>
         </Flex>
       ) : (

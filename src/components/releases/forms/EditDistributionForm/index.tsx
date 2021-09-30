@@ -54,7 +54,11 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
 
   const onCreate = async (data: EditDistributionFormData) => {
     try {
-      await createDistribution({ ...data, releaseId: releaseData.id });
+      await createDistribution({
+        ...data,
+        assignees: data.assignees.map((item) => item.id),
+        releaseId: releaseData.id,
+      });
 
       toast({
         status: 'success',
@@ -70,7 +74,11 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
 
   const onUpdate = async (data: EditDistributionFormData) => {
     try {
-      await updateDistribution({ ...data, releaseId: releaseData.id });
+      await updateDistribution({
+        ...data,
+        assignees: data.assignees.map((item) => item.id),
+        releaseId: releaseData.id,
+      });
 
       toast({
         status: 'success',

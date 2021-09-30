@@ -6,12 +6,15 @@ import {
   InputRightElement,
   Text,
   IconButton,
+  Stack,
+  Wrap,
 } from '@chakra-ui/react';
 import React from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { useCombobox } from 'downshift';
 import { useQuery } from 'react-query';
 import { BiChevronDown } from 'react-icons/bi';
+import { uniqBy } from 'lodash';
 
 import AssigneeSelectList from './AssigneeSelectList';
 import AssigneeItem from './AssigneeItem';
@@ -20,126 +23,156 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
+import AssigneeBadge from 'components/AssigneeBadge';
+import { User } from '.prisma/client';
 
-interface Props extends ControllerRenderProps {}
+interface Props extends Pick<ControllerRenderProps, 'onChange'> {
+  value: User[];
+}
 
-const AssigneeSelect = React.forwardRef(({ value, onChange }: Props, ref) => {
-  const { currentTeam } = useExtendedSession();
-  console.log(value);
-  const { data: teamData, isLoading } = useQuery(
-    ['team', currentTeam as string],
-    () => fetchTeam(currentTeam as string)
-  );
+const AssigneeSelect: React.FC<Props> = React.forwardRef(
+  ({ value: currentAssignees, onChange }: Props, ref) => {
+    const { currentTeam } = useExtendedSession();
 
-  const [searchString, setSearchString] = React.useState('');
+    const { data: teamData, isLoading } = useQuery(
+      ['team', currentTeam as string],
+      () => fetchTeam(currentTeam as string)
+    );
 
-  const allTeamMembers =
-    teamData?.members.filter((item) =>
-      item.user.name?.toLowerCase().includes(searchString.toLowerCase())
-    ) || [];
+    const [searchString, setSearchString] = React.useState('');
 
-  const { border, bgPrimary, bgSecondary, primary, bodySub } = useAppColors();
+    const allTeamMembers = (
+      teamData?.members.filter((item) =>
+        item.user.name?.toLowerCase().includes(searchString.toLowerCase())
+      ) || []
+    ).map((item) => item.user);
 
-  const {
-    isOpen,
-    closeMenu,
-    selectedItem,
-    getMenuProps,
-    getInputProps,
-    getComboboxProps,
-    getToggleButtonProps,
-    getItemProps,
-    highlightedIndex,
-    selectItem,
-  } = useCombobox({
-    items: allTeamMembers,
-    onInputValueChange: ({ inputValue }) => {
-      setSearchString(inputValue ?? '');
-    },
-    onSelectedItemChange: (changes) => onChange(changes.selectedItem?.user.id),
-    itemToString: (item) => (item?.user?.name ? item.user.name : ''),
-  });
+    const { bgPrimary, primary, bodySub } = useAppColors();
 
-  return (
-    <InputGroup borderRadius="md" w="full">
-      <Flex
-        {...getComboboxProps()}
-        position="relative"
-        w="100%"
-        direction="column"
-      >
-        <Input
-          {...getInputProps()}
-          {...getToggleButtonProps()}
-          placeholder="Search for a user..."
-          border="1px solid"
-          focusBorderColor={primary}
-        />
-        <InputRightElement>
-          <IconButton
-            fontSize="xl"
-            variant="ghost"
-            {...getToggleButtonProps()}
-            icon={<BiChevronDown />}
-          />
-        </InputRightElement>
+    const onItemChange = (item: User) => {
+      const newAssigneesWithoutDuplicate = uniqBy(
+        [...currentAssignees, item],
+        (item) => item.id
+      ).filter(Boolean);
 
-        <AssigneeSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
-          {allTeamMembers.length ? (
-            allTeamMembers.map((item: TeamMemberWithUser, index: number) => (
-              <AssigneeItem
-                ref={ref}
-                {...getItemProps({ item, index })}
-                _hover={{
-                  bgColor: bgPrimary,
-                }}
-                key={index}
-                item={item}
-                itemIndex={index}
-                highlightedIndex={highlightedIndex}
-                onClick={() => {
-                  selectItem(item);
-                  closeMenu();
-                }}
-              />
-            ))
-          ) : (
-            <Text
-              p={3}
-              fontSize="md"
-              borderRadius="md"
-              cursor="pointer"
-              transition="background-color 220ms, color 220ms"
-              color={bodySub}
-            >
-              No users match your search.
-            </Text>
-          )}
-        </AssigneeSelectList>
-      </Flex>
-      {/* <InputRightElement w="auto" flex={1}>
-        <HStack>
-          {isLoading && (
-            <Box>
-              <Spinner size="sm" />
-            </Box>
-          )}
-          <Button
-            fontSize="lg"
-            fontWeight={400}
-            // bgColor={bgSecondary}
-            border="1px solid"
-            // borderColor={bodySub}
-            borderRadius="0 4px 4px 0"
-            // onClick={() => addUser(selectedItem)}
-            isDisabled={!selectedItem}
+      onChange(newAssigneesWithoutDuplicate);
+    };
+
+    const {
+      isOpen,
+      closeMenu,
+      selectedItem,
+      getMenuProps,
+      getInputProps,
+      getComboboxProps,
+      getToggleButtonProps,
+      getItemProps,
+      highlightedIndex,
+      selectItem,
+    } = useCombobox({
+      items: allTeamMembers,
+      onInputValueChange: ({ inputValue }) => {
+        setSearchString(inputValue ?? '');
+      },
+      inputValue: searchString,
+      onSelectedItemChange: (changes) => {
+        onItemChange(changes.selectedItem as User);
+        setSearchString('');
+      },
+
+      itemToString: (item) => item?.name ?? '',
+    });
+
+    return (
+      <Stack>
+        <Wrap>
+          {currentAssignees?.length
+            ? currentAssignees?.map((assignee) => {
+                console.log(assignee);
+                return (
+                  <AssigneeBadge
+                    onRemoveClick={(removedUser) => {
+                      onChange(
+                        currentAssignees?.filter(
+                          (item) => item?.id !== removedUser.id
+                        )
+                      );
+                    }}
+                    editable
+                    key={assignee.id}
+                    user={assignee}
+                  />
+                );
+              })
+            : null}
+        </Wrap>
+        <InputGroup borderRadius="md" w="full">
+          <Flex
+            {...getComboboxProps()}
+            position="relative"
+            w="100%"
+            direction="column"
           >
-            Add
-          </Button>
-        </HStack>
-      </InputRightElement> */}
-    </InputGroup>
-  );
-});
+            <Input
+              {...getToggleButtonProps()}
+              {...getInputProps()}
+              placeholder="Search for a user..."
+              border="1px solid"
+              value={searchString}
+              focusBorderColor={primary}
+            />
+            <InputRightElement>
+              <IconButton
+                fontSize="xl"
+                variant="ghost"
+                {...getToggleButtonProps()}
+                icon={<BiChevronDown />}
+              />
+            </InputRightElement>
+
+            <AssigneeSelectList
+              {...getMenuProps()}
+              isOpen={isOpen && !isLoading}
+            >
+              {allTeamMembers.length ? (
+                allTeamMembers.map((item: User, index: number) => (
+                  <AssigneeItem
+                    ref={ref}
+                    selected={currentAssignees?.some(
+                      (assignee) => assignee.id === item.id
+                    )}
+                    {...getItemProps({ item, index })}
+                    _hover={{
+                      bgColor: bgPrimary,
+                    }}
+                    key={index}
+                    item={item}
+                    itemIndex={index}
+                    highlightedIndex={highlightedIndex}
+                    onClick={() => {
+                      selectItem(item);
+                      closeMenu();
+                    }}
+                  />
+                ))
+              ) : (
+                <Text
+                  p={3}
+                  fontSize="md"
+                  borderRadius="md"
+                  cursor="pointer"
+                  transition="background-color 220ms, color 220ms"
+                  color={bodySub}
+                >
+                  No users match your search.
+                </Text>
+              )}
+            </AssigneeSelectList>
+          </Flex>
+        </InputGroup>
+      </Stack>
+    );
+  }
+);
 
 export default AssigneeSelect;

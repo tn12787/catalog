@@ -11,11 +11,8 @@ export const buildArtworkConfig = (
   alreadyCompleted: boolean
 ): FormDatum<EditArtworkFormData, TaskStatus>[] => [
   {
-    name: 'assignee',
-    label: 'Assignee',
-    registerArgs: {
-      required: 'Please a team or person that will complete the artwork.',
-    },
+    name: 'assignees',
+    label: 'Assignees',
     CustomComponent: AssigneeSelect,
   },
   {

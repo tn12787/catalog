@@ -93,6 +93,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await updateArtwork({
         ...data,
         url,
+        assignees: data.assignees.map((item) => item.id),
         releaseId: releaseData.id,
       });
 

@@ -54,7 +54,7 @@ const FormField = <T extends any>({
   type,
   hidden,
   registerArgs,
-  CustomComponent: CustomComponent,
+  CustomComponent,
   label,
   options,
   extraProps,
