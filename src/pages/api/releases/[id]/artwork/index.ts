@@ -40,14 +40,19 @@ class ReleaseListHandler {
 
     const optionalArgs = pickBy(
       {
-        assignee: body.assignee
-          ? { connect: { id: body.assignee } }
+        assignees: body.assignees
+          ? {
+              connect: body.assignees.map((id) => ({
+                id,
+              })),
+            }
           : undefined,
         url: body.url,
         dueDate: body.dueDate,
       },
       (v) => v !== undefined
     );
+
     const result = await prisma.artwork.create({
       data: {
         ...optionalArgs,
@@ -81,10 +86,15 @@ class ReleaseListHandler {
 
     const optionalArgs = pickBy(
       {
-        assignee: body.assignee
-          ? { connect: { id: body.assignee } }
+        assignees: body.assignees
+          ? {
+              connect: body.assignees.map((id) => ({
+                id,
+              })),
+            }
           : undefined,
         url: body.url,
+        dueDate: body.dueDate,
       },
       (v) => v !== undefined
     );

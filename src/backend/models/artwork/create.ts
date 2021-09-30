@@ -5,6 +5,7 @@ import {
   IsString,
   IsOptional,
   IsUrl,
+  IsArray,
 } from 'class-validator';
 
 import { TaskStatus } from '.prisma/client';
@@ -23,8 +24,8 @@ export class CreateArtworkDto {
   notes?: string;
 
   @IsOptional()
-  @IsString()
-  assignee?: string;
+  @IsArray()
+  assignees?: string[];
 
   @IsOptional()
   @IsUrl()
