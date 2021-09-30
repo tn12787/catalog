@@ -75,7 +75,6 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
                 <Text
                   fontSize="25px"
                   as={Link}
-                  Text
                   isTruncated
                   fontWeight="semibold"
                 >

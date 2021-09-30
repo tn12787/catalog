@@ -27,8 +27,8 @@ export const AccountSwitcherButton = ({
   const { bgPrimary, bgSecondary } = useAppColors();
   return (
     <Flex
-      as="button"
       {...buttonProps}
+      as="button"
       w="full"
       display="flex"
       alignItems="center"
