@@ -1,18 +1,18 @@
+import { Stack, Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { Stack, Heading } from '@chakra-ui/react';
 
+import PageHead from 'components/PageHead';
+import useAppColors from 'hooks/useAppColors';
+import { fetchMe } from 'queries/me';
+import UserInformation from 'components/users/UserInformation';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import { fetchTeam } from 'queries/teams';
-import useAppColors from 'hooks/useAppColors';
-import TeamInformation from 'components/teams/settings/TeamInformation';
-import PageHead from 'components/PageHead';
 
 interface Props {}
 
-const TeamOverview = (props: Props) => {
+const UserSettings = (props: Props) => {
   const router = useRouter();
   const teamId = router.query.id as string;
 
@@ -20,9 +20,7 @@ const TeamOverview = (props: Props) => {
 
   const { bgPrimary, bgSecondary } = useAppColors();
 
-  const { data: teamData, isLoading } = useQuery(['team', teamId], () =>
-    fetchTeam(teamId)
-  );
+  const { data: userData, isLoading } = useQuery('me', fetchMe);
 
   return (
     <Stack
@@ -33,19 +31,19 @@ const TeamOverview = (props: Props) => {
       direction="column"
       width="100%"
     >
-      <PageHead title="Team Settings" />
+      <PageHead title="Personal Settings" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-          Team Settings
+          Personal Settings
         </Heading>
-        <TeamInformation loading={isLoading} team={teamData} />
+        <UserInformation loading={isLoading} user={userData} />
       </Stack>
     </Stack>
   );
 };
 
-TeamOverview.getLayout = () => DashboardLayout;
+UserSettings.getLayout = () => DashboardLayout;
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
 
-export default TeamOverview;
+export default UserSettings;
