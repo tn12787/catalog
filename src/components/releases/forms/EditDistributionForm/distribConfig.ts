@@ -2,11 +2,17 @@ import { EditDistributionFormData } from '../../specific/Distribution/types';
 
 import { FormDatum } from 'types/forms';
 import { Distributor, TaskStatus } from '.prisma/client';
+import AssigneeSelect from 'components/AssigneeSelect';
 
 export const buildDistribConfig = (
   alreadyCompleted: boolean,
   distributors: Distributor[]
 ): FormDatum<EditDistributionFormData>[] => [
+  {
+    name: 'assignees',
+    label: 'Assignees',
+    CustomComponent: AssigneeSelect,
+  },
   {
     name: 'distributor',
     label: 'Distributor',

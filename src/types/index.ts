@@ -1,4 +1,4 @@
-import { Team, TeamMember } from '@prisma/client';
+import { Team, TeamMember, User } from '@prisma/client';
 
 import {
   Distributor,
@@ -51,11 +51,6 @@ export interface Contact extends DataModel {
   phone?: string;
 }
 
-export interface User extends DataModel {
-  name: string;
-  email: string;
-}
-
 export type ReleaseTaskStatus =
   | 'Outstanding'
   | 'In progress'
@@ -67,6 +62,7 @@ export interface ReleaseTask extends DataModel {
   dueDate: Date | string;
   status: TaskStatus;
   completedOn?: string;
+  assignees: User[];
   notes?: string;
   calendarEventId?: string;
 }

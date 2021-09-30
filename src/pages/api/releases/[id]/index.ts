@@ -32,10 +32,10 @@ class SingleReleaseHandler {
       },
       include: {
         artist: true,
-        artwork: true,
-        distribution: { include: { distributor: true } },
-        marketing: true,
-        musicVideo: true,
+        artwork: { include: { assignees: true } },
+        distribution: { include: { assignees: true, distributor: true } },
+        marketing: { include: { assignees: true } },
+        musicVideo: { include: { assignees: true } },
       },
     });
 
