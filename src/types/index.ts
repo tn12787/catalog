@@ -114,6 +114,7 @@ export interface ExtendedSession {
   name: string;
   picture: string;
   teams: EnrichedTeamMember[];
+  sub: string;
 }
 
 export type PermissionType =

@@ -1,12 +1,15 @@
-import { EnrichedRelease, EventType } from 'types';
+import { EnrichedRelease, EventType, ReleaseEvent } from 'types';
 
-export const getEventsForRelease = (release: EnrichedRelease) => {
+export const getEventsForRelease = (
+  release: EnrichedRelease,
+  includeBaseRelease = true
+): ReleaseEvent[] => {
   return [
-    {
+    includeBaseRelease && {
       name: release.name,
       date: release.targetDate,
       type: EventType.RELEASE,
-      release: release,
+      release,
       data: release,
     },
     release.artwork?.dueDate && {

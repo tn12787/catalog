@@ -54,7 +54,7 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
         justify="space-between"
         flexWrap="wrap"
       >
-        <Flex align="center" direction={{ base: 'column', md: 'row' }}>
+        <Stack align="center" direction={{ base: 'column', md: 'row' }}>
           {typeof heading === 'string' ? (
             <Heading whiteSpace="nowrap" fontWeight="semibold" fontSize="2xl">
               {heading}
@@ -62,14 +62,10 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
           ) : (
             heading
           )}
-          <Badge
-            colorScheme={deriveBadgeColor(data?.status)}
-            mt={[1, 1, 0]}
-            ml={[0, 0, 3]}
-          >
+          <Badge colorScheme={deriveBadgeColor(data?.status)}>
             {data?.status}
           </Badge>
-        </Flex>
+        </Stack>
         {data && canEdit && (
           <Button
             size="sm"

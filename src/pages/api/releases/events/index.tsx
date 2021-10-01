@@ -8,9 +8,25 @@ import { EnrichedRelease, EventType } from 'types';
 @requiresAuth()
 class ReleaseListHandler {
   @Get()
-  async releaseEvents(@Query('team') team: string) {
+  async releaseEvents(
+    @Query('team') team: string,
+    @Query('assignee') assignee: string
+  ) {
     const releases = await prisma.release.findMany({
-      where: { team: { id: team } },
+      where: {
+        AND: [
+          { team: { id: team } },
+          {
+            OR: [
+              { artwork: { assignees: { some: { id: assignee } } } },
+              { distribution: { assignees: { some: { id: assignee } } } },
+              { musicVideo: { assignees: { some: { id: assignee } } } },
+              { mastering: { assignees: { some: { id: assignee } } } },
+              { marketing: { assignees: { some: { id: assignee } } } },
+            ],
+          },
+        ],
+      },
       include: {
         artist: true,
         artwork: { include: { assignees: true } },
@@ -22,7 +38,16 @@ class ReleaseListHandler {
     });
 
     return releases
-      .map((item) => getEventsForRelease(item as EnrichedRelease))
+      .map((item) => getEventsForRelease(item as EnrichedRelease, !assignee))
+      .filter((item) =>
+        assignee
+          ? item.some((event) =>
+              event.data.assignees.some(
+                (taskAssignee) => taskAssignee.id === assignee
+              )
+            )
+          : true
+      )
       .flat();
   }
 }

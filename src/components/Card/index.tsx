@@ -9,7 +9,7 @@ const Card = (props: Props) => {
   const { bgSecondary } = useAppColors();
 
   return (
-    <Stack bg={bgSecondary} borderRadius="lg" py={4} px={4} {...props} />
+    <Stack bg={bgSecondary} borderRadius="lg" spacing={5} py={4} px={4} {...props} />
   );
 };
 
