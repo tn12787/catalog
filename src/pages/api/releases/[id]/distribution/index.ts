@@ -40,7 +40,7 @@ class ReleaseListHandler {
     const optionalArgs = body.assignees
       ? {
           assignees: {
-            set: body.assignees.map((id) => ({
+            connect: body.assignees.map((id) => ({
               id,
             })),
           },
