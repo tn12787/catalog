@@ -12,11 +12,7 @@ import { EditArtworkFormData } from '../specific/Artwork/types';
 import { EditDistributionFormData } from '../specific/Distribution/types';
 import WizardArtworkFormBody from '../forms/WizardArtworkForm/WizardArtworkFormBody';
 
-import {
-  CombinedFormState,
-  ReleaseWizardKey,
-  ReleaseWizardStep,
-} from './types';
+import { CombinedFormState, ReleaseWizardKey, ReleaseWizardStep } from './types';
 import ReviewData from './ReviewData';
 
 import useAppColors from 'hooks/useAppColors';
@@ -59,8 +55,7 @@ const buildSteps = (): ReleaseWizardStep[] => [
 
 const NewReleaseWizard = (props: Props) => {
   const steps = buildSteps();
-  const { index, currentStep, next, previous } =
-    useSteps<ReleaseWizardStep>(steps);
+  const { index, currentStep, next, previous } = useSteps<ReleaseWizardStep>(steps);
 
   const [allState, setAllState] = useState<CombinedFormState>({});
   const { currentTeam } = useExtendedSession();
@@ -122,14 +117,7 @@ const NewReleaseWizard = (props: Props) => {
   const StepComponent = currentStep.content;
 
   return (
-    <Stack
-      bg={bgPrimary}
-      flex={1}
-      align="center"
-      direction="column"
-      width="100%"
-      height="100%"
-    >
+    <Stack bg={bgPrimary} flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={'20px'} width="90%" maxW="container.lg">
         <Heading alignSelf="flex-start">New Release</Heading>
         <Text>Enter info about your new release.</Text>
@@ -149,9 +137,7 @@ const NewReleaseWizard = (props: Props) => {
                     }
                   : undefined
               }
-              onSubmit={(data) =>
-                onSubmit(currentStep.key as ReleaseWizardKey, data)
-              }
+              onSubmit={(data) => onSubmit(currentStep.key as ReleaseWizardKey, data)}
               canGoBack={currentStep.canGoBack}
               onBack={currentStep.canGoBack ? () => previous() : undefined}
             />

@@ -1,13 +1,6 @@
 import { Stack, Text } from '@chakra-ui/layout';
 import React from 'react';
-import {
-  Button,
-  Flex,
-  Heading,
-  Stat,
-  StatLabel,
-  StatNumber,
-} from '@chakra-ui/react';
+import { Button, Flex, Heading, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
@@ -26,9 +19,8 @@ const OverviewPage = (props: Props) => {
   const { bgPrimary } = useAppColors();
   const { currentTeam, token } = useExtendedSession();
 
-  const { data, isLoading } = useQuery(
-    ['releaseEvents', currentTeam, token?.sub as string],
-    () => fetchReleaseEvents(currentTeam, token?.sub as string)
+  const { data, isLoading } = useQuery(['releaseEvents', currentTeam, token?.sub as string], () =>
+    fetchReleaseEvents(currentTeam, token?.sub as string)
   );
 
   const { data: upcomingReleases, isLoading: releasesLoading } = useQuery(
@@ -41,13 +33,7 @@ const OverviewPage = (props: Props) => {
       <PageHead title="Overview"></PageHead>
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Flex align="center" justify="space-between">
-          <Heading
-            py={4}
-            as="h1"
-            size="2xl"
-            fontWeight="black"
-            alignSelf="flex-start"
-          >
+          <Heading py={4} as="h1" size="2xl" fontWeight="black" alignSelf="flex-start">
             Overview
           </Heading>
         </Flex>

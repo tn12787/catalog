@@ -15,8 +15,7 @@ import { useQueryClient, useMutation } from 'react-query';
 import { deleteSingleRelease } from 'queries/releases';
 import { EnrichedRelease } from 'types';
 
-interface Props
-  extends Omit<AlertDialogProps, 'children' | 'leastDestructiveRef'> {
+interface Props extends Omit<AlertDialogProps, 'children' | 'leastDestructiveRef'> {
   releaseData?: EnrichedRelease;
   onCancel: () => void;
   onConfirm: () => void;
@@ -33,14 +32,11 @@ const DeleteReleaseDialog = ({
   const cancelRef = useRef<HTMLButtonElement>(null);
   const toast = useToast();
   const queryClient = useQueryClient();
-  const { mutateAsync: deleteRelease, isLoading } = useMutation(
-    deleteSingleRelease,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['releases']);
-      },
-    }
-  );
+  const { mutateAsync: deleteRelease, isLoading } = useMutation(deleteSingleRelease, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['releases']);
+    },
+  });
 
   const onDelete = async () => {
     if (!releaseData) return;
@@ -77,19 +73,13 @@ const DeleteReleaseDialog = ({
         <AlertDialogHeader>Remove Release?</AlertDialogHeader>
         <AlertDialogCloseButton />
         <AlertDialogBody>
-          Are you sure you want to delete this release? This action cannot be
-          undone.
+          Are you sure you want to delete this release? This action cannot be undone.
         </AlertDialogBody>
         <AlertDialogFooter>
           <Button ref={cancelRef} onClick={onCancel}>
             No
           </Button>
-          <Button
-            colorScheme="red"
-            isLoading={isLoading}
-            ml={3}
-            onClick={onDelete}
-          >
+          <Button colorScheme="red" isLoading={isLoading} ml={3} onClick={onDelete}>
             Yes
           </Button>
         </AlertDialogFooter>

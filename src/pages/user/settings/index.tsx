@@ -23,14 +23,7 @@ const UserSettings = (props: Props) => {
   const { data: userData, isLoading } = useQuery('me', fetchMe);
 
   return (
-    <Stack
-      bg={bgPrimary}
-      flex={1}
-      align="center"
-      py={6}
-      direction="column"
-      width="100%"
-    >
+    <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="Personal Settings" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">

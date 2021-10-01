@@ -27,17 +27,11 @@ const ReviewData = ({
       <Stack maxW="600px" w="100%" spacing="50px" margin="0 auto">
         <BasicInfoReview data={completeState?.basics as BasicInfoFormData} />
         <ArtworkReview data={completeState?.artwork as EditArtworkFormData} />
-        <DistributionReview
-          data={completeState?.distribution as EditDistributionFormData}
-        />
+        <DistributionReview data={completeState?.distribution as EditDistributionFormData} />
         <HStack justify="space-between">
           <Flex>
             {canGoBack && (
-              <Button
-                variant="link"
-                onClick={onBack}
-                leftIcon={<BiArrowBack />}
-              >
+              <Button variant="link" onClick={onBack} leftIcon={<BiArrowBack />}>
                 Back
               </Button>
             )}

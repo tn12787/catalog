@@ -1,12 +1,4 @@
-import {
-  Box,
-  Circle,
-  Stack,
-  useColorModeValue,
-  Text,
-  HStack,
-  Flex,
-} from '@chakra-ui/react';
+import { Box, Circle, Stack, useColorModeValue, Text, HStack, Flex } from '@chakra-ui/react';
 import * as React from 'react';
 
 interface StepProps {
@@ -57,11 +49,7 @@ export const Step = ({ currentStep, label, index, isLastChild }: StepProps) => {
         <Box srOnly>{isCompleted ? `${label} - Completed` : label}</Box>
       </HStack>
       {!isLastChild && (
-        <Flex
-          flex="1 1 auto"
-          height={'3px'}
-          bg={isCompleted ? completedBg : incompletedBg}
-        ></Flex>
+        <Flex flex="1 1 auto" height={'3px'} bg={isCompleted ? completedBg : incompletedBg}></Flex>
       )}
     </HStack>
   );

@@ -22,11 +22,7 @@ const BasicInfoReview = ({ data }: Props) => {
     artist: response?.data?.name as string,
   };
 
-  return (
-    <Stack>
-      {renderReviewData('Basics', basicInfoDataConfig, dataToRender)}
-    </Stack>
-  );
+  return <Stack>{renderReviewData('Basics', basicInfoDataConfig, dataToRender)}</Stack>;
 };
 
 export default BasicInfoReview;

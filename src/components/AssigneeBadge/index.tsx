@@ -16,13 +16,7 @@ interface Props {
 const AssigneeBadge = ({ user, editable, onClick, onRemoveClick }: Props) => {
   const { bgPrimary } = useAppColors();
   return (
-    <HStack
-      p={1}
-      px={2}
-      borderRadius="full"
-      bg={bgPrimary}
-      onClick={() => onClick?.(user)}
-    >
+    <HStack p={1} px={2} borderRadius="full" bg={bgPrimary} onClick={() => onClick?.(user)}>
       <Avatar size="2xs" src={user.image || ''} />
       <Text isTruncated fontSize="xs" fontWeight="semibold">
         {' '}

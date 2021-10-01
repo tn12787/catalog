@@ -8,10 +8,7 @@ import prisma from 'backend/prisma/client';
 import { ExtendedSession, PermissionType } from 'types';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
-export const createDefaultTeamForUser = async (
-  name: string,
-  userId: string
-) => {
+export const createDefaultTeamForUser = async (name: string, userId: string) => {
   const team = await prisma.team.create({
     data: {
       name: `${name}'s Team`,
@@ -35,24 +32,18 @@ export const checkRequiredPermissions = async (
     token: ExtendedSession;
   };
 
-  const team = session?.token.teams.find(
-    (userTeam) => userTeam.teamId === resourceTeam
-  );
+  const team = session?.token.teams.find((userTeam) => userTeam.teamId === resourceTeam);
 
   if (!team || !resourceTeam) {
     throw new NotFoundException();
   }
 
   const permissionsForTeam = uniq(
-    team.roles
-      .map((item) => item.permissions.map((permission) => permission.name))
-      .flat(2)
+    team.roles.map((item) => item.permissions.map((permission) => permission.name)).flat(2)
   );
 
   if (
-    !permissionsForTeam.some((permission) =>
-      permissions.includes(permission as PermissionType)
-    )
+    !permissionsForTeam.some((permission) => permissions.includes(permission as PermissionType))
   ) {
     throw new ForbiddenException();
   }

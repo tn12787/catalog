@@ -20,16 +20,12 @@ const MyTasks = ({ data, loading }: Props) => {
       label: 'Outstanding',
       content: (
         <ReleaseTaskTable
-          data={data.filter(
-            (item) => item.data?.status !== TaskStatus.COMPLETE
-          )}
+          data={data.filter((item) => item.data?.status !== TaskStatus.COMPLETE)}
           loading={loading}
           emptyContent={
             <Stack py={8} alignItems="center" w="100%" alignSelf="center">
               <Text fontSize="2xl">🎉</Text>
-              <Text color={bodySub}>
-                You have no outstanding tasks. Congrats!
-              </Text>
+              <Text color={bodySub}>You have no outstanding tasks. Congrats!</Text>
             </Stack>
           }
         />

@@ -13,13 +13,7 @@ interface Props<T> extends StackProps {
   control: UseFormReturn<T>['control'];
 }
 
-const FormContent = <T extends any>({
-  errors,
-  config,
-  register,
-  control,
-  ...rest
-}: Props<T>) => {
+const FormContent = <T extends any>({ errors, config, register, control, ...rest }: Props<T>) => {
   return (
     <Stack py={6} spacing={6} width="100%" margin="0 auto" {...rest}>
       {config.map((item) => (

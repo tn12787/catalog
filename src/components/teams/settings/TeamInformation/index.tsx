@@ -45,17 +45,8 @@ const TeamInformation = ({ team, loading }: Props) => {
       ) : (
         <>
           <DataList config={config} />
-          <Stack
-            direction={{ base: 'column', md: 'row' }}
-            px={4}
-            spacing={4}
-            variant="solid"
-          >
-            <Button
-              colorScheme="purple"
-              iconSpacing="1"
-              leftIcon={<BiRocket />}
-            >
+          <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4} variant="solid">
+            <Button colorScheme="purple" iconSpacing="1" leftIcon={<BiRocket />}>
               Change Plan
             </Button>
             <Button

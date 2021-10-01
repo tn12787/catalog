@@ -1,12 +1,4 @@
-import {
-  Stack,
-  Flex,
-  Button,
-  Image,
-  HStack,
-  Text,
-  ButtonGroup,
-} from '@chakra-ui/react';
+import { Stack, Flex, Button, Image, HStack, Text, ButtonGroup } from '@chakra-ui/react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { Controller, useForm } from 'react-hook-form';
@@ -31,9 +23,7 @@ const WizardArtworkFormBody = ({
   onBack,
   completeState,
 }: ReleaseWizardComponentProps<EditArtworkFormData>) => {
-  const [showForm, setShowForm] = useState(
-    completeState?.artwork?.status !== TaskStatus.COMPLETE
-  );
+  const [showForm, setShowForm] = useState(completeState?.artwork?.status !== TaskStatus.COMPLETE);
   const [uploading, setUploading] = useState(false);
   const { bodySub } = useAppColors();
 
@@ -60,12 +50,9 @@ const WizardArtworkFormBody = ({
     onSubmit({ ...rest, url: url ?? completeState?.artwork?.url });
   };
 
-
   useEffect(() => {
     const newStatus =
-      watchedAlbumArt || completeState?.artwork?.url
-        ? TaskStatus.COMPLETE
-        : TaskStatus.OUTSTANDING;
+      watchedAlbumArt || completeState?.artwork?.url ? TaskStatus.COMPLETE : TaskStatus.OUTSTANDING;
     if (completeState?.artwork) {
       reset({ ...completeState?.artwork, status: newStatus });
     } else {
@@ -109,9 +96,7 @@ const WizardArtworkFormBody = ({
               objectFit="cover"
               alt="completed artwork"
               src={
-                watchedAlbumArt
-                  ? URL.createObjectURL(watchedAlbumArt)
-                  : completeState?.artwork?.url
+                watchedAlbumArt ? URL.createObjectURL(watchedAlbumArt) : completeState?.artwork?.url
               }
             />
             <Button
@@ -148,11 +133,7 @@ const WizardArtworkFormBody = ({
         <HStack justify="space-between">
           <Flex>
             {canGoBack && (
-              <Button
-                variant="link"
-                onClick={onBack}
-                leftIcon={<BiArrowBack />}
-              >
+              <Button variant="link" onClick={onBack} leftIcon={<BiArrowBack />}>
                 Back
               </Button>
             )}

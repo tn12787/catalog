@@ -31,11 +31,7 @@ class ReleaseListHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['UPDATE_RELEASES'],
-      releaseTeam?.teamId
-    );
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const optionalArgs = body.assignees
       ? {
@@ -74,11 +70,7 @@ class ReleaseListHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['UPDATE_RELEASES'],
-      releaseTeam?.teamId
-    );
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const optionalArgs = body.assignees
       ? {
@@ -105,10 +97,7 @@ class ReleaseListHandler {
   }
 
   @Delete()
-  async deleteDistribution(
-    @Req() req: NextApiRequest,
-    @PathParam('id') id: string
-  ) {
+  async deleteDistribution(@Req() req: NextApiRequest, @PathParam('id') id: string) {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {
@@ -117,11 +106,7 @@ class ReleaseListHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['UPDATE_RELEASES'],
-      releaseTeam?.teamId
-    );
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const result = await prisma.distribution.delete({
       where: {

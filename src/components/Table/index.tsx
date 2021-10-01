@@ -1,12 +1,5 @@
 import { Text, Box } from '@chakra-ui/react';
-import {
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  Table as ChakraTable,
-} from '@chakra-ui/table';
+import { Thead, Tr, Th, Tbody, Td, Table as ChakraTable } from '@chakra-ui/table';
 import React from 'react';
 import { Column, useSortBy, useTable, useFlexLayout } from 'react-table';
 import { BiDownArrow, BiUpArrow } from 'react-icons/bi';
@@ -18,14 +11,11 @@ interface Props<T extends object> {
   loading?: boolean;
 }
 
-const Table = <T extends object>({
-  columns,
-  data,
-  loading,
-  emptyContent = <></>,
-}: Props<T>) => {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy);
+const Table = <T extends object>({ columns, data, loading, emptyContent = <></> }: Props<T>) => {
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    { columns, data },
+    useSortBy
+  );
 
   const hasData = rows?.length || loading;
 

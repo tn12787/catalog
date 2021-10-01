@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  FlexProps,
-  HStack,
-  Img,
-  useMenuButton,
-} from '@chakra-ui/react';
+import { Box, Flex, FlexProps, HStack, Img, useMenuButton } from '@chakra-ui/react';
 import * as React from 'react';
 import { HiSelector } from 'react-icons/hi';
 
@@ -17,12 +10,7 @@ interface Props extends FlexProps {
   photoUrl: string;
 }
 
-export const AccountSwitcherButton = ({
-  teamName,
-  userName,
-  photoUrl,
-  ...rest
-}: Props) => {
+export const AccountSwitcherButton = ({ teamName, userName, photoUrl, ...rest }: Props) => {
   const buttonProps = useMenuButton(rest);
   const { bgPrimary, bgSecondary } = useAppColors();
   return (

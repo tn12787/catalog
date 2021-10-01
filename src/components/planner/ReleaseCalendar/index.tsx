@@ -25,42 +25,33 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
 
   const [selectedEvent, setSelectedEvent] = React.useState<ReleaseEvent>();
 
-  const { mutateAsync: updateReleaseEvent } = useMutation(
-    updateEventInCalendar,
-    {
-      onMutate: async ({ event, targetDate }) => {
-        // await queryClient.cancelQueries(['releaseEvents', currentTeam]);
-        const events = queryClient.getQueryData(['releaseEvents', currentTeam]);
+  const { mutateAsync: updateReleaseEvent } = useMutation(updateEventInCalendar, {
+    onMutate: async ({ event, targetDate }) => {
+      // await queryClient.cancelQueries(['releaseEvents', currentTeam]);
+      const events = queryClient.getQueryData(['releaseEvents', currentTeam]);
 
-        const data = cloneDeep(events) as ReleaseEvent[];
-        data?.forEach((item) => {
-          if (item.data.id === event.data.id) {
-            item.date = targetDate;
-          }
-        });
+      const data = cloneDeep(events) as ReleaseEvent[];
+      data?.forEach((item) => {
+        if (item.data.id === event.data.id) {
+          item.date = targetDate;
+        }
+      });
 
-        queryClient.setQueryData(['releaseEvents', currentTeam], data);
+      queryClient.setQueryData(['releaseEvents', currentTeam], data);
 
-        return { events };
-      },
+      return { events };
+    },
 
-      onError: (err, newTodo, context: any) => {
-        queryClient.setQueryData(
-          ['releaseEvents', currentTeam],
-          context?.events
-        );
-      },
+    onError: (err, newTodo, context: any) => {
+      queryClient.setQueryData(['releaseEvents', currentTeam], context?.events);
+    },
 
-      onSettled: (_, __, ___, context: any) => {
-        queryClient.invalidateQueries(['releaseEvents', currentTeam]);
-      },
-    }
-  );
+    onSettled: (_, __, ___, context: any) => {
+      queryClient.invalidateQueries(['releaseEvents', currentTeam]);
+    },
+  });
 
-  const canEditReleases = hasRequiredPermissions(
-    ['UPDATE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canEditReleases = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
 
   const toast = useToast();
 
@@ -82,10 +73,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
 
   const onItemDropped = async (item: ReleaseEvent, targetDate: Date) => {
     const backupItem = cloneDeep(item);
-    if (
-      format(new Date(item.date), 'yyyy-MM-dd') ===
-      format(targetDate, 'yyyy-MM-dd')
-    ) {
+    if (format(new Date(item.date), 'yyyy-MM-dd') === format(targetDate, 'yyyy-MM-dd')) {
       return;
     }
     try {
@@ -99,9 +87,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
         title: 'Event updated',
         duration: 4000,
         // eslint-disable-next-line react/display-name
-        render: ({ onClose }) => (
-          <UndoToast onClose={onClose} onUndo={() => onUndo(backupItem)} />
-        ),
+        render: ({ onClose }) => <UndoToast onClose={onClose} onUndo={() => onUndo(backupItem)} />,
       });
     } catch (e: any) {
       console.log(e);
@@ -127,11 +113,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
 
   return (
     <>
-      <ReleaseEventDrawer
-        event={selectedEvent}
-        isOpen={isOpen}
-        onClose={onModalClose}
-      />
+      <ReleaseEventDrawer event={selectedEvent} isOpen={isOpen} onClose={onModalClose} />
       <Calendar
         events={events}
         loading={loading}

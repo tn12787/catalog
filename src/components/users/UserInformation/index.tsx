@@ -40,12 +40,7 @@ const UserInformation = ({ user, loading }: Props) => {
       ) : (
         <>
           <DataList config={config} />
-          <Stack
-            direction={{ base: 'column', md: 'row' }}
-            px={4}
-            spacing={4}
-            variant="solid"
-          >
+          <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4} variant="solid">
             <Button
               iconSpacing="1"
               onClick={() => {

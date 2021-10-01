@@ -28,9 +28,7 @@ const AssigneeList = ({ value: users }: { value: User[] }) => {
   return (
     <Wrap>
       {users?.length ? (
-        users.map((assignee) => (
-          <AssigneeBadge key={assignee.id} user={assignee} />
-        ))
+        users.map((assignee) => <AssigneeBadge key={assignee.id} user={assignee} />)
       ) : (
         <Text color={bodySub} fontSize="xs">
           No-one assigned

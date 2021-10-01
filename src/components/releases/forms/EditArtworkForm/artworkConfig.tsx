@@ -41,13 +41,6 @@ export const buildArtworkConfig = (
       min: new Date(),
     },
   },
-
-  {
-    name: 'completedOn',
-    label: 'Completed On',
-    hidden: !alreadyCompleted,
-    type: 'date',
-  },
   {
     name: 'notes',
     label: 'Notes',
@@ -68,10 +61,7 @@ export const buildArtworkConfig = (
   },
 ];
 
-export const buildNewArtworkConfig = (): FormDatum<
-  EditArtworkFormData,
-  TaskStatus
->[] => [
+export const buildNewArtworkConfig = (): FormDatum<EditArtworkFormData, TaskStatus>[] => [
   {
     name: 'dueDate',
     label: 'Due on',

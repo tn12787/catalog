@@ -1,11 +1,7 @@
 import { Flex, Heading, Icon } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
-import {
-  AiOutlineCoffee,
-  AiOutlineSketch,
-  AiOutlineWoman,
-} from 'react-icons/ai';
+import { AiOutlineCoffee, AiOutlineSketch, AiOutlineWoman } from 'react-icons/ai';
 
 import { EventList } from './EventList';
 import { EventListItem } from './EventListItem';
@@ -20,9 +16,8 @@ interface Props {
 }
 
 const Events = ({ releaseData }: Props) => {
-  const { data, isLoading, error } = useQuery(
-    ['releaseEvents', releaseData.id],
-    () => fetchSpecificReleaseEvents(releaseData.id)
+  const { data, isLoading, error } = useQuery(['releaseEvents', releaseData.id], () =>
+    fetchSpecificReleaseEvents(releaseData.id)
   );
 
   return (

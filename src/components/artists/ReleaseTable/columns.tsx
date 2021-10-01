@@ -1,12 +1,4 @@
-import {
-  Avatar,
-  HStack,
-  Stack,
-  Text,
-  Image,
-  useColorModeValue,
-  Link,
-} from '@chakra-ui/react';
+import { Avatar, HStack, Stack, Text, Image, useColorModeValue, Link } from '@chakra-ui/react';
 import React from 'react';
 import { CellProps, Column } from 'react-table';
 import NextLink from 'next/link';
@@ -26,15 +18,7 @@ export const teamMembersColumns: Column<EnrichedRelease>[] = [
     accessor: (d) => ({ artwork: d.artwork?.url }),
     disableSortBy: true,
     Cell: function TableArtworkCell({ value }: CellProps<{ artwork: string }>) {
-      return (
-        <Image
-          alt="artwork"
-          maxW="50px"
-          borderRadius="sm"
-          size="md"
-          src={value.artwork}
-        />
-      );
+      return <Image alt="artwork" maxW="50px" borderRadius="sm" size="md" src={value.artwork} />;
     },
   },
   {

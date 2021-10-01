@@ -19,13 +19,7 @@ const ReleaseStatusBadge = ({ releaseData }: Props) => {
 
   const { label, color } = deriveProps(releaseData);
   return (
-    <Tag
-      size="sm"
-      borderRadius={30}
-      flexGrow={0}
-      variant="solid"
-      colorScheme={color}
-    >
+    <Tag size="sm" borderRadius={30} flexGrow={0} variant="solid" colorScheme={color}>
       {label}
     </Tag>
   );

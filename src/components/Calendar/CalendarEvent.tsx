@@ -48,18 +48,19 @@ const CalendarEvent = <T extends BaseEvent = ReleaseEvent>({
       alignSelf="flex-start"
       p={'3px'}
       onClick={() => onClick?.(event)}
+      overflow="hidden"
       borderRadius="5px"
       color={isOutstanding ? 'red.500' : undefined}
     >
       <Tooltip placement="top" hasArrow label={event.data.status}>
         <Box
-          w="10px"
-          h="10px"
+          minW="10px"
+          minH="10px"
           borderRadius="full"
           bg={deriveBadgeColorFromStatus(event)}
         ></Box>
       </Tooltip>
-      <Text>{event.name}</Text>
+      <Text isTruncated>{event.name}</Text>
     </HStack>
   );
 };

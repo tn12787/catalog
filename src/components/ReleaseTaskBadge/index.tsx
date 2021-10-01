@@ -33,11 +33,7 @@ const deriveBadgeText = (status?: TaskStatus) => {
 };
 
 const ReleaseTaskBadge = ({ status }: Props) => {
-  return (
-    <Badge colorScheme={deriveBadgeColor(status)}>
-      {deriveBadgeText(status)}
-    </Badge>
-  );
+  return <Badge colorScheme={deriveBadgeColor(status)}>{deriveBadgeText(status)}</Badge>;
 };
 
 export default ReleaseTaskBadge;

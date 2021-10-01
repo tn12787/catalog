@@ -4,9 +4,7 @@ import { Artist } from '.prisma/client';
 import { Release, ReleaseType } from 'types';
 import { FormDatum } from 'types/forms';
 
-export const basicInfoConfig = (
-  artists: Artist[]
-): FormDatum<BasicInfoFormData>[] => [
+export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>[] => [
   {
     name: 'name',
     label: 'Release Title',

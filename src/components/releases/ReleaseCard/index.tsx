@@ -30,10 +30,7 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { currentTeam, teams } = useExtendedSession();
-  const canDeleteRelease = hasRequiredPermissions(
-    ['DELETE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
 
   return (
     <Flex
@@ -49,10 +46,7 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
     >
       <Skeleton isLoaded={!loading} w={{ base: '100%', md: 'auto' }}>
         <Image
-          src={
-            releaseData.artwork?.url ||
-            'https://semantic-ui.com/images/wireframe/image.png'
-          }
+          src={releaseData.artwork?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
           alt="this is an image"
           width={{ base: '100%', md: '170px' }}
           minW={{ base: '100%', md: '170px' }}
@@ -64,20 +58,11 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
         />
       </Skeleton>
       <Stack spacing={2} width="100%" direction="column" px={5}>
-        <Stack
-          align="center"
-          direction={{ base: 'column', md: 'row' }}
-          justify="space-between"
-        >
+        <Stack align="center" direction={{ base: 'column', md: 'row' }} justify="space-between">
           <HStack alignItems="center" direction={{ base: 'column', md: 'row' }}>
             <Skeleton isLoaded={!loading}>
               <NextLink passHref href={`/releases/${releaseData.id}`}>
-                <Text
-                  fontSize="25px"
-                  as={Link}
-                  isTruncated
-                  fontWeight="semibold"
-                >
+                <Text fontSize="25px" as={Link} isTruncated fontWeight="semibold">
                   {releaseData.name}
                 </Text>
               </NextLink>

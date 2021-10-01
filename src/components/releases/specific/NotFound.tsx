@@ -6,23 +6,12 @@ interface Props {}
 const NotFound = (props: Props) => {
   const router = useRouter();
   return (
-    <Stack
-      flex={1}
-      
-      align="center"
-      justify="center"
-      spacing={7}
-      direction="column"
-    >
+    <Stack flex={1} align="center" justify="center" spacing={7} direction="column">
       <Stack align="center">
         <Heading>Oh no...</Heading>
         <Text>That release doesn&apos;t exist.</Text>
       </Stack>
-      <Button
-        variant="outline"
-        colorScheme="purple"
-        onClick={() => router.push('/releases')}
-      >
+      <Button variant="outline" colorScheme="purple" onClick={() => router.push('/releases')}>
         Back to releases
       </Button>
     </Stack>

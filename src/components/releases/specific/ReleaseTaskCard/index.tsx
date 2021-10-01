@@ -29,10 +29,7 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
   taskType,
 }: Props<T>) => {
   const { currentTeam, teams } = useExtendedSession();
-  const canEdit = hasRequiredPermissions(
-    ['UPDATE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canEdit = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
 
   return (
     <Card flex={1}>
@@ -52,24 +49,14 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
           )}
         </Stack>
         {data && canEdit && (
-          <Button
-            size="sm"
-            onClick={onEditClick}
-            colorScheme="purple"
-            variant="outline"
-          >
+          <Button size="sm" onClick={onEditClick} colorScheme="purple" variant="outline">
             Edit
           </Button>
         )}
       </Flex>
       {data ? (
         <Flex direction={['column', 'column', 'row']}>
-          <Stack
-            width={['auto', 'auto', '100%']}
-            pb={2}
-            justify="space-between"
-            direction="column"
-          >
+          <Stack width={['auto', 'auto', '100%']} pb={2} justify="space-between" direction="column">
             {fields.map(({ name, content, hidden }) => {
               return hidden ? null : (
                 <Stack
@@ -98,12 +85,7 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
           </Stack>
         </Flex>
       ) : (
-        <Stack
-          spacing={3}
-          align="center"
-          direction="column"
-          justify="space-between"
-        >
+        <Stack spacing={3} align="center" direction="column" justify="space-between">
           <Text>This release has no {taskType} info yet.</Text>
           {canEdit && (
             <Button flexGrow={0} onClick={onEditClick} colorScheme="purple">

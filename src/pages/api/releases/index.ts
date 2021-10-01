@@ -1,6 +1,7 @@
 import {
   Body,
   createHandler,
+  DefaultValuePipe,
   Get,
   HttpCode,
   ParseDatePipe,
@@ -25,10 +26,10 @@ class ReleaseListHandler {
   async releases(
     @Query('team') team: string,
     @Query('search') search: string,
-    @Query('sortBy') sortBy: keyof Release,
-    @Query('sortOrder') sortOrder: SortOrder,
-    @Query('pageSize') pageSize: number,
-    @Query('page') page: number,
+    @Query('sortBy', DefaultValuePipe<keyof Release>('targetDate')) sortBy: keyof Release,
+    @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,
+    @Query('pageSize', DefaultValuePipe(10)) pageSize: number,
+    @Query('page', DefaultValuePipe(1)) page: number,
     @Query('before', ParseDatePipe({ nullable: true })) before: Date,
     @Query('after', ParseDatePipe({ nullable: true })) after: Date
   ) {
@@ -51,15 +52,15 @@ class ReleaseListHandler {
     const [releases, totalCount] = await prisma.$transaction([
       prisma.release.findMany({
         ...commonArgs,
-        skip: (pageSize ?? 10) * ((page ?? 1) - 1),
-        take: pageSize ?? 10,
+        skip: pageSize * (page - 1),
+        take: pageSize,
         include: {
           artist: { select: { id: true, name: true } },
           artwork: { select: { url: true } },
         },
         orderBy: sortBy
           ? {
-              [sortBy]: sortOrder ?? 'asc',
+              [sortBy]: sortOrder,
             }
           : undefined,
       }),

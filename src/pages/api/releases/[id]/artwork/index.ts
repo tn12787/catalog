@@ -32,11 +32,7 @@ class ReleaseListHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['UPDATE_RELEASES'],
-      releaseTeam?.teamId
-    );
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const optionalArgs = pickBy(
       {
@@ -78,11 +74,7 @@ class ReleaseListHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['UPDATE_RELEASES'],
-      releaseTeam?.teamId
-    );
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const optionalArgs = pickBy(
       {
@@ -122,11 +114,7 @@ class ReleaseListHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['UPDATE_RELEASES'],
-      releaseTeam?.teamId
-    );
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const result = await prisma.artwork.delete({
       where: {

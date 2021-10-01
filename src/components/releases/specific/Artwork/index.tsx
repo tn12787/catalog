@@ -61,26 +61,11 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
     },
     {
       name: 'Status',
-      content: (
-        <ReleaseTaskBadge status={releaseData.artwork?.status as TaskStatus} />
-      ),
+      content: <ReleaseTaskBadge status={releaseData.artwork?.status as TaskStatus} />,
     },
     releaseData.artwork?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: (
-        <Text fontSize="sm">
-          {dayjs.utc(releaseData.artwork?.dueDate).format('LL')}
-        </Text>
-      ),
-    },
-    {
-      name: 'Completed On',
-      content: (
-        <Text fontSize="sm">
-          {dayjs.utc(releaseData.artwork?.completedOn).format('LL')}
-        </Text>
-      ),
-      hidden: !isComplete,
+      content: <Text fontSize="sm">{dayjs.utc(releaseData.artwork?.dueDate).format('LL')}</Text>,
     },
   ].filter(Boolean) as SummaryField[];
 };
@@ -93,10 +78,7 @@ const Artwork = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { currentTeam, teams } = useExtendedSession();
-  const canUpdateRelease = hasRequiredPermissions(
-    ['UPDATE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canUpdateRelease = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
 
   return (
     <>
@@ -110,10 +92,7 @@ const Artwork = ({ releaseData }: Props) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalContent>
-          <EditArtworkForm
-            releaseData={releaseData}
-            onSubmitSuccess={onClose}
-          />
+          <EditArtworkForm releaseData={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>
       </Modal>
     </>

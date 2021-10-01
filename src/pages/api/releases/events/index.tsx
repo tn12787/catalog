@@ -8,10 +8,7 @@ import { EnrichedRelease, EventType } from 'types';
 @requiresAuth()
 class ReleaseListHandler {
   @Get()
-  async releaseEvents(
-    @Query('team') team: string,
-    @Query('assignee') assignee: string
-  ) {
+  async releaseEvents(@Query('team') team: string, @Query('assignee') assignee: string) {
     const releases = await prisma.release.findMany({
       where: {
         AND: [
@@ -43,9 +40,7 @@ class ReleaseListHandler {
       .filter((item) => {
         if (!assignee) return true;
 
-        return item.data.assignees.some(
-          (taskAssignee) => taskAssignee.id === assignee
-        );
+        return item.data.assignees.some((taskAssignee) => taskAssignee.id === assignee);
       });
   }
 }

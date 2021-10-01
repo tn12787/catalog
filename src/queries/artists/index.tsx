@@ -15,9 +15,7 @@ export const fetchArtists = async (teamId: string): Promise<Artist[]> => {
 export const fetchSingleArtist = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
-  return await axios.get<Artist & { releases: EnrichedRelease[] }>(
-    `/api/artists/${id}`
-  );
+  return await axios.get<Artist & { releases: EnrichedRelease[] }>(`/api/artists/${id}`);
 };
 
 export const createSingleArtist = async ({
@@ -41,9 +39,7 @@ export const updateSingleArtist = async ({
   return response;
 };
 
-export const deleteSingleArtist = async (
-  id: string
-): Promise<Artist | void> => {
+export const deleteSingleArtist = async (id: string): Promise<Artist | void> => {
   const { data: response } = await axios.delete(`/api/artists/${id}`);
   return response;
 };

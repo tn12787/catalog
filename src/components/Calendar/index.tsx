@@ -51,10 +51,7 @@ const Calendar = <T extends BaseEvent>({
         key,
         value: week.map((day) => {
           const matchingEvents = events.filter((item) => {
-            return (
-              format(new Date(item.date), 'yyyy-MM-dd') ===
-              format(day.value, 'yyyy-MM-dd')
-            );
+            return format(new Date(item.date), 'yyyy-MM-dd') === format(day.value, 'yyyy-MM-dd');
           });
           return {
             ...day,

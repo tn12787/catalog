@@ -19,13 +19,7 @@ const WizardSteps = ({ steps, currentStep }: Props) => {
   return (
     <Box>
       <Box as="nav" aria-label="Steps" position="relative">
-        <HStack
-          justify="space-between"
-          align="center"
-          as="ol"
-          listStyleType="none"
-          zIndex={1}
-        >
+        <HStack justify="space-between" align="center" as="ol" listStyleType="none" zIndex={1}>
           {steps.map((step, index) => (
             <Step
               label={step.name}

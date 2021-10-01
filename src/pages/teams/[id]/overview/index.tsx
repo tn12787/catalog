@@ -17,13 +17,7 @@ import {
   FormControl,
   Skeleton,
 } from '@chakra-ui/react';
-import {
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-} from '@chakra-ui/stat';
+import { Stat, StatLabel, StatNumber, StatHelpText, StatArrow } from '@chakra-ui/stat';
 import { BiSearch } from 'react-icons/bi';
 import { RiAddFill, RiArrowRightUpLine } from 'react-icons/ri';
 import { BsSearch } from 'react-icons/bs';
@@ -47,24 +41,11 @@ const TeamOverview = (props: Props) => {
 
   const { bgPrimary, bgSecondary } = useAppColors();
 
-  const { data: teamData, isLoading } = useQuery(['team', teamId], () =>
-    fetchTeam(teamId)
-  );
+  const { data: teamData, isLoading } = useQuery(['team', teamId], () => fetchTeam(teamId));
 
   return (
-    <Stack
-      bg={bgPrimary}
-      flex={1}
-      align="center"
-      py={6}
-      direction="column"
-      width="100%"
-    >
-      <PageHead
-        title={
-          teamData?.name ? `${teamData?.name} - Overview` : 'Team Overview'
-        }
-      />
+    <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
+      <PageHead title={teamData?.name ? `${teamData?.name} - Overview` : 'Team Overview'} />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isLoading}>
@@ -87,15 +68,9 @@ const TeamOverview = (props: Props) => {
                 <StatNumber>{teamData?.plan}</StatNumber>
               </Stat>
             </Card>
-            <Card
-              w="100%"
-              bgGradient="linear(to-r, purple.300, blue.500)"
-              color={'white'}
-            >
+            <Card w="100%" bgGradient="linear(to-r, purple.300, blue.500)" color={'white'}>
               <Text fontWeight="bold">Upgrade now</Text>
-              <Text fontSize="sm">
-                Upgrade now for more members, and stuff!
-              </Text>
+              <Text fontSize="sm">Upgrade now for more members, and stuff!</Text>
               <Button colorScheme="purple">Upgrade now</Button>
             </Card>
           </Stack>
@@ -104,10 +79,7 @@ const TeamOverview = (props: Props) => {
               Members
             </Heading>
             <Stack spacing={4}>
-              <HStack
-                direction={{ base: 'column', md: 'row' }}
-                justify="space-between"
-              >
+              <HStack direction={{ base: 'column', md: 'row' }} justify="space-between">
                 <HStack>
                   <FormControl minW={{ md: '320px' }} id="search">
                     <InputGroup size="sm">
@@ -124,23 +96,15 @@ const TeamOverview = (props: Props) => {
                   </FormControl>
                 </HStack>
                 <ButtonGroup size="sm" variant="outline">
-                  <Button
-                    iconSpacing="1"
-                    leftIcon={<RiAddFill fontSize="1.25em" />}
-                  >
+                  <Button iconSpacing="1" leftIcon={<RiAddFill fontSize="1.25em" />}>
                     New member
                   </Button>
-                  <Button
-                    iconSpacing="1"
-                    leftIcon={<RiArrowRightUpLine fontSize="1.25em" />}
-                  >
+                  <Button iconSpacing="1" leftIcon={<RiArrowRightUpLine fontSize="1.25em" />}>
                     Export CSV
                   </Button>
                 </ButtonGroup>
               </HStack>
-              <TeamMembersTable
-                teamMembers={teamData?.members ?? []}
-              ></TeamMembersTable>
+              <TeamMembersTable teamMembers={teamData?.members ?? []}></TeamMembersTable>
             </Stack>
           </Card>
         </Stack>

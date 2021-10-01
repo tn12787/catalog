@@ -32,9 +32,8 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
   ({ value: currentAssignees, onChange }: Props, ref) => {
     const { currentTeam } = useExtendedSession();
 
-    const { data: teamData, isLoading } = useQuery(
-      ['team', currentTeam as string],
-      () => fetchTeam(currentTeam as string)
+    const { data: teamData, isLoading } = useQuery(['team', currentTeam as string], () =>
+      fetchTeam(currentTeam as string)
     );
 
     const [searchString, setSearchString] = React.useState('');
@@ -89,11 +88,7 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
                 return (
                   <AssigneeBadge
                     onRemoveClick={(removedUser) => {
-                      onChange(
-                        currentAssignees?.filter(
-                          (item) => item?.id !== removedUser.id
-                        )
-                      );
+                      onChange(currentAssignees?.filter((item) => item?.id !== removedUser.id));
                     }}
                     editable
                     key={assignee.id}
@@ -104,12 +99,7 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
             : null}
         </Wrap>
         <InputGroup borderRadius="md" w="full">
-          <Flex
-            {...getComboboxProps()}
-            position="relative"
-            w="100%"
-            direction="column"
-          >
+          <Flex {...getComboboxProps()} position="relative" w="100%" direction="column">
             <Input
               {...getToggleButtonProps()}
               {...getInputProps()}
@@ -127,17 +117,12 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
               />
             </InputRightElement>
 
-            <AssigneeSelectList
-              {...getMenuProps()}
-              isOpen={isOpen && !isLoading}
-            >
+            <AssigneeSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
               {allTeamMembers.length ? (
                 allTeamMembers.map((item: User, index: number) => (
                   <AssigneeItem
                     ref={ref}
-                    selected={currentAssignees?.some(
-                      (assignee) => assignee.id === item.id
-                    )}
+                    selected={currentAssignees?.some((assignee) => assignee.id === item.id)}
                     {...getItemProps({ item, index })}
                     _hover={{
                       bgColor: bgPrimary,

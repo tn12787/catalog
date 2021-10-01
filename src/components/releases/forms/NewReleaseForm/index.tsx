@@ -27,11 +27,7 @@ const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
     updateBasicReleaseInfo,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([
-          'releases',
-          currentTeam,
-          existingRelease?.id,
-        ]);
+        queryClient.invalidateQueries(['releases', currentTeam, existingRelease?.id]);
       },
     }
   );
@@ -56,18 +52,9 @@ const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
   const { bgPrimary } = useAppColors();
 
   return (
-    <Stack
-      bg={bgPrimary}
-      flex={1}
-      align="center"
-      direction="column"
-      width="100%"
-      height="100%"
-    >
+    <Stack bg={bgPrimary} flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <Heading>
-          {existingRelease ? 'Edit Release' : 'Create a new release'}
-        </Heading>
+        <Heading>{existingRelease ? 'Edit Release' : 'Create a new release'}</Heading>
         <Text>
           {existingRelease
             ? 'Add or change basic info about the release.'
