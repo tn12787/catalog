@@ -27,8 +27,10 @@ const Table = <T extends object>({
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data }, useSortBy);
 
+  const hasData = rows?.length || loading;
+
   return (
-    <Box>
+    <Box overflowX="auto" borderWidth={'1px'} borderRadius={'md'}>
       <ChakraTable
         variant="simple"
         borderRadius="lg"
@@ -59,7 +61,7 @@ const Table = <T extends object>({
             </Tr>
           ))}
         </Thead>
-        {rows?.length || loading ? (
+        {hasData && (
           <Tbody {...getTableBodyProps()}>
             {rows.map((row, index) => {
               prepareRow(row);
@@ -74,10 +76,9 @@ const Table = <T extends object>({
               );
             })}
           </Tbody>
-        ) : (
-          emptyContent
         )}
       </ChakraTable>
+      {!hasData && emptyContent}
     </Box>
   );
 };

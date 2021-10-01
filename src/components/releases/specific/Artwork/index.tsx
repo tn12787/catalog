@@ -32,6 +32,7 @@ import { TaskStatus } from '.prisma/client';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import AssigneeBadge from 'components/AssigneeBadge';
+import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -56,6 +57,12 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
             <Text fontSize="sm">No assignees</Text>
           )}
         </Wrap>
+      ),
+    },
+    {
+      name: 'Status',
+      content: (
+        <ReleaseTaskBadge status={releaseData.artwork?.status as TaskStatus} />
       ),
     },
     releaseData.artwork?.dueDate && {

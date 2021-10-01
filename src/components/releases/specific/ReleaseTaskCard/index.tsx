@@ -11,6 +11,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import { EventType } from 'types';
 import { TaskStatus } from '.prisma/client';
+import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 
 interface Props<T> {
   heading: string | JSX.Element;
@@ -19,19 +20,6 @@ interface Props<T> {
   fields: SummaryField[];
   taskType: EventType;
 }
-
-const deriveBadgeColor = (status?: TaskStatus) => {
-  switch (status) {
-    case TaskStatus.OUTSTANDING:
-      return 'red';
-    case TaskStatus.IN_PROGRESS:
-      return 'orange';
-    case TaskStatus.COMPLETE:
-      return 'green';
-    default:
-      return 'gray';
-  }
-};
 
 const ReleaseTaskCard = <T extends Artwork | Distribution>({
   heading,
@@ -62,9 +50,6 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
           ) : (
             heading
           )}
-          <Badge colorScheme={deriveBadgeColor(data?.status)}>
-            {data?.status}
-          </Badge>
         </Stack>
         {data && canEdit && (
           <Button
@@ -78,7 +63,7 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
         )}
       </Flex>
       {data ? (
-        <Flex py={4} direction={['column', 'column', 'row']}>
+        <Flex direction={['column', 'column', 'row']}>
           <Stack
             width={['auto', 'auto', '100%']}
             pb={2}
@@ -89,8 +74,8 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
               return hidden ? null : (
                 <Stack
                   width="100%"
-                  align={['center', 'center', 'flex-start']}
-                  direction={['row', 'row', 'row']}
+                  align={{ base: 'flex-start', sm: 'center' }}
+                  direction={{ base: 'column', sm: 'row' }}
                   justify={['space-between']}
                 >
                   <Text fontSize="md" fontWeight="bold">
@@ -113,14 +98,19 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
           </Stack>
         </Flex>
       ) : (
-        <Flex py={4} align="center" direction="column" justify="space-between">
-          <Text mb={3}>This release has no {taskType} info yet.</Text>
+        <Stack
+          spacing={3}
+          align="center"
+          direction="column"
+          justify="space-between"
+        >
+          <Text>This release has no {taskType} info yet.</Text>
           {canEdit && (
             <Button flexGrow={0} onClick={onEditClick} colorScheme="purple">
               Add now
             </Button>
           )}
-        </Flex>
+        </Stack>
       )}
     </Card>
   );

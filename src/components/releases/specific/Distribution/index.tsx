@@ -32,6 +32,7 @@ import NewReleaseForm from 'components/releases/forms/NewReleaseForm';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import AssigneeBadge from 'components/AssigneeBadge';
+import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -56,6 +57,14 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
             <Text fontSize="sm">No assignees</Text>
           )}
         </Wrap>
+      ),
+    },
+    {
+      name: 'Status',
+      content: (
+        <ReleaseTaskBadge
+          status={releaseData.distribution?.status as TaskStatus}
+        />
       ),
     },
     {

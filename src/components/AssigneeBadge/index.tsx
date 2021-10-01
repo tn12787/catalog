@@ -24,7 +24,7 @@ const AssigneeBadge = ({ user, editable, onClick, onRemoveClick }: Props) => {
       onClick={() => onClick?.(user)}
     >
       <Avatar size="2xs" src={user.image || ''} />
-      <Text fontSize="xs" fontWeight="semibold">
+      <Text isTruncated fontSize="xs" fontWeight="semibold">
         {' '}
         {user.name}
       </Text>
