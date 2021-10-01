@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { Team } from '@prisma/client';
-import { Heading, HStack, Stack, Text } from '@chakra-ui/layout';
-import { ButtonGroup, Button } from '@chakra-ui/button';
-import { RiAddFill, RiArrowRightUpLine, RiEdit2Fill } from 'react-icons/ri';
+import { Heading, Stack, Text } from '@chakra-ui/layout';
+import { Button } from '@chakra-ui/button';
 import { FiEdit } from 'react-icons/fi';
 import { BiRocket } from 'react-icons/bi';
 
 import EditTeamInfoForm from './EditTeamInfoForm';
 
 import Card from 'components/Card';
-import useAppColors from 'hooks/useAppColors';
 import DataList from 'components/DataList';
 
 interface Props {

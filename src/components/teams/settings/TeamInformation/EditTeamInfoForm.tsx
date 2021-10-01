@@ -1,4 +1,4 @@
-import { Stack, Button, Input } from '@chakra-ui/react';
+import { Stack, Button } from '@chakra-ui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
