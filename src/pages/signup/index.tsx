@@ -12,6 +12,7 @@ const SignUp = () => {
     formState: { errors },
     handleSubmit,
     setError,
+    control,
   } = useForm<SignUpData>();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ const SignUp = () => {
         <Text fontWeight="semibold" fontSize="3xl">
           Create an account
         </Text>
-        <FormContent config={signupConfig} errors={errors} register={register} />
+        <FormContent control={control} config={signupConfig} errors={errors} register={register} />
         <Button type="submit" isLoading={loading}>
           Create Account
         </Button>

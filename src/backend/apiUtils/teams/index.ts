@@ -13,7 +13,7 @@ export const createDefaultTeamForUser = async (name: string, userId: string) => 
     data: {
       name: `${name}'s Team`,
       provider: 'GSUITE',
-      users: {
+      members: {
         create: {
           user: { connect: { id: userId } },
           roles: { connect: { name: 'Admin' } },
