@@ -3,6 +3,7 @@ import {
   createHandler,
   Get,
   HttpCode,
+  ParseDatePipe,
   Post,
   Query,
   Request,
@@ -27,10 +28,21 @@ class ReleaseListHandler {
     @Query('sortBy') sortBy: keyof Release,
     @Query('sortOrder') sortOrder: SortOrder,
     @Query('pageSize') pageSize: number,
-    @Query('page') page: number
+    @Query('page') page: number,
+    @Query('before', ParseDatePipe({ nullable: true })) before: Date,
+    @Query('after', ParseDatePipe({ nullable: true })) after: Date
   ) {
+    const dateArgs = pickBy(
+      {
+        gte: after,
+        lt: before,
+      },
+      (v) => v !== undefined
+    );
+
     const commonArgs = {
       where: {
+        targetDate: { ...dateArgs },
         name: { contains: search, mode: 'insensitive' } as any,
         team: { id: team },
       },
@@ -45,9 +57,11 @@ class ReleaseListHandler {
           artist: { select: { id: true, name: true } },
           artwork: { select: { url: true } },
         },
-        orderBy: {
-          [sortBy]: sortOrder ?? 'asc',
-        },
+        orderBy: sortBy
+          ? {
+              [sortBy]: sortOrder ?? 'asc',
+            }
+          : undefined,
       }),
       prisma.release.count(commonArgs),
     ]);

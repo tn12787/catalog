@@ -39,16 +39,14 @@ class ReleaseListHandler {
 
     return releases
       .map((item) => getEventsForRelease(item as EnrichedRelease, !assignee))
-      .filter((item) =>
-        assignee
-          ? item.some((event) =>
-              event.data.assignees.some(
-                (taskAssignee) => taskAssignee.id === assignee
-              )
-            )
-          : true
-      )
-      .flat();
+      .flat()
+      .filter((item) => {
+        if (!assignee) return true;
+
+        return item.data.assignees.some(
+          (taskAssignee) => taskAssignee.id === assignee
+        );
+      });
   }
 }
 

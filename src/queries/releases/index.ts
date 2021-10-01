@@ -10,6 +10,7 @@ export const fetchReleases = async ({
   search,
   pagination,
   sorting,
+  dates,
 }: FilterOptions<EnrichedRelease>) => {
   const response = await axios.get<PaginatedQueryResult<EnrichedRelease>>(
     `/api/releases`,
@@ -21,6 +22,8 @@ export const fetchReleases = async ({
         sortOrder: sorting?.order,
         pageSize: pagination?.pageSize,
         offset: pagination?.offset,
+        before: dates?.before,
+        after: dates?.after,
       },
     }
   );

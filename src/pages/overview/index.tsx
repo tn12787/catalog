@@ -1,6 +1,13 @@
-import { Stack } from '@chakra-ui/layout';
+import { Stack, Text } from '@chakra-ui/layout';
 import React from 'react';
-import { Flex, Heading } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Heading,
+  Stat,
+  StatLabel,
+  StatNumber,
+} from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
@@ -10,6 +17,8 @@ import DashboardLayout from 'components/layouts/DashboardLayout';
 import { fetchReleaseEvents } from 'queries/events';
 import useExtendedSession from 'hooks/useExtendedSession';
 import MyTasks from 'components/overview/MyTasks';
+import Card from 'components/Card';
+import { fetchReleases } from 'queries/releases';
 
 interface Props {}
 
@@ -20,6 +29,11 @@ const OverviewPage = (props: Props) => {
   const { data, isLoading } = useQuery(
     ['releaseEvents', currentTeam, token?.sub as string],
     () => fetchReleaseEvents(currentTeam, token?.sub as string)
+  );
+
+  const { data: upcomingReleases, isLoading: releasesLoading } = useQuery(
+    ['releases', currentTeam],
+    () => fetchReleases({ team: currentTeam, dates: { after: new Date() } })
   );
 
   return (
@@ -37,7 +51,20 @@ const OverviewPage = (props: Props) => {
             Overview
           </Heading>
         </Flex>
-
+        <Stack spacing={4} direction={{ base: 'column', md: 'row' }}>
+          <Card w="100%">
+            <Stat>
+              <StatLabel>Upcoming Releases</StatLabel>
+              <StatNumber>{upcomingReleases?.total}</StatNumber>
+            </Stat>
+          </Card>
+          <Card w="100%">
+            <Stat>
+              <StatLabel>Plan</StatLabel>
+              <StatNumber>{upcomingReleases?.total}</StatNumber>
+            </Stat>
+          </Card>
+        </Stack>
         <MyTasks data={data ?? []} loading={isLoading} />
       </Stack>
     </Stack>
