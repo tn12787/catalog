@@ -27,22 +27,13 @@ const ReleaseEventDrawer = ({ event, isOpen, onClose, ...rest }: Props) => {
     md: 'right',
   });
   return (
-    <Drawer
-      size="lg"
-      placement={variant}
-      isOpen={isOpen}
-      onClose={onClose}
-      {...rest}
-    >
+    <Drawer size="lg" placement={variant} isOpen={isOpen} onClose={onClose} {...rest}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerBody>
           {event?.type === EventType.ARTWORK ? (
-            <EditArtworkForm
-              releaseData={event.release}
-              onSubmitSuccess={onClose}
-            />
+            <EditArtworkForm releaseData={event.release} onSubmitSuccess={onClose} />
           ) : (
             'form'
           )}

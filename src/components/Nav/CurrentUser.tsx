@@ -45,14 +45,8 @@ const CurrentUser = (props: Props) => {
             src={session?.user?.image as string}
           />
         </SkeletonCircle>
-        <Skeleton
-          isLoaded={!loading}
-          startColor="purple.600"
-          endColor="purple.800"
-        >
-          <Text isTruncated>
-            {loading ? 'sample name real' : session?.user?.name}
-          </Text>
+        <Skeleton isLoaded={!loading} startColor="purple.600" endColor="purple.800">
+          <Text isTruncated>{loading ? 'sample name real' : session?.user?.name}</Text>
         </Skeleton>
       </HStack>
       <Menu>

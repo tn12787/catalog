@@ -1,10 +1,4 @@
-import {
-  Avatar,
-  HStack,
-  Stack,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Avatar, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { CellProps, Column } from 'react-table';
 
@@ -43,7 +37,6 @@ export const teamMembersColumns: Column<TeamMemberWithUser>[] = [
   },
   {
     Header: 'Roles',
-    accessor: (d: TeamMemberWithUser) =>
-      d.roles.map((item) => item.name).join(', '),
+    accessor: (d: TeamMemberWithUser) => d.roles.map((item) => item.name).join(', '),
   },
 ];

@@ -37,10 +37,7 @@ export default NextAuth({
         });
 
         if (isNewUser || !numberOfUserTeams) {
-          await createDefaultTeamForUser(
-            token.name as string,
-            token.sub as string
-          );
+          await createDefaultTeamForUser(token.name as string, token.sub as string);
         }
 
         return { ...token };

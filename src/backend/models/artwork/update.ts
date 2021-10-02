@@ -1,11 +1,4 @@
-import {
-  IsNotEmpty,
-  IsDate,
-  IsEnum,
-  IsString,
-  IsOptional,
-  IsUrl,
-} from 'class-validator';
+import { IsNotEmpty, IsDate, IsEnum, IsString, IsOptional, IsUrl } from 'class-validator';
 
 import { TaskStatus } from '.prisma/client';
 
@@ -25,10 +18,6 @@ export class UpdateArtworkDto {
   @IsOptional()
   @IsString()
   assignee?: string;
-
-  @IsOptional()
-  @IsDate()
-  completedOn?: Date;
 
   @IsOptional()
   @IsUrl()

@@ -20,19 +20,10 @@ const TeamOverview = (props: Props) => {
 
   const { bgPrimary, bgSecondary } = useAppColors();
 
-  const { data: teamData, isLoading } = useQuery(['team', teamId], () =>
-    fetchTeam(teamId)
-  );
+  const { data: teamData, isLoading } = useQuery(['team', teamId], () => fetchTeam(teamId));
 
   return (
-    <Stack
-      bg={bgPrimary}
-      flex={1}
-      align="center"
-      py={6}
-      direction="column"
-      width="100%"
-    >
+    <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="Team Settings" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">

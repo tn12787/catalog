@@ -30,12 +30,6 @@ const EditDistributionFormBody = ({
     [existingRelease?.distribution?.dueDate]
   );
 
-  const formattedCompletedOn = useMemo(
-    () =>
-      dayjs(existingRelease?.distribution?.completedOn).format('YYYY-MM-DD'),
-    [existingRelease?.distribution?.completedOn]
-  );
-
   const {
     register,
     formState: { errors },
@@ -49,7 +43,6 @@ const EditDistributionFormBody = ({
           ...existingRelease?.distribution,
           distributor: existingRelease?.distribution?.distributor?.id,
           dueDate: formattedDueDate,
-          // completedOn: formattedCompletedOn,
         }
       : {},
   });
@@ -63,24 +56,14 @@ const EditDistributionFormBody = ({
       ...existingRelease?.distribution,
       distributor: existingRelease?.distribution?.distributorId,
       dueDate: formattedDueDate,
-      // completedOn: formattedCompletedOn,
     });
-  }, [
-    existingRelease?.distribution,
-    distributors,
-    formattedDueDate,
-    formattedCompletedOn,
-    reset,
-  ]);
+  }, [existingRelease?.distribution, distributors, formattedDueDate, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
         <FormContent
-          config={buildDistribConfig(
-            status === TaskStatus.COMPLETE,
-            distributors ?? []
-          )}
+          config={buildDistribConfig(status === TaskStatus.COMPLETE, distributors ?? [])}
           control={control}
           errors={errors}
           register={register}
@@ -88,11 +71,7 @@ const EditDistributionFormBody = ({
         <HStack justify="space-between">
           <Flex>
             {canGoBack && (
-              <Button
-                variant="link"
-                onClick={onBack}
-                leftIcon={<BiArrowBack />}
-              >
+              <Button variant="link" onClick={onBack} leftIcon={<BiArrowBack />}>
                 Back
               </Button>
             )}

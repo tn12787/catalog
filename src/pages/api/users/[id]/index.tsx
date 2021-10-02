@@ -1,10 +1,4 @@
-import {
-  Body,
-  createHandler,
-  Put,
-  Request,
-  ValidationPipe,
-} from '@storyofams/next-api-decorators';
+import { Body, createHandler, Put, Request, ValidationPipe } from '@storyofams/next-api-decorators';
 import { NextApiRequest } from 'next';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';

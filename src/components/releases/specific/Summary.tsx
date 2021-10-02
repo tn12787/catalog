@@ -52,11 +52,7 @@ const fields = (releaseData: EnrichedRelease): SummaryField[] => [
   { name: 'Release Type', content: <Text>{releaseData.type}</Text> },
   {
     name: 'Target Date',
-    content: (
-      <Text fontSize="sm">
-        {dayjs.utc(releaseData.targetDate).format('LL')}
-      </Text>
-    ),
+    content: <Text fontSize="sm">{dayjs.utc(releaseData.targetDate).format('LL')}</Text>,
   },
 ];
 
@@ -67,18 +63,11 @@ const Summary = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { currentTeam, teams } = useExtendedSession();
-  const canUpdateRelease = hasRequiredPermissions(
-    ['UPDATE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canUpdateRelease = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
 
   return (
     <Card alignItems={['center', 'center', 'stretch']}>
-      <Flex
-        align="center"
-        justify="space-between"
-        direction={['column', 'column', 'row']}
-      >
+      <Flex align="center" justify="space-between" direction={['column', 'column', 'row']}>
         <Flex align="center" direction={['column', 'column', 'row']}>
           <Heading fontWeight="semibold" fontSize="2xl">
             Summary
@@ -119,10 +108,7 @@ const Summary = ({ releaseData }: Props) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalContent>
-          <NewReleaseForm
-            existingRelease={releaseData}
-            onSubmitSuccess={onClose}
-          />
+          <NewReleaseForm existingRelease={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>
       </Modal>
     </Card>

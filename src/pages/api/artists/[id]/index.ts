@@ -36,10 +36,7 @@ class ArtistHandler {
   }
 
   @Put()
-  async updateArtist(
-    @Body(ValidationPipe) body: UpdateArtistDto,
-    @PathParam('id') id: string
-  ) {
+  async updateArtist(@Body(ValidationPipe) body: UpdateArtistDto, @PathParam('id') id: string) {
     if (!id) throw new NotFoundException();
 
     const optionalArgs = pickBy(

@@ -8,9 +8,9 @@ import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
 export const fetchTeam = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
-  const { data: response } = await axios.get<
-    Team & { members: TeamMemberWithUser[] }
-  >(`/api/teams/${id}`);
+  const { data: response } = await axios.get<Team & { members: TeamMemberWithUser[] }>(
+    `/api/teams/${id}`
+  );
 
   return response;
 };

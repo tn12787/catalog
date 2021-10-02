@@ -1,8 +1,7 @@
 import { Artwork, Distribution } from '.prisma/client';
 import { EnrichedRelease } from 'types';
 
-export interface SingleReleaseVars
-  extends Pick<EnrichedRelease, 'name' | 'id' | 'type'> {
+export interface SingleReleaseVars extends Pick<EnrichedRelease, 'name' | 'id' | 'type'> {
   artist: string;
   targetDate: Date;
 }

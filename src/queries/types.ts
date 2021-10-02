@@ -16,6 +16,10 @@ export interface FilterOptions<T> {
     offset: number;
   };
   sorting?: SortByOptions<T>;
+  dates?: {
+    before?: Date;
+    after?: Date;
+  };
 }
 
 export interface PaginatedQueryResult<T> {

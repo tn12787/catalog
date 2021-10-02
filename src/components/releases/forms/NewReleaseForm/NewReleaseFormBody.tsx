@@ -22,14 +22,11 @@ const NewReleaseFormBody = ({
 }: ReleaseWizardComponentProps<BasicInfoFormData>) => {
   const { currentTeam } = useExtendedSession();
 
-  const { data: artists } = useQuery(['artists', currentTeam], () =>
-    fetchArtists(currentTeam)
-  );
+  const { data: artists } = useQuery(['artists', currentTeam], () => fetchArtists(currentTeam));
 
   const properDateFormat = useMemo(() => {
     const existingDate =
-      existingRelease?.targetDate ??
-      new Date(Date.now() + 1209600000 * 2).toDateString();
+      existingRelease?.targetDate ?? new Date(Date.now() + 1209600000 * 2).toDateString();
     return dayjs(existingDate).format('YYYY-MM-DD');
   }, [existingRelease?.targetDate]);
 

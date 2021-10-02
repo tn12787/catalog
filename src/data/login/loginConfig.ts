@@ -1,6 +1,6 @@
-import { LoginData } from "./types";
+import { LoginData } from './types';
 
-import { FormDatum } from "types/forms";
+import { FormDatum } from 'types/forms';
 
 export const loginConfig: FormDatum<LoginData>[] = [
   {

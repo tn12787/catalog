@@ -12,12 +12,9 @@ export const updateSingleArtwork = async ({
 }: ArtworkVars): Promise<Artwork | void> => {
   if (!releaseId) return Promise.reject();
 
-  const { data: response } = await axios.put(
-    `/api/releases/${releaseId}/artwork`,
-    {
-      ...rest,
-    }
-  );
+  const { data: response } = await axios.put(`/api/releases/${releaseId}/artwork`, {
+    ...rest,
+  });
   return response;
 };
 
@@ -25,28 +22,18 @@ export const createSingleArtwork = async ({
   releaseId,
   ...rest
 }: ArtworkVars): Promise<Artwork | void> => {
-  const { data: response } = await axios.post(
-    `/api/releases/${releaseId}/artwork`,
-    {
-      ...rest,
-    }
-  );
+  const { data: response } = await axios.post(`/api/releases/${releaseId}/artwork`, {
+    ...rest,
+  });
   return response;
 };
 
-export const deleteSingleArtwork = async (
-  releaseId: string
-): Promise<Artwork | void> => {
-  const { data: response } = await axios.delete(
-    `/api/releases/${releaseId}/artwork`
-  );
+export const deleteSingleArtwork = async (releaseId: string): Promise<Artwork | void> => {
+  const { data: response } = await axios.delete(`/api/releases/${releaseId}/artwork`);
   return response;
 };
 
-export const uploadImageToFirebase = async (
-  artworkData: File,
-  releaseId?: string
-) => {
+export const uploadImageToFirebase = async (artworkData: File, releaseId?: string) => {
   try {
     if (!artworkData) return;
 

@@ -11,10 +11,7 @@ import {
 import { ReleaseType } from '@prisma/client';
 import { NextApiRequest } from 'next';
 
-import {
-  requiresAuth,
-  requiresTeamMembership,
-} from 'backend/apiUtils/decorators/auth';
+import { requiresAuth, requiresTeamMembership } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
@@ -57,11 +54,7 @@ class SingleReleaseHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['UPDATE_RELEASES'],
-      releaseTeam?.teamId
-    );
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const result = await prisma.release.update({
       where: {
@@ -86,11 +79,7 @@ class SingleReleaseHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['DELETE_RELEASES'],
-      releaseTeam?.teamId
-    );
+    await checkRequiredPermissions(req, ['DELETE_RELEASES'], releaseTeam?.teamId);
 
     const result = await prisma.release.delete({
       where: {

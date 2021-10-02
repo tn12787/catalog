@@ -38,11 +38,12 @@ export const renderReviewData = <
   );
 };
 
-export const basicInfoDataConfig: ReviewConfigItem<BasicInfoFormData>[] =
-  basicInfoConfig([]).map((item) => ({
+export const basicInfoDataConfig: ReviewConfigItem<BasicInfoFormData>[] = basicInfoConfig([]).map(
+  (item) => ({
     key: item.name,
     label: item.label,
-  }));
+  })
+);
 
 export const editDistributionDataConfig: ReviewConfigItem<EditDistributionFormData>[] =
   buildDistribConfig(false, []).map((item) => ({

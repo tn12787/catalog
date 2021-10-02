@@ -4,19 +4,16 @@ import { EventType } from './../../components/Calendar/types';
 
 import { ReleaseEvent } from 'types';
 
-export const fetchReleaseEvents = async (teamId: string) => {
-  const { data: response } = await axios.get<ReleaseEvent[]>(
-    `/api/releases/events`,
-    { params: { team: teamId } }
-  );
+export const fetchReleaseEvents = async (teamId: string, assigneeId?: string) => {
+  const { data: response } = await axios.get<ReleaseEvent[]>(`/api/releases/events`, {
+    params: { team: teamId, assignee: assigneeId },
+  });
 
   return response;
 };
 
 export const fetchSpecificReleaseEvents = async (id: string) => {
-  const { data: response } = await axios.get<ReleaseEvent[]>(
-    `/api/releases/${id}/events`
-  );
+  const { data: response } = await axios.get<ReleaseEvent[]>(`/api/releases/${id}/events`);
 
   return response;
 };

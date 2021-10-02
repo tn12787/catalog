@@ -9,9 +9,7 @@ export const listUserCalendars = async () => {
   console.log(profile, calendars.result);
 };
 
-export const addEventToGoogleCalendar = async (
-  data: Omit<gapi.client.calendar.Event, 'id'>
-) => {
+export const addEventToGoogleCalendar = async (data: Omit<gapi.client.calendar.Event, 'id'>) => {
   await initClient();
   return await gapi.client.calendar.events.insert({
     calendarId: 'primary',
@@ -44,9 +42,7 @@ export const buildReleaseEventDescription = (data: Release): string => {
   `;
 };
 
-export const buildReleaseTaskEventDescription = <T extends ReleaseTask>(
-  data: T
-): string => {
+export const buildReleaseTaskEventDescription = <T extends ReleaseTask>(data: T): string => {
   return `<h3>Info</h3><ul><li>Status: ${data.status}</li></ul><h3>Notes</h3><p>${data.notes}</p>`;
 };
 
@@ -74,9 +70,7 @@ export const createOrUpdateReleaseEvent = async (
   }
 };
 
-export const createOrUpdateCalendarEventForReleaseTask = async <
-  T extends ReleaseTask
->(
+export const createOrUpdateCalendarEventForReleaseTask = async <T extends ReleaseTask>(
   data: T,
   releaseName: string,
   refToUpdate: firebase.firestore.DocumentReference,

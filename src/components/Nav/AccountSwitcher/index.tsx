@@ -46,18 +46,11 @@ export const AccountSwitcher = () => {
       <Skeleton rounded="lg" isLoaded={!sessionLoading}>
         <AccountSwitcherButton
           teamName={(activeTeam?.team.name as string) ?? 'loadingTeam'}
-          userName={
-            (userData?.name || (token?.name as string)) ?? 'loadingUser'
-          }
+          userName={(userData?.name || (token?.name as string)) ?? 'loadingUser'}
           photoUrl={token?.picture as string}
         />
       </Skeleton>
-      <MenuList
-        shadow="lg"
-        py="4"
-        color={useColorModeValue('gray.600', 'gray.200')}
-        px="3"
-      >
+      <MenuList shadow="lg" py="4" color={useColorModeValue('gray.600', 'gray.200')} px="3">
         <Text fontWeight="medium" mb="2" fontSize="sm">
           {token?.email}
         </Text>
@@ -80,10 +73,7 @@ export const AccountSwitcher = () => {
           ))}
         </MenuOptionGroup>
         <MenuDivider />
-        <MenuItem
-          icon={<BiCog />}
-          onClick={() => router.push('/user/settings')}
-        >
+        <MenuItem icon={<BiCog />} onClick={() => router.push('/user/settings')}>
           User settings
         </MenuItem>
 
