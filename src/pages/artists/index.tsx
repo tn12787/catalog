@@ -20,20 +20,10 @@ const Artists = (props: Props) => {
     fetchArtists(currentTeam)
   );
 
-  const canCreateArtists = hasRequiredPermissions(
-    ['CREATE_ARTISTS'],
-    teams?.[currentTeam]
-  );
+  const canCreateArtists = hasRequiredPermissions(['CREATE_ARTISTS'], teams?.[currentTeam]);
 
   return (
-    <Stack
-      bg={bgPrimary}
-      flex={1}
-      align="center"
-      py={6}
-      direction="column"
-      width="100%"
-    >
+    <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="Artists" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">

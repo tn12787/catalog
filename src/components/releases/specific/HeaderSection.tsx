@@ -37,10 +37,7 @@ const HeaderSection = ({ releaseData }: Props) => {
 
   const { teams, currentTeam } = useExtendedSession();
 
-  const canDeleteRelease = hasRequiredPermissions(
-    ['DELETE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
 
   return (
     <Stack width={['100%', '100%', '90%']} maxWidth={'container.lg'}>
@@ -52,10 +49,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           objectFit="cover"
           width="100%"
           alt="album art"
-          src={
-            releaseData.artwork?.url ||
-            'https://semantic-ui.com/images/wireframe/image.png'
-          }
+          src={releaseData.artwork?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
         />
         <Box
           position="absolute"
@@ -69,11 +63,7 @@ const HeaderSection = ({ releaseData }: Props) => {
         ></Box>
       </Flex>
       <Flex pb={3} align="center" justify="space-between">
-        <HStack
-          alignItems="center"
-          w={['90%', '90%', '100%']}
-          margin={['0 auto']}
-        >
+        <HStack alignItems="center" w={['90%', '90%', '100%']} margin={['0 auto']}>
           <HStack alignItems="center">
             <Icon as={FiArrowLeft} />
             <Link href="/releases" passHref>

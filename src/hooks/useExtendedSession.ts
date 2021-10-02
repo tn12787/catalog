@@ -13,8 +13,7 @@ interface UseTeamPreferenceState {
 
 const useTeamPreference = create<UseTeamPreferenceState>((set) => ({
   currentTeam: '',
-  setCurrentTeam: (val: string) =>
-    set((state) => ({ ...state, currentTeam: val })),
+  setCurrentTeam: (val: string) => set((state) => ({ ...state, currentTeam: val })),
 }));
 
 const useExtendedSession = () => {
@@ -52,9 +51,7 @@ const useExtendedSession = () => {
     }
 
     if (teams) {
-      setCurrentTeam(
-        localStorage.getItem('activeTeam') || token?.teams?.[0]?.teamId
-      );
+      setCurrentTeam(localStorage.getItem('activeTeam') || token?.teams?.[0]?.teamId);
     }
   }, [token?.teams, setCurrentTeam]);
 

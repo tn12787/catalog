@@ -53,23 +53,14 @@ export const buildDistribConfig = (
     },
   },
 
-  // {
-  //   name: 'completedOn',
-  //   label: 'Completed On',
-  //   hidden: !alreadyCompleted,
-  //   type: 'date',
-  //   registerArgs: {
-  //     required: 'Please enter the date completed',
-  //   },
-  // },
-  // {
-  //   name: 'notes',
-  //   label: 'Notes',
-  //   type: 'textarea',
-  //   registerArgs: {},
-  //   extraProps: {
-  //     placeholder: 'Add notes here about this task.',
-  //     maxLength: 200,
-  //   },
-  // },
+  {
+    name: 'notes',
+    label: 'Notes',
+    type: 'textarea',
+    registerArgs: {},
+    extraProps: {
+      placeholder: 'Add notes here about this task.',
+      maxLength: 200,
+    },
+  },
 ];

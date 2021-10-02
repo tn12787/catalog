@@ -32,6 +32,7 @@ import NewReleaseForm from 'components/releases/forms/NewReleaseForm';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import AssigneeBadge from 'components/AssigneeBadge';
+import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -59,27 +60,18 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
       ),
     },
     {
+      name: 'Status',
+      content: <ReleaseTaskBadge status={releaseData.distribution?.status as TaskStatus} />,
+    },
+    {
       name: 'Distributor',
-      content: (
-        <Text fontSize="sm">{releaseData.distribution?.distributor?.name}</Text>
-      ),
+      content: <Text fontSize="sm">{releaseData.distribution?.distributor?.name}</Text>,
     },
     {
       name: `${isComplete ? 'Original ' : ''}Due Date`,
       content: (
-        <Text fontSize="sm">
-          {dayjs.utc(releaseData.distribution?.dueDate).format('LL')}
-        </Text>
+        <Text fontSize="sm">{dayjs.utc(releaseData.distribution?.dueDate).format('LL')}</Text>
       ),
-    },
-    {
-      name: 'Completed On',
-      content: (
-        <Text fontSize="sm">
-          {dayjs.utc(releaseData.distribution?.completedOn).format('LL')}
-        </Text>
-      ),
-      hidden: !isComplete,
     },
   ];
 };
@@ -89,10 +81,7 @@ const Distribution = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { currentTeam, teams } = useExtendedSession();
-  const canUpdateRelease = hasRequiredPermissions(
-    ['UPDATE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canUpdateRelease = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
 
   return (
     <>
@@ -106,10 +95,7 @@ const Distribution = ({ releaseData }: Props) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalContent>
-          <EditDistributionForm
-            releaseData={releaseData}
-            onSubmitSuccess={onClose}
-          />
+          <EditDistributionForm releaseData={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>
       </Modal>
     </>

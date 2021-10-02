@@ -10,20 +10,20 @@ export const fetchReleases = async ({
   search,
   pagination,
   sorting,
+  dates,
 }: FilterOptions<EnrichedRelease>) => {
-  const response = await axios.get<PaginatedQueryResult<EnrichedRelease>>(
-    `/api/releases`,
-    {
-      params: {
-        team,
-        search,
-        sortBy: sorting?.key,
-        sortOrder: sorting?.order,
-        pageSize: pagination?.pageSize,
-        offset: pagination?.offset,
-      },
-    }
-  );
+  const response = await axios.get<PaginatedQueryResult<EnrichedRelease>>(`/api/releases`, {
+    params: {
+      team,
+      search,
+      sortBy: sorting?.key,
+      sortOrder: sorting?.order,
+      pageSize: pagination?.pageSize,
+      offset: pagination?.offset,
+      before: dates?.before,
+      after: dates?.after,
+    },
+  });
 
   return response.data;
 };
@@ -55,9 +55,7 @@ export const createSingleRelease = async ({
   return response;
 };
 
-export const deleteSingleRelease = async (
-  id: string
-): Promise<EnrichedRelease | void> => {
+export const deleteSingleRelease = async (id: string): Promise<EnrichedRelease | void> => {
   const { data: response } = await axios.delete(`/api/releases/${id}`);
   return response;
 };

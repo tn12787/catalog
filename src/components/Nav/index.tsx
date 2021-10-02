@@ -1,11 +1,4 @@
-import {
-  HStack,
-  Stack,
-  Switch,
-  Text,
-  useColorMode,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { HStack, Stack, Switch, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { uniq } from 'lodash';
 
@@ -24,22 +17,12 @@ const Nav = ({ links }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { currentTeam, teams } = useExtendedSession();
 
-  const canManageTeam = hasRequiredPermissions(
-    ['UPDATE_TEAM'],
-    teams?.[currentTeam]
-  );
+  const canManageTeam = hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]);
 
   const selectedBg = useColorModeValue('gray.200', 'gray.700');
   const lightModeText = useColorModeValue('gray.500', 'gray.500');
   return (
-    <Stack
-      px={5}
-      py={5}
-      height="100%"
-      w={'300px'}
-      position="fixed"
-      justifyContent="space-between"
-    >
+    <Stack px={5} py={5} height="100%" w={'300px'} position="fixed" justifyContent="space-between">
       <Stack flex={'1 1 auto'} spacing={'30px'}>
         <AccountSwitcher />
         <Stack>

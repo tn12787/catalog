@@ -65,6 +65,9 @@
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "eslint": "^7.30.0",
     "eslint-config-next": "^11.1.2",
+    "husky": "^7.0.0",
+    "prettier": "^2.4.1",
+    "pretty-quick": "^3.1.1",
     "prisma": "^3.0.2",
     "ts-node": "^10.2.1"
   },
@@ -75,6 +78,7 @@
     "migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "test": "jest test",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install"
   }
 }

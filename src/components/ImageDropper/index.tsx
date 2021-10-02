@@ -28,10 +28,7 @@ const ImageDropzone = ({ onChange, ...rest }: ImageDropzoneProps) => {
       justifyContent="center"
     >
       <Text color={bodySub}>Drop an image or click here...</Text>
-      <Input
-        {...getInputProps({ onChange })}
-        accept={'image/jpeg, image/png'}
-      />
+      <Input {...getInputProps({ onChange })} accept={'image/jpeg, image/png'} />
     </Stack>
   );
 };

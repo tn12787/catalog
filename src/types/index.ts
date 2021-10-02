@@ -1,12 +1,6 @@
 import { Team, TeamMember, User } from '@prisma/client';
 
-import {
-  Distributor,
-  TaskStatus,
-  Artist as PrismaArtist,
-  Role,
-  Permission,
-} from '.prisma/client';
+import { Distributor, TaskStatus, Artist as PrismaArtist, Role, Permission } from '.prisma/client';
 
 interface DataModel {
   id: string;
@@ -51,17 +45,12 @@ export interface Contact extends DataModel {
   phone?: string;
 }
 
-export type ReleaseTaskStatus =
-  | 'Outstanding'
-  | 'In progress'
-  | 'Waiting'
-  | 'Complete';
+export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
 
 export interface ReleaseTask extends DataModel {
   [key: string]: any;
   dueDate: Date | string;
   status: TaskStatus;
-  completedOn?: string;
   assignees: User[];
   notes?: string;
   calendarEventId?: string;
@@ -114,6 +103,7 @@ export interface ExtendedSession {
   name: string;
   picture: string;
   teams: EnrichedTeamMember[];
+  sub: string;
 }
 
 export type PermissionType =

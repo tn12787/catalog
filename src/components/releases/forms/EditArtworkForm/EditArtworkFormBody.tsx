@@ -25,14 +25,6 @@ const EditArtworkFormBody = ({
     [existingRelease?.artwork?.dueDate]
   );
 
-  const formattedCompletedOn = useMemo(
-    () =>
-      existingRelease?.artwork?.completedOn
-        ? dayjs(existingRelease?.artwork?.completedOn).format('YYYY-MM-DD')
-        : undefined,
-    [existingRelease?.artwork?.completedOn]
-  );
-
   const {
     register,
     formState: { errors },
@@ -45,7 +37,6 @@ const EditArtworkFormBody = ({
       ? {
           ...existingRelease?.artwork,
           dueDate: formattedDueDate,
-          completedOn: formattedCompletedOn,
         }
       : {},
   });
@@ -57,16 +48,14 @@ const EditArtworkFormBody = ({
     reset({
       ...existingRelease?.artwork,
       dueDate: formattedDueDate,
-      completedOn: formattedCompletedOn,
     });
-  }, [existingRelease?.artwork, formattedDueDate, formattedCompletedOn, reset]);
+  }, [existingRelease?.artwork, formattedDueDate, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
         {status === TaskStatus.COMPLETE &&
-          (existingRelease?.artwork?.url ||
-            (watchedAlbumArt as File[])?.length) && (
+          (existingRelease?.artwork?.url || (watchedAlbumArt as File[])?.length) && (
             <Image
               borderRadius="5px"
               width="100%"

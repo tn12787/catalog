@@ -16,18 +16,13 @@ interface Props {
 
 const ReleaseList = ({ search, releases }: Props) => {
   const { currentTeam, teams } = useExtendedSession();
-  const canCreateRelease = hasRequiredPermissions(
-    ['CREATE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canCreateRelease = hasRequiredPermissions(['CREATE_RELEASES'], teams?.[currentTeam]);
 
   if (!releases || releases?.length === 0) {
     return search ? (
       <Stack spacing={5} py={'40px'} align="center">
         <Icon as={BiSearch} fontSize="7xl" />
-        <Text fontSize="sm">
-          No items match your search. Try entering another query.
-        </Text>
+        <Text fontSize="sm">No items match your search. Try entering another query.</Text>
       </Stack>
     ) : (
       <Stack w="100%">
@@ -43,8 +38,7 @@ const ReleaseList = ({ search, releases }: Props) => {
             No releases yet
           </Heading>
           <Text textAlign="center">
-            Create your first release to start turbocharging your artist
-            workflow.
+            Create your first release to start turbocharging your artist workflow.
           </Text>
           {canCreateRelease && (
             <Button href={'/releases/new'} colorScheme="purple" as={'a'}>

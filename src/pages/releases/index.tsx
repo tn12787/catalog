@@ -70,9 +70,7 @@ const sortOptions: SortBySelectOption<EnrichedRelease>[] = [
 
 const Releases = () => {
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<SortBySelectOption<EnrichedRelease>>(
-    sortOptions[0]
-  );
+  const [sortBy, setSortBy] = useState<SortBySelectOption<EnrichedRelease>>(sortOptions[0]);
 
   const { currentTeam, teams } = useExtendedSession();
 
@@ -80,8 +78,7 @@ const Releases = () => {
 
   const debouncedSearch = useDebounce(search, 150);
 
-  const { pageSize, currentPage, setCurrentPage, setPageSize, offset } =
-    usePagination();
+  const { pageSize, currentPage, setCurrentPage, setPageSize, offset } = usePagination();
 
   const queryArgs = {
     search: debouncedSearch,
@@ -98,23 +95,12 @@ const Releases = () => {
     fetchReleases(queryArgs)
   );
 
-  const canCreateRelease = hasRequiredPermissions(
-    ['CREATE_RELEASES'],
-    teams?.[currentTeam]
-  );
+  const canCreateRelease = hasRequiredPermissions(['CREATE_RELEASES'], teams?.[currentTeam]);
 
-  const shouldHideControls =
-    response?.results?.length === 0 && !debouncedSearch && !isLoading;
+  const shouldHideControls = response?.results?.length === 0 && !debouncedSearch && !isLoading;
 
   return (
-    <Stack
-      bg={bgPrimary}
-      flex={1}
-      align="center"
-      py={6}
-      direction="column"
-      width="100%"
-    >
+    <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="All Releases" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Flex align="center" justify="space-between">
@@ -156,9 +142,7 @@ const Releases = () => {
                 value={JSON.stringify(sortBy)}
                 onChange={(e) => {
                   const valueAsObj = JSON.parse(e.target.value);
-                  const item = sortOptions.find((item) =>
-                    isEqual(item, valueAsObj)
-                  );
+                  const item = sortOptions.find((item) => isEqual(item, valueAsObj));
 
                   setSortBy(item ?? sortOptions[0]);
                 }}

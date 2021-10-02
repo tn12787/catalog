@@ -1,12 +1,4 @@
-import {
-  Button,
-  HStack,
-  Stack,
-  Td,
-  Text,
-  useColorModeValue,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, HStack, Stack, Td, Text, useColorModeValue, useToast } from '@chakra-ui/react';
 import useCalendar from '@veccu/react-calendar';
 import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
@@ -92,6 +84,7 @@ const CalendarSquare = <T extends BaseEvent>({
   return (
     <Td
       ref={drop}
+      overflow="hidden"
       display="flex"
       flex={1}
       transition="all 0.2 ease"

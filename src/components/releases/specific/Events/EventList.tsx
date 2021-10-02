@@ -10,9 +10,7 @@ export const EventList = (props: StackProps) => {
       React.Children.toArray(children)
         .filter<React.ReactElement<EventListItemProps>>(React.isValidElement)
         .map((item, index, array) =>
-          index + 1 === array.length
-            ? React.cloneElement(item, { isLastItem: true })
-            : item
+          index + 1 === array.length ? React.cloneElement(item, { isLastItem: true }) : item
         ),
     [children]
   );

@@ -19,9 +19,7 @@ const ArtistList = ({ search, artists, loading }: Props) => {
     return search ? (
       <Stack spacing={5} py={'40px'} align="center">
         <Icon as={BiSearch} fontSize="7xl" />
-        <Text fontSize="sm">
-          No items match your search. Try entering another query.
-        </Text>
+        <Text fontSize="sm">No items match your search. Try entering another query.</Text>
       </Stack>
     ) : (
       <Stack
@@ -41,11 +39,7 @@ const ArtistList = ({ search, artists, loading }: Props) => {
   }
 
   return (
-    <SimpleGrid
-      columnGap={4}
-      rowGap={4}
-      columns={{ base: 3, sm: 1, md: 2, xl: 3 }}
-    >
+    <SimpleGrid columnGap={4} rowGap={4} columns={{ base: 3, sm: 1, md: 2, xl: 3 }}>
       {loading ? (
         <ArtistCard
           artist={{

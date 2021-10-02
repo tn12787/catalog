@@ -19,18 +19,11 @@ const DistributionReview = ({ data }: Props) => {
   const { distributor } = data;
   const dataToRender = {
     ...data,
-    distributor: distributors?.find((item) => item.id === distributor)
-      ?.name as string,
+    distributor: distributors?.find((item) => item.id === distributor)?.name as string,
   };
 
   return (
-    <Stack>
-      {renderReviewData(
-        'Distribution',
-        editDistributionDataConfig,
-        dataToRender
-      )}
-    </Stack>
+    <Stack>{renderReviewData('Distribution', editDistributionDataConfig, dataToRender)}</Stack>
   );
 };
 

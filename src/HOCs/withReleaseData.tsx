@@ -14,27 +14,18 @@ interface ComponentWithReleaseData {
   releaseData: EnrichedRelease;
 }
 
-const withReleaseData = <T extends ComponentWithReleaseData>(
-  Component: LayoutablePage<T>
-) => {
+const withReleaseData = <T extends ComponentWithReleaseData>(Component: LayoutablePage<T>) => {
   const Wrapper = (props: Omit<T, 'releaseData'>) => {
     const router = useRouter();
     const releaseId = router.query['id'] as string;
     const { currentTeam } = useExtendedSession();
-    const { data: response, isLoading } = useQuery(
-      ['releases', currentTeam, releaseId],
-      () => fetchSingleRelease(releaseId)
+    const { data: response, isLoading } = useQuery(['releases', currentTeam, releaseId], () =>
+      fetchSingleRelease(releaseId)
     );
 
     if (isLoading) {
       return (
-        <Stack
-          flex={1}
-          height={'100vh'}
-          align="center"
-          justify="center"
-          direction="column"
-        >
+        <Stack flex={1} height={'100vh'} align="center" justify="center" direction="column">
           <Spinner color="purple.500" size="xl" />
         </Stack>
       );

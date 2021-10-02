@@ -12,15 +12,11 @@ const SignUp = () => {
     formState: { errors },
     handleSubmit,
     setError,
+    control,
   } = useForm<SignUpData>();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const onSubmit = async ({
-    name,
-    email,
-    password,
-    confirmPassword,
-  }: SignUpData) => {
+  const onSubmit = async ({ name, email, password, confirmPassword }: SignUpData) => {
     if (password !== confirmPassword) {
       setError('confirmPassword', { message: 'Passwords do not match.' });
       return;
@@ -42,28 +38,12 @@ const SignUp = () => {
   };
 
   return (
-    <Flex
-      direction="column"
-      align="center"
-      justify="center"
-      flex={1}
-      minH="100vh"
-    >
-      <Stack
-        w={'80%'}
-        maxW="400px"
-        spacing={3}
-        as={'form'}
-        onSubmit={handleSubmit(onSubmit)}
-      >
+    <Flex direction="column" align="center" justify="center" flex={1} minH="100vh">
+      <Stack w={'80%'} maxW="400px" spacing={3} as={'form'} onSubmit={handleSubmit(onSubmit)}>
         <Text fontWeight="semibold" fontSize="3xl">
           Create an account
         </Text>
-        <FormContent
-          config={signupConfig}
-          errors={errors}
-          register={register}
-        />
+        <FormContent control={control} config={signupConfig} errors={errors} register={register} />
         <Button type="submit" isLoading={loading}>
           Create Account
         </Button>

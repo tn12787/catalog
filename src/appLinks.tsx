@@ -2,7 +2,7 @@ import React from 'react';
 import { BiCalendar, BiDisc } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
-import { RiTeamLine } from 'react-icons/ri';
+import { RiLayoutMasonryLine, RiTeamLine } from 'react-icons/ri';
 
 import { NavBarLink } from 'components/Nav/types';
 
@@ -16,6 +16,12 @@ export interface NavLinkConfig {
 export const appLinks: NavLinkConfig = {
   main: {
     links: [
+      {
+        icon: RiLayoutMasonryLine,
+        href: '/overview',
+        text: 'Overview',
+        activeRegex: /^\/overview/,
+      },
       {
         icon: FiMusic,
         href: '/artists',
