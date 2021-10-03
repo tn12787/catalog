@@ -1,7 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { User } from '@prisma/client';
 
 import { createDefaultTeamForUser } from 'backend/apiUtils/teams';
 import prisma from 'backend/prisma/client';
@@ -42,24 +41,30 @@ export default NextAuth({
 
         return { ...token };
       } catch (e) {
+        console.error(e);
         return { error: e };
       }
     },
     async session({ session, token, user }) {
-      const userTeams = await prisma.teamMember.findMany({
-        where: { userId: token.sub as string },
-        select: {
-          teamId: true,
-          team: {
-            select: { name: true, id: true },
+      try {
+        const userTeams = await prisma.teamMember.findMany({
+          where: { userId: token.sub as string },
+          select: {
+            teamId: true,
+            team: {
+              select: { name: true, id: true },
+            },
+            roles: {
+              select: { name: true, permissions: { select: { name: true } } },
+            },
           },
-          roles: {
-            select: { name: true, permissions: { select: { name: true } } },
-          },
-        },
-      });
-      session.accessToken = token.accessToken;
-      return { ...session, token: { ...token, teams: userTeams }, user };
+        });
+        session.accessToken = token.accessToken;
+        return { ...session, token: { ...token, teams: userTeams }, user };
+      } catch (e) {
+        console.error(e);
+        return { expires: 'now' };
+      }
     },
   },
   adapter: PrismaAdapter(prisma),
