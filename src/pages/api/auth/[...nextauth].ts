@@ -31,7 +31,6 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, isNewUser }) {
       try {
-        console.log('hi from token!!');
         const numberOfUserTeams = await prisma.teamMember.count({
           where: { userId: token.sub as string },
         });
@@ -39,7 +38,6 @@ export default NextAuth({
         if (isNewUser || !numberOfUserTeams) {
           await createDefaultTeamForUser(token.name as string, token.sub as string);
         }
-        console.log('hi from token too!!');
         return { ...token };
       } catch (e) {
         console.error(e);
@@ -62,10 +60,8 @@ export default NextAuth({
           },
         });
         session.accessToken = token.accessToken;
-        console.log('hi also!!');
         return { ...session, token: { ...token, teams: userTeams }, user };
       } catch (e) {
-        console.error(e);
         return { expires: 'now' };
       }
     },
