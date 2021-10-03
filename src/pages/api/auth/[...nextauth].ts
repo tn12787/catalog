@@ -45,7 +45,6 @@ export default NextAuth({
       }
     },
     async session({ session, token, user }) {
-      console.log('hi!');
       try {
         const userTeams = await prisma.teamMember.findMany({
           where: { userId: token.sub as string },
