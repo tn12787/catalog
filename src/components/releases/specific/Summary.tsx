@@ -82,7 +82,6 @@ const Summary = ({ releaseData }: Props) => {
       </Flex>
       <Flex
         direction={['column', 'column', 'row']}
-        py={4}
         width={'90%'}
         justify="space-between"
         alignItems={['center', 'center', 'stretch']}

@@ -20,6 +20,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
 import NextLink from 'next/link';
+import { User } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import EditDistributionForm from '../../forms/EditDistributionForm';
@@ -33,6 +34,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import AssigneeBadge from 'components/AssigneeBadge';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
+import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -47,17 +49,7 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
   return [
     {
       name: 'Assignees',
-      content: (
-        <Wrap justify="flex-end">
-          {releaseData.artwork?.assignees?.length ? (
-            releaseData.artwork?.assignees?.map((assignee) => (
-              <AssigneeBadge key={assignee.id} user={assignee} />
-            ))
-          ) : (
-            <Text fontSize="sm">No assignees</Text>
-          )}
-        </Wrap>
-      ),
+      content: <AssigneeBadgeList assignees={releaseData?.artwork?.assignees as User[]} />,
     },
     {
       name: 'Status',
