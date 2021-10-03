@@ -2,7 +2,7 @@ import { IsNotEmpty, IsDate, IsEnum, IsString, IsOptional, IsUrl } from 'class-v
 
 import { TaskStatus } from '.prisma/client';
 
-export class UpdateArtworkDto {
+export class UpdateMasteringDto {
   @IsNotEmpty()
   @IsDate()
   dueDate: Date;

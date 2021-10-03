@@ -12,17 +12,17 @@ import { NextApiRequest } from 'next';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
-import { CreateArtworkDto } from 'backend/models/artwork/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
-import { UpdateArtworkDto } from 'backend/models/artwork/update';
+import { CreateMasteringDto } from 'backend/models/mastering/create';
+import { UpdateMasteringDto } from 'backend/models/mastering/update';
 
 @requiresAuth()
-class ReleaseListHandler {
+class MasteringHandler {
   @Post()
-  async createArtwork(
+  async createMastering(
     @Req() req: NextApiRequest,
-    @Body(ValidationPipe) body: CreateArtworkDto,
+    @Body(ValidationPipe) body: CreateMasteringDto,
     @PathParam('id') id: string
   ) {
     const releaseTeam = await prisma.release.findUnique({
@@ -62,9 +62,9 @@ class ReleaseListHandler {
   }
 
   @Put()
-  async updateArtwork(
+  async updateMastering(
     @Req() req: NextApiRequest,
-    @Body(ValidationPipe) body: UpdateArtworkDto,
+    @Body(ValidationPipe) body: UpdateMasteringDto,
     @PathParam('id') id: string
   ) {
     const releaseTeam = await prisma.release.findUnique({
@@ -107,7 +107,7 @@ class ReleaseListHandler {
   }
 
   @Delete()
-  async deleteArtwork(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async deleteMastering(@Req() req: NextApiRequest, @PathParam('id') id: string) {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {
@@ -126,4 +126,4 @@ class ReleaseListHandler {
   }
 }
 
-export default createHandler(ReleaseListHandler);
+export default createHandler(MasteringHandler);
