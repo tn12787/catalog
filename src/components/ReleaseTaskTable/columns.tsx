@@ -7,9 +7,9 @@ import React from 'react';
 import { TaskStatus } from '.prisma/client';
 import { ReleaseEvent } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadge from 'components/AssigneeBadge';
 import { User } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
+import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
 const StatusBadge = ({ value }: { value: TaskStatus }) => {
   return <ReleaseTaskBadge status={value} />;
@@ -24,18 +24,7 @@ const ReleaseLink = ({ value }: { value: ReleaseEvent }) => {
 };
 
 const AssigneeList = ({ value: users }: { value: User[] }) => {
-  const { bodySub } = useAppColors();
-  return (
-    <Wrap>
-      {users?.length ? (
-        users.map((assignee) => <AssigneeBadge key={assignee.id} user={assignee} />)
-      ) : (
-        <Text color={bodySub} fontSize="xs">
-          No-one assigned
-        </Text>
-      )}
-    </Wrap>
-  );
+  return <AssigneeBadgeList assignees={users} />;
 };
 
 export const columns: Column<ReleaseEvent>[] = [

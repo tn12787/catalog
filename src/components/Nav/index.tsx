@@ -8,6 +8,7 @@ import { AccountSwitcher } from './AccountSwitcher';
 import { NavLinkConfig } from 'appLinks';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   links: NavLinkConfig;
@@ -18,8 +19,7 @@ const Nav = ({ links }: Props) => {
   const { currentTeam, teams } = useExtendedSession();
 
   const canManageTeam = hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]);
-
-  const selectedBg = useColorModeValue('gray.200', 'gray.700');
+  const { bgPrimary } = useAppColors();
   const lightModeText = useColorModeValue('gray.500', 'gray.500');
   return (
     <Stack px={5} py={5} height="100%" w={'300px'} position="fixed" justifyContent="space-between">
@@ -38,11 +38,11 @@ const Nav = ({ links }: Props) => {
           ))}
         </Stack>
       )}
-      <HStack bg={selectedBg} borderRadius="2xl" p={5} justify="center">
+      <HStack bg={bgPrimary} borderRadius="2xl" p={5} justify="center">
         <Text fontSize="xs" color={lightModeText} textTransform="uppercase">
           Light mode
         </Text>
-        <Switch isChecked={colorMode === 'light'} onChange={toggleColorMode} />
+        <Switch colorScheme="purple" isChecked={colorMode === 'light'} onChange={toggleColorMode} />
       </HStack>
     </Stack>
   );

@@ -5,11 +5,12 @@ import { useRouter } from 'next/router';
 
 import { NavBarLink } from './types';
 
+import useAppColors from 'hooks/useAppColors';
+
 const NavLink = ({ href, text, activeRegex, icon }: NavBarLink) => {
   const router = useRouter();
   const isActive = activeRegex.test(router.pathname);
-
-  const selectedBg = useColorModeValue('gray.200', 'gray.700');
+  const { bgPrimary } = useAppColors();
   const textColor = useColorModeValue('gray.900', '');
 
   return (
@@ -18,7 +19,7 @@ const NavLink = ({ href, text, activeRegex, icon }: NavBarLink) => {
         p={2}
         py={2}
         borderRadius={6}
-        bg={isActive ? selectedBg : 'transparent'}
+        bg={isActive ? bgPrimary : 'transparent'}
         fontWeight={'bold'}
         fontSize="sm"
       >
