@@ -1,22 +1,7 @@
-import {
-  Badge,
-  Button,
-  Flex,
-  Heading,
-  Link,
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  Spinner,
-  Stack,
-  Text,
-  useDisclosure,
-  Wrap,
-} from '@chakra-ui/react';
+import { Modal, ModalContent, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
-import NextLink from 'next/link';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -27,11 +12,8 @@ import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import { TaskStatus, User } from '.prisma/client';
 import { EnrichedRelease, EventType } from 'types';
-import Card from 'components/Card';
-import NewReleaseForm from 'components/releases/forms/NewReleaseForm';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
-import AssigneeBadge from 'components/AssigneeBadge';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
