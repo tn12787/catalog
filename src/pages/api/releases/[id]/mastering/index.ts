@@ -50,7 +50,7 @@ class MasteringHandler {
       (v) => v !== undefined
     );
 
-    const result = await prisma.artwork.create({
+    const result = await prisma.mastering.create({
       data: {
         ...optionalArgs,
         release: { connect: { id } },
@@ -92,7 +92,7 @@ class MasteringHandler {
       (v) => v !== undefined
     );
 
-    const result = await prisma.artwork.update({
+    const result = await prisma.mastering.update({
       where: {
         releaseId: id,
       },
@@ -117,7 +117,7 @@ class MasteringHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
-    const result = await prisma.artwork.delete({
+    const result = await prisma.mastering.delete({
       where: {
         releaseId: id,
       },

@@ -27,19 +27,19 @@ interface Props {
 }
 
 const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
-  const isComplete = releaseData.Mastering?.status === TaskStatus.COMPLETE;
+  const isComplete = releaseData.mastering?.status === TaskStatus.COMPLETE;
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={releaseData?.Mastering?.assignees as User[]} />,
+      content: <AssigneeBadgeList assignees={releaseData?.mastering?.assignees as User[]} />,
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={releaseData.Mastering?.status as TaskStatus} />,
+      content: <ReleaseTaskBadge status={releaseData.mastering?.status as TaskStatus} />,
     },
-    releaseData.Mastering?.dueDate && {
+    releaseData.mastering?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: <Text fontSize="sm">{dayjs.utc(releaseData.Mastering?.dueDate).format('LL')}</Text>,
+      content: <Text fontSize="sm">{dayjs.utc(releaseData.mastering?.dueDate).format('LL')}</Text>,
     },
   ].filter(Boolean) as SummaryField[];
 };

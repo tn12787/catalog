@@ -20,7 +20,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
 
   const { currentTeam } = useExtendedSession();
 
-  const { mutateAsync: createDistribution, isLoading: createLoading } = useMutation(
+  const { mutateAsync: createMastering, isLoading: createLoading } = useMutation(
     createSingleMastering,
     {
       onSuccess: () => {
@@ -29,7 +29,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
     }
   );
 
-  const { mutateAsync: updateDistribution, isLoading: updateLoading } = useMutation(
+  const { mutateAsync: updateMastering, isLoading: updateLoading } = useMutation(
     updateSingleMastering,
     {
       onSuccess: () => {
@@ -42,7 +42,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
 
   const onCreate = async (data: EditMasteringFormData) => {
     try {
-      await createDistribution({
+      await createMastering({
         ...data,
         assignees: data.assignees.map((item) => item.id),
         releaseId: releaseData.id,
@@ -62,7 +62,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
 
   const onUpdate = async (data: EditMasteringFormData) => {
     try {
-      await updateDistribution({
+      await updateMastering({
         ...data,
         assignees: data.assignees.map((item) => item.id),
         releaseId: releaseData.id,
@@ -84,11 +84,11 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
   return (
     <Stack flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <Heading>{releaseData.distribution ? 'Edit' : 'Add'} Distribution</Heading>
-        <Text>{releaseData.distribution ? 'Edit' : 'Add'} info about the distributor.</Text>
+        <Heading>{releaseData.mastering ? 'Edit' : 'Add'} Mastering</Heading>
+        <Text>{releaseData.mastering ? 'Edit' : 'Add'} information about release mastering.</Text>
         <EditMasteringFormBody
           existingRelease={releaseData}
-          onSubmit={releaseData.distribution ? onUpdate : onCreate}
+          onSubmit={releaseData.mastering ? onUpdate : onCreate}
           loading={createLoading || updateLoading}
         />
       </Stack>

@@ -33,6 +33,7 @@ class SingleReleaseHandler {
         distribution: { include: { assignees: true, distributor: true } },
         marketing: { include: { assignees: true } },
         musicVideo: { include: { assignees: true } },
+        mastering: { include: { assignees: true } },
       },
     });
 
