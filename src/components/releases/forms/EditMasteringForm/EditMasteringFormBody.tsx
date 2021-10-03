@@ -13,7 +13,6 @@ import { EditMasteringFormData } from '../../specific/Mastering/types';
 import { buildMasteringConfig } from './masteringConfig';
 
 import FormContent from 'components/forms/FormContent';
-import { fetchDistributors } from 'queries/distribution';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 
 const EditMasteringFormBody = ({
@@ -26,8 +25,8 @@ const EditMasteringFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditMasteringFormData>) => {
   const formattedDueDate = useMemo(
-    () => dayjs(existingRelease?.distribution?.dueDate).format('YYYY-MM-DD'),
-    [existingRelease?.distribution?.dueDate]
+    () => dayjs(existingRelease?.mastering?.dueDate).format('YYYY-MM-DD'),
+    [existingRelease?.mastering?.dueDate]
   );
 
   const {
@@ -38,24 +37,22 @@ const EditMasteringFormBody = ({
     reset,
     control,
   } = useForm<EditMasteringFormData>({
-    defaultValues: existingRelease?.distribution
+    defaultValues: existingRelease?.mastering
       ? {
-          ...existingRelease?.distribution,
+          ...existingRelease?.mastering,
           dueDate: formattedDueDate,
         }
       : {},
   });
 
-  const { data: distributors } = useQuery('distributors', fetchDistributors);
-
   const status = watch('status');
 
   useEffect(() => {
     reset({
-      ...existingRelease?.distribution,
+      ...existingRelease?.mastering,
       dueDate: formattedDueDate,
     });
-  }, [existingRelease?.distribution, distributors, formattedDueDate, reset]);
+  }, [existingRelease?.mastering, formattedDueDate, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
@@ -80,7 +77,7 @@ const EditMasteringFormBody = ({
                 colorScheme="purple"
                 variant="ghost"
                 flexGrow={0}
-                onClick={() => onSkip?.('distribution')}
+                onClick={() => onSkip?.('mastering')}
               >
                 Skip
               </Button>
