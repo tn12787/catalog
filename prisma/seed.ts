@@ -6,35 +6,34 @@ import { allPermissions } from './permissions';
 const prisma = new PrismaClient();
 
 async function seed() {
-  const seededDistributors = await prisma.distributor.createMany({
+  // distributors
+  await prisma.distributor.createMany({
     data: distributors,
     skipDuplicates: true,
   });
 
-  const permissions = await prisma.permission.createMany({
+  // permissions
+  await prisma.permission.createMany({
     data: allPermissions,
     skipDuplicates: true,
   });
 
-  const viewer = await prisma.role.create({
+  // Viewer Role
+  await prisma.role.create({
     data: {
       name: 'Viewer',
       description: 'Can view most resources, cannot create anything',
       permissions: {
-        connect: [
-          { name: 'VIEW_RELEASES' },
-          { name: 'VIEW_ARTISTS' },
-          { name: 'VIEW_TEAM' },
-        ],
+        connect: [{ name: 'VIEW_RELEASES' }, { name: 'VIEW_ARTISTS' }, { name: 'VIEW_TEAM' }],
       },
     },
   });
 
-  const teamMember = await prisma.role.create({
+  // Team Member Role
+  await prisma.role.create({
     data: {
       name: 'Team Member',
-      description:
-        'Can update releases, create release tasks, update artist info, etc.',
+      description: 'Can update releases, create release tasks, update artist info, etc.',
       permissions: {
         connect: [
           { name: 'VIEW_RELEASES' },
@@ -47,7 +46,8 @@ async function seed() {
     },
   });
 
-  const admin = await prisma.role.create({
+  // Admin Role
+  await prisma.role.create({
     data: {
       name: 'Admin',
       description: 'Can create releases, artists, manage user access,',
@@ -60,8 +60,11 @@ async function seed() {
   process.exit(0);
 }
 
-seed();
-
-export { seed };
-
-export default seed;
+seed()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

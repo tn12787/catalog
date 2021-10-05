@@ -1,5 +1,5 @@
 .next
 .firebase
 node_modules
-prisma
+prisma/migrations
 coverage
