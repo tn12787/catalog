@@ -1,5 +1,4 @@
 import { Flex, Heading, Badge, Stack, Text } from '@chakra-ui/layout';
-import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/modal';
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 
@@ -10,8 +9,6 @@ import { Artwork, Distribution } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import { EventType } from 'types';
-import { TaskStatus } from '.prisma/client';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 
 interface Props<T> {
   heading: string | JSX.Element;
@@ -20,6 +17,15 @@ interface Props<T> {
   fields: SummaryField[];
   taskType: EventType;
 }
+
+const mapTaskType = (taskType: EventType) => {
+  switch (taskType) {
+    case EventType.MUSIC_VIDEO:
+      return 'music video';
+    default:
+      return taskType;
+  }
+};
 
 const ReleaseTaskCard = <T extends Artwork | Distribution>({
   heading,
@@ -86,7 +92,7 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
         </Flex>
       ) : (
         <Stack spacing={3} align="center" direction="column" justify="space-between">
-          <Text>This release has no {taskType} info yet.</Text>
+          <Text>This release has no {mapTaskType(taskType)} info yet.</Text>
           {canEdit && (
             <Button flexGrow={0} onClick={onEditClick} colorScheme="purple">
               Add now
