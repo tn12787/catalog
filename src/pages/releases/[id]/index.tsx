@@ -13,6 +13,7 @@ import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedire
 import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/PageHead';
 import Mastering from 'components/releases/specific/Mastering';
+import MusicVideo from 'components/releases/specific/MusicVideo';
 
 interface Props {
   releaseData: EnrichedRelease;
@@ -32,7 +33,7 @@ const SpecificRelease = ({ releaseData }: Props) => {
         </Stack>
         <Stack w="100%" spacing={4} direction={{ base: 'column', lg: 'row' }}>
           <Mastering releaseData={releaseData} />
-          {/* <Distribution releaseData={releaseData} /> */}
+          <MusicVideo releaseData={releaseData} />
         </Stack>
         <Events releaseData={releaseData} />
       </Stack>
