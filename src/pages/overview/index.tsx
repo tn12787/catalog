@@ -12,6 +12,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import MyTasks from 'components/overview/MyTasks';
 import Card from 'components/Card';
 import { fetchReleases } from 'queries/releases';
+import OverdueTasks from 'components/overview/OverdueTasks';
 
 interface Props {}
 
@@ -51,6 +52,8 @@ const OverviewPage = (props: Props) => {
             </Stat>
           </Card>
         </Stack>
+
+        <OverdueTasks data={data ?? []} loading={isLoading} />
         <MyTasks data={data ?? []} loading={isLoading} />
       </Stack>
     </Stack>

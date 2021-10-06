@@ -37,9 +37,7 @@ const TeamOverview = (props: Props) => {
   const router = useRouter();
   const teamId = router.query.id as string;
 
-  const [search, setSearch] = React.useState('');
-
-  const { bgPrimary, bgSecondary } = useAppColors();
+  const { bgPrimary } = useAppColors();
 
   const { data: teamData, isLoading } = useQuery(['team', teamId], () => fetchTeam(teamId));
 
