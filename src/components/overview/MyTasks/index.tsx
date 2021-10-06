@@ -42,11 +42,11 @@ const MyTasks = ({ data, loading }: Props) => {
     <Card>
       <Tabs w="100%" colorScheme="purple">
         <HStack justify="space-between">
-          <Heading size="md">My Tasks</Heading>
+          <Heading size="md">✔️ My Tasks</Heading>
           <TabList borderBottom="none" alignSelf="center">
             <HStack spacing={3}>
               {tabsToRender.map((item) => (
-                <Tab fontSize="md" py={0} px={0} key={item.label}>
+                <Tab fontSize="sm" py={0} px={0} key={item.label}>
                   {item.label}
                 </Tab>
               ))}
