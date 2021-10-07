@@ -1,4 +1,6 @@
-import { Artwork, Distribution } from '.prisma/client';
+import { CreateArtworkVars } from '../artwork/types';
+import { CreateDistributionVars } from '../distribution/types';
+
 import { EnrichedRelease } from 'types';
 
 export interface SingleReleaseVars extends Pick<EnrichedRelease, 'name' | 'id' | 'type'> {
@@ -7,8 +9,8 @@ export interface SingleReleaseVars extends Pick<EnrichedRelease, 'name' | 'id' |
 }
 
 export interface CreateSingleReleaseVars extends Omit<SingleReleaseVars, 'id'> {
-  artwork?: Artwork;
-  distribution?: Distribution;
+  artwork?: CreateArtworkVars;
+  distribution?: CreateDistributionVars;
 }
 
 export type DeleteSingleReleaseVars = Pick<SingleReleaseVars, 'id'>;

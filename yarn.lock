@@ -1563,10 +1563,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.0.1.tgz#d26729db850fa327b7cacc5522252194404226f5"
   integrity sha512-Qm9hBEBu18wt1PO2flE7LPb30BHMQt1eQgbV76YntdNk73XZGpn3izvGTYxbGgzXKgbCjiia0uxTd3aTNQrY/g==
 
-"@storyofams/next-api-decorators@^1.5.6":
-  version "1.5.6"
-  resolved "https://registry.yarnpkg.com/@storyofams/next-api-decorators/-/next-api-decorators-1.5.6.tgz#31cb2d0efdc6e77e49491793e2401575661c1dd0"
-  integrity sha512-P0QYnq2qWSCmCqZhCfSlxhc9Wr5Jbtxvq97u82i3GwFoBYxGFtdA9JQJ+BTIbB2S+ta9USbXur82iM/qd3h8Xw==
+"@storyofams/next-api-decorators@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@storyofams/next-api-decorators/-/next-api-decorators-1.6.0.tgz#3c4f8876ff84654076d92ad56c59790bf9514b01"
+  integrity sha512-2ir5AkkxFFbPwnA7AwS6wRElsA4Lvz5bD/pfXKaBJ2RBPxOqOHtUtrqaAGLue6NvtjmvXjOB5E2Lh6ajaqbrXQ==
   dependencies:
     reflect-metadata "^0.1.13"
 

@@ -14,6 +14,7 @@ import { Release, ReleaseType } from '@prisma/client';
 import { pickBy } from 'lodash';
 import { NextApiRequest } from 'next';
 
+import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';
 import prisma from 'backend/prisma/client';
@@ -80,13 +81,23 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(req, ['CREATE_RELEASES'], team?.id);
 
+    console.log(body.distribution?.assignees?.[0]);
+
     const optionalArgs = pickBy(
       {
-        artwork: body.artwork ? { create: { ...body.artwork } } : undefined,
+        artwork: body.artwork
+          ? {
+              create: {
+                ...body.artwork,
+                assignees: transformAssigneesToPrismaQuery(body.artwork.assignees, true),
+              },
+            }
+          : undefined,
         distribution: body.distribution
           ? {
               create: {
                 ...body.distribution,
+                assignees: transformAssigneesToPrismaQuery(body.distribution.assignees, true),
                 distributor: { connect: { id: body.distribution.distributor } },
               },
             }

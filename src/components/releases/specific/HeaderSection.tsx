@@ -40,8 +40,8 @@ const HeaderSection = ({ releaseData }: Props) => {
   const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
 
   return (
-    <Stack width={['100%', '100%', '90%']} maxWidth={'container.lg'}>
-      <Flex position="relative" overflow="hidden">
+    <Stack width={['100%', '100%', '90%']} maxWidth={'container.lg'} alignItems="center">
+      <Flex position="relative" overflow="hidden" w="100%">
         <Image
           filter="blur(5px)"
           transform={'scale(1.05)'}
@@ -62,8 +62,8 @@ const HeaderSection = ({ releaseData }: Props) => {
           bgGradient={`linear(to-b, transparent, ${bgPrimary})`}
         ></Box>
       </Flex>
-      <Flex pb={3} align="center" justify="space-between">
-        <HStack alignItems="center" w={['90%', '90%', '100%']} margin={['0 auto']}>
+      <Flex pb={3} align="center" justify="space-between" w={{ base: '90%', md: '100%' }}>
+        <HStack alignItems="center" width="100%" margin={['0 auto']}>
           <HStack alignItems="center">
             <Icon as={FiArrowLeft} />
             <Link href="/releases" passHref>

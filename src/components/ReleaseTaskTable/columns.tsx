@@ -8,10 +8,9 @@ import { TaskStatus } from '.prisma/client';
 import { ReleaseEvent } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import { User } from '.prisma/client';
-import useAppColors from 'hooks/useAppColors';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
-const StatusBadge = ({ value }: { value: TaskStatus }) => {
+export const StatusBadge = ({ value }: { value: TaskStatus }) => {
   return <ReleaseTaskBadge status={value} />;
 };
 
@@ -23,7 +22,7 @@ const ReleaseLink = ({ value }: { value: ReleaseEvent }) => {
   );
 };
 
-const AssigneeList = ({ value: users }: { value: User[] }) => {
+export const AssigneeList = ({ value: users }: { value: User[] }) => {
   return <AssigneeBadgeList assignees={users} />;
 };
 

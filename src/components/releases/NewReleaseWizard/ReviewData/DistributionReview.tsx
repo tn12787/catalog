@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { Stack } from '@chakra-ui/layout';
 
-import { editDistributionDataConfig, renderReviewData } from './data';
+import { distribReviewConfig, renderReviewData } from './data';
 
 import { EditDistributionFormData } from 'components/releases/specific/Distribution/types';
 import { fetchDistributors } from 'queries/distribution';
@@ -22,9 +22,7 @@ const DistributionReview = ({ data }: Props) => {
     distributor: distributors?.find((item) => item.id === distributor)?.name as string,
   };
 
-  return (
-    <Stack>{renderReviewData('Distribution', editDistributionDataConfig, dataToRender)}</Stack>
-  );
+  return <Stack>{renderReviewData('Distribution', distribReviewConfig, dataToRender)}</Stack>;
 };
 
 export default DistributionReview;

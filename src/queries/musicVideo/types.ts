@@ -4,3 +4,6 @@ export interface MusicVideoVars extends Pick<MusicVideo, 'dueDate' | 'status' | 
   releaseId: string;
   assignees: string[];
 }
+
+export type CreateMusicVideoVars = MusicVideoVars;
+export type UpdateMusicVideoVars = Partial<MusicVideoVars>;

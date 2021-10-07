@@ -2,12 +2,13 @@ import {
   Body,
   createHandler,
   Delete,
+  Patch,
   Post,
   Put,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { pickBy } from 'lodash';
+import { pickBy, isNil, pick } from 'lodash';
 import { NextApiRequest } from 'next';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -16,6 +17,7 @@ import { CreateArtworkDto } from 'backend/models/artwork/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateArtworkDto } from 'backend/models/artwork/update';
+import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -61,7 +63,7 @@ class ReleaseListHandler {
     return result;
   }
 
-  @Put()
+  @Patch()
   async updateArtwork(
     @Req() req: NextApiRequest,
     @Body(ValidationPipe) body: UpdateArtworkDto,
@@ -77,31 +79,16 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
-    const optionalArgs = pickBy(
-      {
-        assignees: body.assignees
-          ? {
-              set: body.assignees.map((id) => ({
-                id,
-              })),
-            }
-          : undefined,
-        url: body.url,
-        dueDate: body.dueDate,
-      },
-      (v) => v !== undefined
-    );
+    const updateArgs = {
+      ...pick(body, ['status', 'notes', 'dueDate', 'url']),
+      assignees: transformAssigneesToPrismaQuery(body.assignees),
+    };
 
     const result = await prisma.artwork.update({
       where: {
         releaseId: id,
       },
-      data: {
-        ...optionalArgs,
-        status: body.status,
-        notes: body.notes,
-        dueDate: body.dueDate,
-      },
+      data: pickBy(updateArgs, (v) => !isNil(v)),
     });
     return result;
   }

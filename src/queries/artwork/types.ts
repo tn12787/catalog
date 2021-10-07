@@ -5,3 +5,7 @@ export interface ArtworkVars extends Pick<Artwork, 'dueDate' | 'status' | 'notes
   releaseId: string;
   assignees: string[];
 }
+
+export type CreateArtworkVars = ArtworkVars;
+
+export type UpdateArtworkVars = Partial<ArtworkVars>;

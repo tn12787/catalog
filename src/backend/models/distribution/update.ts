@@ -1,24 +1,25 @@
-import { IsNotEmpty, IsDate, IsEnum, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsDate, IsEnum, IsString, IsOptional, IsArray } from 'class-validator';
 
 import { TaskStatus } from '.prisma/client';
 
-export class CreateDistributionDto {
-  @IsNotEmpty()
+export class UpdateDistributionDto {
+  @IsOptional()
   @IsDate()
-  dueDate: Date;
+  dueDate?: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(TaskStatus)
-  status: TaskStatus;
+  status?: TaskStatus;
 
-  @IsNotEmpty()
-  distributor: string;
+  @IsOptional()
+  @IsString()
+  distributor?: string;
 
   @IsOptional()
   @IsString()
   notes?: string;
 
   @IsOptional()
-  @IsString()
-  assignee?: string;
+  @IsArray()
+  assignees?: string[];
 }

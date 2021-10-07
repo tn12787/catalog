@@ -38,6 +38,15 @@ enum TeamPlan {
   Major
 }
 
+enum TaskEventType {
+  NEW_COMMENT
+  UPDATE_COMMENT
+  DELETE_COMMENT
+  UPDATE_ASSIGNEES
+  UPDATE_STATUS
+  UPDATE_DATE
+}
+
 model Team {
   id       String        @id @default(cuid())
   name     String
@@ -88,6 +97,7 @@ model User {
   marketingAssigned     Marketing[]
   musicVideosAssigned   MusicVideo[]
   masteringAssigned     Mastering[]
+  ArtworkEvent          ArtworkEvent[]
 }
 
 model Session {
@@ -181,21 +191,31 @@ model Contact {
 }
 
 model Artwork {
-  id              String     @id @default(cuid())
-  url             String?    @unique
+  id              String         @id @default(cuid())
+  url             String?        @unique
   notes           String?
-  calendarEventId String?    @unique
+  calendarEventId String?        @unique
   dueDate         DateTime?
   status          TaskStatus
-  release         Release    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  release         Release        @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId       String
   assignees       User[]
-  completedBy     Contact?   @relation(fields: [completedById], references: [id])
+  completedBy     Contact?       @relation(fields: [completedById], references: [id])
   completedById   String?
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime?  @updatedAt
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime?      @updatedAt
+  events          ArtworkEvent[]
 
   @@unique([releaseId])
+}
+
+model ArtworkEvent {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  artwork   Artwork @relation(fields: [artworkId], references: [id])
+  artworkId String
 }
 
 model Distribution {

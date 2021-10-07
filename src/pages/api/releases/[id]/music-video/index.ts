@@ -7,7 +7,7 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { pickBy } from 'lodash';
+import { pickBy, isNil, pick } from 'lodash';
 import { NextApiRequest } from 'next';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -16,6 +16,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { CreateMusicVideoDto } from 'backend/models/musicVideo/create';
 import { UpdateMusicVideoDto } from 'backend/models/musicVideo/update';
+import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 
 @requiresAuth()
 class MusicVideoHandler {
@@ -77,31 +78,16 @@ class MusicVideoHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
-    const optionalArgs = pickBy(
-      {
-        assignees: body.assignees
-          ? {
-              set: body.assignees.map((id) => ({
-                id,
-              })),
-            }
-          : undefined,
-        url: body.url,
-        dueDate: body.dueDate,
-      },
-      (v) => v !== undefined
-    );
+    const updateArgs = {
+      ...pick(body, ['url', 'dueDate', 'notes', 'status']),
+      assignees: transformAssigneesToPrismaQuery(body.assignees),
+    };
 
     const result = await prisma.musicVideo.update({
       where: {
         releaseId: id,
       },
-      data: {
-        ...optionalArgs,
-        status: body.status,
-        notes: body.notes,
-        dueDate: body.dueDate,
-      },
+      data: pickBy(updateArgs, (v) => !isNil(v)),
     });
     return result;
   }

@@ -3,11 +3,11 @@ import { IsNotEmpty, IsDate, IsEnum, IsString, IsOptional, IsUrl, IsArray } from
 import { TaskStatus } from '.prisma/client';
 
 export class UpdateMusicVideoDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsDate()
   dueDate: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(TaskStatus)
   status: TaskStatus;
 
