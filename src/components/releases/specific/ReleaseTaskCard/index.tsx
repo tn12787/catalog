@@ -9,6 +9,7 @@ import { Artwork, Distribution } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import { EventType } from 'types';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props<T> {
   heading: string | JSX.Element;
@@ -36,7 +37,7 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
 }: Props<T>) => {
   const { currentTeam, teams } = useExtendedSession();
   const canEdit = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
-
+  const { bodySub } = useAppColors();
   return (
     <Card flex={1}>
       <Flex
@@ -54,9 +55,9 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
             heading
           )}
         </Stack>
-        {data && canEdit && (
-          <Button size="sm" onClick={onEditClick} colorScheme="purple" variant="outline">
-            Edit
+        {data && (
+          <Button variant="link" size="sm" onClick={onEditClick} colorScheme="purple">
+            View Details
           </Button>
         )}
       </Flex>
@@ -92,9 +93,11 @@ const ReleaseTaskCard = <T extends Artwork | Distribution>({
         </Flex>
       ) : (
         <Stack spacing={3} align="center" direction="column" justify="space-between">
-          <Text>This release has no {mapTaskType(taskType)} info yet.</Text>
+          <Text fontSize="sm" color={bodySub}>
+            This release has no {mapTaskType(taskType)} info yet.
+          </Text>
           {canEdit && (
-            <Button flexGrow={0} onClick={onEditClick} colorScheme="purple">
+            <Button size="sm" flexGrow={0} onClick={onEditClick} colorScheme="purple">
               Add now
             </Button>
           )}
