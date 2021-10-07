@@ -76,8 +76,14 @@ const NewReleaseWizard = (props: Props) => {
     try {
       const result = await createRelease({
         ...data.basics,
-        artwork: data.artwork,
-        distribution: data.distribution,
+        artwork: data.artwork && {
+          ...data.artwork,
+          assignees: data.artwork?.assignees.map(({ id }) => id),
+        },
+        distribution: data.distribution && {
+          ...data.distribution,
+          assignees: data.distribution?.assignees.map(({ id }) => id),
+        },
         team: currentTeam,
       } as CreateSingleReleaseVars);
       toast({

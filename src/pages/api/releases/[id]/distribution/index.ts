@@ -1,9 +1,10 @@
+import { pickBy, isNil, pick } from 'lodash';
 import {
   Body,
   createHandler,
   Delete,
   Post,
-  Put,
+  Patch,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
@@ -14,6 +15,8 @@ import prisma from 'backend/prisma/client';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { UpdateDistributionDto } from 'backend/models/distribution/update';
+import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -56,10 +59,10 @@ class ReleaseListHandler {
     return result;
   }
 
-  @Put()
+  @Patch()
   async updateDistribution(
     @Req() req: NextApiRequest,
-    @Body(ValidationPipe) body: CreateDistributionDto,
+    @Body(ValidationPipe) body: UpdateDistributionDto,
     @PathParam('id') id: string
   ) {
     const releaseTeam = await prisma.release.findUnique({
@@ -72,26 +75,17 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
-    const optionalArgs = body.assignees
-      ? {
-          assignees: {
-            set: body.assignees.map((id) => ({
-              id,
-            })),
-          },
-        }
-      : {};
+    const updatedData = {
+      ...pick(body, ['status', 'notes', 'dueDate']),
+      assignees: transformAssigneesToPrismaQuery(body.assignees),
+      distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
+    };
+
     const result = await prisma.distribution.update({
       where: {
         releaseId: id,
       },
-      data: {
-        ...optionalArgs,
-        distributor: { connect: { id: body.distributor } },
-        status: body.status,
-        notes: body.notes,
-        dueDate: body.dueDate,
-      },
+      data: pickBy(updatedData, (v) => !isNil(v)),
     });
     return result;
   }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cuid from 'cuid';
 
-import { ArtworkVars } from './types';
+import { ArtworkVars, CreateArtworkVars, UpdateArtworkVars } from './types';
 
 import { Artwork } from 'types';
 import firebase from 'firebase-details';
@@ -9,10 +9,10 @@ import firebase from 'firebase-details';
 export const updateSingleArtwork = async ({
   releaseId,
   ...rest
-}: ArtworkVars): Promise<Artwork | void> => {
+}: UpdateArtworkVars): Promise<Artwork | void> => {
   if (!releaseId) return Promise.reject();
 
-  const { data: response } = await axios.put(`/api/releases/${releaseId}/artwork`, {
+  const { data: response } = await axios.patch(`/api/releases/${releaseId}/artwork`, {
     ...rest,
   });
   return response;
@@ -21,7 +21,7 @@ export const updateSingleArtwork = async ({
 export const createSingleArtwork = async ({
   releaseId,
   ...rest
-}: ArtworkVars): Promise<Artwork | void> => {
+}: CreateArtworkVars): Promise<Artwork | void> => {
   const { data: response } = await axios.post(`/api/releases/${releaseId}/artwork`, {
     ...rest,
   });

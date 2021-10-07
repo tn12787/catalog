@@ -1,13 +1,13 @@
-import { IsNotEmpty, IsDate, IsEnum, IsString, IsOptional, IsUrl, IsArray } from 'class-validator';
+import { IsDate, IsEnum, IsString, IsOptional, IsUrl, IsArray } from 'class-validator';
 
 import { TaskStatus } from '.prisma/client';
 
 export class UpdateMasteringDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsDate()
   dueDate: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(TaskStatus)
   status: TaskStatus;
 

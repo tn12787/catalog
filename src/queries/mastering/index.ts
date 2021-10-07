@@ -1,16 +1,16 @@
 import axios from 'axios';
 
-import { MasteringVars } from './types';
+import { CreateMasteringVars, UpdateMasteringVars } from './types';
 
 import { Mastering } from 'types';
 
 export const updateSingleMastering = async ({
   releaseId,
   ...rest
-}: MasteringVars): Promise<Mastering | void> => {
+}: UpdateMasteringVars): Promise<Mastering | void> => {
   if (!releaseId) return Promise.reject();
 
-  const { data: response } = await axios.put(`/api/releases/${releaseId}/mastering`, {
+  const { data: response } = await axios.patch(`/api/releases/${releaseId}/mastering`, {
     ...rest,
   });
   return response;
@@ -19,7 +19,7 @@ export const updateSingleMastering = async ({
 export const createSingleMastering = async ({
   releaseId,
   ...rest
-}: MasteringVars): Promise<Mastering | void> => {
+}: CreateMasteringVars): Promise<Mastering | void> => {
   const { data: response } = await axios.post(`/api/releases/${releaseId}/mastering`, {
     ...rest,
   });
