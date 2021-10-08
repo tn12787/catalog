@@ -72,16 +72,6 @@ const EditMasteringFormBody = ({
             )}
           </Flex>
           <ButtonGroup>
-            {isSkippable && (
-              <Button
-                colorScheme="purple"
-                variant="ghost"
-                flexGrow={0}
-                onClick={() => onSkip?.('mastering')}
-              >
-                Skip
-              </Button>
-            )}
             <Button
               colorScheme="purple"
               flexGrow={0}
