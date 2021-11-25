@@ -96,7 +96,9 @@ const WizardArtworkFormBody = ({
               objectFit="cover"
               alt="completed artwork"
               src={
-                watchedAlbumArt ? URL.createObjectURL(watchedAlbumArt) : completeState?.artwork?.url
+                watchedAlbumArt
+                  ? URL.createObjectURL(watchedAlbumArt as Blob)
+                  : completeState?.artwork?.url
               }
             />
             <Button
