@@ -18,42 +18,58 @@ async function seed() {
     skipDuplicates: true,
   });
 
-  // Viewer Role
-  await prisma.role.create({
-    data: {
-      name: 'Viewer',
-      description: 'Can view most resources, cannot create anything',
-      permissions: {
-        connect: [{ name: 'VIEW_RELEASES' }, { name: 'VIEW_ARTISTS' }, { name: 'VIEW_TEAM' }],
-      },
+  const viewerData = {
+    name: 'Viewer',
+    description: 'Can view most resources, cannot create anything',
+    permissions: {
+      connect: [{ name: 'VIEW_RELEASES' }, { name: 'VIEW_ARTISTS' }, { name: 'VIEW_TEAM' }],
     },
+  };
+
+  // Viewer Role
+  await prisma.role.upsert({
+    create: viewerData,
+    update: viewerData,
+    where: { name: viewerData.name },
   });
+
+  const teamMemberData = {
+    name: 'Team Member',
+    description: 'Can update releases, create release tasks, update artist info, etc.',
+    permissions: {
+      connect: [
+        { name: 'VIEW_RELEASES' },
+        { name: 'VIEW_ARTISTS' },
+        { name: 'VIEW_TEAM' },
+        { name: 'UPDATE_RELEASES' },
+        { name: 'UPDATE_ARTISTS' },
+      ],
+    },
+  };
 
   // Team Member Role
-  await prisma.role.create({
-    data: {
-      name: 'Team Member',
-      description: 'Can update releases, create release tasks, update artist info, etc.',
-      permissions: {
-        connect: [
-          { name: 'VIEW_RELEASES' },
-          { name: 'VIEW_ARTISTS' },
-          { name: 'VIEW_TEAM' },
-          { name: 'UPDATE_RELEASES' },
-          { name: 'UPDATE_ARTISTS' },
-        ],
-      },
+  await prisma.role.upsert({
+    create: teamMemberData,
+    update: teamMemberData,
+    where: {
+      name: teamMemberData.name,
     },
   });
 
+  const adminUpsertData = {
+    name: 'Admin',
+    description: 'Can create releases, artists, manage user access,',
+    permissions: {
+      connect: allPermissions,
+    },
+  };
+
   // Admin Role
-  await prisma.role.create({
-    data: {
-      name: 'Admin',
-      description: 'Can create releases, artists, manage user access,',
-      permissions: {
-        connect: allPermissions,
-      },
+  await prisma.role.upsert({
+    create: { ...adminUpsertData },
+    update: { ...adminUpsertData },
+    where: {
+      name: adminUpsertData.name,
     },
   });
 
