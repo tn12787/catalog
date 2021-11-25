@@ -17,11 +17,15 @@
     "noEmit": true,
     "jsx": "preserve",
     "baseUrl": "./src",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "incremental": true
   },
   "ts-node": {
     "files": true,
-    "compilerOptions": { "isolatedModules": false, "module": "commonjs" }
+    "compilerOptions": {
+      "isolatedModules": false,
+      "module": "commonjs"
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules"]

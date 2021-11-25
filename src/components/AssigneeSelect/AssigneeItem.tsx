@@ -1,9 +1,9 @@
-import { Box, Flex, HStack, ListItem, ListItemProps, Text } from '@chakra-ui/layout';
+import { Flex, HStack, ListItem, ListItemProps, Text } from '@chakra-ui/layout';
 import React from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { User } from '@prisma/client';
 import { BiCheck } from 'react-icons/bi';
-import Icon from '@chakra-ui/icon';
+import { Icon } from '@chakra-ui/icon';
 
 import useAppColors from 'hooks/useAppColors';
 
