@@ -156,6 +156,6 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
   );
 });
 
-AssigneeSelect.displayName = 'AssigneeSelect'; // build fails without it?
+AssigneeSelect.displayName = 'AssigneeSelect'; // TODO: understand why build fails without this
 
 export default AssigneeSelect;
