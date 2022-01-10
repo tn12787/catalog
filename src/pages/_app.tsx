@@ -1,4 +1,4 @@
-import { Box, ChakraProvider } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import React from 'react';

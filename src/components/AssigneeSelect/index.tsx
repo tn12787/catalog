@@ -14,6 +14,7 @@ import { useCombobox } from 'downshift';
 import { useQuery } from 'react-query';
 import { BiChevronDown } from 'react-icons/bi';
 import { uniqBy } from 'lodash';
+import { User } from '@prisma/client';
 
 import AssigneeSelectList from './AssigneeSelectList';
 import AssigneeItem from './AssigneeItem';
@@ -22,7 +23,6 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import AssigneeBadge from 'components/AssigneeBadge';
-import { User } from '.prisma/client';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {
   value: User[];
@@ -58,7 +58,6 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
   const {
     isOpen,
     closeMenu,
-    selectedItem,
     getMenuProps,
     getInputProps,
     getComboboxProps,

@@ -10,15 +10,11 @@ import useAppColors from 'hooks/useAppColors';
 import TeamInformation from 'components/teams/settings/TeamInformation';
 import PageHead from 'components/PageHead';
 
-interface Props {}
-
-const TeamOverview = (props: Props) => {
+const TeamOverview = () => {
   const router = useRouter();
   const teamId = router.query.id as string;
 
-  const [search, setSearch] = React.useState('');
-
-  const { bgPrimary, bgSecondary } = useAppColors();
+  const { bgPrimary } = useAppColors();
 
   const { data: teamData, isLoading } = useQuery(['team', teamId], () => fetchTeam(teamId));
 

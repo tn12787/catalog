@@ -1,19 +1,16 @@
 import { Modal, ModalContent, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { TaskStatus, User } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import EditDistributionForm from '../../forms/EditDistributionForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { TaskStatus, User } from '.prisma/client';
 import { EnrichedRelease, EventType } from 'types';
-import useExtendedSession from 'hooks/useExtendedSession';
-import { hasRequiredPermissions } from 'utils/auth';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
@@ -50,11 +47,7 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
 };
 
 const Distribution = ({ releaseData }: Props) => {
-  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { currentTeam, teams } = useExtendedSession();
-  const canUpdateRelease = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
 
   return (
     <>

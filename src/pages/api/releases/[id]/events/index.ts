@@ -1,4 +1,4 @@
-import { createHandler, Get, Query, NotFoundException } from '@storyofams/next-api-decorators';
+import { createHandler, Get, NotFoundException } from '@storyofams/next-api-decorators';
 
 import { EnrichedRelease } from 'types';
 import { getEventsForRelease } from 'backend/apiUtils/events';

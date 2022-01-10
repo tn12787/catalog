@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
-import { FilterOptions, PaginatedQueryResult, SortByOptions } from './../types';
+import { FilterOptions, PaginatedQueryResult } from './../types';
 import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
 
 import { EnrichedRelease } from 'types';

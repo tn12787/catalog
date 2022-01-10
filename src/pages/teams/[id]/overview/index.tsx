@@ -7,18 +7,15 @@ import {
   Text,
   Button,
   HStack,
-  Icon,
   Input,
   InputGroup,
-  InputRightElement,
   ButtonGroup,
   FormLabel,
   InputLeftElement,
   FormControl,
   Skeleton,
 } from '@chakra-ui/react';
-import { Stat, StatLabel, StatNumber, StatHelpText, StatArrow } from '@chakra-ui/stat';
-import { BiSearch } from 'react-icons/bi';
+import { Stat, StatLabel, StatNumber } from '@chakra-ui/stat';
 import { RiAddFill, RiArrowRightUpLine } from 'react-icons/ri';
 import { BsSearch } from 'react-icons/bs';
 
@@ -27,13 +24,10 @@ import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedire
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
-import Table from 'components/Table';
 import TeamMembersTable from 'components/teams/TeamMembersTable';
 import PageHead from 'components/PageHead';
 
-interface Props {}
-
-const TeamOverview = (props: Props) => {
+const TeamOverview = () => {
   const router = useRouter();
   const teamId = router.query.id as string;
 

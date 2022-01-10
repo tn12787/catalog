@@ -13,9 +13,7 @@ interface Props {
 
 const BasicInfoReview = ({ data }: Props) => {
   const { artist } = data;
-  const { data: response, isLoading } = useQuery(['artists', artist], () =>
-    fetchSingleArtist(artist)
-  );
+  const { data: response } = useQuery(['artists', artist], () => fetchSingleArtist(artist));
 
   const dataToRender = {
     ...data,

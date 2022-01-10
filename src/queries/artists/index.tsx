@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { Artist } from '@prisma/client';
 
 import { CreateSingleArtistVars, SingleArtistVars } from './types';
 
-import { Artist } from '.prisma/client';
 import { EnrichedRelease } from 'types';
 
 export const fetchArtists = async (teamId: string): Promise<Artist[]> => {

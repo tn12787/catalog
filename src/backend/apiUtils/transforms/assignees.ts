@@ -1,7 +1,4 @@
-export const transformAssigneesToPrismaQuery = (
-  assignees: string[] | undefined,
-  isNew: boolean = false
-) => {
+export const transformAssigneesToPrismaQuery = (assignees: string[] | undefined, isNew = false) => {
   return assignees
     ? {
         [isNew ? 'connect' : 'set']: assignees.map((id) => ({

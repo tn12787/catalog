@@ -1,5 +1,4 @@
 import { uniq } from 'lodash';
-import { Session, User } from '@prisma/client';
 import { NotFoundException } from '@storyofams/next-api-decorators';
 import { NextApiRequest } from 'next';
 import { getSession } from 'next-auth/react';
@@ -9,7 +8,7 @@ import { ExtendedSession, PermissionType } from 'types';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 export const createDefaultTeamForUser = async (name: string, userId: string) => {
-  const team = await prisma.team.create({
+  return await prisma.team.create({
     data: {
       name: `${name}'s Team`,
       provider: 'GSUITE',

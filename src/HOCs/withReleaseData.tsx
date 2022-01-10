@@ -1,6 +1,6 @@
 import { Spinner, Stack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from 'react-query';
 
 import { LayoutablePage } from './types';

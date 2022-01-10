@@ -15,7 +15,6 @@ import {
 import useCalendar from '@veccu/react-calendar';
 import { format } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
-import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import { BiArrowToLeft, BiArrowToRight } from 'react-icons/bi';
 
@@ -151,7 +150,7 @@ const Calendar = <T extends BaseEvent>({
           </Tr>
         </Thead>
         <Tbody>
-          {enrichedBody.value.map((week, rowIndex) => {
+          {enrichedBody.value.map((week) => {
             const { key, value: days } = week;
 
             return (

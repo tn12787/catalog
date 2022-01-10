@@ -1,5 +1,4 @@
-import { ReleaseType } from '@prisma/client';
-import { IsNotEmpty, IsDate, IsEnum } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class UpdateTeamDto {
   @IsNotEmpty()

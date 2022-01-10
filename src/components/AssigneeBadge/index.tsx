@@ -1,9 +1,9 @@
 import { HStack, Text } from '@chakra-ui/layout';
-import { Avatar, Icon, IconButton } from '@chakra-ui/react';
+import { Avatar, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import { MdClose } from 'react-icons/md';
+import { User } from '@prisma/client';
 
-import { User } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

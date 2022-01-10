@@ -15,7 +15,7 @@ interface Props {
   loading?: boolean;
 }
 
-const TeamInformation = ({ team, loading }: Props) => {
+const TeamInformation = ({ team }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const config = [

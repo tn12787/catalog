@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { teamMembersColumns } from './columns';
-import { ArtistWithReleases } from './types';
 
 import Table from 'components/Table';
 import { EnrichedRelease } from 'types';

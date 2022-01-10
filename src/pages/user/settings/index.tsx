@@ -1,5 +1,4 @@
 import { Stack, Heading } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useQuery } from 'react-query';
 
@@ -10,15 +9,8 @@ import UserInformation from 'components/users/UserInformation';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 
-interface Props {}
-
-const UserSettings = (props: Props) => {
-  const router = useRouter();
-  const teamId = router.query.id as string;
-
-  const [search, setSearch] = React.useState('');
-
-  const { bgPrimary, bgSecondary } = useAppColors();
+const UserSettings = () => {
+  const { bgPrimary } = useAppColors();
 
   const { data: userData, isLoading } = useQuery('me', fetchMe);
 

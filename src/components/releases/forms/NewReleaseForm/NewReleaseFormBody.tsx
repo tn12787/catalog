@@ -17,7 +17,6 @@ import { fetchArtists } from 'queries/artists';
 const NewReleaseFormBody = ({
   onSubmit,
   existingRelease,
-  isSkippable,
   loading,
 }: ReleaseWizardComponentProps<BasicInfoFormData>) => {
   const { currentTeam } = useExtendedSession();

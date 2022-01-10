@@ -1,7 +1,5 @@
-import { uniq } from 'lodash';
 import {
   createMiddlewareDecorator,
-  HttpException,
   NextFunction,
   NotFoundException,
   UnauthorizedException,
@@ -10,7 +8,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
 import { ExtendedSession } from 'types';
-import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 const requiresAuth = createMiddlewareDecorator(
   async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {

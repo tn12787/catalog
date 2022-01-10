@@ -1,12 +1,11 @@
-import { Heading, Text, HStack, Stack, Flex } from '@chakra-ui/layout';
+import { HStack, Stack, Flex } from '@chakra-ui/layout';
 import React from 'react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
 import { BiArrowBack } from 'react-icons/bi';
-import { FiArrowRight, FiSave } from 'react-icons/fi';
+import { FiSave } from 'react-icons/fi';
 
 import { ReleaseWizardComponentProps } from '../types';
 
-import { basicInfoDataConfig, renderReviewData } from './data';
 import BasicInfoReview from './BasicInfoReview';
 import ArtworkReview from './ArtworkReview';
 import DistributionReview from './DistributionReview';

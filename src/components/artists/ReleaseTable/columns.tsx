@@ -1,4 +1,4 @@
-import { Avatar, HStack, Stack, Text, Image, useColorModeValue, Link } from '@chakra-ui/react';
+import { HStack, Text, Image, Link } from '@chakra-ui/react';
 import React from 'react';
 import { CellProps, Column } from 'react-table';
 import NextLink from 'next/link';

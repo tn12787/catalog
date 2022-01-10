@@ -1,11 +1,10 @@
+import { TaskStatus } from '@prisma/client';
+
 import { FormDatum } from 'types/forms';
-import { TaskStatus } from '.prisma/client';
 import AssigneeSelect from 'components/AssigneeSelect';
 import { EditMusicVideoFormData } from 'components/releases/specific/MusicVideo/types';
 
-export const buildMusicVideoConfig = (
-  alreadyCompleted: boolean
-): FormDatum<EditMusicVideoFormData>[] => [
+export const buildMusicVideoConfig = (): FormDatum<EditMusicVideoFormData>[] => [
   {
     name: 'assignees',
     label: 'Assignees',

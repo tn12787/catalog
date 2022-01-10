@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cuid from 'cuid';
 
-import { ArtworkVars, CreateArtworkVars, UpdateArtworkVars } from './types';
+import { CreateArtworkVars, UpdateArtworkVars } from './types';
 
 import { Artwork } from 'types';
 import firebase from 'firebase-details';

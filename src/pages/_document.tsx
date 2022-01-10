@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-document-import-in-page */
-import { theme, ColorModeScript } from '@chakra-ui/react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 

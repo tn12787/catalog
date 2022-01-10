@@ -9,7 +9,6 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -57,9 +56,6 @@ const fields = (releaseData: EnrichedRelease): SummaryField[] => [
 ];
 
 const Summary = ({ releaseData }: Props) => {
-  const router = useRouter();
-  const editUrl = `${router.query.id}/summary/edit`;
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { currentTeam, teams } = useExtendedSession();

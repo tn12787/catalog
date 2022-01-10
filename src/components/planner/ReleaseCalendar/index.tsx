@@ -42,11 +42,11 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
       return { events };
     },
 
-    onError: (err, newTodo, context: any) => {
+    onError: (_, __, context: any) => {
       queryClient.setQueryData(['releaseEvents', currentTeam], context?.events);
     },
 
-    onSettled: (_, __, ___, context: any) => {
+    onSettled: () => {
       queryClient.invalidateQueries(['releaseEvents', currentTeam]);
     },
   });
