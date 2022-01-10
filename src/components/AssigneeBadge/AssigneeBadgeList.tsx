@@ -1,9 +1,9 @@
 import { Wrap, Text } from '@chakra-ui/react';
 import React from 'react';
+import { User } from '@prisma/client';
 
 import AssigneeBadge from '.';
 
-import { User } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

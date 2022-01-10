@@ -1,8 +1,6 @@
-import { Stack, Image, Skeleton, Text, HStack, Icon, Button } from '@chakra-ui/react';
+import { Stack, Image, Skeleton, Text, HStack, Icon } from '@chakra-ui/react';
 import { Artist } from '@prisma/client';
 import React from 'react';
-import NextLink from 'next/link';
-import { Link } from '@chakra-ui/react';
 import { BiDisc } from 'react-icons/bi';
 import { useRouter } from 'next/router';
 

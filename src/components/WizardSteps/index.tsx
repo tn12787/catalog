@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/layout';
+import { Box, HStack } from '@chakra-ui/layout';
 import React from 'react';
 
 import { Step } from './Step';

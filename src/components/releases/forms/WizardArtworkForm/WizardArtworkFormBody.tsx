@@ -1,8 +1,9 @@
 import { Stack, Flex, Button, Image, HStack, Text, ButtonGroup } from '@chakra-ui/react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { Controller, useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';
+import { TaskStatus } from '@prisma/client';
 
 import { buildNewArtworkConfig } from '../EditArtworkForm/artworkConfig';
 import { EditArtworkFormData } from '../../specific/Artwork/types';
@@ -11,7 +12,6 @@ import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 import ImageDropzone from 'components/ImageDropper';
 import useAppColors from 'hooks/useAppColors';
-import { TaskStatus } from '.prisma/client';
 import { uploadImageToFirebase } from 'queries/artwork';
 
 const WizardArtworkFormBody = ({

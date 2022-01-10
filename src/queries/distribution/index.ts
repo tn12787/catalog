@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { Distributor } from '@prisma/client';
 
-import { DistributionVars, UpdateDistributionVars, CreateDistributionVars } from './types';
+import { UpdateDistributionVars, CreateDistributionVars } from './types';
 
-import { Distributor } from '.prisma/client';
 import { Distribution } from 'types';
 
 export const updateSingleDistribution = async ({

@@ -8,8 +8,6 @@ import { ReviewConfigItem } from './types';
 
 import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
 import { basicInfoConfig } from 'components/releases/forms/NewReleaseForm/releaseConfig';
-import { buildDistribConfig } from 'components/releases/forms/EditDistributionForm/distribConfig';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 import { AssigneeList, StatusBadge } from 'components/ReleaseTaskTable/columns';
 import { ReleaseTask } from 'types';
 

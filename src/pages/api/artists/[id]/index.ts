@@ -15,9 +15,7 @@ import { NextApiRequest } from 'next';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
-import { UpdateReleaseDto } from 'backend/models/releases/update';
 import prisma from 'backend/prisma/client';
-import { ReleaseType } from 'types';
 import { UpdateArtistDto } from 'backend/models/artists/update';
 
 @requiresAuth()

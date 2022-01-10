@@ -1,4 +1,3 @@
-import React from 'react';
 import { BiCalendar, BiDisc } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';

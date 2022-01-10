@@ -1,4 +1,4 @@
-import { Distributor } from '.prisma/client';
+import { Distributor } from '@prisma/client';
 
 export const distributors: Pick<Distributor, 'name' | 'siteUrl'>[] = [
   { name: 'AWAL', siteUrl: 'https://www.awal.com/' },

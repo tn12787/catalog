@@ -10,11 +10,10 @@ import {
   Stack,
   Text,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useRef } from 'react';
+import React from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';

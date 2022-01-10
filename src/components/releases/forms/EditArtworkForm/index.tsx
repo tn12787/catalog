@@ -13,7 +13,6 @@ import { EditArtworkFormData } from '../../specific/Artwork/types';
 import EditArtworkFormBody from './EditArtworkFormBody';
 
 import { createSingleArtwork, updateSingleArtwork, uploadImageToFirebase } from 'queries/artwork';
-import BackButton from 'components/BackButton';
 import { EnrichedRelease } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 

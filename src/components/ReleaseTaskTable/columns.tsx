@@ -1,13 +1,13 @@
-import { Link, Wrap, Text } from '@chakra-ui/layout';
+import { Link } from '@chakra-ui/layout';
 import { format } from 'date-fns';
 import { Column } from 'react-table';
 import NextLink from 'next/link';
 import React from 'react';
+import { TaskStatus } from '@prisma/client';
+import { User } from '@prisma/client';
 
-import { TaskStatus } from '.prisma/client';
 import { ReleaseEvent } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import { User } from '.prisma/client';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
 export const StatusBadge = ({ value }: { value: TaskStatus }) => {

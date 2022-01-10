@@ -1,13 +1,12 @@
-import { Heading, HStack, Stack, Text } from '@chakra-ui/layout';
+import { Heading, Stack, Text } from '@chakra-ui/layout';
 import React from 'react';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/tabs';
 import { isBefore } from 'date-fns';
 import { useColorModeValue } from '@chakra-ui/color-mode';
+import { TaskStatus } from '@prisma/client';
 
 import Card from 'components/Card';
 import { ReleaseEvent } from 'types';
 import ReleaseTaskTable from 'components/ReleaseTaskTable';
-import { TaskStatus } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

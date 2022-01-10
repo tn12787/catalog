@@ -1,9 +1,7 @@
 import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
-interface Props {}
-
-const NotFound = (props: Props) => {
+const NotFound = () => {
   const router = useRouter();
   return (
     <Stack flex={1} align="center" justify="center" spacing={7} direction="column">

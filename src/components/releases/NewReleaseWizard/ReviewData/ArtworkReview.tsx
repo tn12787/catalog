@@ -1,12 +1,12 @@
 import React from 'react';
 import { HStack, Stack, Text } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
+import { TaskStatus } from '@prisma/client';
 
 import { renderReviewData } from './data';
 import { ReviewConfigItem } from './types';
 
 import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
-import { TaskStatus } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

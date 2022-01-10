@@ -3,7 +3,7 @@ import { Flex, HStack, Text } from '@chakra-ui/layout';
 import { Select } from '@chakra-ui/select';
 import { Skeleton } from '@chakra-ui/skeleton';
 import React from 'react';
-import { BiChevronLeft, BiChevronRight, BiChevronsLeft, BiChevronsRight } from 'react-icons/bi';
+import { BiChevronsLeft, BiChevronsRight } from 'react-icons/bi';
 
 import useAppColors from 'hooks/useAppColors';
 

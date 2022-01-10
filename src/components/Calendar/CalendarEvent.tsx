@@ -1,13 +1,13 @@
 import { HStack, Box, Text, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import { useDrag } from 'react-dnd';
+import { TaskStatus } from '@prisma/client';
 
 import { BaseEvent, EventType } from './types';
 import { deriveBadgeColorFromStatus } from './utils';
 
 import useAppColors from 'hooks/useAppColors';
 import { ReleaseEvent } from 'types';
-import { TaskStatus } from '.prisma/client';
 
 interface Props<T> {
   event: T;

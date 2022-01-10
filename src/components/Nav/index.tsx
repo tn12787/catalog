@@ -1,6 +1,5 @@
 import { HStack, Stack, Switch, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
-import { uniq } from 'lodash';
 
 import NavLink from './NavLink';
 import { AccountSwitcher } from './AccountSwitcher';

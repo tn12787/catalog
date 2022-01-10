@@ -1,11 +1,9 @@
-import { Flex, Heading, Icon } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { AiOutlineCoffee, AiOutlineSketch, AiOutlineWoman } from 'react-icons/ai';
 
 import { EventList } from './EventList';
 import { EventListItem } from './EventListItem';
-import { Placeholder } from './Placeholder';
 
 import Card from 'components/Card';
 import { EnrichedRelease } from 'types';
@@ -16,7 +14,7 @@ interface Props {
 }
 
 const Events = ({ releaseData }: Props) => {
-  const { data, isLoading, error } = useQuery(['releaseEvents', releaseData.id], () =>
+  const { data } = useQuery(['releaseEvents', releaseData.id], () =>
     fetchSpecificReleaseEvents(releaseData.id)
   );
 

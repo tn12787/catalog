@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 import { isEqual } from 'lodash';
 import { useQuery } from 'react-query';
 import { BiSearch } from 'react-icons/bi';
+import { Artist } from '@prisma/client';
 
 import ReleaseCard from 'components/releases/ReleaseCard';
 import DashboardLayout from 'components/layouts/DashboardLayout';
@@ -24,7 +25,6 @@ import useDebounce from 'hooks/useDebounce';
 import ReleaseList from 'components/releases/ReleaseList';
 import { SortByOptions, SortOrder } from 'queries/types';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import { Artist } from '.prisma/client';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';

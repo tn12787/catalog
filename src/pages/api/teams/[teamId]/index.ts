@@ -1,21 +1,4 @@
-import {
-  Body,
-  createHandler,
-  Delete,
-  Get,
-  HttpCode,
-  NotFoundException,
-  Param,
-  Post,
-  Put,
-  Query,
-  Request,
-  ValidationPipe,
-} from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
-import { Session } from 'next-auth';
-import { getSession } from 'next-auth/react';
-import { JWT } from 'next-auth/jwt';
+import { Body, createHandler, Get, Put, ValidationPipe } from '@storyofams/next-api-decorators';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -37,11 +20,7 @@ class TeamHandler {
   }
 
   @Put()
-  async updateTeam(
-    @PathParam('teamId') id: string,
-    @Body(ValidationPipe) body: UpdateTeamDto,
-    @Request() req: NextApiRequest
-  ) {
+  async updateTeam(@PathParam('teamId') id: string, @Body(ValidationPipe) body: UpdateTeamDto) {
     const team = await prisma.team.update({
       where: { id },
       data: {

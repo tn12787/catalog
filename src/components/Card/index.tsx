@@ -3,7 +3,7 @@ import React from 'react';
 
 import useAppColors from 'hooks/useAppColors';
 
-interface Props extends StackProps {}
+type Props = StackProps;
 
 const Card = (props: Props) => {
   const { bgSecondary } = useAppColors();

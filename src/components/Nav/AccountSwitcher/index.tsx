@@ -9,17 +9,13 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { signOut, useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { signOut } from 'next-auth/react';
 import { useMemo } from 'react';
-import { useState } from 'react';
 import { BiCog, BiLogOut } from 'react-icons/bi';
-import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 
 import { AccountSwitcherButton } from './AccountSwitcherButton';
 
-import { ExtendedSession } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useUser from 'hooks/useUser';
 

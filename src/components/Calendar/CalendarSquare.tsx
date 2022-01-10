@@ -1,10 +1,6 @@
-import { Button, HStack, Stack, Td, Text, useColorModeValue, useToast } from '@chakra-ui/react';
-import useCalendar from '@veccu/react-calendar';
-import React, { useState } from 'react';
+import { Stack, Td, Text, useColorModeValue } from '@chakra-ui/react';
+import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useMutation, useQueryClient } from 'react-query';
-import { cloneDeep } from 'lodash';
-import { formatISO, formatRFC3339 } from 'date-fns';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 

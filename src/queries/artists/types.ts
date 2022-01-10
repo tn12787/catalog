@@ -1,7 +1,7 @@
-import { Artist } from '.prisma/client';
+import { Artist } from '@prisma/client';
 
-export interface SingleArtistVars extends Omit<Artist, 'createdAt' | 'updatedAt'> {}
+export type SingleArtistVars = Omit<Artist, 'createdAt' | 'updatedAt'>;
 
-export interface CreateSingleArtistVars extends Omit<SingleArtistVars, 'id'> {}
+export type CreateSingleArtistVars = Omit<SingleArtistVars, 'id'>;
 
 export type DeleteSingleArtistVars = Pick<SingleArtistVars, 'id'>;

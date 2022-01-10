@@ -1,7 +1,7 @@
 import { Text, Box } from '@chakra-ui/react';
 import { Thead, Tr, Th, Tbody, Td, Table as ChakraTable } from '@chakra-ui/table';
 import React from 'react';
-import { Column, useSortBy, useTable, useFlexLayout } from 'react-table';
+import { Column, useSortBy, useTable } from 'react-table';
 import { BiDownArrow, BiUpArrow } from 'react-icons/bi';
 
 interface Props<T extends object> {

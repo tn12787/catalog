@@ -1,13 +1,9 @@
-import { Button } from '@chakra-ui/button';
-import { Input } from '@chakra-ui/input';
-import { useBreakpointValue, useMediaQuery } from '@chakra-ui/media-query';
+import { useBreakpointValue } from '@chakra-ui/media-query';
 import {
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerProps,
 } from '@chakra-ui/modal';
