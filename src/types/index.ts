@@ -1,6 +1,13 @@
-import { Team, TeamMember, User } from '@prisma/client';
-
-import { Distributor, TaskStatus, Artist as PrismaArtist, Role, Permission } from '.prisma/client';
+import {
+  Distributor,
+  TaskStatus,
+  Artist as PrismaArtist,
+  Role,
+  Permission,
+  Team,
+  TeamMember,
+  User,
+} from '@prisma/client';
 
 interface DataModel {
   id: string;

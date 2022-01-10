@@ -12,7 +12,7 @@ interface Props {
 }
 
 const ReleaseTaskTable = ({ data, loading, emptyContent }: Props) => {
-  return <Table data={data} columns={columns} emptyContent={emptyContent} />;
+  return <Table data={data} columns={columns} loading={loading} emptyContent={emptyContent} />;
 };
 
 export default ReleaseTaskTable;

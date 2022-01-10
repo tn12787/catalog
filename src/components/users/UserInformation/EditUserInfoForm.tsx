@@ -1,13 +1,12 @@
-import { Stack, Button, Input } from '@chakra-ui/react';
+import { Stack, Button } from '@chakra-ui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
 import { useMutation, useQueryClient } from 'react-query';
+import { User } from '@prisma/client';
 
 import FormField from 'components/forms/FormContent/FormField';
 import DataList from 'components/DataList';
-import { User } from '.prisma/client';
-import { updateSingleTeam } from 'queries/teams';
 import { updateSingleUser } from 'queries/me';
 
 interface Props {

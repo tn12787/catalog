@@ -1,7 +1,4 @@
-import { Input } from '@chakra-ui/input';
-import { Menu, MenuButton } from '@chakra-ui/menu';
 import { TaskStatus } from '@prisma/client';
-import { BiChevronDown } from 'react-icons/bi';
 
 import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
 import { FormDatum } from 'types/forms';

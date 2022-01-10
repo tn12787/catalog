@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { Team } from '@prisma/client';
 
 import { UpdateTeamVars } from './types';
 
-import { Team, TeamMember } from '.prisma/client';
 import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
 
 export const fetchTeam = async (id: string) => {

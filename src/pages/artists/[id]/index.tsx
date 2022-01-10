@@ -1,10 +1,8 @@
-import { Button } from '@chakra-ui/button';
 import { Stack, Heading, Text, Link } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { Table } from '@chakra-ui/table';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
@@ -14,9 +12,7 @@ import Card from 'components/Card';
 import ReleaseTable from 'components/artists/ReleaseTable';
 import PageHead from 'components/PageHead';
 
-interface Props {}
-
-const SingleArtist = (props: Props) => {
+const SingleArtist = () => {
   const router = useRouter();
   const artistId = router.query['id'] as string;
   const { bgPrimary } = useAppColors();

@@ -3,8 +3,6 @@ import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { TaskStatus } from '@prisma/client';
-import { format } from 'date-fns';
-import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 import { BiArrowBack } from 'react-icons/bi';
 
@@ -17,8 +15,6 @@ import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizar
 
 const EditMasteringFormBody = ({
   onSubmit,
-  onSkip,
-  isSkippable,
   canGoBack,
   onBack,
   existingRelease,
@@ -33,7 +29,6 @@ const EditMasteringFormBody = ({
     register,
     formState: { errors },
     handleSubmit,
-    watch,
     reset,
     control,
   } = useForm<EditMasteringFormData>({
@@ -44,8 +39,6 @@ const EditMasteringFormBody = ({
         }
       : {},
   });
-
-  const status = watch('status');
 
   useEffect(() => {
     reset({
@@ -58,7 +51,7 @@ const EditMasteringFormBody = ({
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
         <FormContent
-          config={buildMasteringConfig(status === TaskStatus.COMPLETE)}
+          config={buildMasteringConfig()}
           control={control}
           errors={errors}
           register={register}

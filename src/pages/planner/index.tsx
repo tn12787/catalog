@@ -10,12 +10,10 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
-interface Props {}
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import useAppColors from 'hooks/useAppColors';
 import { fetchReleaseEvents } from 'queries/events';
@@ -50,7 +48,7 @@ const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
   },
 ];
 
-const Planner = (props: Props) => {
+const Planner = () => {
   const { bgPrimary, primary } = useAppColors();
 
   const { currentTeam, teams } = useExtendedSession();

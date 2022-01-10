@@ -1,6 +1,6 @@
-import { Stack, Text } from '@chakra-ui/layout';
+import { Stack } from '@chakra-ui/layout';
 import React from 'react';
-import { Button, Flex, Heading, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
+import { Flex, Heading, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
@@ -14,9 +14,7 @@ import Card from 'components/Card';
 import { fetchReleases } from 'queries/releases';
 import OverdueTasks from 'components/overview/OverdueTasks';
 
-interface Props {}
-
-const OverviewPage = (props: Props) => {
+const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
   const { currentTeam, token } = useExtendedSession();
 
@@ -24,9 +22,8 @@ const OverviewPage = (props: Props) => {
     fetchReleaseEvents(currentTeam, token?.sub as string)
   );
 
-  const { data: upcomingReleases, isLoading: releasesLoading } = useQuery(
-    ['releases', currentTeam],
-    () => fetchReleases({ team: currentTeam, dates: { after: new Date() } })
+  const { data: upcomingReleases } = useQuery(['releases', currentTeam], () =>
+    fetchReleases({ team: currentTeam, dates: { after: new Date() } })
   );
 
   return (

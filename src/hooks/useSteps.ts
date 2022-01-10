@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const useSteps = <T extends any>(steps: T[]) => {
+export const useSteps = <T>(steps: T[]) => {
   const [activeStep, setActiveStep] = React.useState(0);
   return {
     index: activeStep,

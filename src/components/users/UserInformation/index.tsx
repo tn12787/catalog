@@ -14,7 +14,7 @@ interface Props {
   loading?: boolean;
 }
 
-const UserInformation = ({ user, loading }: Props) => {
+const UserInformation = ({ user }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const config = [

@@ -16,8 +16,7 @@ import { BsThreeDotsVertical, BsTrash } from 'react-icons/bs';
 import { BiLogOut } from 'react-icons/bi';
 import { signOut, useSession } from 'next-auth/react';
 
-interface Props {}
-const CurrentUser = (props: Props) => {
+const CurrentUser = () => {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
 

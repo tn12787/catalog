@@ -41,7 +41,7 @@ const deriveComponent = (type?: string): InputComponentType => {
   }
 };
 
-const FormField = <T extends any>({
+const FormField = <T,>({
   name,
   type,
   hidden,

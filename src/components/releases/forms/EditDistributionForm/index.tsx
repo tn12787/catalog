@@ -1,6 +1,5 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
-import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { EditDistributionFormData } from '../../specific/Distribution/types';
@@ -17,8 +16,6 @@ interface Props {
 }
 
 const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
-  const router = useRouter();
-
   const queryClient = useQueryClient();
 
   const { currentTeam } = useExtendedSession();

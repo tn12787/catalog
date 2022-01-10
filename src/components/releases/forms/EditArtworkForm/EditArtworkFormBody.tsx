@@ -10,13 +10,10 @@ import { EditArtworkFormData } from '../../specific/Artwork/types';
 import { buildArtworkConfig } from './artworkConfig';
 
 import FormContent from 'components/forms/FormContent';
-import Card from 'components/Card';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 
 const EditArtworkFormBody = ({
   onSubmit,
-  isSkippable,
-  onSkip,
   existingRelease,
   loading,
 }: ReleaseWizardComponentProps<EditArtworkFormData>) => {

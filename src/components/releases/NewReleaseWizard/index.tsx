@@ -23,8 +23,6 @@ import { createSingleRelease } from 'queries/releases';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { CreateSingleReleaseVars } from 'queries/releases/types';
 
-interface Props {}
-
 const buildSteps = (): ReleaseWizardStep[] => [
   {
     name: 'Basics',
@@ -53,7 +51,7 @@ const buildSteps = (): ReleaseWizardStep[] => [
   },
 ];
 
-const NewReleaseWizard = (props: Props) => {
+const NewReleaseWizard = () => {
   const steps = buildSteps();
   const { index, currentStep, next, previous } = useSteps<ReleaseWizardStep>(steps);
 

@@ -1,19 +1,16 @@
+import React from 'react';
 import { Text, Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React from 'react';
-import { User } from '@prisma/client';
+import { TaskStatus, User } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import { EnrichedRelease, EventType } from 'types';
-import { TaskStatus } from '.prisma/client';
-import useExtendedSession from 'hooks/useExtendedSession';
-import { hasRequiredPermissions } from 'utils/auth';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
@@ -50,9 +47,6 @@ const Mastering = ({ releaseData }: Props) => {
   const editUrl = `${router.query.id}/Mastering/edit`;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { currentTeam, teams } = useExtendedSession();
-  const canUpdateRelease = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
 
   return (
     <>

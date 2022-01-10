@@ -16,7 +16,7 @@ const SignUp = () => {
   } = useForm<SignUpData>();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const onSubmit = async ({ name, email, password, confirmPassword }: SignUpData) => {
+  const onSubmit = async ({ password, confirmPassword }: SignUpData) => {
     if (password !== confirmPassword) {
       setError('confirmPassword', { message: 'Passwords do not match.' });
       return;

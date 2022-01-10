@@ -59,7 +59,6 @@ export const EventListItem = ({
   event,
   isLastItem,
   includeReleaseName,
-  children,
   ...stackProps
 }: EventListItemProps) => {
   const icon = deriveEventIcon(event.type);

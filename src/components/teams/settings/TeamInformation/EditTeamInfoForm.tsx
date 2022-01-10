@@ -3,10 +3,10 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
 import { useMutation, useQueryClient } from 'react-query';
+import { Team } from '@prisma/client';
 
 import FormField from 'components/forms/FormContent/FormField';
 import DataList from 'components/DataList';
-import { Team } from '.prisma/client';
 import { updateSingleTeam } from 'queries/teams';
 
 interface Props {
