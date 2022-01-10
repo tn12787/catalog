@@ -14,17 +14,22 @@ class SpecificReleaseEventsHandler {
       where: { id },
       include: {
         artist: true,
-        artwork: { include: { assignees: true } },
-        distribution: { include: { assignees: true, distributor: true } },
-        musicVideo: { include: { assignees: true } },
-        mastering: { include: { assignees: true } },
-        marketing: { include: { assignees: true } },
+        tasks: {
+          include: {
+            assignees: true,
+            artworkData: true,
+            distributionData: true,
+            marketingData: true,
+            musicVideoData: true,
+            masteringData: true,
+          },
+        },
       },
     });
 
     if (!release) throw new NotFoundException();
 
-    return getEventsForRelease(release as EnrichedRelease);
+    return getEventsForRelease(release);
   }
 }
 

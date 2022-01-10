@@ -1,3 +1,4 @@
+import { omit } from 'lodash';
 import {
   Body,
   createHandler,
@@ -8,7 +9,7 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { ReleaseType } from '@prisma/client';
+import { ReleaseTaskType, ReleaseType } from '@prisma/client';
 import { NextApiRequest } from 'next';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -29,15 +30,27 @@ class SingleReleaseHandler {
       },
       include: {
         artist: true,
-        artwork: { include: { assignees: true } },
-        distribution: { include: { assignees: true, distributor: true } },
-        marketing: { include: { assignees: true } },
-        musicVideo: { include: { assignees: true } },
-        mastering: { include: { assignees: true } },
+        tasks: {
+          include: {
+            assignees: true,
+            artworkData: true,
+            distributionData: true,
+            marketingData: true,
+            musicVideoData: true,
+            masteringData: true,
+          },
+        },
       },
     });
 
-    return release;
+    return {
+      ...omit(release, ['tasks']),
+      artwork: release?.tasks.find((task) => task.type === ReleaseTaskType.ARTWORK),
+      distribution: release?.tasks.find((task) => task.type === ReleaseTaskType.DISTRIBUTION),
+      marketing: release?.tasks.find((task) => task.type === ReleaseTaskType.MARKETING),
+      musicVideo: release?.tasks.find((task) => task.type === ReleaseTaskType.MUSIC_VIDEO),
+      mastering: release?.tasks.find((task) => task.type === ReleaseTaskType.MASTERING),
+    };
   }
 
   @Put()
