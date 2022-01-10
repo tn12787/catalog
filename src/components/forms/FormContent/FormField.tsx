@@ -12,7 +12,7 @@ import {
   Textarea,
   Select,
 } from '@chakra-ui/react';
-import { ErrorMessage, FieldValuesFromFieldErrors } from '@hookform/error-message';
+import { ErrorMessage } from '@hookform/error-message';
 import React from 'react';
 import { UseFormReturn, FieldValues, Controller, Control } from 'react-hook-form';
 import { get } from 'lodash';

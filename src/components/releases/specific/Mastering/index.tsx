@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -42,10 +41,6 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
 };
 
 const Mastering = ({ releaseData }: Props) => {
-  const router = useRouter();
-
-  const editUrl = `${router.query.id}/Mastering/edit`;
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (

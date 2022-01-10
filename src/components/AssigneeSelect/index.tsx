@@ -58,7 +58,6 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
   const {
     isOpen,
     closeMenu,
-    selectedItem,
     getMenuProps,
     getInputProps,
     getComboboxProps,

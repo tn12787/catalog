@@ -4,7 +4,6 @@ import {
   Delete,
   Patch,
   Post,
-  Put,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';

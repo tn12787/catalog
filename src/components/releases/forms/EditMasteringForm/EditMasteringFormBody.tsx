@@ -2,7 +2,6 @@ import { Stack, Flex, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import { TaskStatus } from '@prisma/client';
 import dayjs from 'dayjs';
 import { BiArrowBack } from 'react-icons/bi';
 

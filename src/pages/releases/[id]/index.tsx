@@ -1,4 +1,4 @@
-import { HStack, Stack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import { EnrichedRelease } from 'types';

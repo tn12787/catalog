@@ -8,7 +8,7 @@ import {
   AlertDialogOverlay,
   AlertDialogProps,
 } from '@chakra-ui/modal';
-import { Button, toast, useToast } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 

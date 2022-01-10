@@ -11,7 +11,7 @@ import {
 import { ReleaseType } from '@prisma/client';
 import { NextApiRequest } from 'next';
 
-import { requiresAuth, requiresTeamMembership } from 'backend/apiUtils/decorators/auth';
+import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { PathParam } from 'backend/apiUtils/decorators/routing';

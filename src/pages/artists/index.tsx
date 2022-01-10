@@ -11,9 +11,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import PageHead from 'components/PageHead';
 
-interface Props {}
-
-const Artists = (props: Props) => {
+const Artists = () => {
   const { bgPrimary } = useAppColors();
   const { currentTeam, teams } = useExtendedSession();
   const { data: artists, isLoading } = useQuery(['artists', currentTeam], () =>

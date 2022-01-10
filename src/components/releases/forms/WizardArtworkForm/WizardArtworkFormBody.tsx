@@ -1,5 +1,5 @@
 import { Stack, Flex, Button, Image, HStack, Text, ButtonGroup } from '@chakra-ui/react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { Controller, useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';

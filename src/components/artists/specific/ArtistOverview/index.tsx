@@ -1,8 +1,6 @@
 import React from 'react';
 
-interface Props {}
-
-const ArtistOverview = (props: Props) => {
+const ArtistOverview = () => {
   return <div>Overview</div>;
 };
 

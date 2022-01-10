@@ -20,7 +20,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
-  const onEmailPassSubmit = async ({ email, password }: LoginData) => {
+  const onEmailPassSubmit = async ({}: LoginData) => {
     try {
       setLoading(true);
       // const user = await signIn(email, password);

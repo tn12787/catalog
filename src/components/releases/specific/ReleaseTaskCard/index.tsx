@@ -1,4 +1,4 @@
-import { Flex, Heading, Badge, Stack, Text } from '@chakra-ui/layout';
+import { Flex, Heading, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 

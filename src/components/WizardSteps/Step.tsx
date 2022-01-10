@@ -1,4 +1,4 @@
-import { Box, Circle, Stack, useColorModeValue, Text, HStack, Flex } from '@chakra-ui/react';
+import { Box, Circle, useColorModeValue, Text, HStack, Flex } from '@chakra-ui/react';
 import * as React from 'react';
 
 interface StepProps {
