@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
+import { ReleaseTaskType } from '@prisma/client';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
@@ -38,6 +39,9 @@ const HeaderSection = ({ releaseData }: Props) => {
 
   const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
 
+  const artworkUrl = releaseData.tasks.find((task) => task.type === ReleaseTaskType.ARTWORK)
+    ?.artworkData?.url;
+
   return (
     <Stack width={['100%', '100%', '90%']} maxWidth={'container.lg'} alignItems="center">
       <Flex position="relative" overflow="hidden" w="100%">
@@ -48,7 +52,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           objectFit="cover"
           width="100%"
           alt="album art"
-          src={releaseData.artwork?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
+          src={artworkUrl || 'https://semantic-ui.com/images/wireframe/image.png'}
         />
         <Box
           position="absolute"

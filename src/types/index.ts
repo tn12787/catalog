@@ -1,39 +1,28 @@
 import {
-  Distributor,
-  TaskStatus,
   Artist as PrismaArtist,
   Role,
   Permission,
   Team,
   TeamMember,
   User,
+  ReleaseTask,
+  ArtworkData,
+  DistributionData,
+  MarketingData,
+  MasteringData,
+  MusicVideoData,
+  Release,
+  Distributor,
 } from '@prisma/client';
 
 interface DataModel {
   id: string;
 }
 
-interface BaseRelease extends DataModel {
-  [key: string]: any;
-  targetDate: Date | string;
-  name: string;
-  type: ReleaseType;
-}
-
-export interface Release extends BaseRelease {
-  artist: string;
-  artwork: string;
-  distribution: string;
-  mastering?: string;
-  musicVideo?: string;
-}
-
-export interface EnrichedRelease extends BaseRelease {
+export interface EnrichedRelease extends Omit<Release, 'targetDate'> {
   artist: Artist;
-  artwork?: Artwork;
-  distribution?: Distribution;
-  mastering?: Mastering;
-  musicVideo?: MusicVideo;
+  targetDate: string | Date;
+  tasks: EnrichedReleaseTask[];
 }
 
 export enum ReleaseType {
@@ -54,41 +43,21 @@ export interface Contact extends DataModel {
 
 export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
 
-export interface ReleaseTask extends DataModel {
-  [key: string]: any;
-  dueDate: Date | string;
-  status: TaskStatus;
+export type EnrichedReleaseTask = ReleaseTask & {
   assignees: User[];
-  notes?: string;
-  calendarEventId?: string;
-}
-
-export interface Distribution extends ReleaseTask {
-  distributor: Distributor;
-}
-
-interface OutSourceableReleaseTask extends ReleaseTask {
-  completedBy?: string;
-}
-
-export interface Artwork extends OutSourceableReleaseTask {
-  url: string;
-}
-
-export interface Mastering extends OutSourceableReleaseTask {
-  url: string;
-}
-
-export interface MusicVideo extends OutSourceableReleaseTask {
-  url: string;
-}
+  artworkData: ArtworkData | null;
+  distributionData: (DistributionData & { distributor: Distributor }) | null;
+  marketingData: MarketingData | null;
+  musicVideoData: MusicVideoData | null;
+  masteringData: MasteringData | null;
+};
 
 export interface ReleaseEvent {
   name: string;
   date: string;
   type: EventType;
   release: EnrichedRelease;
-  data: ReleaseTask;
+  data: EnrichedReleaseTask;
 }
 
 export enum EventType {

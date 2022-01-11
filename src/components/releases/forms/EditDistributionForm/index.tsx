@@ -1,6 +1,7 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { EditDistributionFormData } from '../../specific/Distribution/types';
 
@@ -81,14 +82,18 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
     }
   };
 
+  const distributionInfo = releaseData.tasks.find(
+    (item) => item.type === ReleaseTaskType.DISTRIBUTION
+  );
+
   return (
     <Stack flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <Heading>{releaseData.distribution ? 'Edit' : 'Add'} Distribution</Heading>
-        <Text>{releaseData.distribution ? 'Edit' : 'Add'} info about the distributor.</Text>
+        <Heading>{distributionInfo ? 'Edit' : 'Add'} Distribution</Heading>
+        <Text>{distributionInfo ? 'Edit' : 'Add'} info about the distributor.</Text>
         <EditDistributionFormBody
           existingRelease={releaseData}
-          onSubmit={releaseData.distribution ? onUpdate : onCreate}
+          onSubmit={distributionInfo ? onUpdate : onCreate}
           loading={createLoading || updateLoading}
         />
       </Stack>

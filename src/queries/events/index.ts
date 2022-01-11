@@ -41,7 +41,7 @@ export const updateEventInCalendar = async ({
     case EventType.DISTRIBUTION:
       return axios.put(`/api/releases/${event.release.id}/distribution`, {
         ...event.data,
-        distributor: event.data.distributor.id,
+        distributor: event.data.distributionData?.id,
         dueDate: targetDate,
       });
     case EventType.MASTERING:

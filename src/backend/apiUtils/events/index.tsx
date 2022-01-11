@@ -1,10 +1,13 @@
-import { EnrichedRelease, EventType, ReleaseEvent } from 'types';
+import { ReleaseTaskType } from '@prisma/client';
+import { InternalServerErrorException } from '@storyofams/next-api-decorators';
+
+import { EnrichedRelease, EnrichedReleaseTask, EventType, ReleaseEvent } from 'types';
 
 export const getEventsForRelease = (
   release: EnrichedRelease,
   includeBaseRelease = true
 ): ReleaseEvent[] => {
-  return [
+  const allEvents = [
     includeBaseRelease && {
       name: release.name,
       date: release.targetDate,
@@ -12,44 +15,57 @@ export const getEventsForRelease = (
       release,
       data: release,
     },
-    release.artwork?.dueDate && {
-      name: `${release.name}: artwork`,
-      date: release.artwork.dueDate,
-      type: EventType.ARTWORK,
-      data: release.artwork,
-      release,
-    },
-    release.distribution?.dueDate && {
-      name: `${release.name}: distribution`,
-      date: release.distribution.dueDate,
-      type: EventType.DISTRIBUTION,
-      data: release.distribution,
-      release,
-    },
-    release.musicVideo && {
-      name: `${release.name}: musicVideo`,
-      date: release.musicVideo.dueDate,
-      type: EventType.MUSIC_VIDEO,
-      data: release.musicVideo,
-      release,
-    },
-    release.mastering && {
-      name: `${release.name}: mastering`,
-      date: release.mastering.dueDate,
-      type: EventType.MASTERING,
-      data: release.mastering,
-      release,
-    },
-    release.marketing && {
-      name: `${release.name}: marketing`,
-      date: release.marketing.dueDate,
-      type: EventType.MARKETING,
-      data: release.marketing,
-      release,
-    },
-  ]
-    .filter(Boolean)
-    .sort((a, b) => {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-    });
+    ...release.tasks.map((task) => taskToEvent(release, task)),
+  ].filter(Boolean) as ReleaseEvent[];
+
+  return allEvents.sort((a, b) => {
+    return new Date(a.date).getTime() - new Date(b.date).getTime();
+  });
+};
+
+const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): ReleaseEvent => {
+  switch (task.type) {
+    case ReleaseTaskType.ARTWORK:
+      return {
+        name: `${release.name}: artwork`,
+        date: task.dueDate?.toISOString() ?? '',
+        type: EventType.ARTWORK,
+        data: task,
+        release: release,
+      };
+    case ReleaseTaskType.DISTRIBUTION:
+      return {
+        name: `${release.name}: distribution`,
+        date: task.dueDate?.toISOString() ?? '',
+        type: EventType.DISTRIBUTION,
+        data: task,
+        release: release,
+      };
+    case ReleaseTaskType.MARKETING:
+      return {
+        name: `${release.name}: marketing`,
+        date: task.dueDate?.toISOString() ?? '',
+        type: EventType.MARKETING,
+        data: task,
+        release: release,
+      };
+    case ReleaseTaskType.MASTERING:
+      return {
+        name: `${release.name}: mastering`,
+        date: task.dueDate?.toISOString() ?? '',
+        type: EventType.MASTERING,
+        data: task,
+        release: release,
+      };
+    case ReleaseTaskType.MUSIC_VIDEO:
+      return {
+        name: `${release.name}: music video`,
+        date: task.dueDate?.toISOString() ?? '',
+        type: EventType.MUSIC_VIDEO,
+        data: task,
+        release: release,
+      };
+    default:
+      throw new InternalServerErrorException();
+  }
 };

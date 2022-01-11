@@ -164,6 +164,11 @@ const Releases = () => {
               targetDate: new Date().toISOString(),
               name: 'Loading',
               type: ReleaseType.ALBUM,
+              artistId: 'blank_id',
+              tasks: [],
+              teamId: 'loading',
+              createdAt: new Date(),
+              updatedAt: new Date(),
             }}
             loading
           />

@@ -1,6 +1,7 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { EditMusicVideoFormData } from '../../specific/MusicVideo/types';
 
@@ -81,14 +82,16 @@ const EditMusicVideoForm = ({ releaseData, onSubmitSuccess }: Props) => {
     }
   };
 
+  const musicVideo = releaseData.tasks.find((item) => item.type === ReleaseTaskType.MUSIC_VIDEO);
+
   return (
     <Stack flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <Heading>{releaseData.musicvideo ? 'Edit' : 'Add'} MusicVideo</Heading>
-        <Text>{releaseData.musicvideo ? 'Edit' : 'Add'} information about release musicvideo.</Text>
+        <Heading>{musicVideo ? 'Edit' : 'Add'} Music Video</Heading>
+        <Text>{musicVideo ? 'Edit' : 'Add'} information about release musicvideo.</Text>
         <EditMusicVideoFormBody
           existingRelease={releaseData}
-          onSubmit={releaseData.musicvideo ? onUpdate : onCreate}
+          onSubmit={musicVideo ? onUpdate : onCreate}
           loading={createLoading || updateLoading}
         />
       </Stack>

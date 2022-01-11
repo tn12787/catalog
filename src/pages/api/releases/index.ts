@@ -57,7 +57,7 @@ class ReleaseListHandler {
         take: pageSize,
         include: {
           artist: { select: { id: true, name: true } },
-          artwork: { select: { url: true } },
+          tasks: { include: { artworkData: true } },
         },
         orderBy: sortBy
           ? {
@@ -68,7 +68,10 @@ class ReleaseListHandler {
       prisma.release.count(commonArgs),
     ]);
 
-    return { total: totalCount, results: releases };
+    return {
+      total: totalCount,
+      results: releases,
+    };
   }
 
   @Post()

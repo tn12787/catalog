@@ -7,6 +7,7 @@ import { Image } from '@chakra-ui/image';
 import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { FiChevronDown } from 'react-icons/fi';
 import { useDisclosure } from '@chakra-ui/hooks';
+import { ReleaseTaskType } from '@prisma/client';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
@@ -32,6 +33,8 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
   const { currentTeam, teams } = useExtendedSession();
   const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
 
+  const artworkTask = releaseData.tasks.find((task) => task.type === ReleaseTaskType.ARTWORK);
+
   return (
     <Flex
       overflow="hidden"
@@ -46,7 +49,9 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
     >
       <Skeleton isLoaded={!loading} w={{ base: '100%', md: 'auto' }}>
         <Image
-          src={releaseData.artwork?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
+          src={
+            artworkTask?.artworkData?.url || 'https://semantic-ui.com/images/wireframe/image.png'
+          }
           alt="this is an image"
           width={{ base: '100%', md: '170px' }}
           minW={{ base: '100%', md: '170px' }}

@@ -1,6 +1,5 @@
 import { createHandler, Get, NotFoundException } from '@storyofams/next-api-decorators';
 
-import { EnrichedRelease } from 'types';
 import { getEventsForRelease } from 'backend/apiUtils/events';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
@@ -29,7 +28,7 @@ class SpecificReleaseEventsHandler {
 
     if (!release) throw new NotFoundException();
 
-    return getEventsForRelease(release);
+    return getEventsForRelease(release as any);
   }
 }
 

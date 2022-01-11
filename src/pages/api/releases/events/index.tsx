@@ -9,28 +9,30 @@ import { EnrichedRelease } from 'types';
 class ReleaseListHandler {
   @Get()
   async releaseEvents(@Query('team') team: string, @Query('assignee') assignee: string) {
+    const where = assignee
+      ? {
+          AND: [
+            { team: { id: team } },
+            {
+              tasks: { some: { assignees: { some: { id: assignee } } } },
+            },
+          ],
+        }
+      : { team: { id: team } };
     const releases = await prisma.release.findMany({
-      where: {
-        AND: [
-          { team: { id: team } },
-          {
-            OR: [
-              { artwork: { assignees: { some: { id: assignee } } } },
-              { distribution: { assignees: { some: { id: assignee } } } },
-              { musicVideo: { assignees: { some: { id: assignee } } } },
-              { mastering: { assignees: { some: { id: assignee } } } },
-              { marketing: { assignees: { some: { id: assignee } } } },
-            ],
-          },
-        ],
-      },
+      where,
       include: {
         artist: true,
-        artwork: { include: { assignees: true } },
-        distribution: { include: { assignees: true, distributor: true } },
-        musicVideo: { include: { assignees: true } },
-        mastering: { include: { assignees: true } },
-        marketing: { include: { assignees: true } },
+        tasks: {
+          include: {
+            assignees: true,
+            artworkData: true,
+            distributionData: true,
+            musicVideoData: true,
+            masteringData: true,
+            marketingData: true,
+          },
+        },
       },
     });
 
