@@ -19,6 +19,7 @@ class ReleaseListHandler {
           ],
         }
       : { team: { id: team } };
+
     const releases = await prisma.release.findMany({
       where,
       include: {
@@ -36,7 +37,14 @@ class ReleaseListHandler {
       },
     });
 
-    return releases.map((item) => getEventsForRelease(item as EnrichedRelease, !assignee)).flat();
+    return releases
+      .map((item) => getEventsForRelease(item as EnrichedRelease, !assignee))
+      .flat()
+      .filter((item) => {
+        if (!assignee) return true;
+
+        return item.data.assignees?.some((taskAssignee) => taskAssignee.id === assignee);
+      });
   }
 }
 

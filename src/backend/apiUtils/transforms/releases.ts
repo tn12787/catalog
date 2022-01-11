@@ -23,7 +23,7 @@ export const flattenField = (release: EnrichedRelease, type: ReleaseTaskType) =>
   const task = release.tasks.find(({ type: taskType }) => taskType === type);
   switch (type) {
     case ReleaseTaskType.ARTWORK:
-      return task?.artworkData ? flattenArtworkData(task) : undefined;
+      return flattenArtworkData(task);
     case ReleaseTaskType.DISTRIBUTION:
       return flattenDistributionData(task);
     case ReleaseTaskType.MARKETING:
@@ -37,13 +37,23 @@ export const flattenField = (release: EnrichedRelease, type: ReleaseTaskType) =>
   }
 };
 
+export const stripDbFields = (task: EnrichedReleaseTask) => {
+  return omit(task, [
+    'artworkData',
+    'distributionData',
+    'masteringData',
+    'marketingData',
+    'musicVideoData',
+  ]);
+};
+
 export const flattenArtworkData = (task?: EnrichedReleaseTask): ClientRelease['artwork'] => {
   if (!task?.artworkData || task.type !== ReleaseTaskType.ARTWORK) {
     return undefined;
   }
 
   return {
-    ...task,
+    ...stripDbFields(task),
     url: task.artworkData?.url,
   };
 };
@@ -56,7 +66,8 @@ export const flattenDistributionData = (
   }
 
   return {
-    ...task,
+    ...stripDbFields(task),
+    distributorId: task.distributionData?.distributorId,
     distributor: task.distributionData?.distributor,
   };
 };
@@ -67,7 +78,7 @@ export const flattenMasteringData = (task?: EnrichedReleaseTask): ClientRelease[
   }
 
   return {
-    ...task,
+    ...stripDbFields(task),
     url: task.masteringData?.url,
   };
 };
@@ -78,7 +89,7 @@ export const flattenMusicVideoData = (task?: EnrichedReleaseTask): ClientRelease
   }
 
   return {
-    ...task,
+    ...stripDbFields(task),
     url: task.musicVideoData?.url,
   };
 };
@@ -89,7 +100,7 @@ export const flattenMarketingData = (task?: EnrichedReleaseTask): ClientRelease[
   }
 
   return {
-    ...task,
+    ...stripDbFields(task),
     links: task.marketingData?.links ?? [],
   };
 };

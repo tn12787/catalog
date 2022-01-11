@@ -15,7 +15,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
-import { ReleaseTaskType } from '@prisma/client';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
@@ -39,8 +38,7 @@ const HeaderSection = ({ releaseData }: Props) => {
 
   const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
 
-  const artworkUrl = releaseData.tasks.find((task) => task.type === ReleaseTaskType.ARTWORK)
-    ?.artworkData?.url;
+  const artworkUrl = releaseData.artwork?.url;
 
   return (
     <Stack width={['100%', '100%', '90%']} maxWidth={'container.lg'} alignItems="center">

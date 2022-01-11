@@ -9,7 +9,7 @@ import { TaskStatus, User } from '@prisma/client';
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { ClientRelease, EnrichedReleaseTask, EventType } from 'types';
+import { ClientRelease, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';

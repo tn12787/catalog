@@ -12,7 +12,7 @@ import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
-  existingRelease?: EnrichedRelease;
+  existingRelease?: ClientRelease;
   onSubmitSuccess?: () => void;
 }
 

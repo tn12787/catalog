@@ -34,8 +34,8 @@ class SingleReleaseHandler {
           include: {
             assignees: true,
             artworkData: true,
-            distributionData: true,
-            marketingData: true,
+            distributionData: { include: { distributor: true } },
+            marketingData: { include: { links: true } },
             musicVideoData: true,
             masteringData: true,
           },

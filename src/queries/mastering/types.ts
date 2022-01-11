@@ -1,8 +1,9 @@
-import { Mastering } from 'types';
+import { ClientMastering } from 'types';
 
-export interface MasteringVars extends Pick<Mastering, 'dueDate' | 'status' | 'notes' | 'url'> {
+export interface MasteringVars extends Pick<ClientMastering, 'status' | 'notes' | 'url'> {
   releaseId: string;
   assignees: string[];
+  dueDate: string | Date;
 }
 
 export type CreateMasteringVars = MasteringVars;

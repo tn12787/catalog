@@ -19,7 +19,7 @@ import { Artist } from '@prisma/client';
 
 import ReleaseCard from 'components/releases/ReleaseCard';
 import DashboardLayout from 'components/layouts/DashboardLayout';
-import { EnrichedRelease, ReleaseType } from 'types';
+import { ClientRelease, ReleaseType } from 'types';
 import { fetchReleases } from 'queries/releases';
 import useDebounce from 'hooks/useDebounce';
 import ReleaseList from 'components/releases/ReleaseList';
@@ -37,7 +37,7 @@ interface SortBySelectOption<T> {
   value: SortByOptions<T>;
 }
 
-const sortOptions: SortBySelectOption<EnrichedRelease>[] = [
+const sortOptions: SortBySelectOption<ClientRelease>[] = [
   {
     label: 'Release Date (asc)',
     value: {
@@ -70,7 +70,7 @@ const sortOptions: SortBySelectOption<EnrichedRelease>[] = [
 
 const Releases = () => {
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<SortBySelectOption<EnrichedRelease>>(sortOptions[0]);
+  const [sortBy, setSortBy] = useState<SortBySelectOption<ClientRelease>>(sortOptions[0]);
 
   const { currentTeam, teams } = useExtendedSession();
 
@@ -165,7 +165,6 @@ const Releases = () => {
               name: 'Loading',
               type: ReleaseType.ALBUM,
               artistId: 'blank_id',
-              tasks: [],
               teamId: 'loading',
               createdAt: new Date(),
               updatedAt: new Date(),

@@ -16,7 +16,7 @@ import { deleteSingleRelease } from 'queries/releases';
 import { ClientRelease } from 'types';
 
 interface Props extends Omit<AlertDialogProps, 'children' | 'leastDestructiveRef'> {
-  releaseData?: EnrichedRelease;
+  releaseData?: ClientRelease;
   onCancel: () => void;
   onConfirm: () => void;
 }

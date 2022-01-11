@@ -6,7 +6,7 @@ import Table from 'components/Table';
 import { ClientRelease } from 'types';
 
 interface Props {
-  releases: EnrichedRelease[];
+  releases: ClientRelease[];
 }
 
 const ReleaseTable = ({ releases }: Props) => {

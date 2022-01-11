@@ -3,7 +3,7 @@ import { CreateDistributionVars } from '../distribution/types';
 
 import { ClientRelease } from 'types';
 
-export interface SingleReleaseVars extends Pick<EnrichedRelease, 'name' | 'id' | 'type'> {
+export interface SingleReleaseVars extends Pick<ClientRelease, 'name' | 'id' | 'type'> {
   artist: string;
   targetDate: Date;
 }

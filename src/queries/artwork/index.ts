@@ -3,13 +3,13 @@ import cuid from 'cuid';
 
 import { CreateArtworkVars, UpdateArtworkVars } from './types';
 
-import { Artwork } from 'types';
+import { ClientArtwork } from 'types';
 import firebase from 'firebase-details';
 
 export const updateSingleArtwork = async ({
   releaseId,
   ...rest
-}: UpdateArtworkVars): Promise<Artwork | void> => {
+}: UpdateArtworkVars): Promise<ClientArtwork | void> => {
   if (!releaseId) return Promise.reject();
 
   const { data: response } = await axios.patch(`/api/releases/${releaseId}/artwork`, {
@@ -21,14 +21,14 @@ export const updateSingleArtwork = async ({
 export const createSingleArtwork = async ({
   releaseId,
   ...rest
-}: CreateArtworkVars): Promise<Artwork | void> => {
+}: CreateArtworkVars): Promise<ClientArtwork | void> => {
   const { data: response } = await axios.post(`/api/releases/${releaseId}/artwork`, {
     ...rest,
   });
   return response;
 };
 
-export const deleteSingleArtwork = async (releaseId: string): Promise<Artwork | void> => {
+export const deleteSingleArtwork = async (releaseId: string): Promise<ClientArtwork | void> => {
   const { data: response } = await axios.delete(`/api/releases/${releaseId}/artwork`);
   return response;
 };

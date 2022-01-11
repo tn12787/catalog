@@ -1,4 +1,3 @@
-import { ReleaseType } from '@prisma/client';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class UpdateArtistDto {
@@ -12,7 +11,7 @@ export class UpdateArtistDto {
   spotifyUrl?: string;
 
   @IsOptional()
-  instagramUrl?: ReleaseType;
+  instagramUrl?: string;
 
   @IsNotEmpty()
   legalName: string;

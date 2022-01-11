@@ -20,31 +20,42 @@ interface DataModel {
   id: string;
 }
 
+export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
+  dueDate: string | Date;
+}
+
 export type ReleaseTaskWithAssignees = ReleaseTask & {
   assignees: User[];
 };
 
-export interface EnrichedRelease extends Omit<Release, 'targetDate'> {
+export interface EnrichedRelease extends Release {
   artist: Partial<Artist>;
-  targetDate: string | Date;
+
   tasks: EnrichedReleaseTask[];
 }
 
-export interface ClientRelease extends Omit<EnrichedRelease, 'tasks'> {
+export interface ClientRelease extends Omit<EnrichedRelease, 'tasks' | 'targetDate'> {
   artwork?: ReleaseTaskWithAssignees & Omit<ArtworkData, 'taskId'>;
   distribution?: ReleaseTaskWithAssignees &
     Omit<DistributionData, 'taskId'> & { distributor?: Distributor };
   marketing?: ReleaseTaskWithAssignees & Omit<MarketingData, 'taskId'> & { links: MarketingLink[] };
   mastering?: ReleaseTaskWithAssignees & Omit<MasteringData, 'taskId'>;
   musicVideo?: ReleaseTaskWithAssignees & Omit<MusicVideoData, 'taskId'>;
+  targetDate: string | Date;
 }
 
+export type ClientArtwork = Required<ClientRelease>['artwork'];
+export type ClientDistribution = Required<ClientRelease>['distribution'];
+export type ClientMarketing = Required<ClientRelease>['marketing'];
+export type ClientMastering = Required<ClientRelease>['mastering'];
+export type ClientMusicVideo = Required<ClientRelease>['musicVideo'];
+
 export type ClientReleaseTaskData =
-  | ClientRelease['artwork']
-  | ClientRelease['distribution']
-  | ClientRelease['mastering']
-  | ClientRelease['marketing']
-  | ClientRelease['musicVideo'];
+  | ClientArtwork
+  | ClientDistribution
+  | ClientMarketing
+  | ClientMastering
+  | ClientMusicVideo;
 
 export enum ReleaseType {
   SINGLE = 'Single',
@@ -67,6 +78,7 @@ export type EnrichedReleaseTask = ReleaseTask & {
   marketingData: (MarketingData & { links?: MarketingLink[] }) | null;
   musicVideoData: MusicVideoData | null;
   masteringData: MasteringData | null;
+  dueDate: Date | null;
 };
 
 export interface ReleaseEvent {

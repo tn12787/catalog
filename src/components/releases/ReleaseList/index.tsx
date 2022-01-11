@@ -11,7 +11,7 @@ import { hasRequiredPermissions } from 'utils/auth';
 
 interface Props {
   search: string;
-  releases: EnrichedRelease[] | undefined;
+  releases: ClientRelease[] | undefined;
 }
 
 const ReleaseList = ({ search, releases }: Props) => {

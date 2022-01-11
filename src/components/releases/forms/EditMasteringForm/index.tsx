@@ -1,7 +1,6 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { ReleaseTaskType } from '@prisma/client';
 
 import { EditMasteringFormData } from '../../specific/Mastering/types';
 
@@ -82,7 +81,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
     }
   };
 
-  const masteringTask = releaseData.tasks.find((item) => item.type === ReleaseTaskType.MASTERING);
+  const masteringTask = releaseData.mastering;
 
   return (
     <Stack flex={1} align="center" direction="column" width="100%" height="100%">

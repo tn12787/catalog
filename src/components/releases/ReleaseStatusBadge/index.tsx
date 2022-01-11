@@ -8,8 +8,8 @@ interface Props {
 }
 
 const ReleaseStatusBadge = ({ releaseData }: Props) => {
-  const deriveProps = (releaseData: EnrichedRelease) => {
-    if (!['artist', 'distribution'].every((item) => releaseData[item])) {
+  const deriveProps = (releaseData: ClientRelease) => {
+    if (!['artist', 'distribution'].every((item) => releaseData.hasOwnProperty(item))) {
       return { label: 'Incomplete', color: 'yellow' };
     } else if (new Date(releaseData.targetDate).getTime() < Date.now()) {
       return { label: 'Available', color: 'green' };

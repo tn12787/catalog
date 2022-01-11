@@ -4,7 +4,7 @@ import { InternalServerErrorException } from '@storyofams/next-api-decorators';
 import { flattenField } from '../transforms/releases';
 
 import {
-  ClientRelease,
+  ClientReleaseTaskData,
   EnrichedRelease,
   EnrichedReleaseTask,
   EventType,
@@ -36,41 +36,41 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
     case ReleaseTaskType.ARTWORK:
       return {
         name: `${release.name}: artwork`,
-        date: task.dueDate?.toISOString() ?? '',
+        date: (task.dueDate as Date)?.toISOString() ?? '',
         type: EventType.ARTWORK,
-        data: flattenField(release, ReleaseTaskType.ARTWORK) as ClientRelease['artwork'],
+        data: flattenField(release, ReleaseTaskType.ARTWORK) as ClientReleaseTaskData,
         release: release,
       };
     case ReleaseTaskType.DISTRIBUTION:
       return {
         name: `${release.name}: distribution`,
-        date: task.dueDate?.toISOString() ?? '',
+        date: (task.dueDate as Date)?.toISOString() ?? '',
         type: EventType.DISTRIBUTION,
-        data: flattenField(release, ReleaseTaskType.DISTRIBUTION) as ClientRelease['distribution'],
+        data: flattenField(release, ReleaseTaskType.DISTRIBUTION) as ClientReleaseTaskData,
         release: release,
       };
     case ReleaseTaskType.MARKETING:
       return {
         name: `${release.name}: marketing`,
-        date: task.dueDate?.toISOString() ?? '',
+        date: (task.dueDate as Date)?.toISOString() ?? '',
         type: EventType.MARKETING,
-        data: flattenField(release, ReleaseTaskType.MARKETING) as ClientRelease['marketing'],
+        data: flattenField(release, ReleaseTaskType.MARKETING) as ClientReleaseTaskData,
         release: release,
       };
     case ReleaseTaskType.MASTERING:
       return {
         name: `${release.name}: mastering`,
-        date: task.dueDate?.toISOString() ?? '',
+        date: (task.dueDate as Date)?.toISOString() ?? '',
         type: EventType.MASTERING,
-        data: flattenField(release, ReleaseTaskType.MARKETING) as ClientRelease['mastering'],
+        data: flattenField(release, ReleaseTaskType.MARKETING) as ClientReleaseTaskData,
         release: release,
       };
     case ReleaseTaskType.MUSIC_VIDEO:
       return {
         name: `${release.name}: music video`,
-        date: task.dueDate?.toISOString() ?? '',
+        date: (task.dueDate as Date)?.toISOString() ?? '',
         type: EventType.MUSIC_VIDEO,
-        data: flattenField(release, ReleaseTaskType.MUSIC_VIDEO) as ClientRelease['musicVideo'],
+        data: flattenField(release, ReleaseTaskType.MUSIC_VIDEO) as ClientReleaseTaskData,
         release: release,
       };
     default:

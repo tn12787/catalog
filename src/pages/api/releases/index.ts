@@ -10,7 +10,7 @@ import {
   Request,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { Release, ReleaseType } from '@prisma/client';
+import { Release, ReleaseType, ReleaseTaskType } from '@prisma/client';
 import { pickBy } from 'lodash';
 import { NextApiRequest } from 'next';
 import { omit } from 'lodash';
@@ -99,6 +99,7 @@ class ReleaseListHandler {
       body.artwork && {
         ...omit(body.artwork, 'url'),
         assignees: transformAssigneesToPrismaQuery(body.artwork.assignees, true),
+        type: ReleaseTaskType.ARTWORK,
         artworkData: {
           create: {
             url: body.artwork.url,
@@ -107,6 +108,7 @@ class ReleaseListHandler {
       },
       body.distribution && {
         ...omit(body.distribution, 'distributor'),
+        type: ReleaseTaskType.DISTRIBUTION,
         assignees: transformAssigneesToPrismaQuery(body.distribution.assignees, true),
         distributionData: {
           create: { distributor: { connect: { id: body.distribution.distributor } } },

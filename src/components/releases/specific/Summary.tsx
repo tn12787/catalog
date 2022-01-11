@@ -38,7 +38,7 @@ export interface SummaryField {
   hidden?: boolean;
 }
 
-const fields = (releaseData: EnrichedRelease): SummaryField[] => [
+const fields = (releaseData: ClientRelease): SummaryField[] => [
   {
     name: 'Artist',
     content: (

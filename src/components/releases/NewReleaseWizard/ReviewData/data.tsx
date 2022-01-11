@@ -1,5 +1,6 @@
 import React from 'react';
 import { Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { User } from '@prisma/client';
 
 import { EditDistributionFormData } from '../../specific/Distribution/types';
 import { EditArtworkFormData } from '../../specific/Artwork/types';
@@ -9,7 +10,7 @@ import { ReviewConfigItem } from './types';
 import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
 import { basicInfoConfig } from 'components/releases/forms/NewReleaseForm/releaseConfig';
 import { AssigneeList, StatusBadge } from 'components/ReleaseTaskTable/columns';
-import { ReleaseTask } from 'types';
+import { ClientReleaseTask } from 'types';
 
 export const renderReviewData = <
   T extends BasicInfoFormData | EditArtworkFormData | EditDistributionFormData
@@ -45,7 +46,7 @@ export const basicInfoDataConfig: ReviewConfigItem<BasicInfoFormData>[] = basicI
 );
 
 export const baseReviewConfig: ReviewConfigItem<
-  Pick<ReleaseTask, 'assignees' | 'status' | 'dueDate' | 'notes'>
+  Pick<ClientReleaseTask & { assignees: User[] }, 'assignees' | 'status' | 'dueDate' | 'notes'>
 >[] = [
   {
     key: 'assignees',

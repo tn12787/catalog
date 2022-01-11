@@ -15,7 +15,7 @@ export const fetchArtists = async (teamId: string): Promise<Artist[]> => {
 export const fetchSingleArtist = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
-  return await axios.get<Artist & { releases: EnrichedRelease[] }>(`/api/artists/${id}`);
+  return await axios.get<Artist & { releases: ClientRelease[] }>(`/api/artists/${id}`);
 };
 
 export const createSingleArtist = async ({
