@@ -5,13 +5,13 @@ import NextImage from 'next/image';
 
 import profilePic from 'images/no-releases-yet.svg';
 import ReleaseCard from 'components/releases/ReleaseCard';
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 
 interface Props {
   search: string;
-  releases: EnrichedRelease[] | undefined;
+  releases: ClientRelease[] | undefined;
 }
 
 const ReleaseList = ({ search, releases }: Props) => {

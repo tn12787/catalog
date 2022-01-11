@@ -6,11 +6,11 @@ import { EventList } from './EventList';
 import { EventListItem } from './EventListItem';
 
 import Card from 'components/Card';
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { fetchSpecificReleaseEvents } from 'queries/events';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 const Events = ({ releaseData }: Props) => {

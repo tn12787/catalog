@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react';
 import React from 'react';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import withReleaseData from 'HOCs/withReleaseData';
 import Artwork from 'components/releases/specific/Artwork';
 import Distribution from 'components/releases/specific/Distribution';
@@ -16,7 +16,7 @@ import Mastering from 'components/releases/specific/Mastering';
 import MusicVideo from 'components/releases/specific/MusicVideo';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 const SpecificRelease = ({ releaseData }: Props) => {

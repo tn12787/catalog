@@ -9,6 +9,7 @@ import {
 } from '@storyofams/next-api-decorators';
 import { pickBy, isNil, pick } from 'lodash';
 import { NextApiRequest } from 'next';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -45,18 +46,23 @@ class ReleaseListHandler {
               })),
             }
           : undefined,
-        url: body.url,
         dueDate: body.dueDate,
       },
       (v) => v !== undefined
     );
 
-    const result = await prisma.artwork.create({
+    const result = await prisma.releaseTask.create({
       data: {
         ...optionalArgs,
         release: { connect: { id } },
         status: body.status,
         notes: body.notes,
+        type: ReleaseTaskType.ARTWORK,
+        artworkData: {
+          create: {
+            url: body.url,
+          },
+        },
       },
     });
     return result;
@@ -79,13 +85,21 @@ class ReleaseListHandler {
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const updateArgs = {
-      ...pick(body, ['status', 'notes', 'dueDate', 'url']),
+      ...pick(body, ['status', 'notes', 'dueDate']),
       assignees: transformAssigneesToPrismaQuery(body.assignees),
+      artworkData: {
+        update: {
+          url: body.url,
+        },
+      },
     };
 
-    const result = await prisma.artwork.update({
+    const result = await prisma.releaseTask.update({
       where: {
-        releaseId: id,
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.ARTWORK,
+        },
       },
       data: pickBy(updateArgs, (v) => !isNil(v)),
     });
@@ -103,9 +117,12 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
-    const result = await prisma.artwork.delete({
+    const result = await prisma.releaseTask.delete({
       where: {
-        releaseId: id,
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.ARTWORK,
+        },
       },
     });
     return result;

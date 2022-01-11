@@ -31,8 +31,8 @@ const ArtworkReview = ({ data }: Props) => {
             borderRadius="md"
             border="1px solid"
             borderColor={border}
-            src={data.url}
-            alt="artowrkImage"
+            src={data.url as string}
+            alt="artworkImage"
           ></Image>
         </HStack>
       ),

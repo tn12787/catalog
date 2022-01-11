@@ -9,6 +9,7 @@ import {
 } from '@storyofams/next-api-decorators';
 import { pickBy, isNil, pick } from 'lodash';
 import { NextApiRequest } from 'next';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -45,15 +46,20 @@ class MusicVideoHandler {
               })),
             }
           : undefined,
-        url: body.url,
         dueDate: body.dueDate,
       },
       (v) => v !== undefined
     );
 
-    const result = await prisma.musicVideo.create({
+    const result = await prisma.releaseTask.create({
       data: {
         ...optionalArgs,
+        type: ReleaseTaskType.MUSIC_VIDEO,
+        musicVideoData: {
+          create: {
+            url: body.url,
+          },
+        },
         release: { connect: { id } },
         status: body.status,
         notes: body.notes,
@@ -79,13 +85,21 @@ class MusicVideoHandler {
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const updateArgs = {
-      ...pick(body, ['url', 'dueDate', 'notes', 'status']),
+      ...pick(body, ['dueDate', 'notes', 'status']),
       assignees: transformAssigneesToPrismaQuery(body.assignees),
+      musicVideoData: {
+        update: {
+          url: body.url,
+        },
+      },
     };
 
-    const result = await prisma.musicVideo.update({
+    const result = await prisma.releaseTask.update({
       where: {
-        releaseId: id,
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.MUSIC_VIDEO,
+        },
       },
       data: pickBy(updateArgs, (v) => !isNil(v)),
     });
@@ -103,9 +117,12 @@ class MusicVideoHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
-    const result = await prisma.musicVideo.delete({
+    const result = await prisma.releaseTask.delete({
       where: {
-        releaseId: id,
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.MUSIC_VIDEO,
+        },
       },
     });
     return result;

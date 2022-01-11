@@ -14,14 +14,14 @@ import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
 import ReleaseType from './ReleaseType';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 
 interface ReleaseCardProps {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
   loading?: boolean;
 }
 
@@ -31,6 +31,8 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
 
   const { currentTeam, teams } = useExtendedSession();
   const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
+
+  const artworkTask = releaseData.artwork;
 
   return (
     <Flex
@@ -46,7 +48,7 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
     >
       <Skeleton isLoaded={!loading} w={{ base: '100%', md: 'auto' }}>
         <Image
-          src={releaseData.artwork?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
+          src={artworkTask?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
           alt="this is an image"
           width={{ base: '100%', md: '170px' }}
           minW={{ base: '100%', md: '170px' }}

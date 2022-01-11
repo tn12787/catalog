@@ -1,49 +1,66 @@
 import {
-  Distributor,
-  TaskStatus,
-  Artist as PrismaArtist,
   Role,
   Permission,
   Team,
   TeamMember,
   User,
+  ReleaseTask,
+  ArtworkData,
+  DistributionData,
+  MarketingData,
+  MasteringData,
+  MusicVideoData,
+  Release,
+  Distributor,
+  MarketingLink,
+  Artist,
 } from '@prisma/client';
 
 interface DataModel {
   id: string;
 }
 
-interface BaseRelease extends DataModel {
-  [key: string]: any;
-  targetDate: Date | string;
-  name: string;
-  type: ReleaseType;
+export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
+  dueDate: string | Date;
 }
 
-export interface Release extends BaseRelease {
-  artist: string;
-  artwork: string;
-  distribution: string;
-  mastering?: string;
-  musicVideo?: string;
+export type ReleaseTaskWithAssignees = ReleaseTask & {
+  assignees: User[];
+};
+
+export interface EnrichedRelease extends Release {
+  artist: Partial<Artist>;
+
+  tasks: EnrichedReleaseTask[];
 }
 
-export interface EnrichedRelease extends BaseRelease {
-  artist: Artist;
-  artwork?: Artwork;
-  distribution?: Distribution;
-  mastering?: Mastering;
-  musicVideo?: MusicVideo;
+export interface ClientRelease extends Omit<EnrichedRelease, 'tasks' | 'targetDate'> {
+  artwork?: ReleaseTaskWithAssignees & Omit<ArtworkData, 'taskId'>;
+  distribution?: ReleaseTaskWithAssignees &
+    Omit<DistributionData, 'taskId'> & { distributor?: Distributor };
+  marketing?: ReleaseTaskWithAssignees & Omit<MarketingData, 'taskId'> & { links: MarketingLink[] };
+  mastering?: ReleaseTaskWithAssignees & Omit<MasteringData, 'taskId'>;
+  musicVideo?: ReleaseTaskWithAssignees & Omit<MusicVideoData, 'taskId'>;
+  targetDate: string | Date;
 }
+
+export type ClientArtwork = Required<ClientRelease>['artwork'];
+export type ClientDistribution = Required<ClientRelease>['distribution'];
+export type ClientMarketing = Required<ClientRelease>['marketing'];
+export type ClientMastering = Required<ClientRelease>['mastering'];
+export type ClientMusicVideo = Required<ClientRelease>['musicVideo'];
+
+export type ClientReleaseTaskData =
+  | ClientArtwork
+  | ClientDistribution
+  | ClientMarketing
+  | ClientMastering
+  | ClientMusicVideo;
 
 export enum ReleaseType {
   SINGLE = 'Single',
   EP = 'EP',
   ALBUM = 'Album',
-}
-
-export interface Artist extends PrismaArtist {
-  name: string;
 }
 
 export interface Contact extends DataModel {
@@ -54,41 +71,22 @@ export interface Contact extends DataModel {
 
 export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
 
-export interface ReleaseTask extends DataModel {
-  [key: string]: any;
-  dueDate: Date | string;
-  status: TaskStatus;
+export type EnrichedReleaseTask = ReleaseTask & {
   assignees: User[];
-  notes?: string;
-  calendarEventId?: string;
-}
-
-export interface Distribution extends ReleaseTask {
-  distributor: Distributor;
-}
-
-interface OutSourceableReleaseTask extends ReleaseTask {
-  completedBy?: string;
-}
-
-export interface Artwork extends OutSourceableReleaseTask {
-  url: string;
-}
-
-export interface Mastering extends OutSourceableReleaseTask {
-  url: string;
-}
-
-export interface MusicVideo extends OutSourceableReleaseTask {
-  url: string;
-}
+  artworkData: ArtworkData | null;
+  distributionData: (DistributionData & { distributor?: Distributor }) | null;
+  marketingData: (MarketingData & { links?: MarketingLink[] }) | null;
+  musicVideoData: MusicVideoData | null;
+  masteringData: MasteringData | null;
+  dueDate: Date | null;
+};
 
 export interface ReleaseEvent {
   name: string;
   date: string;
   type: EventType;
   release: EnrichedRelease;
-  data: ReleaseTask;
+  data: ClientReleaseTaskData;
 }
 
 export enum EventType {

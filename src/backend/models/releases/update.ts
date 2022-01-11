@@ -1,12 +1,14 @@
 import { ReleaseType } from '@prisma/client';
 import { IsNotEmpty, IsDate, IsEnum } from 'class-validator';
 
+import { ReleaseType as ReleaseTypeEnum } from 'types';
+
 export class UpdateReleaseDto {
   @IsNotEmpty()
   name: string;
 
   @IsNotEmpty()
-  @IsEnum(ReleaseType)
+  @IsEnum(ReleaseTypeEnum)
   type: ReleaseType;
 
   @IsNotEmpty()

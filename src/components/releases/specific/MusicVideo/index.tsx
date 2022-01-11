@@ -11,7 +11,7 @@ import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import EditMusicVideoForm from 'components/releases/forms/EditMusicVideoForm';
-import { EnrichedRelease, EventType } from 'types';
+import { ClientRelease, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
@@ -20,38 +20,38 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
-const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
-  const isComplete = releaseData.musicVideo?.status === TaskStatus.COMPLETE;
+const buildFields = (musicVideoInfo: ClientRelease['musicVideo'] | undefined): SummaryField[] => {
+  const isComplete = musicVideoInfo?.status === TaskStatus.COMPLETE;
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={releaseData?.musicVideo?.assignees as User[]} />,
+      content: <AssigneeBadgeList assignees={musicVideoInfo?.assignees as User[]} />,
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={releaseData.musicVideo?.status as TaskStatus} />,
+      content: <ReleaseTaskBadge status={musicVideoInfo?.status as TaskStatus} />,
     },
-    releaseData.musicVideo?.dueDate && {
+    musicVideoInfo?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: <Text fontSize="sm">{dayjs.utc(releaseData.musicVideo?.dueDate).format('LL')}</Text>,
+      content: <Text fontSize="sm">{dayjs.utc(musicVideoInfo.dueDate).format('LL')}</Text>,
     },
   ].filter(Boolean) as SummaryField[];
 };
 
 const MusicVideo = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const musicVideoInfo = releaseData.musicVideo;
   return (
     <>
       <ReleaseTaskCard
         heading={'🎥 Music Video '}
         onEditClick={onOpen}
-        fields={buildFields(releaseData)}
+        fields={buildFields(musicVideoInfo)}
         taskType={EventType.MUSIC_VIDEO}
-        data={releaseData.musicVideo}
+        data={musicVideoInfo}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>

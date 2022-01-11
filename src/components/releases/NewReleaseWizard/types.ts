@@ -2,11 +2,11 @@ import { BasicInfoFormData } from '../forms/NewReleaseForm/types';
 import { EditArtworkFormData } from '../specific/Artwork/types';
 import { EditDistributionFormData } from '../specific/Distribution/types';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 export interface ReleaseWizardComponentProps<T> {
   onSubmit: (data: T) => void;
-  existingRelease?: EnrichedRelease;
+  existingRelease?: ClientRelease;
   isSkippable?: boolean;
   canGoBack?: boolean;
   onSkip?: (key: ReleaseWizardKey) => void;

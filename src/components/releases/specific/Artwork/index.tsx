@@ -11,7 +11,7 @@ import { SummaryField } from '../Summary';
 import EditArtworkForm from '../../forms/EditArtworkForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { EnrichedRelease, EventType } from 'types';
+import { ClientRelease, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
@@ -20,23 +20,23 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
-const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
-  const isComplete = releaseData.artwork?.status === TaskStatus.COMPLETE;
+const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): SummaryField[] => {
+  const isComplete = artworkTask?.status === TaskStatus.COMPLETE;
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={releaseData?.artwork?.assignees as User[]} />,
+      content: <AssigneeBadgeList assignees={artworkTask?.assignees as User[]} />,
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={releaseData.artwork?.status as TaskStatus} />,
+      content: <ReleaseTaskBadge status={artworkTask?.status as TaskStatus} />,
     },
-    releaseData.artwork?.dueDate && {
+    artworkTask?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: <Text fontSize="sm">{dayjs.utc(releaseData.artwork?.dueDate).format('LL')}</Text>,
+      content: <Text fontSize="sm">{dayjs.utc(artworkTask?.dueDate).format('LL')}</Text>,
     },
   ].filter(Boolean) as SummaryField[];
 };
@@ -44,14 +44,15 @@ const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
 const Artwork = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const artworkTask = releaseData.artwork;
   return (
     <>
       <ReleaseTaskCard
         heading={'🎨 Artwork '}
         onEditClick={onOpen}
-        fields={buildFields(releaseData)}
+        fields={buildFields(artworkTask)}
         taskType={EventType.ARTWORK}
-        data={releaseData.artwork}
+        data={artworkTask}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>

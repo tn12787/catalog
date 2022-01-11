@@ -6,12 +6,12 @@ import { EditMasteringFormData } from '../../specific/Mastering/types';
 
 import EditMasteringFormBody from './EditMasteringFormBody';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { createSingleMastering, updateSingleMastering } from 'queries/mastering';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
   onSubmitSuccess?: () => void;
 }
 
@@ -81,14 +81,16 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
     }
   };
 
+  const masteringTask = releaseData.mastering;
+
   return (
     <Stack flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <Heading>{releaseData.mastering ? 'Edit' : 'Add'} Mastering</Heading>
-        <Text>{releaseData.mastering ? 'Edit' : 'Add'} information about release mastering.</Text>
+        <Heading>{masteringTask ? 'Edit' : 'Add'} Mastering</Heading>
+        <Text>{masteringTask ? 'Edit' : 'Add'} information about release mastering.</Text>
         <EditMasteringFormBody
           existingRelease={releaseData}
-          onSubmit={releaseData.mastering ? onUpdate : onCreate}
+          onSubmit={masteringTask ? onUpdate : onCreate}
           loading={createLoading || updateLoading}
         />
       </Stack>

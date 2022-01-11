@@ -1,19 +1,18 @@
 import { Stack, Text, useToast, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { useQueryClient, useMutation } from 'react-query';
+import 'firebase/storage';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
-
-import 'firebase/storage';
 
 import { EditArtworkFormData } from '../../specific/Artwork/types';
 
 import EditArtworkFormBody from './EditArtworkFormBody';
 
 import { createSingleArtwork, updateSingleArtwork, uploadImageToFirebase } from 'queries/artwork';
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 dayjs.extend(utc);
@@ -21,7 +20,7 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
   onSubmitSuccess?: () => void;
 }
 
@@ -98,6 +97,8 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
     }
   };
 
+  const artworkData = releaseData.artwork;
+
   return (
     <Stack flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
@@ -105,7 +106,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
         <Text>Edit your artwork task and tracking the status</Text>
         <EditArtworkFormBody
           existingRelease={releaseData}
-          onSubmit={releaseData.artwork ? onUpdate : onCreate}
+          onSubmit={artworkData ? onUpdate : onCreate}
           loading={createLoading || updateLoading}
         />
       </Stack>
