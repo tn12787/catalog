@@ -4,12 +4,12 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { ReleaseTaskType, TaskStatus, User } from '@prisma/client';
+import { TaskStatus, User } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { EnrichedRelease, EnrichedReleaseTask, EventType } from 'types';
+import { ClientRelease, EnrichedReleaseTask, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
@@ -19,10 +19,10 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
-const buildFields = (masteringInfo: EnrichedReleaseTask | undefined): SummaryField[] => {
+const buildFields = (masteringInfo: ClientRelease['mastering'] | undefined): SummaryField[] => {
   const isComplete = masteringInfo?.status === TaskStatus.COMPLETE;
   return [
     {
@@ -42,7 +42,7 @@ const buildFields = (masteringInfo: EnrichedReleaseTask | undefined): SummaryFie
 
 const Mastering = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const masteringInfo = releaseData.tasks.find((item) => item.type === ReleaseTaskType.MASTERING);
+  const masteringInfo = releaseData.mastering;
   return (
     <>
       <ReleaseTaskCard

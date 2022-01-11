@@ -1,5 +1,4 @@
 import {
-  Artist as PrismaArtist,
   Role,
   Permission,
   Team,
@@ -13,26 +12,44 @@ import {
   MusicVideoData,
   Release,
   Distributor,
+  MarketingLink,
+  Artist,
 } from '@prisma/client';
 
 interface DataModel {
   id: string;
 }
 
+export type ReleaseTaskWithAssignees = ReleaseTask & {
+  assignees: User[];
+};
+
 export interface EnrichedRelease extends Omit<Release, 'targetDate'> {
-  artist: Artist;
+  artist: Partial<Artist>;
   targetDate: string | Date;
   tasks: EnrichedReleaseTask[];
 }
+
+export interface ClientRelease extends Omit<EnrichedRelease, 'tasks'> {
+  artwork?: ReleaseTaskWithAssignees & Omit<ArtworkData, 'taskId'>;
+  distribution?: ReleaseTaskWithAssignees &
+    Omit<DistributionData, 'taskId'> & { distributor?: Distributor };
+  marketing?: ReleaseTaskWithAssignees & Omit<MarketingData, 'taskId'> & { links: MarketingLink[] };
+  mastering?: ReleaseTaskWithAssignees & Omit<MasteringData, 'taskId'>;
+  musicVideo?: ReleaseTaskWithAssignees & Omit<MusicVideoData, 'taskId'>;
+}
+
+export type ClientReleaseTaskData =
+  | ClientRelease['artwork']
+  | ClientRelease['distribution']
+  | ClientRelease['mastering']
+  | ClientRelease['marketing']
+  | ClientRelease['musicVideo'];
 
 export enum ReleaseType {
   SINGLE = 'Single',
   EP = 'EP',
   ALBUM = 'Album',
-}
-
-export interface Artist extends PrismaArtist {
-  name: string;
 }
 
 export interface Contact extends DataModel {
@@ -46,8 +63,8 @@ export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Com
 export type EnrichedReleaseTask = ReleaseTask & {
   assignees: User[];
   artworkData: ArtworkData | null;
-  distributionData: (DistributionData & { distributor: Distributor }) | null;
-  marketingData: MarketingData | null;
+  distributionData: (DistributionData & { distributor?: Distributor }) | null;
+  marketingData: (MarketingData & { links?: MarketingLink[] }) | null;
   musicVideoData: MusicVideoData | null;
   masteringData: MasteringData | null;
 };
@@ -57,7 +74,7 @@ export interface ReleaseEvent {
   date: string;
   type: EventType;
   release: EnrichedRelease;
-  data: EnrichedReleaseTask;
+  data: ClientReleaseTaskData;
 }
 
 export enum EventType {

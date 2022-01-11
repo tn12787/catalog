@@ -1,10 +1,10 @@
 import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 const ReleaseStatusBadge = ({ releaseData }: Props) => {

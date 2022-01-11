@@ -10,7 +10,7 @@ import { SummaryField } from '../Summary';
 import EditDistributionForm from '../../forms/EditDistributionForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { EnrichedRelease, EnrichedReleaseTask, EventType } from 'types';
+import { ClientRelease, EnrichedRelease, EnrichedReleaseTask, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
@@ -19,10 +19,12 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
-const buildFields = (distributionTask: EnrichedReleaseTask | undefined): SummaryField[] => {
+const buildFields = (
+  distributionTask: ClientRelease['distribution'] | undefined
+): SummaryField[] => {
   const isComplete = distributionTask?.status === TaskStatus.COMPLETE;
   return [
     {
@@ -35,7 +37,7 @@ const buildFields = (distributionTask: EnrichedReleaseTask | undefined): Summary
     },
     {
       name: 'Distributor',
-      content: <Text fontSize="sm">{distributionTask?.distributionData?.distributor?.name}</Text>,
+      content: <Text fontSize="sm">{distributionTask?.distributor?.name}</Text>,
     },
     {
       name: `${isComplete ? 'Original ' : ''}Due Date`,
@@ -46,9 +48,7 @@ const buildFields = (distributionTask: EnrichedReleaseTask | undefined): Summary
 
 const Distribution = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const distributionTask = releaseData.tasks.find(
-    (item) => item.type === ReleaseTaskType.DISTRIBUTION
-  );
+  const distributionTask = releaseData.distribution;
 
   return (
     <>

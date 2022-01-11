@@ -1,7 +1,15 @@
 import { ReleaseTaskType } from '@prisma/client';
 import { InternalServerErrorException } from '@storyofams/next-api-decorators';
 
-import { EnrichedRelease, EnrichedReleaseTask, EventType, ReleaseEvent } from 'types';
+import { flattenField } from '../transforms/releases';
+
+import {
+  ClientRelease,
+  EnrichedRelease,
+  EnrichedReleaseTask,
+  EventType,
+  ReleaseEvent,
+} from 'types';
 
 export const getEventsForRelease = (
   release: EnrichedRelease,
@@ -30,7 +38,7 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
         name: `${release.name}: artwork`,
         date: task.dueDate?.toISOString() ?? '',
         type: EventType.ARTWORK,
-        data: task,
+        data: flattenField(release, ReleaseTaskType.ARTWORK) as ClientRelease['artwork'],
         release: release,
       };
     case ReleaseTaskType.DISTRIBUTION:
@@ -38,7 +46,7 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
         name: `${release.name}: distribution`,
         date: task.dueDate?.toISOString() ?? '',
         type: EventType.DISTRIBUTION,
-        data: task,
+        data: flattenField(release, ReleaseTaskType.DISTRIBUTION) as ClientRelease['distribution'],
         release: release,
       };
     case ReleaseTaskType.MARKETING:
@@ -46,7 +54,7 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
         name: `${release.name}: marketing`,
         date: task.dueDate?.toISOString() ?? '',
         type: EventType.MARKETING,
-        data: task,
+        data: flattenField(release, ReleaseTaskType.MARKETING) as ClientRelease['marketing'],
         release: release,
       };
     case ReleaseTaskType.MASTERING:
@@ -54,7 +62,7 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
         name: `${release.name}: mastering`,
         date: task.dueDate?.toISOString() ?? '',
         type: EventType.MASTERING,
-        data: task,
+        data: flattenField(release, ReleaseTaskType.MARKETING) as ClientRelease['mastering'],
         release: release,
       };
     case ReleaseTaskType.MUSIC_VIDEO:
@@ -62,7 +70,7 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
         name: `${release.name}: music video`,
         date: task.dueDate?.toISOString() ?? '',
         type: EventType.MUSIC_VIDEO,
-        data: task,
+        data: flattenField(release, ReleaseTaskType.MUSIC_VIDEO) as ClientRelease['musicVideo'],
         release: release,
       };
     default:

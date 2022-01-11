@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FilterOptions, PaginatedQueryResult } from './../types';
 import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 export const fetchReleases = async ({
   team,
@@ -11,8 +11,8 @@ export const fetchReleases = async ({
   pagination,
   sorting,
   dates,
-}: FilterOptions<EnrichedRelease>) => {
-  const response = await axios.get<PaginatedQueryResult<EnrichedRelease>>(`/api/releases`, {
+}: FilterOptions<ClientRelease>) => {
+  const response = await axios.get<PaginatedQueryResult<ClientRelease>>(`/api/releases`, {
     params: {
       team,
       search,
@@ -31,13 +31,13 @@ export const fetchReleases = async ({
 export const fetchSingleRelease = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
-  return await axios.get<EnrichedRelease>(`/api/releases/${id}`);
+  return await axios.get<ClientRelease>(`/api/releases/${id}`);
 };
 
 export const updateBasicReleaseInfo = async ({
   id,
   ...rest
-}: SingleReleaseVars): Promise<EnrichedRelease | void> => {
+}: SingleReleaseVars): Promise<ClientRelease | void> => {
   if (!id) return Promise.reject();
 
   const { data: response } = await axios.put(`/api/releases/${id}`, {
@@ -48,14 +48,14 @@ export const updateBasicReleaseInfo = async ({
 
 export const createSingleRelease = async ({
   ...rest
-}: CreateSingleReleaseVars): Promise<EnrichedRelease | void> => {
+}: CreateSingleReleaseVars): Promise<ClientRelease | void> => {
   const { data: response } = await axios.post(`/api/releases`, {
     ...rest,
   });
   return response;
 };
 
-export const deleteSingleRelease = async (id: string): Promise<EnrichedRelease | void> => {
+export const deleteSingleRelease = async (id: string): Promise<ClientRelease | void> => {
   const { data: response } = await axios.delete(`/api/releases/${id}`);
   return response;
 };

@@ -5,7 +5,7 @@ import React from 'react';
 import { SummaryField } from '../Summary';
 
 import Card from 'components/Card';
-import { EnrichedReleaseTask } from 'types';
+import { ClientReleaseTaskData } from 'types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import { EventType } from 'types';
@@ -28,7 +28,7 @@ const mapTaskType = (taskType: EventType) => {
   }
 };
 
-const ReleaseTaskCard = <T extends EnrichedReleaseTask>({
+const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
   heading,
   onEditClick,
   data,

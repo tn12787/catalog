@@ -7,12 +7,12 @@ import { EditDistributionFormData } from '../../specific/Distribution/types';
 
 import EditDistributionFormBody from './EditDistributionFormBody';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { createSingleDistribution, updateSingleDistribution } from 'queries/distribution';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
   onSubmitSuccess?: () => void;
 }
 

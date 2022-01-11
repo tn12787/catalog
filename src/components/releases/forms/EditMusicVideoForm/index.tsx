@@ -7,12 +7,12 @@ import { EditMusicVideoFormData } from '../../specific/MusicVideo/types';
 
 import EditMusicVideoFormBody from './EditMusicVideoFormBody';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { createSingleMusicVideo, updateSingleMusicVideo } from 'queries/musicVideo';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
   onSubmitSuccess?: () => void;
 }
 

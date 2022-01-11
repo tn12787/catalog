@@ -3,10 +3,10 @@ import React from 'react';
 import { FiCalendar } from 'react-icons/fi';
 import { format, formatDistanceToNow } from 'date-fns';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 const ReleaseDate = ({ releaseData }: Props) => {

@@ -36,14 +36,7 @@ class ReleaseListHandler {
       },
     });
 
-    return releases
-      .map((item) => getEventsForRelease(item as EnrichedRelease, !assignee))
-      .flat()
-      .filter((item) => {
-        if (!assignee) return true;
-
-        return item.data.assignees.some((taskAssignee) => taskAssignee.id === assignee);
-      });
+    return releases.map((item) => getEventsForRelease(item as EnrichedRelease, !assignee)).flat();
   }
 }
 

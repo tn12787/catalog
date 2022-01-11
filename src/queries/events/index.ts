@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { ClientRelease } from './../../types/index';
 import { EventType } from './../../components/Calendar/types';
 
 import { ReleaseEvent } from 'types';
@@ -41,7 +42,7 @@ export const updateEventInCalendar = async ({
     case EventType.DISTRIBUTION:
       return axios.put(`/api/releases/${event.release.id}/distribution`, {
         ...event.data,
-        distributor: event.data.distributionData?.id,
+        distributor: (event.data as ClientRelease['distribution'])?.distributorId,
         dueDate: targetDate,
       });
     case EventType.MASTERING:

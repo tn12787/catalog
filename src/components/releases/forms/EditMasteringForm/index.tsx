@@ -7,12 +7,12 @@ import { EditMasteringFormData } from '../../specific/Mastering/types';
 
 import EditMasteringFormBody from './EditMasteringFormBody';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { createSingleMastering, updateSingleMastering } from 'queries/mastering';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
   onSubmitSuccess?: () => void;
 }
 

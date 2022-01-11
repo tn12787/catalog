@@ -4,14 +4,14 @@ import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
-import { ReleaseTaskType, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { TaskStatus } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import EditArtworkForm from '../../forms/EditArtworkForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { EnrichedRelease, EnrichedReleaseTask, EventType } from 'types';
+import { ClientRelease, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
@@ -20,10 +20,10 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
-const buildFields = (artworkTask: EnrichedReleaseTask | undefined): SummaryField[] => {
+const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): SummaryField[] => {
   const isComplete = artworkTask?.status === TaskStatus.COMPLETE;
   return [
     {
@@ -44,7 +44,7 @@ const buildFields = (artworkTask: EnrichedReleaseTask | undefined): SummaryField
 const Artwork = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const artworkTask = releaseData.tasks.find((item) => item.type === ReleaseTaskType.ARTWORK);
+  const artworkTask = releaseData.artwork;
   return (
     <>
       <ReleaseTaskCard

@@ -4,7 +4,7 @@ import { CellProps, Column } from 'react-table';
 import NextLink from 'next/link';
 import { format, formatDistanceToNow } from 'date-fns';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 interface UserCard {
   name: string;

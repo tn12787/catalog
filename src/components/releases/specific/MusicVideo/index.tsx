@@ -4,14 +4,14 @@ import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
-import { ReleaseTaskType, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { TaskStatus } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import EditMusicVideoForm from 'components/releases/forms/EditMusicVideoForm';
-import { EnrichedRelease, EnrichedReleaseTask, EventType } from 'types';
+import { ClientRelease, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
@@ -20,10 +20,10 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
-const buildFields = (musicVideoInfo: EnrichedReleaseTask | undefined): SummaryField[] => {
+const buildFields = (musicVideoInfo: ClientRelease['musicVideo'] | undefined): SummaryField[] => {
   const isComplete = musicVideoInfo?.status === TaskStatus.COMPLETE;
   return [
     {
@@ -43,9 +43,7 @@ const buildFields = (musicVideoInfo: EnrichedReleaseTask | undefined): SummaryFi
 
 const MusicVideo = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const musicVideoInfo = releaseData.tasks.find(
-    (item) => item.type === ReleaseTaskType.MUSIC_VIDEO
-  );
+  const musicVideoInfo = releaseData.musicVideo;
   return (
     <>
       <ReleaseTaskCard

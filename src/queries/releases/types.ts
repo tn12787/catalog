@@ -1,7 +1,7 @@
 import { CreateArtworkVars } from '../artwork/types';
 import { CreateDistributionVars } from '../distribution/types';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 export interface SingleReleaseVars extends Pick<EnrichedRelease, 'name' | 'id' | 'type'> {
   artist: string;

@@ -13,6 +13,7 @@ import {
 import { Release, ReleaseType } from '@prisma/client';
 import { pickBy } from 'lodash';
 import { NextApiRequest } from 'next';
+import { omit } from 'lodash';
 
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -20,6 +21,7 @@ import { CreateReleaseDto } from 'backend/models/releases/create';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -57,7 +59,16 @@ class ReleaseListHandler {
         take: pageSize,
         include: {
           artist: { select: { id: true, name: true } },
-          tasks: { include: { artworkData: true } },
+          tasks: {
+            include: {
+              assignees: true,
+              artworkData: true,
+              distributionData: { include: { distributor: true } },
+              masteringData: true,
+              marketingData: { include: { links: true } },
+              musicVideoData: true,
+            },
+          },
         },
         orderBy: sortBy
           ? {
@@ -70,7 +81,7 @@ class ReleaseListHandler {
 
     return {
       total: totalCount,
-      results: releases,
+      results: releases.map((release) => transformReleaseToApiShape(release)),
     };
   }
 
@@ -84,30 +95,24 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(req, ['CREATE_RELEASES'], team?.id);
 
-    console.log(body.distribution?.assignees?.[0]);
-
-    const optionalArgs = pickBy(
-      {
-        artwork: body.artwork
-          ? {
-              create: {
-                ...body.artwork,
-                assignees: transformAssigneesToPrismaQuery(body.artwork.assignees, true),
-              },
-            }
-          : undefined,
-        distribution: body.distribution
-          ? {
-              create: {
-                ...body.distribution,
-                assignees: transformAssigneesToPrismaQuery(body.distribution.assignees, true),
-                distributor: { connect: { id: body.distribution.distributor } },
-              },
-            }
-          : undefined,
+    const optionalArgs = [
+      body.artwork && {
+        ...omit(body.artwork, 'url'),
+        assignees: transformAssigneesToPrismaQuery(body.artwork.assignees, true),
+        artworkData: {
+          create: {
+            url: body.artwork.url,
+          },
+        },
       },
-      (v) => v !== undefined
-    );
+      body.distribution && {
+        ...omit(body.distribution, 'distributor'),
+        assignees: transformAssigneesToPrismaQuery(body.distribution.assignees, true),
+        distributionData: {
+          create: { distributor: { connect: { id: body.distribution.distributor } } },
+        },
+      },
+    ].filter(Boolean) as any; // TODO: Find a type for this
 
     const result = await prisma.release.create({
       data: {
@@ -118,7 +123,7 @@ class ReleaseListHandler {
         team: {
           connect: { id: body.team },
         },
-        ...optionalArgs,
+        tasks: { create: optionalArgs },
       },
     });
     return result;

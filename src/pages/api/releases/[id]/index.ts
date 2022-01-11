@@ -1,4 +1,3 @@
-import { omit } from 'lodash';
 import {
   Body,
   createHandler,
@@ -9,9 +8,10 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { ReleaseTaskType, ReleaseType } from '@prisma/client';
+import { ReleaseType } from '@prisma/client';
 import { NextApiRequest } from 'next';
 
+import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
@@ -43,14 +43,9 @@ class SingleReleaseHandler {
       },
     });
 
-    return {
-      ...omit(release, ['tasks']),
-      artwork: release?.tasks.find((task) => task.type === ReleaseTaskType.ARTWORK),
-      distribution: release?.tasks.find((task) => task.type === ReleaseTaskType.DISTRIBUTION),
-      marketing: release?.tasks.find((task) => task.type === ReleaseTaskType.MARKETING),
-      musicVideo: release?.tasks.find((task) => task.type === ReleaseTaskType.MUSIC_VIDEO),
-      mastering: release?.tasks.find((task) => task.type === ReleaseTaskType.MASTERING),
-    };
+    if (!release) throw new NotFoundException();
+
+    return transformReleaseToApiShape(release);
   }
 
   @Put()

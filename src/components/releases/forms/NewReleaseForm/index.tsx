@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { BasicInfoFormData } from './types';
 import NewReleaseFormBody from './NewReleaseFormBody';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { updateBasicReleaseInfo } from 'queries/releases';
 import { SingleReleaseVars } from 'queries/releases/types';
 import useAppColors from 'hooks/useAppColors';

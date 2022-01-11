@@ -15,14 +15,14 @@ import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
 import ReleaseType from './ReleaseType';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 
 interface ReleaseCardProps {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
   loading?: boolean;
 }
 

@@ -19,13 +19,13 @@ import { ReleaseTaskType } from '@prisma/client';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 const HeaderSection = ({ releaseData }: Props) => {
