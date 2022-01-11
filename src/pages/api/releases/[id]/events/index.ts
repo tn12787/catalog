@@ -28,7 +28,7 @@ class SpecificReleaseEventsHandler {
 
     if (!release) throw new NotFoundException();
 
-    return getEventsForRelease(release as any);
+    return getEventsForRelease(release);
   }
 }
 
