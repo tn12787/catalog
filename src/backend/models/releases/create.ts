@@ -1,6 +1,7 @@
 import { ReleaseType } from '@prisma/client';
 import { IsNotEmpty, IsDate, IsEnum, IsOptional, ValidateNested } from 'class-validator';
 
+import { ReleaseType as ReleaseTypeEnum } from 'types';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 
@@ -9,7 +10,7 @@ export class CreateReleaseDto {
   name: string;
 
   @IsNotEmpty()
-  @IsEnum(ReleaseType)
+  @IsEnum(ReleaseTypeEnum)
   type: ReleaseType;
 
   @IsNotEmpty()

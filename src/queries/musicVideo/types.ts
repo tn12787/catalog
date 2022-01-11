@@ -1,8 +1,9 @@
-import { MusicVideo } from 'types';
+import { ClientMusicVideo } from 'types';
 
-export interface MusicVideoVars extends Pick<MusicVideo, 'dueDate' | 'status' | 'notes' | 'url'> {
+export interface MusicVideoVars extends Pick<ClientMusicVideo, 'status' | 'notes' | 'url'> {
   releaseId: string;
   assignees: string[];
+  dueDate: string | Date;
 }
 
 export type CreateMusicVideoVars = MusicVideoVars;

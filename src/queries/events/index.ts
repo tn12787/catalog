@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { ClientRelease } from './../../types/index';
 import { EventType } from './../../components/Calendar/types';
 
 import { ReleaseEvent } from 'types';
@@ -34,29 +35,24 @@ export const updateEventInCalendar = async ({
         targetDate,
       });
     case EventType.ARTWORK:
-      return axios.put(`/api/releases/${event.release.id}/artwork`, {
-        ...event.data,
+      return axios.patch(`/api/releases/${event.release.id}/artwork`, {
         dueDate: targetDate,
       });
     case EventType.DISTRIBUTION:
-      return axios.put(`/api/releases/${event.release.id}/distribution`, {
-        ...event.data,
-        distributor: event.data.distributor.id,
+      return axios.patch(`/api/releases/${event.release.id}/distribution`, {
+        distributor: (event.data as ClientRelease['distribution'])?.distributorId,
         dueDate: targetDate,
       });
     case EventType.MASTERING:
-      return axios.put(`/api/releases/${event.release.id}/mastering`, {
-        ...event.data,
+      return axios.patch(`/api/releases/${event.release.id}/mastering`, {
         dueDate: targetDate,
       });
     case EventType.MUSIC_VIDEO:
-      return axios.put(`/api/releases/${event.release.id}/musicVideo`, {
-        ...event.data,
+      return axios.patch(`/api/releases/${event.release.id}/musicVideo`, {
         dueDate: targetDate,
       });
     case EventType.MARKETING:
-      return axios.put(`/api/releases/${event.release.id}/marketing`, {
-        ...event.data,
+      return axios.patch(`/api/releases/${event.release.id}/marketing`, {
         dueDate: targetDate,
       });
   }

@@ -6,12 +6,12 @@ import { EditMusicVideoFormData } from '../../specific/MusicVideo/types';
 
 import EditMusicVideoFormBody from './EditMusicVideoFormBody';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { createSingleMusicVideo, updateSingleMusicVideo } from 'queries/musicVideo';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
   onSubmitSuccess?: () => void;
 }
 
@@ -81,14 +81,16 @@ const EditMusicVideoForm = ({ releaseData, onSubmitSuccess }: Props) => {
     }
   };
 
+  const musicVideo = releaseData.musicVideo;
+
   return (
     <Stack flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <Heading>{releaseData.musicvideo ? 'Edit' : 'Add'} MusicVideo</Heading>
-        <Text>{releaseData.musicvideo ? 'Edit' : 'Add'} information about release musicvideo.</Text>
+        <Heading>{musicVideo ? 'Edit' : 'Add'} Music Video</Heading>
+        <Text>{musicVideo ? 'Edit' : 'Add'} information about release musicvideo.</Text>
         <EditMusicVideoFormBody
           existingRelease={releaseData}
-          onSubmit={releaseData.musicvideo ? onUpdate : onCreate}
+          onSubmit={musicVideo ? onUpdate : onCreate}
           loading={createLoading || updateLoading}
         />
       </Stack>

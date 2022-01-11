@@ -1,7 +1,8 @@
+import { ReleaseTask } from '@prisma/client';
 import firebase from 'firebase';
 
 import { initClient } from 'firebase-details';
-import { Release, ReleaseTask } from 'types';
+import { ClientRelease } from 'types';
 
 export const listUserCalendars = async () => {
   const calendars = await gapi.client.calendar.calendarList.list();
@@ -28,7 +29,7 @@ export const updateCalendarEvent = async (data: gapi.client.calendar.Event) => {
   });
 };
 
-export const buildReleaseEventDescription = (data: Release): string => {
+export const buildReleaseEventDescription = (data: ClientRelease): string => {
   return `
     <h3>Info</h3>
     <ul>
@@ -47,14 +48,14 @@ export const buildReleaseTaskEventDescription = <T extends ReleaseTask>(data: T)
 };
 
 export const createOrUpdateReleaseEvent = async (
-  data: Release,
+  data: ClientRelease,
   refToUpdate: firebase.firestore.DocumentReference,
   existingEventId?: string
 ) => {
   const calendarData = {
     start: { date: (data.targetDate as Date).toISOString() },
     end: { date: (data.targetDate as Date).toISOString() },
-    summary: `${data.name}: Final Release`,
+    summary: `${data.name}: Final ClientRelease`,
     description: buildReleaseEventDescription(data),
   };
   if (existingEventId) {

@@ -12,6 +12,8 @@ import {
 } from '@storyofams/next-api-decorators';
 import { NextApiRequest } from 'next';
 
+import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
+import { EnrichedRelease } from 'types';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
@@ -28,9 +30,17 @@ class ArtistHandler {
       where: {
         id,
       },
-      include: { releases: { include: { artwork: true } } },
+      include: { releases: { include: { tasks: { include: { artworkData: true } } } } },
     });
-    return artist;
+
+    if (!artist) throw new NotFoundException();
+
+    return {
+      ...artist,
+      releases: artist.releases.map((release) =>
+        transformReleaseToApiShape(release as EnrichedRelease)
+      ),
+    };
   }
 
   @Put()

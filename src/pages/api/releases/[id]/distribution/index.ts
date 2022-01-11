@@ -9,6 +9,7 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { NextApiRequest } from 'next';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -46,10 +47,11 @@ class ReleaseListHandler {
         }
       : {};
 
-    const result = await prisma.distribution.create({
+    const result = await prisma.releaseTask.create({
       data: {
         ...optionalArgs,
-        distributor: { connect: { id: body.distributor } },
+        type: ReleaseTaskType.DISTRIBUTION,
+        distributionData: { create: { distributor: { connect: { id: body.distributor } } } },
         release: { connect: { id } },
         status: body.status,
         notes: body.notes,
@@ -78,12 +80,19 @@ class ReleaseListHandler {
     const updatedData = {
       ...pick(body, ['status', 'notes', 'dueDate']),
       assignees: transformAssigneesToPrismaQuery(body.assignees),
-      distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
+      distributionData: {
+        update: {
+          distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
+        },
+      },
     };
 
-    const result = await prisma.distribution.update({
+    const result = await prisma.releaseTask.update({
       where: {
-        releaseId: id,
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.DISTRIBUTION,
+        },
       },
       data: pickBy(updatedData, (v) => !isNil(v)),
     });
@@ -102,9 +111,12 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
-    const result = await prisma.distribution.delete({
+    const result = await prisma.releaseTask.delete({
       where: {
-        releaseId: id,
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.DISTRIBUTION,
+        },
       },
     });
     return result;

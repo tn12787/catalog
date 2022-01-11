@@ -11,6 +11,7 @@ import {
 import { ReleaseType } from '@prisma/client';
 import { NextApiRequest } from 'next';
 
+import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
@@ -29,15 +30,22 @@ class SingleReleaseHandler {
       },
       include: {
         artist: true,
-        artwork: { include: { assignees: true } },
-        distribution: { include: { assignees: true, distributor: true } },
-        marketing: { include: { assignees: true } },
-        musicVideo: { include: { assignees: true } },
-        mastering: { include: { assignees: true } },
+        tasks: {
+          include: {
+            assignees: true,
+            artworkData: true,
+            distributionData: { include: { distributor: true } },
+            marketingData: { include: { links: true } },
+            musicVideoData: true,
+            masteringData: true,
+          },
+        },
       },
     });
 
-    return release;
+    if (!release) throw new NotFoundException();
+
+    return transformReleaseToApiShape(release);
   }
 
   @Put()

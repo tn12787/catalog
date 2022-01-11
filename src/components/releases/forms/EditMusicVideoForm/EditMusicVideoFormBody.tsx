@@ -21,8 +21,8 @@ const EditMusicVideoFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditMusicVideoFormData>) => {
   const formattedDueDate = useMemo(
-    () => dayjs(existingRelease?.musicvideo?.dueDate).format('YYYY-MM-DD'),
-    [existingRelease?.musicvideo?.dueDate]
+    () => dayjs(existingRelease?.musicVideo?.dueDate).format('YYYY-MM-DD'),
+    [existingRelease?.musicVideo?.dueDate]
   );
 
   const {
@@ -32,9 +32,9 @@ const EditMusicVideoFormBody = ({
     reset,
     control,
   } = useForm<EditMusicVideoFormData>({
-    defaultValues: existingRelease?.musicvideo
+    defaultValues: existingRelease?.musicVideo
       ? {
-          ...existingRelease?.musicvideo,
+          ...existingRelease?.musicVideo,
           dueDate: formattedDueDate,
         }
       : {},
@@ -42,10 +42,10 @@ const EditMusicVideoFormBody = ({
 
   useEffect(() => {
     reset({
-      ...existingRelease?.musicvideo,
+      ...existingRelease?.musicVideo,
       dueDate: formattedDueDate,
     });
-  }, [existingRelease?.musicvideo, formattedDueDate, reset]);
+  }, [existingRelease?.musicVideo, formattedDueDate, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">

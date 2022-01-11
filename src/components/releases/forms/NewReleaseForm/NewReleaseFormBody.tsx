@@ -4,6 +4,7 @@ import { FiArrowRight, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { useQuery } from 'react-query';
+import { ReleaseType } from '@prisma/client';
 
 import { ReleaseWizardComponentProps } from '../../NewReleaseWizard/types';
 
@@ -38,6 +39,7 @@ const NewReleaseFormBody = ({
   } = useForm<BasicInfoFormData>({
     defaultValues: {
       ...existingRelease,
+      type: existingRelease?.type as ReleaseType,
       artist: existingRelease?.artistId,
       targetDate: properDateFormat,
     },

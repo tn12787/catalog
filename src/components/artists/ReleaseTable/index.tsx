@@ -3,10 +3,10 @@ import React from 'react';
 import { teamMembersColumns } from './columns';
 
 import Table from 'components/Table';
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 interface Props {
-  releases: EnrichedRelease[];
+  releases: ClientRelease[];
 }
 
 const ReleaseTable = ({ releases }: Props) => {

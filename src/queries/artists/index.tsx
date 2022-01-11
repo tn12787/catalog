@@ -3,7 +3,7 @@ import { Artist } from '@prisma/client';
 
 import { CreateSingleArtistVars, SingleArtistVars } from './types';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 export const fetchArtists = async (teamId: string): Promise<Artist[]> => {
   const { data } = await axios.get(`/api/artists`, {
@@ -15,7 +15,7 @@ export const fetchArtists = async (teamId: string): Promise<Artist[]> => {
 export const fetchSingleArtist = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
-  return await axios.get<Artist & { releases: EnrichedRelease[] }>(`/api/artists/${id}`);
+  return await axios.get<Artist & { releases: ClientRelease[] }>(`/api/artists/${id}`);
 };
 
 export const createSingleArtist = async ({

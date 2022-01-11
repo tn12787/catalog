@@ -5,13 +5,13 @@ import { useQuery } from 'react-query';
 
 import { LayoutablePage } from './types';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { fetchSingleRelease } from 'queries/releases';
 import NotFound from 'components/releases/specific/NotFound';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface ComponentWithReleaseData {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 const withReleaseData = <T extends ComponentWithReleaseData>(Component: LayoutablePage<T>) => {

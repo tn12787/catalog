@@ -9,7 +9,7 @@ import { TaskStatus, User } from '@prisma/client';
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { EnrichedRelease, EventType } from 'types';
+import { ClientRelease, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
@@ -19,38 +19,38 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
-const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
-  const isComplete = releaseData.mastering?.status === TaskStatus.COMPLETE;
+const buildFields = (masteringInfo: ClientRelease['mastering'] | undefined): SummaryField[] => {
+  const isComplete = masteringInfo?.status === TaskStatus.COMPLETE;
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={releaseData?.mastering?.assignees as User[]} />,
+      content: <AssigneeBadgeList assignees={masteringInfo?.assignees as User[]} />,
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={releaseData.mastering?.status as TaskStatus} />,
+      content: <ReleaseTaskBadge status={masteringInfo?.status as TaskStatus} />,
     },
-    releaseData.mastering?.dueDate && {
+    masteringInfo?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: <Text fontSize="sm">{dayjs.utc(releaseData.mastering?.dueDate).format('LL')}</Text>,
+      content: <Text fontSize="sm">{dayjs.utc(masteringInfo.dueDate).format('LL')}</Text>,
     },
   ].filter(Boolean) as SummaryField[];
 };
 
 const Mastering = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const masteringInfo = releaseData.mastering;
   return (
     <>
       <ReleaseTaskCard
         heading={'🎚️ Mastering '}
         onEditClick={onOpen}
-        fields={buildFields(releaseData)}
+        fields={buildFields(masteringInfo)}
         taskType={EventType.MASTERING}
-        data={releaseData.mastering}
+        data={masteringInfo}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>

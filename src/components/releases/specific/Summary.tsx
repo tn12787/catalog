@@ -18,7 +18,7 @@ import React from 'react';
 
 import NewReleaseForm from '../forms/NewReleaseForm';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import Card from 'components/Card';
 import useExtendedSession from 'hooks/useExtendedSession';
@@ -29,7 +29,7 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 export interface SummaryField {
@@ -38,7 +38,7 @@ export interface SummaryField {
   hidden?: boolean;
 }
 
-const fields = (releaseData: EnrichedRelease): SummaryField[] => [
+const fields = (releaseData: ClientRelease): SummaryField[] => [
   {
     name: 'Artist',
     content: (

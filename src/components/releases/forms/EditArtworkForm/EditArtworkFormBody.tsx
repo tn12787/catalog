@@ -62,7 +62,7 @@ const EditArtworkFormBody = ({
               src={
                 (watchedAlbumArt as File[])?.length
                   ? URL.createObjectURL((watchedAlbumArt as File[])[0])
-                  : existingRelease?.artwork?.url
+                  : existingRelease?.artwork?.url || ''
               }
             />
           )}

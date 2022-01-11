@@ -18,13 +18,13 @@ import { FiArrowLeft } from 'react-icons/fi';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 import { hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 const HeaderSection = ({ releaseData }: Props) => {
@@ -38,6 +38,8 @@ const HeaderSection = ({ releaseData }: Props) => {
 
   const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
 
+  const artworkUrl = releaseData.artwork?.url;
+
   return (
     <Stack width={['100%', '100%', '90%']} maxWidth={'container.lg'} alignItems="center">
       <Flex position="relative" overflow="hidden" w="100%">
@@ -48,7 +50,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           objectFit="cover"
           width="100%"
           alt="album art"
-          src={releaseData.artwork?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
+          src={artworkUrl || 'https://semantic-ui.com/images/wireframe/image.png'}
         />
         <Box
           position="absolute"

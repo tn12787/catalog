@@ -9,6 +9,7 @@ import {
 } from '@storyofams/next-api-decorators';
 import { NextApiRequest } from 'next';
 import { pick, pickBy, isNil } from 'lodash';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -45,15 +46,16 @@ class MasteringHandler {
               })),
             }
           : undefined,
-        url: body.url,
         dueDate: body.dueDate,
       },
       (v) => v !== undefined
     );
 
-    const result = await prisma.mastering.create({
+    const result = await prisma.releaseTask.create({
       data: {
         ...optionalArgs,
+        type: ReleaseTaskType.MASTERING,
+        masteringData: { create: { url: body.url } },
         release: { connect: { id } },
         status: body.status,
         notes: body.notes,
@@ -79,13 +81,21 @@ class MasteringHandler {
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
     const updateArgs = {
-      ...pick(body, ['url', 'dueDate', 'notes', 'status']),
+      ...pick(body, ['dueDate', 'notes', 'status']),
       assignees: transformAssigneesToPrismaQuery(body.assignees),
+      masteringData: {
+        update: {
+          url: body.url,
+        },
+      },
     };
 
-    const result = await prisma.mastering.update({
+    const result = await prisma.releaseTask.update({
       where: {
-        releaseId: id,
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.MASTERING,
+        },
       },
       data: pickBy(updateArgs, (v) => !isNil(v)),
     });
@@ -103,9 +113,12 @@ class MasteringHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
 
-    const result = await prisma.mastering.delete({
+    const result = await prisma.releaseTask.delete({
       where: {
-        releaseId: id,
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.MASTERING,
+        },
       },
     });
     return result;

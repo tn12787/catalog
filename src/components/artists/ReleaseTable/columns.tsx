@@ -4,15 +4,15 @@ import { CellProps, Column } from 'react-table';
 import NextLink from 'next/link';
 import { format, formatDistanceToNow } from 'date-fns';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 interface UserCard {
   name: string;
-  photo?: string;
+  photo?: string | null;
   id: string;
 }
 
-export const teamMembersColumns: Column<EnrichedRelease>[] = [
+export const teamMembersColumns: Column<ClientRelease>[] = [
   {
     Header: 'Artwork',
     accessor: (d) => ({ artwork: d.artwork?.url }),
@@ -23,7 +23,7 @@ export const teamMembersColumns: Column<EnrichedRelease>[] = [
   },
   {
     Header: 'Name',
-    accessor: (d: EnrichedRelease): UserCard => ({
+    accessor: (d: ClientRelease): UserCard => ({
       name: d.name,
       photo: d.artwork?.url,
       id: d.id,

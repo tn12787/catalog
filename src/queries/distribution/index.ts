@@ -3,12 +3,12 @@ import { Distributor } from '@prisma/client';
 
 import { UpdateDistributionVars, CreateDistributionVars } from './types';
 
-import { Distribution } from 'types';
+import { ClientDistribution } from 'types';
 
 export const updateSingleDistribution = async ({
   releaseId,
   ...rest
-}: UpdateDistributionVars): Promise<Distribution | void> => {
+}: UpdateDistributionVars): Promise<ClientDistribution | void> => {
   if (!releaseId) return Promise.reject();
 
   const { data: response } = await axios.patch(`/api/releases/${releaseId}/distribution`, {
@@ -20,14 +20,16 @@ export const updateSingleDistribution = async ({
 export const createSingleDistribution = async ({
   releaseId,
   ...rest
-}: CreateDistributionVars): Promise<Distribution | void> => {
+}: CreateDistributionVars): Promise<ClientDistribution | void> => {
   const { data: response } = await axios.post(`/api/releases/${releaseId}/distribution`, {
     ...rest,
   });
   return response;
 };
 
-export const deleteSingleDistribution = async (releaseId: string): Promise<Distribution | void> => {
+export const deleteSingleDistribution = async (
+  releaseId: string
+): Promise<ClientDistribution | void> => {
   const { data: response } = await axios.delete(`/api/releases/${releaseId}/distribution`);
   return response;
 };

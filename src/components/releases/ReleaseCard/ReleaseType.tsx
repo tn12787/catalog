@@ -2,10 +2,10 @@ import { HStack, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FiDisc } from 'react-icons/fi';
 
-import { EnrichedRelease } from 'types';
+import { ClientRelease } from 'types';
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
 const ReleaseType = ({ releaseData }: Props) => {

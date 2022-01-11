@@ -10,7 +10,7 @@ import { SummaryField } from '../Summary';
 import EditDistributionForm from '../../forms/EditDistributionForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { EnrichedRelease, EventType } from 'types';
+import { ClientRelease, EventType } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
@@ -19,44 +19,45 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
 interface Props {
-  releaseData: EnrichedRelease;
+  releaseData: ClientRelease;
 }
 
-const buildFields = (releaseData: EnrichedRelease): SummaryField[] => {
-  const isComplete = releaseData.distribution?.status === TaskStatus.COMPLETE;
+const buildFields = (
+  distributionTask: ClientRelease['distribution'] | undefined
+): SummaryField[] => {
+  const isComplete = distributionTask?.status === TaskStatus.COMPLETE;
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={releaseData?.distribution?.assignees as User[]} />,
+      content: <AssigneeBadgeList assignees={distributionTask?.assignees as User[]} />,
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={releaseData.distribution?.status as TaskStatus} />,
+      content: <ReleaseTaskBadge status={distributionTask?.status as TaskStatus} />,
     },
     {
       name: 'Distributor',
-      content: <Text fontSize="sm">{releaseData.distribution?.distributor?.name}</Text>,
+      content: <Text fontSize="sm">{distributionTask?.distributor?.name}</Text>,
     },
     {
       name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: (
-        <Text fontSize="sm">{dayjs.utc(releaseData.distribution?.dueDate).format('LL')}</Text>
-      ),
+      content: <Text fontSize="sm">{dayjs.utc(distributionTask?.dueDate).format('LL')}</Text>,
     },
   ];
 };
 
 const Distribution = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const distributionTask = releaseData.distribution;
 
   return (
     <>
       <ReleaseTaskCard
         heading={'💿 Distribution'}
         onEditClick={onOpen}
-        fields={buildFields(releaseData)}
+        fields={buildFields(distributionTask)}
         taskType={EventType.DISTRIBUTION}
-        data={releaseData.distribution}
+        data={distributionTask}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
