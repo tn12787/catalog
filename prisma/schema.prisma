@@ -40,6 +40,7 @@ enum TeamPlan {
 }
 
 enum TaskEventType {
+  CREATE_TASK
   NEW_COMMENT
   UPDATE_COMMENT
   DELETE_COMMENT
@@ -85,16 +86,16 @@ model Invite {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String             @id @default(cuid())
   name          String?
-  email         String?       @unique
+  email         String?            @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   teams         TeamMember[]
   tasksAssigned ReleaseTask[]
-  releaseTaskId String?
+  actionsTaken  ReleaseTaskEvent[]
 }
 
 model Session {
@@ -180,24 +181,25 @@ model Contact {
 }
 
 model ReleaseTask {
-  id               String            @id @default(cuid())
+  id               String             @id @default(cuid())
   notes            String?
-  calendarEventId  String?           @unique
+  calendarEventId  String?            @unique
   dueDate          DateTime?
   status           TaskStatus
   type             ReleaseTaskType
-  release          Release           @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  release          Release            @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId        String
   assignees        User[]
-  completedBy      Contact?          @relation(fields: [completedById], references: [id])
+  completedBy      Contact?           @relation(fields: [completedById], references: [id])
   completedById    String?
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime?         @updatedAt
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime?          @updatedAt
   artworkData      ArtworkData?
   distributionData DistributionData?
   marketingData    MarketingData?
   musicVideoData   MusicVideoData?
   masteringData    MasteringData?
+  events           ReleaseTaskEvent[]
 
   @@unique([releaseId, type])
 }
@@ -246,6 +248,17 @@ model MasteringData {
   taskId String
 
   @@unique([taskId])
+}
+
+model ReleaseTaskEvent {
+  id        String        @id @default(cuid())
+  type      TaskEventType
+  task      ReleaseTask   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String
+  payload   Json
+  timestamp DateTime      @default(now())
 }
 
 model Distributor {
