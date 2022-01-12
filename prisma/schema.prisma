@@ -257,7 +257,7 @@ model ReleaseTaskEvent {
   taskId    String
   user      User          @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String
-  payload   Json
+  extraData Json
   timestamp DateTime      @default(now())
 }
 
