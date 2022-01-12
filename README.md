@@ -1,46 +1,76 @@
-# Getting Started with Create React App
+# launchday
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack SaaS application for the music industry, to help individual artists and labels manage their releases.
 
-## Available Scripts
+Built with Next.JS, TypeScript, Prisma and PostgreSQL.
 
-In the project directory, you can run:
+## Frontend
 
-### `yarn start`
+Docs to be completed.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## API
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Docs to be completed.
 
-### `yarn test`
+## Data Model
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+At a glance, pretty comprehensive information can be found about the data model by inspecting the [Prisma schema]('./prisma/schema.prisma') for information about each data model.
 
-### `yarn build`
+### Limitations
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Due to limitations in the Prisma schema, we cannot currently support polymorphic associations nor table inheritance in the data model. This means certain product concepts, like generic 'tasks' for releases, are currently implemented using a single table, with foreign keys for task-type-specific data. This wil likely change in a future version in-case Prisma supports polymorphic associations or table inheritance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### JSON fields
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Continuing on with the Prisma schema, we can see that the data model contains a few fields that are not natively supported by Prisma. These are JSON fields, which are stored as strings in the database, but are parsed into JSON objects when queried. Though we lose the DB's type system and type support in our Prisma schema, it is the only way we can scalably represent certain data shapes.
 
-### `yarn eject`
+#### Activity on Release Tasks
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+When a release task is being completed, users will update the status of the task, they may write some notes, managers may comment, assignees may be updated, etc. As a key feature, we want to support differential data like in GitHub issues, where users can write notes, and managers can comment, but most importantly, we can see **what** changed, and **who** changed it, for each item of activity.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+We can easily capture the type of activity occuring using a Prisma `enum`, but the data itself representing each change would have to be stored in separate tables with foreign keys in order to store it in the database. This is not great, and won't scale.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This is why the payloads for each activity are stored as JSON strings in the database. This allows us to store the data in a single table, and parse it when queried.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Here are the shape of the JSON payloads for each activity's extra data:
 
-## Learn More
+```ts
+// TaskEventType.TASK_CREATED
+extraData: {
+}
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+// TaskEventType.NEW_COMMENT
+extraData: {
+  newComment: string; // The comment text as a Markdown string
+}
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+// TaskEventType.UPDATE_COMMENT
+extraData: {
+  commentId: string; // The ID of the comment being updated
+  oldComment: string; // The old comment text as a Markdown string
+  newComment: string; // The new comment text as a Markdown string
+}
+
+// TaskEventType.DELETE_COMMENT
+extraData: {
+  commentId: string; // The ID of the comment being deleted
+}
+
+// TaskEventType.UPDATE_ASSIGNEES
+extraData: {
+  oldAssignees: string[]; // The IDs of the previous assignees
+  newAssignees: string[]; // The IDs of the new assignees
+}
+
+// TaskEventType.UPDATE_STATUS
+extraData: {
+  oldStatus: TaskStatus; // The IDs of the previous assignees
+  newStatus: TaskStatus; // The IDs of the new assignees
+}
+
+// TaskEventType.UPDATE_DATE
+extraData: {
+  oldDate: string // ISO timestamp of the previous date
+  newDate: string // ISO timestamp of the new date
+}
+```
