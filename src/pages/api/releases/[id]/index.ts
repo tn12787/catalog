@@ -24,6 +24,15 @@ class SingleReleaseHandler {
   async singleRelease(@Req() req: NextApiRequest, @PathParam('id') id: string) {
     if (!id) throw new NotFoundException();
 
+    const releaseTeam = await prisma.release.findUnique({
+      where: { id },
+      select: {
+        teamId: true,
+      },
+    });
+
+    await checkRequiredPermissions(req, ['VIEW_RELEASES'], releaseTeam?.teamId);
+
     const release = await prisma.release.findUnique({
       where: {
         id,
