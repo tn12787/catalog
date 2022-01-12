@@ -40,6 +40,7 @@ enum TeamPlan {
 }
 
 enum TaskEventType {
+  CREATE_TASK
   NEW_COMMENT
   UPDATE_COMMENT
   DELETE_COMMENT
