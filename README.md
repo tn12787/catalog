@@ -47,7 +47,6 @@ extraData: {
 // TaskEventType.UPDATE_COMMENT
 extraData: {
   commentId: string; // The ID of the comment being updated
-  oldComment: string; // The old comment text as a Markdown string
   newComment: string; // The new comment text as a Markdown string
 }
 
