@@ -8,7 +8,6 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
 import { ReleaseTaskType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -18,12 +17,14 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateDistributionDto } from 'backend/models/distribution/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
+import { AuthDecoratedRequest } from 'types';
+import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
 
 @requiresAuth()
 class ReleaseListHandler {
   @Post()
   async createDistribution(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateDistributionDto,
     @PathParam('id') id: string
   ) {
@@ -58,12 +59,15 @@ class ReleaseListHandler {
         dueDate: body.dueDate,
       },
     });
+
+    await createNewTaskEvent({ body, taskId: result.id, userId: req.session.token.sub });
+
     return result;
   }
 
   @Patch()
   async updateDistribution(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateDistributionDto,
     @PathParam('id') id: string
   ) {
@@ -100,7 +104,7 @@ class ReleaseListHandler {
   }
 
   @Delete()
-  async deleteDistribution(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async deleteDistribution(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {

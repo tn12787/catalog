@@ -8,7 +8,6 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { pickBy, isNil, pick } from 'lodash';
-import { NextApiRequest } from 'next';
 import { ReleaseTaskType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -18,12 +17,14 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { CreateMusicVideoDto } from 'backend/models/musicVideo/create';
 import { UpdateMusicVideoDto } from 'backend/models/musicVideo/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
+import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
+import { AuthDecoratedRequest } from 'types';
 
 @requiresAuth()
 class MusicVideoHandler {
   @Post()
   async createMusicVideo(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateMusicVideoDto,
     @PathParam('id') id: string
   ) {
@@ -65,12 +66,15 @@ class MusicVideoHandler {
         notes: body.notes,
       },
     });
+
+    await createNewTaskEvent({ body, taskId: result.id, userId: req.session.token.sub });
+
     return result;
   }
 
   @Put()
   async updateMusicVideo(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateMusicVideoDto,
     @PathParam('id') id: string
   ) {
@@ -107,7 +111,7 @@ class MusicVideoHandler {
   }
 
   @Delete()
-  async deleteMusicVideo(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async deleteMusicVideo(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {

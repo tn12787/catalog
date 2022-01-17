@@ -6,9 +6,9 @@ import {
   ValidationPipe,
   NotFoundException,
 } from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
 import { TaskEventType } from '@prisma/client';
 
+import { AuthDecoratedRequest } from 'types';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
@@ -19,7 +19,7 @@ import { CreateCommentDto } from 'backend/models/tasks/activity/comments/create'
 class ReleaseListHandler {
   @Post()
   async createComment(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateCommentDto,
     @PathParam('id') taskId: string
   ) {
@@ -36,7 +36,7 @@ class ReleaseListHandler {
 
     const result = await prisma.releaseTaskEvent.create({
       data: {
-        user: { connect: (req as any).session.token.sub },
+        user: { connect: { id: req.session.token.sub } },
         task: { connect: { id: taskId } },
         type: TaskEventType.NEW_COMMENT,
         extraData: {

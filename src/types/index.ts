@@ -1,3 +1,5 @@
+import { Session } from 'next-auth';
+import { NextApiRequest } from 'next';
 import {
   Role,
   Permission,
@@ -103,13 +105,17 @@ export type EnrichedTeamMember = TeamMember & {
   roles: Role & { permissions: Permission[] }[];
 };
 
-export interface ExtendedSession {
+export type ExtendedSession = Session & { token: ExtendedToken };
+
+export interface ExtendedToken {
   email: string;
   name: string;
   picture: string;
   teams: EnrichedTeamMember[];
   sub: string;
 }
+
+export type AuthDecoratedRequest = NextApiRequest & { session: ExtendedSession };
 
 export type PermissionType =
   | 'CREATE_RELEASES'

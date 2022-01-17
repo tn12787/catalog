@@ -4,7 +4,7 @@ import { NextApiRequest } from 'next';
 import { getSession } from 'next-auth/react';
 
 import prisma from 'backend/prisma/client';
-import { ExtendedSession, PermissionType } from 'types';
+import { PermissionType, ExtendedSession } from 'types';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 export const createDefaultTeamForUser = async (name: string, userId: string) => {
@@ -27,9 +27,7 @@ export const checkRequiredPermissions = async (
   permissions: PermissionType[],
   resourceTeam?: string
 ) => {
-  const session = (await getSession({ req })) as any as {
-    token: ExtendedSession;
-  };
+  const session = (await getSession({ req })) as ExtendedSession;
 
   const team = session?.token.teams.find((userTeam) => userTeam.teamId === resourceTeam);
 

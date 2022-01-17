@@ -7,9 +7,10 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
 import { pick, pickBy, isNil } from 'lodash';
 import { ReleaseTaskType } from '@prisma/client';
+
+import { AuthDecoratedRequest } from './../../../../../types/index';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -18,12 +19,13 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { CreateMasteringDto } from 'backend/models/mastering/create';
 import { UpdateMasteringDto } from 'backend/models/mastering/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
+import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
 
 @requiresAuth()
 class MasteringHandler {
   @Post()
   async createMastering(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateMasteringDto,
     @PathParam('id') id: string
   ) {
@@ -61,12 +63,15 @@ class MasteringHandler {
         notes: body.notes,
       },
     });
+
+    await createNewTaskEvent({ body, taskId: result.id, userId: req.session.token.sub });
+
     return result;
   }
 
   @Put()
   async updateMastering(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateMasteringDto,
     @PathParam('id') id: string
   ) {
@@ -103,7 +108,7 @@ class MasteringHandler {
   }
 
   @Delete()
-  async deleteMastering(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async deleteMastering(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {

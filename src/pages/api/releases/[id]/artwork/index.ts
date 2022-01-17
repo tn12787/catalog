@@ -8,9 +8,9 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { pickBy, isNil, pick } from 'lodash';
-import { NextApiRequest } from 'next';
 import { ReleaseTaskType } from '@prisma/client';
 
+import { AuthDecoratedRequest } from 'types';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
@@ -18,12 +18,13 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateArtworkDto } from 'backend/models/artwork/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
+import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
 
 @requiresAuth()
 class ReleaseListHandler {
   @Post()
   async createArtwork(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateArtworkDto,
     @PathParam('id') id: string
   ) {
@@ -65,12 +66,15 @@ class ReleaseListHandler {
         },
       },
     });
+
+    await createNewTaskEvent({ body, taskId: result.id, userId: req.session.token.sub });
+
     return result;
   }
 
   @Patch()
   async updateArtwork(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateArtworkDto,
     @PathParam('id') id: string
   ) {
@@ -107,7 +111,7 @@ class ReleaseListHandler {
   }
 
   @Delete()
-  async deleteArtwork(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async deleteArtwork(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {

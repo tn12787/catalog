@@ -7,9 +7,9 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
 import { TaskEventType } from '@prisma/client';
 
+import { AuthDecoratedRequest } from 'types';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
@@ -21,7 +21,7 @@ import { ForbiddenException } from 'backend/apiUtils/exceptions';
 class ReleaseListHandler {
   @Put()
   async updateComment(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateCommentDto,
     @PathParam('id') taskId: string,
     @PathParam('commentId') commentId: string
@@ -50,13 +50,13 @@ class ReleaseListHandler {
     }
 
     // check if user is the author of the comment
-    if (comment.user.id !== (req as any).session.token.sub) {
+    if (comment.user.id !== req.session.token.sub) {
       throw new ForbiddenException('You are not the author of this comment');
     }
 
     const result = await prisma.releaseTaskEvent.create({
       data: {
-        user: { connect: (req as any).session.token.sub },
+        user: { connect: { id: req.session.token.sub } },
         task: { connect: { id: taskId } },
         type: TaskEventType.UPDATE_COMMENT,
         extraData: {
@@ -71,7 +71,7 @@ class ReleaseListHandler {
 
   @Delete()
   async deleteComment(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @PathParam('id') taskId: string,
     @PathParam('commentId') commentId: string
   ) {
@@ -100,13 +100,13 @@ class ReleaseListHandler {
 
     // check if user is the author of the comment
     // TODO: Support admin comment delete
-    if (comment.user.id !== (req as any).session.token.sub) {
+    if (comment.user.id !== req.session.token.sub) {
       throw new ForbiddenException('You are not the author of this comment');
     }
 
     const result = await prisma.releaseTaskEvent.create({
       data: {
-        user: { connect: (req as any).session.token.sub },
+        user: { connect: { id: req.session.token.sub } },
         task: { connect: { id: taskId } },
         type: TaskEventType.DELETE_COMMENT,
         extraData: {

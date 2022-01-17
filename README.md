@@ -69,7 +69,7 @@ extraData: {
 
 // TaskEventType.UPDATE_DATE
 extraData: {
-  oldDate: string // ISO timestamp of the previous date
-  newDate: string // ISO timestamp of the new date
+  oldDueDate: string // ISO timestamp of the previous date
+  newDueDate: string // ISO timestamp of the new date
 }
 ```
