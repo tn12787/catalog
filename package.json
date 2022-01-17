@@ -82,6 +82,7 @@
     "db:push": "prisma db push",
     "test": "jest test",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "db-explore": "npx prisma studio"
   }
 }
