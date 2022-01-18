@@ -15,12 +15,14 @@ import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateMasteringDto } from 'backend/models/mastering/create';
 import { UpdateMasteringDto } from 'backend/models/mastering/update';
-import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
+import { createNewTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import {
   buildCreateReleaseTaskArgs,
   buildUpdateReleaseTaskArgs,
   checkTaskUpdatePermissions,
 } from 'backend/apiUtils/tasks';
+import { ForbiddenException } from 'backend/apiUtils/exceptions';
+import { getResourceTeamMembership } from 'backend/apiUtils/teams';
 
 @requiresAuth()
 class MasteringHandler {
@@ -54,7 +56,7 @@ class MasteringHandler {
     @Body(ValidationPipe) body: UpdateMasteringDto,
     @PathParam('id') id: string
   ) {
-    await checkTaskUpdatePermissions(req, id);
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
       ...buildUpdateReleaseTaskArgs(body),
@@ -69,6 +71,15 @@ class MasteringHandler {
         },
       },
       data: updateArgs,
+    });
+
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
+    await createUpdateTaskEvents({
+      body,
+      taskId: result.id,
+      userId: activeTeamMember?.id as string,
     });
 
     return result;

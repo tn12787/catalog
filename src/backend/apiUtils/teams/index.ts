@@ -22,17 +22,22 @@ export const createDefaultTeamForUser = async (name: string, userId: string) => 
   });
 };
 
-export const getAllUserPermissionsForTeam = async (req: NextApiRequest, resourceTeam?: string) => {
+export const getResourceTeamMembership = async (req: NextApiRequest, teamId?: string) => {
   const session = (await getSession({ req })) as ExtendedSession;
 
-  const team = session?.token.teams.find((userTeam) => userTeam.teamId === resourceTeam);
+  return session?.token.teams.find((userTeam) => userTeam.teamId === teamId);
+};
 
-  if (!team || !resourceTeam) {
+export const getAllUserPermissionsForTeam = async (req: NextApiRequest, resourceTeam?: string) => {
+  const teamMembership = await getResourceTeamMembership(req, resourceTeam);
+  if (!teamMembership || !resourceTeam) {
     throw new NotFoundException();
   }
 
   const permissionsForTeam = uniq(
-    team.roles.map((item) => item.permissions.map((permission) => permission.name)).flat(2)
+    teamMembership.roles
+      .map((item) => item.permissions.map((permission) => permission.name))
+      .flat(2)
   );
 
   return permissionsForTeam;

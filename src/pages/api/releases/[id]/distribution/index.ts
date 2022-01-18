@@ -16,12 +16,14 @@ import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateDistributionDto } from 'backend/models/distribution/update';
 import { AuthDecoratedRequest } from 'types';
-import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
+import { createNewTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import {
   buildCreateReleaseTaskArgs,
   buildUpdateReleaseTaskArgs,
   checkTaskUpdatePermissions,
 } from 'backend/apiUtils/tasks';
+import { ForbiddenException } from 'backend/apiUtils/exceptions';
+import { getResourceTeamMembership } from 'backend/apiUtils/teams';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -55,7 +57,7 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: UpdateDistributionDto,
     @PathParam('id') id: string
   ) {
-    await checkTaskUpdatePermissions(req, id);
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
       ...buildUpdateReleaseTaskArgs(body),
@@ -74,6 +76,15 @@ class ReleaseListHandler {
         },
       },
       data: pickBy(updateArgs, (v) => !isNil(v)),
+    });
+
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
+    await createUpdateTaskEvents({
+      body,
+      taskId: result.id,
+      userId: activeTeamMember?.id as string,
     });
 
     return result;

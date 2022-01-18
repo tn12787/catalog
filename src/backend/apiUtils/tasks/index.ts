@@ -21,6 +21,8 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
   });
 
   await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+
+  return releaseTeam;
 };
 
 export const buildCreateReleaseTaskArgs = (body: CreateBaseReleaseTaskDto) => {
