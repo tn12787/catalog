@@ -22,4 +22,6 @@ export const allPermissions = [
   { name: 'VIEW_TEAM' },
   { name: 'UPDATE_TEAM' },
   { name: 'DELETE_TEAM' },
+
+  { name: 'DELETE_ALL_COMMENTS' },
 ];
