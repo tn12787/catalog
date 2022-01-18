@@ -79,15 +79,7 @@ class ReleaseListHandler {
 
   @Delete()
   async deleteDistribution(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const result = await prisma.releaseTask.delete({
       where: {
