@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { teamMembersColumns } from './columns';
-import { TeamMemberWithUser } from './types';
 
+import { TeamMemberWithUser } from 'types';
 import Table from 'components/Table';
 
 interface Props {

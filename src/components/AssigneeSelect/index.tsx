@@ -14,7 +14,6 @@ import { useCombobox } from 'downshift';
 import { useQuery } from 'react-query';
 import { BiChevronDown } from 'react-icons/bi';
 import { uniqBy } from 'lodash';
-import { User } from '@prisma/client';
 
 import AssigneeSelectList from './AssigneeSelectList';
 import AssigneeItem from './AssigneeItem';
@@ -23,14 +22,17 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import AssigneeBadge from 'components/AssigneeBadge';
+import { TeamMemberWithUser } from 'types';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {
-  value: User[];
+  value: TeamMemberWithUser[];
 }
 
 const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: Props, ref) => {
   const { currentTeam } = useExtendedSession();
   const currentAssignees = value || [];
+
+  console.log(currentAssignees);
 
   const { data: teamData, isLoading } = useQuery(['team', currentTeam as string], () =>
     fetchTeam(currentTeam as string)
@@ -38,15 +40,14 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
 
   const [searchString, setSearchString] = React.useState('');
 
-  const allTeamMembers = (
+  const allTeamMembers =
     teamData?.members.filter((item) =>
       item.user.name?.toLowerCase().includes(searchString.toLowerCase())
-    ) || []
-  ).map((item) => item.user);
+    ) || [];
 
   const { bgPrimary, primary, bodySub } = useAppColors();
 
-  const onItemChange = (item: User) => {
+  const onItemChange = (item: TeamMemberWithUser) => {
     const newAssigneesWithoutDuplicate = uniqBy(
       [...currentAssignees, item],
       (item) => item.id
@@ -72,11 +73,11 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
     },
     inputValue: searchString,
     onSelectedItemChange: (changes) => {
-      onItemChange(changes.selectedItem as User);
+      onItemChange(changes.selectedItem as TeamMemberWithUser);
       setSearchString('');
     },
 
-    itemToString: (item) => item?.name ?? '',
+    itemToString: (item) => item?.user.name ?? '',
   });
 
   return (
@@ -91,7 +92,7 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
                   }}
                   editable
                   key={assignee.id}
-                  user={assignee}
+                  teamMember={assignee}
                 />
               );
             })
@@ -118,16 +119,16 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
 
           <AssigneeSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
             {allTeamMembers.length ? (
-              allTeamMembers.map((item: User, index: number) => (
+              allTeamMembers.map((item: TeamMemberWithUser, index: number) => (
                 <AssigneeItem
                   ref={ref}
                   selected={currentAssignees?.some((assignee) => assignee.id === item.id)}
-                  {...getItemProps({ item, index })}
+                  {...getItemProps({ item: item, index })}
                   _hover={{
                     bgColor: bgPrimary,
                   }}
                   key={index}
-                  item={item}
+                  item={item.user}
                   itemIndex={index}
                   highlightedIndex={highlightedIndex}
                   onClick={() => {

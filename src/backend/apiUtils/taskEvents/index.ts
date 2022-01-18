@@ -30,7 +30,7 @@ export const createUpdateTaskEvents = async ({ body, taskId, userId }: TaskEvent
   const task = await prisma.releaseTask.findUnique({
     where: { id: taskId },
     include: {
-      assignees: true,
+      assignees: { include: { user: true } },
       release: { select: { teamId: true } },
     },
   });

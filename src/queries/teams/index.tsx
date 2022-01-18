@@ -3,7 +3,7 @@ import { Team } from '@prisma/client';
 
 import { UpdateTeamVars } from './types';
 
-import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
+import { TeamMemberWithUser } from 'types';
 
 export const fetchTeam = async (id: string) => {
   if (!id) return; //TODO: deal with this hack

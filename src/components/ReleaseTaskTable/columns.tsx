@@ -4,9 +4,8 @@ import { Column } from 'react-table';
 import NextLink from 'next/link';
 import React from 'react';
 import { TaskStatus } from '@prisma/client';
-import { User } from '@prisma/client';
 
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent, TeamMemberWithUser } from 'types';
 import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
 import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
 
@@ -22,7 +21,7 @@ const ReleaseLink = ({ value }: { value: ReleaseEvent }) => {
   );
 };
 
-export const AssigneeList = ({ value: users }: { value: User[] }) => {
+export const AssigneeList = ({ value: users }: { value: TeamMemberWithUser[] }) => {
   return <AssigneeBadgeList assignees={users} />;
 };
 

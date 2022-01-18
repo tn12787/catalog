@@ -2,7 +2,7 @@ import { Avatar, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react
 import React from 'react';
 import { CellProps, Column } from 'react-table';
 
-import { TeamMemberWithUser } from './types';
+import { TeamMemberWithUser } from 'types';
 
 interface UserCard {
   name: string | null;

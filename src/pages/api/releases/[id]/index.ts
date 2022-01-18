@@ -41,7 +41,7 @@ class SingleReleaseHandler {
         artist: true,
         tasks: {
           include: {
-            assignees: true,
+            assignees: { include: { user: true } },
             artworkData: true,
             distributionData: { include: { distributor: true } },
             marketingData: { include: { links: true } },

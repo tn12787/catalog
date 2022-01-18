@@ -26,8 +26,10 @@ export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date;
 }
 
+export type TeamMemberWithUser = TeamMember & { user: User; roles: Role[] };
+
 export type ReleaseTaskWithAssignees = ReleaseTask & {
-  assignees: User[];
+  assignees: TeamMemberWithUser[];
 };
 
 export interface EnrichedRelease extends Release {
@@ -73,8 +75,7 @@ export interface Contact extends DataModel {
 
 export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
 
-export type EnrichedReleaseTask = ReleaseTask & {
-  assignees: User[];
+export type EnrichedReleaseTask = ReleaseTaskWithAssignees & {
   artworkData: ArtworkData | null;
   distributionData: (DistributionData & { distributor?: Distributor }) | null;
   marketingData: (MarketingData & { links?: MarketingLink[] }) | null;
