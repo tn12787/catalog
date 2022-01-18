@@ -141,4 +141,5 @@ export type PermissionType =
   | 'VIEW_USERS'
   | 'VIEW_TEAM'
   | 'UPDATE_TEAM'
-  | 'DELETE_TEAM';
+  | 'DELETE_TEAM'
+  | 'DELETE_ALL_COMMENTS';

@@ -22,11 +22,7 @@ export const createDefaultTeamForUser = async (name: string, userId: string) => 
   });
 };
 
-export const checkRequiredPermissions = async (
-  req: NextApiRequest,
-  permissions: PermissionType[],
-  resourceTeam?: string
-) => {
+export const getAllUserPermissionsForTeam = async (req: NextApiRequest, resourceTeam?: string) => {
   const session = (await getSession({ req })) as ExtendedSession;
 
   const team = session?.token.teams.find((userTeam) => userTeam.teamId === resourceTeam);
@@ -38,6 +34,16 @@ export const checkRequiredPermissions = async (
   const permissionsForTeam = uniq(
     team.roles.map((item) => item.permissions.map((permission) => permission.name)).flat(2)
   );
+
+  return permissionsForTeam;
+};
+
+export const checkRequiredPermissions = async (
+  req: NextApiRequest,
+  permissions: PermissionType[],
+  resourceTeam?: string
+) => {
+  const permissionsForTeam = await getAllUserPermissionsForTeam(req, resourceTeam);
 
   if (
     !permissionsForTeam.some((permission) => permissions.includes(permission as PermissionType))

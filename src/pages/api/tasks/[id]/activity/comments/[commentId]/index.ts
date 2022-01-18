@@ -13,7 +13,7 @@ import { AuthDecoratedRequest } from 'types';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions, getAllUserPermissionsForTeam } from 'backend/apiUtils/teams';
 import { UpdateCommentDto } from 'backend/models/tasks/activity/comments/update';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
@@ -84,7 +84,11 @@ class ReleaseListHandler {
       },
     });
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.teamId);
+    await checkRequiredPermissions(
+      req,
+      ['UPDATE_RELEASES', 'DELETE_ALL_COMMENTS'],
+      task?.release?.teamId
+    );
 
     //check if comment exists
     const comment = await prisma.releaseTaskEvent.findUnique({
@@ -98,9 +102,12 @@ class ReleaseListHandler {
       throw new NotFoundException('Comment not found');
     }
 
-    // check if user is the author of the comment
-    // TODO: Support admin comment delete
-    if (comment.user.id !== req.session.token.sub) {
+    // To delete a comment, the user must either be the author of the comment, or have the DELETE_ALL_COMMENTS permission
+    const userPermissions = await getAllUserPermissionsForTeam(req, task?.release?.teamId);
+    const canDelete =
+      comment.user.id === req.session.token.sub || userPermissions.includes('DELETE_ALL_COMMENTS');
+
+    if (!canDelete) {
       throw new ForbiddenException('You are not the author of this comment');
     }
 
