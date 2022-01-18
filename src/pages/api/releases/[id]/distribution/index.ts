@@ -80,7 +80,7 @@ class ReleaseListHandler {
     const eventsToCreate = await createUpdateTaskEvents({
       body,
       releaseId: id,
-      type: ReleaseTaskType.ARTWORK,
+      type: ReleaseTaskType.DISTRIBUTION,
       userId: activeTeamMember?.id as string,
     });
 

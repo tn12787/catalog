@@ -2,8 +2,8 @@ import {
   Body,
   createHandler,
   Delete,
+  Patch,
   Post,
-  Put,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
@@ -51,7 +51,7 @@ class MasteringHandler {
     return result;
   }
 
-  @Put()
+  @Patch()
   async updateMastering(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateMasteringDto,

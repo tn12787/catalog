@@ -2,8 +2,8 @@ import {
   Body,
   createHandler,
   Delete,
+  Patch,
   Post,
-  Put,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
@@ -51,7 +51,7 @@ class MusicVideoHandler {
     return result;
   }
 
-  @Put()
+  @Patch()
   async updateMusicVideo(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateMusicVideoDto,

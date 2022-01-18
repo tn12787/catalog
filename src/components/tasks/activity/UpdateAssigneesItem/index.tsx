@@ -18,9 +18,7 @@ const UpdateAssigneesItem = ({ event }: Props) => {
   const { bodySub } = useAppColors();
   const { currentTeam } = useExtendedSession();
 
-  const { data: teamData, isLoading } = useQuery(['team', currentTeam], () =>
-    fetchTeam(currentTeam)
-  );
+  const { data: teamData } = useQuery(['team', currentTeam], () => fetchTeam(currentTeam));
 
   const data = event.extraData as { oldAssignees: string[]; newAssignees: string[] };
   const newlyAssigned = data.newAssignees.filter((x) => !data.oldAssignees.includes(x));

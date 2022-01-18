@@ -71,7 +71,6 @@ const createStatusEventIfNeeded = ({ status, task, userId }: CreateStatusEventDa
     oldStatus: task.status,
     newStatus: status,
   };
-  console.log(extraData);
 
   if (isEqual(extraData.oldStatus, extraData.newStatus)) return;
 
