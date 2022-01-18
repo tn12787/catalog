@@ -22,7 +22,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import AssigneeBadge from 'components/AssigneeBadge';
-import { TeamMemberWithUser } from 'types';
+import { TeamMemberWithUser, TeamMemberWithUserAndRoles } from 'types';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {
   value: TeamMemberWithUser[];
@@ -117,7 +117,7 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
 
           <AssigneeSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
             {allTeamMembers.length ? (
-              allTeamMembers.map((item: TeamMemberWithUser, index: number) => (
+              allTeamMembers.map((item: TeamMemberWithUserAndRoles, index: number) => (
                 <AssigneeItem
                   ref={ref}
                   selected={currentAssignees?.some((assignee) => assignee.id === item.id)}

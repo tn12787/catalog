@@ -26,7 +26,11 @@ export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date;
 }
 
-export type TeamMemberWithUser = TeamMember & { user: User; roles: Role[] };
+export type TeamMemberWithUser = TeamMember & { user: User };
+
+export type TeamMemberWithUserAndRoles = TeamMemberWithUser & {
+  roles: Role[];
+};
 
 export type ReleaseTaskWithAssignees = ReleaseTask & {
   assignees: TeamMemberWithUser[];

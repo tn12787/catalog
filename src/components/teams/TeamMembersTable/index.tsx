@@ -2,11 +2,11 @@ import React from 'react';
 
 import { teamMembersColumns } from './columns';
 
-import { TeamMemberWithUser } from 'types';
+import { TeamMemberWithUserAndRoles } from 'types';
 import Table from 'components/Table';
 
 interface Props {
-  teamMembers: TeamMemberWithUser[];
+  teamMembers: TeamMemberWithUserAndRoles[];
 }
 
 const TeamMembersTable = ({ teamMembers }: Props) => {
