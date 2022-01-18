@@ -62,17 +62,30 @@ model Team {
 }
 
 model TeamMember {
-  id        String    @id @default(cuid())
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  team      Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  userId    String
-  teamId    String
-  roles     Role[]
+  id            String             @id @default(cuid())
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team          Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId        String
+  teamId        String
+  roles         Role[]
+  tasksAssigned ReleaseTask[]
+  actionsTaken  ReleaseTaskEvent[]
+
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-
   @@unique([userId, teamId])
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String?      @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  teams         TeamMember[]
 }
 
 model Invite {
@@ -83,19 +96,6 @@ model Invite {
   teamId    String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
-}
-
-model User {
-  id            String             @id @default(cuid())
-  name          String?
-  email         String?            @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  teams         TeamMember[]
-  tasksAssigned ReleaseTask[]
-  actionsTaken  ReleaseTaskEvent[]
 }
 
 model Session {
@@ -189,7 +189,7 @@ model ReleaseTask {
   type             ReleaseTaskType
   release          Release            @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId        String
-  assignees        User[]
+  assignees        TeamMember[]
   completedBy      Contact?           @relation(fields: [completedById], references: [id])
   completedById    String?
   createdAt        DateTime           @default(now())
@@ -255,7 +255,7 @@ model ReleaseTaskEvent {
   type      TaskEventType
   task      ReleaseTask   @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String
-  user      User          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user      TeamMember    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String
   extraData Json
   timestamp DateTime      @default(now())
