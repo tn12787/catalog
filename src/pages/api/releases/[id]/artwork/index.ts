@@ -19,6 +19,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateArtworkDto } from 'backend/models/artwork/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
+import { checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -28,15 +29,7 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateArtworkDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const optionalArgs = pickBy(
       {
@@ -78,15 +71,7 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: UpdateArtworkDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
       ...pick(body, ['status', 'notes', 'dueDate']),
@@ -107,6 +92,7 @@ class ReleaseListHandler {
       },
       data: pickBy(updateArgs, (v) => !isNil(v)),
     });
+
     return result;
   }
 

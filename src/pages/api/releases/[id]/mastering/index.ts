@@ -20,6 +20,7 @@ import { CreateMasteringDto } from 'backend/models/mastering/create';
 import { UpdateMasteringDto } from 'backend/models/mastering/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
+import { checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class MasteringHandler {
@@ -29,15 +30,7 @@ class MasteringHandler {
     @Body(ValidationPipe) body: CreateMasteringDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const optionalArgs = pickBy(
       {
@@ -75,15 +68,7 @@ class MasteringHandler {
     @Body(ValidationPipe) body: UpdateMasteringDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
       ...pick(body, ['dueDate', 'notes', 'status']),

@@ -19,6 +19,7 @@ import { UpdateDistributionDto } from 'backend/models/distribution/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { AuthDecoratedRequest } from 'types';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
+import { checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -28,15 +29,7 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateDistributionDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const optionalArgs = body.assignees
       ? {
@@ -71,15 +64,7 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: UpdateDistributionDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const updatedData = {
       ...pick(body, ['status', 'notes', 'dueDate']),

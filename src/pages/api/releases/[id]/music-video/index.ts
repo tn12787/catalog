@@ -19,6 +19,7 @@ import { UpdateMusicVideoDto } from 'backend/models/musicVideo/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
 import { AuthDecoratedRequest } from 'types';
+import { checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class MusicVideoHandler {
@@ -28,15 +29,7 @@ class MusicVideoHandler {
     @Body(ValidationPipe) body: CreateMusicVideoDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const optionalArgs = pickBy(
       {
@@ -78,15 +71,7 @@ class MusicVideoHandler {
     @Body(ValidationPipe) body: UpdateMusicVideoDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
       ...pick(body, ['dueDate', 'notes', 'status']),
