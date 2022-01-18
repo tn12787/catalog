@@ -32,8 +32,6 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
   const { currentTeam } = useExtendedSession();
   const currentAssignees = value || [];
 
-  console.log(currentAssignees);
-
   const { data: teamData, isLoading } = useQuery(['team', currentTeam as string], () =>
     fetchTeam(currentTeam as string)
   );

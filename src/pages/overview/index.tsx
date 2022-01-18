@@ -17,7 +17,6 @@ import OverdueTasks from 'components/overview/OverdueTasks';
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
   const { currentTeam, teams } = useExtendedSession();
-  console.log(teams);
   const { data, isLoading } = useQuery(
     ['releaseEvents', currentTeam, teams?.[currentTeam]?.id],
     () => fetchReleaseEvents(currentTeam, teams?.[currentTeam]?.id)

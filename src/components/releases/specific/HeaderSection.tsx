@@ -1,20 +1,20 @@
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Flex,
   Heading,
   HStack,
-  Icon,
   Image,
-  Link as ChakraLink,
   Stack,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { FiArrowLeft } from 'react-icons/fi';
+import { BiChevronRight } from 'react-icons/bi';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
@@ -63,24 +63,38 @@ const HeaderSection = ({ releaseData }: Props) => {
           bgGradient={`linear(to-b, transparent, ${bgPrimary})`}
         ></Box>
       </Flex>
-      <Flex pb={3} align="center" justify="space-between" w={{ base: '90%', md: '100%' }}>
-        <HStack alignItems="center" width="100%" margin={['0 auto']}>
-          <HStack alignItems="center">
-            <Icon as={FiArrowLeft} />
-            <Link href="/releases" passHref>
-              <ChakraLink>
-                <Text fontSize="sm">Back</Text>
-              </ChakraLink>
+      <Stack w="100%">
+        <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
+          <BreadcrumbItem>
+            <Link passHref href={`/teams/${currentTeam}/overview`}>
+              <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
             </Link>
+          </BreadcrumbItem>
+
+          <BreadcrumbItem>
+            <Link passHref href={'/releases'}>
+              <BreadcrumbLink>Releases</BreadcrumbLink>
+            </Link>
+          </BreadcrumbItem>
+
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink fontWeight="bold" href={router.pathname}>
+              {releaseData.name}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
+        <Flex pb={3} align="center" justify="space-between" w={{ base: '90%', md: '100%' }}>
+          <HStack alignItems="center" width="100%" margin={['0 auto']}>
+            <Heading>{releaseData.name}</Heading>
           </HStack>
-          <Heading>{releaseData.name}</Heading>
-        </HStack>
-        {canDeleteRelease && (
-          <Button colorScheme="red" onClick={onOpen}>
-            Delete
-          </Button>
-        )}
-      </Flex>
+          {canDeleteRelease && (
+            <Button colorScheme="red" onClick={onOpen}>
+              Delete
+            </Button>
+          )}
+        </Flex>
+      </Stack>
+
       <DeleteReleaseDialog
         onConfirm={() => {
           onClose();
