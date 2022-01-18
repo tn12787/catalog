@@ -7,20 +7,20 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { pick, pickBy, isNil } from 'lodash';
 import { ReleaseTaskType } from '@prisma/client';
 
-import { AuthDecoratedRequest } from './../../../../../types/index';
-
+import { AuthDecoratedRequest } from 'types';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { CreateMasteringDto } from 'backend/models/mastering/create';
 import { UpdateMasteringDto } from 'backend/models/mastering/update';
-import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
-import { buildCreateReleaseTaskArgs, checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
+import {
+  buildCreateReleaseTaskArgs,
+  buildUpdateReleaseTaskArgs,
+  checkTaskUpdatePermissions,
+} from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class MasteringHandler {
@@ -57,13 +57,8 @@ class MasteringHandler {
     await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
-      ...pick(body, ['dueDate', 'notes', 'status']),
-      assignees: transformAssigneesToPrismaQuery(body.assignees),
-      masteringData: {
-        update: {
-          url: body.url,
-        },
-      },
+      ...buildUpdateReleaseTaskArgs(body),
+      masteringData: { update: { url: body.url } },
     };
 
     const result = await prisma.releaseTask.update({
@@ -73,8 +68,9 @@ class MasteringHandler {
           type: ReleaseTaskType.MASTERING,
         },
       },
-      data: pickBy(updateArgs, (v) => !isNil(v)),
+      data: updateArgs,
     });
+
     return result;
   }
 

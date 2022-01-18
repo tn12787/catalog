@@ -7,19 +7,20 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { pickBy, isNil, pick } from 'lodash';
 import { ReleaseTaskType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { CreateMusicVideoDto } from 'backend/models/musicVideo/create';
 import { UpdateMusicVideoDto } from 'backend/models/musicVideo/update';
-import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
 import { AuthDecoratedRequest } from 'types';
-import { buildCreateReleaseTaskArgs, checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
+import {
+  buildCreateReleaseTaskArgs,
+  buildUpdateReleaseTaskArgs,
+  checkTaskUpdatePermissions,
+} from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class MusicVideoHandler {
@@ -56,13 +57,8 @@ class MusicVideoHandler {
     await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
-      ...pick(body, ['dueDate', 'notes', 'status']),
-      assignees: transformAssigneesToPrismaQuery(body.assignees),
-      musicVideoData: {
-        update: {
-          url: body.url,
-        },
-      },
+      ...buildUpdateReleaseTaskArgs(body),
+      musicVideoData: { update: { url: body.url } },
     };
 
     const result = await prisma.releaseTask.update({
@@ -72,8 +68,9 @@ class MusicVideoHandler {
           type: ReleaseTaskType.MUSIC_VIDEO,
         },
       },
-      data: pickBy(updateArgs, (v) => !isNil(v)),
+      data: updateArgs,
     });
+
     return result;
   }
 

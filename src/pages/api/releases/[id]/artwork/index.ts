@@ -7,7 +7,6 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { pickBy, isNil, pick } from 'lodash';
 import { ReleaseTaskType } from '@prisma/client';
 
 import { AuthDecoratedRequest } from 'types';
@@ -15,11 +14,13 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateArtworkDto } from 'backend/models/artwork/update';
-import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
-import { buildCreateReleaseTaskArgs, checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
+import {
+  buildCreateReleaseTaskArgs,
+  buildUpdateReleaseTaskArgs,
+  checkTaskUpdatePermissions,
+} from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -56,13 +57,8 @@ class ReleaseListHandler {
     await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
-      ...pick(body, ['status', 'notes', 'dueDate']),
-      assignees: transformAssigneesToPrismaQuery(body.assignees),
-      artworkData: {
-        update: {
-          url: body.url,
-        },
-      },
+      ...buildUpdateReleaseTaskArgs(body),
+      artworkData: { update: { url: body.url } },
     };
 
     const result = await prisma.releaseTask.update({
@@ -72,7 +68,7 @@ class ReleaseListHandler {
           type: ReleaseTaskType.ARTWORK,
         },
       },
-      data: pickBy(updateArgs, (v) => !isNil(v)),
+      data: updateArgs,
     });
 
     return result;

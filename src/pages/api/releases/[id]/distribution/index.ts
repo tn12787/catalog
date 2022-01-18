@@ -1,4 +1,4 @@
-import { pickBy, isNil, pick } from 'lodash';
+import { pickBy, isNil } from 'lodash';
 import {
   Body,
   createHandler,
@@ -14,12 +14,14 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateDistributionDto } from 'backend/models/distribution/update';
-import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { AuthDecoratedRequest } from 'types';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
-import { buildCreateReleaseTaskArgs, checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
+import {
+  buildCreateReleaseTaskArgs,
+  buildUpdateReleaseTaskArgs,
+  checkTaskUpdatePermissions,
+} from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -55,9 +57,8 @@ class ReleaseListHandler {
   ) {
     await checkTaskUpdatePermissions(req, id);
 
-    const updatedData = {
-      ...pick(body, ['status', 'notes', 'dueDate']),
-      assignees: transformAssigneesToPrismaQuery(body.assignees),
+    const updateArgs = {
+      ...buildUpdateReleaseTaskArgs(body),
       distributionData: {
         update: {
           distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
@@ -72,8 +73,9 @@ class ReleaseListHandler {
           type: ReleaseTaskType.DISTRIBUTION,
         },
       },
-      data: pickBy(updatedData, (v) => !isNil(v)),
+      data: pickBy(updateArgs, (v) => !isNil(v)),
     });
+
     return result;
   }
 

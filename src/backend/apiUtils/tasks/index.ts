@@ -1,10 +1,11 @@
-import { pickBy } from 'lodash';
+import { pickBy, isNil } from 'lodash';
 import { NotFoundException } from '@storyofams/next-api-decorators';
+import { pick } from 'lodash';
 
-import { checkRequiredPermissions } from '../teams';
-
-import { CreateBaseReleaseTaskDto } from './../../models/tasks/create';
-
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { UpdateBaseReleaseTaskDto } from 'backend/models/tasks/update';
+import { CreateBaseReleaseTaskDto } from 'backend/models/tasks/create';
+import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { AuthDecoratedRequest } from 'types';
 import prisma from 'backend/prisma/client';
 
@@ -42,4 +43,14 @@ export const buildCreateReleaseTaskArgs = (body: CreateBaseReleaseTaskDto) => {
     dueDate: body.dueDate,
     status: body.status,
   };
+};
+
+export const buildUpdateReleaseTaskArgs = (body: UpdateBaseReleaseTaskDto) => {
+  return pickBy(
+    {
+      ...pick(body, ['status', 'notes', 'dueDate']),
+      assignees: transformAssigneesToPrismaQuery(body.assignees),
+    },
+    (v) => !isNil(v)
+  );
 };
