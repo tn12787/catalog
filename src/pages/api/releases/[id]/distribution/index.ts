@@ -16,7 +16,7 @@ import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateDistributionDto } from 'backend/models/distribution/update';
 import { AuthDecoratedRequest } from 'types';
-import { createNewTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
+import { buildCreateTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import {
   buildCreateReleaseTaskArgs,
   buildUpdateReleaseTaskArgs,
@@ -33,7 +33,9 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateDistributionDto,
     @PathParam('id') id: string
   ) {
-    await checkTaskUpdatePermissions(req, id);
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
 
     const baseArgs = buildCreateReleaseTaskArgs(body);
 
@@ -43,10 +45,11 @@ class ReleaseListHandler {
         type: ReleaseTaskType.DISTRIBUTION,
         distributionData: { create: { distributor: { connect: { id: body.distributor } } } },
         release: { connect: { id } },
+        events: {
+          create: [buildCreateTaskEvent({ userId: activeTeamMember.id })],
+        },
       },
     });
-
-    await createNewTaskEvent({ body, taskId: result.id, userId: req.session.token.sub });
 
     return result;
   }
@@ -59,14 +62,27 @@ class ReleaseListHandler {
   ) {
     const releaseTeam = await checkTaskUpdatePermissions(req, id);
 
-    const updateArgs = {
-      ...buildUpdateReleaseTaskArgs(body),
-      distributionData: {
-        update: {
-          distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
+    const updateArgs = pickBy(
+      {
+        ...buildUpdateReleaseTaskArgs(body),
+        distributionData: {
+          update: {
+            distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
+          },
         },
       },
-    };
+      (v) => !isNil(v)
+    );
+
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
+    const eventsToCreate = await createUpdateTaskEvents({
+      body,
+      releaseId: id,
+      type: ReleaseTaskType.ARTWORK,
+      userId: activeTeamMember?.id as string,
+    });
 
     const result = await prisma.releaseTask.update({
       where: {
@@ -75,16 +91,7 @@ class ReleaseListHandler {
           type: ReleaseTaskType.DISTRIBUTION,
         },
       },
-      data: pickBy(updateArgs, (v) => !isNil(v)),
-    });
-
-    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
-    if (!activeTeamMember) throw new ForbiddenException();
-
-    await createUpdateTaskEvents({
-      body,
-      taskId: result.id,
-      userId: activeTeamMember?.id as string,
+      data: { ...updateArgs, events: { create: eventsToCreate as any } }, // TODO: fix type,
     });
 
     return result;

@@ -5,30 +5,31 @@ import { BadRequestException, NotFoundException } from '@storyofams/next-api-dec
 import {
   CreateAssigneesEventData,
   CreateStatusEventData,
-  TaskEventData,
+  UpdateTaskEventData,
   CreateDueDateEventIfNeeded,
+  CreateTaskEventData,
 } from './types';
 
 import prisma from 'backend/prisma/client';
 
-export const createNewTaskEvent = async ({ body, taskId, userId }: TaskEventData) => {
-  if (!body) throw new BadRequestException('No body provided');
-
-  await prisma.releaseTaskEvent.create({
-    data: {
-      type: TaskEventType.CREATE_TASK,
-      user: { connect: { id: userId } },
-      task: { connect: { id: taskId } },
-      extraData: {},
-    },
-  });
+export const buildCreateTaskEvent = ({ userId }: CreateTaskEventData) => {
+  return {
+    type: TaskEventType.CREATE_TASK,
+    user: { connect: { id: userId } },
+    extraData: {},
+  };
 };
 
-export const createUpdateTaskEvents = async ({ body, taskId, userId }: TaskEventData) => {
+export const createUpdateTaskEvents = async ({
+  body,
+  releaseId,
+  type,
+  userId,
+}: UpdateTaskEventData) => {
   if (!body) throw new BadRequestException('No body provided');
 
   const task = await prisma.releaseTask.findUnique({
-    where: { id: taskId },
+    where: { releaseId_type: { releaseId, type } },
     include: {
       assignees: { include: { user: true } },
       release: { select: { teamId: true } },
@@ -37,18 +38,16 @@ export const createUpdateTaskEvents = async ({ body, taskId, userId }: TaskEvent
 
   if (!task) throw new NotFoundException('Task not found');
 
-  await createAsssigneesEventIfNeeded({ assignees: body.assignees, task, userId });
-  await createStatusEventIfNeeded({ status: body.status, task, userId });
-  await createDueDateEventIfNeeded({ dueDate: body.dueDate, task, userId });
+  const tasks = [
+    createAsssigneesEventIfNeeded({ assignees: body.assignees, task, userId }),
+    createStatusEventIfNeeded({ status: body.status, task, userId }),
+    createDueDateEventIfNeeded({ dueDate: body.dueDate, task, userId }),
+  ];
 
-  return task;
+  return tasks.filter(Boolean);
 };
 
-const createAsssigneesEventIfNeeded = async ({
-  assignees,
-  task,
-  userId,
-}: CreateAssigneesEventData) => {
+const createAsssigneesEventIfNeeded = ({ assignees, task, userId }: CreateAssigneesEventData) => {
   if (!assignees) return;
 
   const extraData = {
@@ -58,41 +57,32 @@ const createAsssigneesEventIfNeeded = async ({
 
   if (isEqual(extraData.oldAssignees, extraData.newAssignees)) return;
 
-  await prisma.releaseTaskEvent.create({
-    data: {
-      user: { connect: { id: userId } },
-      task: { connect: { id: task.id } },
-      type: TaskEventType.UPDATE_ASSIGNEES,
-      extraData,
-    },
-  });
+  return {
+    user: { connect: { id: userId } },
+    type: TaskEventType.UPDATE_ASSIGNEES,
+    extraData,
+  };
 };
 
-const createStatusEventIfNeeded = async ({ status, task, userId }: CreateStatusEventData) => {
+const createStatusEventIfNeeded = ({ status, task, userId }: CreateStatusEventData) => {
   if (!status) return;
 
   const extraData = {
     oldStatus: task.status,
     newStatus: status,
   };
+  console.log(extraData);
 
   if (isEqual(extraData.oldStatus, extraData.newStatus)) return;
 
-  await prisma.releaseTaskEvent.create({
-    data: {
-      user: { connect: { id: userId } },
-      task: { connect: { id: task.id } },
-      type: TaskEventType.UPDATE_STATUS,
-      extraData,
-    },
-  });
+  return {
+    user: { connect: { id: userId } },
+    type: TaskEventType.UPDATE_STATUS,
+    extraData,
+  };
 };
 
-const createDueDateEventIfNeeded = async ({
-  dueDate,
-  task,
-  userId,
-}: CreateDueDateEventIfNeeded) => {
+const createDueDateEventIfNeeded = ({ dueDate, task, userId }: CreateDueDateEventIfNeeded) => {
   if (!dueDate) return;
 
   const extraData = {
@@ -102,12 +92,9 @@ const createDueDateEventIfNeeded = async ({
 
   if (isEqual(extraData.oldDueDate, extraData.newDueDate)) return;
 
-  await prisma.releaseTaskEvent.create({
-    data: {
-      user: { connect: { id: userId } },
-      task: { connect: { id: task.id } },
-      type: TaskEventType.UPDATE_DATE,
-      extraData,
-    },
-  });
+  return {
+    user: { connect: { id: userId } },
+    type: TaskEventType.UPDATE_DATE,
+    extraData,
+  };
 };

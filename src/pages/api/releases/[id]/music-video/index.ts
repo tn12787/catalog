@@ -14,7 +14,7 @@ import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateMusicVideoDto } from 'backend/models/musicVideo/create';
 import { UpdateMusicVideoDto } from 'backend/models/musicVideo/update';
-import { createNewTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
+import { buildCreateTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import { AuthDecoratedRequest } from 'types';
 import {
   buildCreateReleaseTaskArgs,
@@ -32,9 +32,11 @@ class MusicVideoHandler {
     @Body(ValidationPipe) body: CreateMusicVideoDto,
     @PathParam('id') id: string
   ) {
-    await checkTaskUpdatePermissions(req, id);
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
 
     const baseArgs = buildCreateReleaseTaskArgs(body);
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
 
     const result = await prisma.releaseTask.create({
       data: {
@@ -42,10 +44,9 @@ class MusicVideoHandler {
         type: ReleaseTaskType.MUSIC_VIDEO,
         musicVideoData: { create: { url: body.url } },
         release: { connect: { id } },
+        events: { create: [buildCreateTaskEvent({ userId: activeTeamMember.id })] },
       },
     });
-
-    await createNewTaskEvent({ body, taskId: result.id, userId: req.session.token.sub });
 
     return result;
   }
@@ -63,6 +64,16 @@ class MusicVideoHandler {
       musicVideoData: { update: { url: body.url } },
     };
 
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
+    const createdEvents = await createUpdateTaskEvents({
+      body,
+      releaseId: id,
+      type: ReleaseTaskType.MUSIC_VIDEO,
+      userId: activeTeamMember?.id as string,
+    });
+
     const result = await prisma.releaseTask.update({
       where: {
         releaseId_type: {
@@ -70,16 +81,7 @@ class MusicVideoHandler {
           type: ReleaseTaskType.MUSIC_VIDEO,
         },
       },
-      data: updateArgs,
-    });
-
-    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
-    if (!activeTeamMember) throw new ForbiddenException();
-
-    await createUpdateTaskEvents({
-      body,
-      taskId: result.id,
-      userId: activeTeamMember?.id as string,
+      data: { ...updateArgs, events: createdEvents as any },
     });
 
     return result;

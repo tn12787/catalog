@@ -15,7 +15,7 @@ class SingleTaskHandler {
     const task = await prisma.releaseTask.findUnique({
       where: { id },
       select: {
-        release: { select: { teamId: true } },
+        release: true,
         type: true,
         assignees: { include: { user: true } },
         dueDate: true,

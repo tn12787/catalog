@@ -2,6 +2,7 @@ import {
   Body,
   createHandler,
   Delete,
+  NotFoundException,
   Patch,
   Post,
   Req,
@@ -17,7 +18,7 @@ import prisma from 'backend/prisma/client';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateArtworkDto } from 'backend/models/artwork/update';
-import { createNewTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
+import { buildCreateTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import {
   buildCreateReleaseTaskArgs,
   buildUpdateReleaseTaskArgs,
@@ -33,7 +34,9 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateArtworkDto,
     @PathParam('id') id: string
   ) {
-    await checkTaskUpdatePermissions(req, id);
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
 
     const baseArgs = buildCreateReleaseTaskArgs(body);
 
@@ -43,10 +46,15 @@ class ReleaseListHandler {
         release: { connect: { id } },
         type: ReleaseTaskType.ARTWORK,
         artworkData: { create: { url: body.url } },
+        events: {
+          create: [
+            buildCreateTaskEvent({
+              userId: activeTeamMember.id,
+            }),
+          ],
+        },
       },
     });
-
-    await createNewTaskEvent({ body, taskId: result.id, userId: req.session.token.sub });
 
     return result;
   }
@@ -64,26 +72,38 @@ class ReleaseListHandler {
       artworkData: { update: { url: body.url } },
     };
 
-    const result = await prisma.releaseTask.update({
+    const releaseTask = prisma.releaseTask.findUnique({
       where: {
         releaseId_type: {
           releaseId: id,
           type: ReleaseTaskType.ARTWORK,
         },
       },
-      data: updateArgs,
     });
+
+    if (!releaseTask) {
+      throw new NotFoundException();
+    }
 
     const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
     if (!activeTeamMember) throw new ForbiddenException();
 
-    await createUpdateTaskEvents({
+    const eventsToCreate = await createUpdateTaskEvents({
       body,
-      taskId: result.id,
+      releaseId: id,
+      type: ReleaseTaskType.ARTWORK,
       userId: activeTeamMember?.id as string,
     });
 
-    return result;
+    await prisma.releaseTask.update({
+      where: {
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.ARTWORK,
+        },
+      },
+      data: { ...updateArgs, events: { create: eventsToCreate as any } }, // TODO: find a type for this
+    });
   }
 
   @Delete()

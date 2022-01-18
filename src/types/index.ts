@@ -16,6 +16,7 @@ import {
   Distributor,
   MarketingLink,
   Artist,
+  ReleaseTaskEvent,
 } from '@prisma/client';
 
 interface DataModel {
@@ -34,6 +35,10 @@ export type TeamMemberWithUserAndRoles = TeamMemberWithUser & {
 
 export type ReleaseTaskWithAssignees = ReleaseTask & {
   assignees: TeamMemberWithUser[];
+};
+
+export type ReleaseTaskEventWithUser = ReleaseTaskEvent & {
+  user: TeamMemberWithUser;
 };
 
 export interface EnrichedRelease extends Release {

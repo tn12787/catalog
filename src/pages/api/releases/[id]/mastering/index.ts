@@ -15,7 +15,7 @@ import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateMasteringDto } from 'backend/models/mastering/create';
 import { UpdateMasteringDto } from 'backend/models/mastering/update';
-import { createNewTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
+import { buildCreateTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import {
   buildCreateReleaseTaskArgs,
   buildUpdateReleaseTaskArgs,
@@ -42,10 +42,11 @@ class MasteringHandler {
         type: ReleaseTaskType.MASTERING,
         masteringData: { create: { url: body.url } },
         release: { connect: { id } },
+        events: {
+          create: [buildCreateTaskEvent({ userId: req.session.token.sub })],
+        },
       },
     });
-
-    await createNewTaskEvent({ body, taskId: result.id, userId: req.session.token.sub });
 
     return result;
   }
@@ -63,6 +64,16 @@ class MasteringHandler {
       masteringData: { update: { url: body.url } },
     };
 
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
+    const createdEvents = await createUpdateTaskEvents({
+      body,
+      releaseId: id,
+      type: ReleaseTaskType.MASTERING,
+      userId: activeTeamMember?.id as string,
+    });
+
     const result = await prisma.releaseTask.update({
       where: {
         releaseId_type: {
@@ -70,16 +81,7 @@ class MasteringHandler {
           type: ReleaseTaskType.MASTERING,
         },
       },
-      data: updateArgs,
-    });
-
-    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
-    if (!activeTeamMember) throw new ForbiddenException();
-
-    await createUpdateTaskEvents({
-      body,
-      taskId: result.id,
-      userId: activeTeamMember?.id as string,
+      data: { ...updateArgs, events: { create: createdEvents as any[] } }, //todo: fix type,
     });
 
     return result;

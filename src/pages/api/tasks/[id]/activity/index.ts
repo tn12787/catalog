@@ -9,7 +9,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 @requiresAuth()
 class SingleTaskHandler {
   @Get()
-  async taskEvent(@Req() req: NextApiRequest, @PathParam('id') taskId: string) {
+  async taskEvents(@Req() req: NextApiRequest, @PathParam('id') taskId: string) {
     if (!taskId) throw new NotFoundException();
 
     const task = await prisma.releaseTask.findUnique({
@@ -26,7 +26,10 @@ class SingleTaskHandler {
         taskId: taskId,
       },
       orderBy: {
-        timestamp: 'desc',
+        timestamp: 'asc',
+      },
+      include: {
+        user: { include: { user: true } },
       },
     });
 
