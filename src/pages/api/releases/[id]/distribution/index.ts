@@ -19,7 +19,7 @@ import { UpdateDistributionDto } from 'backend/models/distribution/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { AuthDecoratedRequest } from 'types';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
-import { checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
+import { buildCreateReleaseTaskArgs, checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -31,25 +31,14 @@ class ReleaseListHandler {
   ) {
     await checkTaskUpdatePermissions(req, id);
 
-    const optionalArgs = body.assignees
-      ? {
-          assignees: {
-            connect: body.assignees.map((id) => ({
-              id,
-            })),
-          },
-        }
-      : {};
+    const baseArgs = buildCreateReleaseTaskArgs(body);
 
     const result = await prisma.releaseTask.create({
       data: {
-        ...optionalArgs,
+        ...baseArgs,
         type: ReleaseTaskType.DISTRIBUTION,
         distributionData: { create: { distributor: { connect: { id: body.distributor } } } },
         release: { connect: { id } },
-        status: body.status,
-        notes: body.notes,
-        dueDate: body.dueDate,
       },
     });
 

@@ -19,7 +19,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateArtworkDto } from 'backend/models/artwork/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
-import { checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
+import { buildCreateReleaseTaskArgs, checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -31,32 +31,14 @@ class ReleaseListHandler {
   ) {
     await checkTaskUpdatePermissions(req, id);
 
-    const optionalArgs = pickBy(
-      {
-        assignees: body.assignees
-          ? {
-              connect: body.assignees.map((id) => ({
-                id,
-              })),
-            }
-          : undefined,
-        dueDate: body.dueDate,
-      },
-      (v) => v !== undefined
-    );
+    const baseArgs = buildCreateReleaseTaskArgs(body);
 
     const result = await prisma.releaseTask.create({
       data: {
-        ...optionalArgs,
+        ...baseArgs,
         release: { connect: { id } },
-        status: body.status,
-        notes: body.notes,
         type: ReleaseTaskType.ARTWORK,
-        artworkData: {
-          create: {
-            url: body.url,
-          },
-        },
+        artworkData: { create: { url: body.url } },
       },
     });
 

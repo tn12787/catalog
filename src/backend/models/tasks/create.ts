@@ -1,14 +1,14 @@
 import { IsDate, IsEnum, IsString, IsOptional, IsArray } from 'class-validator';
 import { TaskStatus } from '@prisma/client';
 
-export class UpdateBaseReleaseTaskDto {
+export class CreateBaseReleaseTaskDto {
   @IsOptional()
   @IsDate()
   dueDate: Date;
 
   @IsOptional()
   @IsEnum(TaskStatus)
-  status?: TaskStatus;
+  status: TaskStatus;
 
   @IsOptional()
   @IsString()

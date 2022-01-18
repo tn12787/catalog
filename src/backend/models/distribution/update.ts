@@ -1,8 +1,8 @@
 import { IsOptional, IsString } from 'class-validator';
 
-import { BaseReleaseTaskDto } from '../tasks/update';
+import { UpdateBaseReleaseTaskDto } from '../tasks/update';
 
-export class UpdateDistributionDto extends BaseReleaseTaskDto {
+export class UpdateDistributionDto extends UpdateBaseReleaseTaskDto {
   @IsOptional()
   @IsString()
   distributor?: string;

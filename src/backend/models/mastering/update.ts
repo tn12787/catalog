@@ -1,8 +1,8 @@
 import { IsOptional, IsUrl } from 'class-validator';
 
-import { BaseReleaseTaskDto } from '../tasks/update';
+import { UpdateBaseReleaseTaskDto } from '../tasks/update';
 
-export class UpdateMasteringDto extends BaseReleaseTaskDto {
+export class UpdateMasteringDto extends UpdateBaseReleaseTaskDto {
   @IsOptional()
   @IsUrl()
   url?: string;

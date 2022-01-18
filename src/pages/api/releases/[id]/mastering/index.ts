@@ -20,7 +20,7 @@ import { CreateMasteringDto } from 'backend/models/mastering/create';
 import { UpdateMasteringDto } from 'backend/models/mastering/update';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { createNewTaskEvent } from 'backend/apiUtils/taskEvents';
-import { checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
+import { buildCreateReleaseTaskArgs, checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
 
 @requiresAuth()
 class MasteringHandler {
@@ -32,28 +32,14 @@ class MasteringHandler {
   ) {
     await checkTaskUpdatePermissions(req, id);
 
-    const optionalArgs = pickBy(
-      {
-        assignees: body.assignees
-          ? {
-              connect: body.assignees.map((id) => ({
-                id,
-              })),
-            }
-          : undefined,
-        dueDate: body.dueDate,
-      },
-      (v) => v !== undefined
-    );
+    const baseArgs = buildCreateReleaseTaskArgs(body);
 
     const result = await prisma.releaseTask.create({
       data: {
-        ...optionalArgs,
+        ...baseArgs,
         type: ReleaseTaskType.MASTERING,
         masteringData: { create: { url: body.url } },
         release: { connect: { id } },
-        status: body.status,
-        notes: body.notes,
       },
     });
 

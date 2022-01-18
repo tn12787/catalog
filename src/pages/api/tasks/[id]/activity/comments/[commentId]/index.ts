@@ -84,11 +84,7 @@ class ReleaseListHandler {
       },
     });
 
-    await checkRequiredPermissions(
-      req,
-      ['UPDATE_RELEASES', 'DELETE_ALL_COMMENTS'],
-      task?.release?.teamId
-    );
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.teamId);
 
     //check if comment exists
     const comment = await prisma.releaseTaskEvent.findUnique({
