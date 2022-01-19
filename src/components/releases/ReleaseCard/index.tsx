@@ -78,7 +78,6 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
               <Menu size="sm">
                 <MenuButton
                   as={Button}
-                  href={`/releases/${releaseData.id}`}
                   variant="outline"
                   colorScheme="purple"
                   rightIcon={<FiChevronDown />}

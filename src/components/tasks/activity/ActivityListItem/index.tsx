@@ -5,6 +5,8 @@ import UpdateStatusItem from '../UpdateStatusItem';
 import CreateTaskItem from '../CreateTaskItem';
 import UpdateDateItem from '../UpdateDateItem';
 import UpdateAssigneesItem from '../UpdateAssigneesItem';
+import CommentItem from '../CommentItem';
+import DeleteCommentItem from '../DeleteCommentItem';
 
 import { ReleaseTaskEventWithUser } from 'types';
 
@@ -22,6 +24,10 @@ const ActivityListItem = ({ event }: Props) => {
       return <UpdateDateItem event={event} />;
     case TaskEventType.CREATE_TASK:
       return <CreateTaskItem event={event} />;
+    case TaskEventType.NEW_COMMENT:
+      return <CommentItem event={event} />;
+    case TaskEventType.DELETE_COMMENT:
+      return <DeleteCommentItem event={event} />;
     default:
       return <p>{JSON.stringify(event)}</p>;
   }

@@ -13,7 +13,11 @@ import { AuthDecoratedRequest } from 'types';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions, getAllUserPermissionsForTeam } from 'backend/apiUtils/teams';
+import {
+  checkRequiredPermissions,
+  getAllUserPermissionsForTeam,
+  getResourceTeamMembership,
+} from 'backend/apiUtils/teams';
 import { UpdateCommentDto } from 'backend/models/tasks/activity/comments/update';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
@@ -49,8 +53,11 @@ class ReleaseListHandler {
       throw new NotFoundException('Comment not found');
     }
 
+    const activeTeamMember = await getResourceTeamMembership(req, task?.release?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
     // check if user is the author of the comment
-    if (comment.user.id !== req.session.token.sub) {
+    if (comment.user.id !== activeTeamMember.id) {
       throw new ForbiddenException('You are not the author of this comment');
     }
 
@@ -98,22 +105,42 @@ class ReleaseListHandler {
       throw new NotFoundException('Comment not found');
     }
 
+    const activeTeamMember = await getResourceTeamMembership(req, task?.release?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
     // To delete a comment, the user must either be the author of the comment, or have the DELETE_ALL_COMMENTS permission
     const userPermissions = await getAllUserPermissionsForTeam(req, task?.release?.teamId);
     const canDelete =
-      comment.user.id === req.session.token.sub || userPermissions.includes('DELETE_ALL_COMMENTS');
+      comment.user.id === activeTeamMember.id || userPermissions.includes('DELETE_ALL_COMMENTS');
 
     if (!canDelete) {
       throw new ForbiddenException('You are not the author of this comment');
     }
 
+    // remove original comment and updates
+    await prisma.releaseTaskEvent.deleteMany({
+      where: {
+        OR: [
+          { id: commentId, type: TaskEventType.NEW_COMMENT },
+          {
+            extraData: {
+              path: ['commentId'],
+              equals: commentId,
+            },
+            type: TaskEventType.UPDATE_COMMENT,
+          },
+        ],
+      },
+    });
+
     const result = await prisma.releaseTaskEvent.create({
       data: {
-        user: { connect: { id: req.session.token.sub } },
+        user: { connect: { id: activeTeamMember.id } },
         task: { connect: { id: taskId } },
         type: TaskEventType.DELETE_COMMENT,
         extraData: {
           commentId: commentId,
+          user: comment.userId,
         },
       },
     });
