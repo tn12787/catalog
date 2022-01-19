@@ -139,7 +139,6 @@ class ReleaseListHandler {
         task: { connect: { id: taskId } },
         type: TaskEventType.DELETE_COMMENT,
         extraData: {
-          commentId: commentId,
           user: comment.userId,
         },
       },

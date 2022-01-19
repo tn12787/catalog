@@ -52,7 +52,7 @@ extraData: {
 
 // TaskEventType.DELETE_COMMENT
 extraData: {
-  commentId: string; // The ID of the comment being deleted
+  user: string; // The user who commented originally
 }
 
 // TaskEventType.UPDATE_ASSIGNEES
