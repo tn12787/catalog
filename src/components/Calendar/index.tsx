@@ -12,11 +12,12 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import useCalendar from '@veccu/react-calendar';
+import { useCalendar } from '@h6s/calendar';
 import { format } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { BiArrowToLeft, BiArrowToRight } from 'react-icons/bi';
+import { useRouter } from 'next/router';
 
 import CalendarSquare from './CalendarSquare';
 import { BaseEvent } from './types';
@@ -41,7 +42,12 @@ const Calendar = <T extends BaseEvent>({
   canDropEvent,
   loading,
 }: Props<T>) => {
-  const { cursorDate, headers, body, navigation, view } = useCalendar();
+  const router = useRouter();
+  const { cursorDate, headers, body, navigation, view } = useCalendar({
+    defaultDate: router.query?.date && new Date(router.query?.date as string),
+  });
+
+  const [loaded, setLoaded] = useState(false);
 
   const enrichedBody = useMemo(() => {
     return {
@@ -62,6 +68,63 @@ const Calendar = <T extends BaseEvent>({
   }, [events, body]);
 
   const { bgPrimary } = useAppColors();
+
+  const setView = (view: 'month' | 'week' | 'day') => {
+    router.push({ pathname: '/planner', query: { ...router.query, view } }, undefined, {
+      shallow: true,
+    });
+  };
+
+  const setDate = useCallback(
+    (date: string) => {
+      router.push(
+        {
+          pathname: '/planner',
+          query: { ...router.query, date: format(new Date(date), 'yyyy-MM-dd') },
+        },
+        undefined,
+        {
+          shallow: true,
+        }
+      );
+    },
+    [router]
+  );
+
+  // TODO: clean this awful mess up
+  useEffect(() => {
+    if (router.query?.view) {
+      switch (router.query.view) {
+        case 'month':
+          view.showMonthView();
+          break;
+        case 'week':
+          view.showWeekView();
+          break;
+        case 'day':
+          view.showDayView();
+          break;
+      }
+    }
+
+    // check for discrepancies in state and query string
+    const areStateAndQueryEqual =
+      format(cursorDate, 'yyyy-MM-dd') === (router.query.date as string);
+
+    if (areStateAndQueryEqual) {
+      return;
+    }
+
+    if (loaded) {
+      // if we've already loaded, then state drives the query string
+      setDate(cursorDate.toDateString());
+    } else {
+      // otherwise, the query string (if it exists) drives the state
+      router.query.date && navigation.setDate(new Date(router.query.date as string));
+    }
+
+    setLoaded(true);
+  }, [router.query, loaded, setDate, cursorDate, navigation, view]);
 
   return (
     <Card p={0} w="100%" overflowX="auto">
@@ -89,7 +152,7 @@ const Calendar = <T extends BaseEvent>({
                 <Stack direction="row" gutter={4}>
                   <Button
                     size="xs"
-                    onClick={view.showMonthView}
+                    onClick={() => setView('month')}
                     isActive={view.isMonthView}
                     aria-label="button for changing view type to month"
                   >
@@ -97,7 +160,7 @@ const Calendar = <T extends BaseEvent>({
                   </Button>
                   <Button
                     size="xs"
-                    onClick={view.showWeekView}
+                    onClick={() => setView('week')}
                     isActive={view.isWeekView}
                     aria-label="button for changing view type to week"
                   >
@@ -105,7 +168,7 @@ const Calendar = <T extends BaseEvent>({
                   </Button>
                   <Button
                     size="xs"
-                    onClick={view.showDayView}
+                    onClick={() => setView('day')}
                     isActive={view.isDayView}
                     aria-label="button for changing view type to day"
                   >
@@ -117,12 +180,16 @@ const Calendar = <T extends BaseEvent>({
                     size="xs"
                     aria-label="button for navigating to prev calendar"
                     icon={<BiArrowToLeft />}
-                    onClick={navigation.toPrev}
+                    onClick={() => {
+                      navigation.toPrev();
+                    }}
                   />
                   <Button
                     size="xs"
                     colorScheme="purple"
-                    onClick={navigation.setToday}
+                    onClick={() => {
+                      navigation.setToday();
+                    }}
                     aria-label="button for navigating to today calendar"
                   >
                     TODAY
@@ -131,7 +198,9 @@ const Calendar = <T extends BaseEvent>({
                     size="xs"
                     aria-label="button for navigating to next calendar"
                     icon={<BiArrowToRight />}
-                    onClick={navigation.toNext}
+                    onClick={() => {
+                      navigation.toNext();
+                    }}
                   />
                 </Stack>
               </Stack>

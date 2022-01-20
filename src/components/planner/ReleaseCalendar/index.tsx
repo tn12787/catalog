@@ -1,9 +1,11 @@
 import { useToast, useDisclosure } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import { cloneDeep } from 'lodash';
 import { format } from 'date-fns';
+import { useRouter } from 'next/router';
+import { stringify } from 'query-string';
 
 import ReleaseEventDrawer from '../ReleaseEventDrawer';
 
@@ -22,8 +24,20 @@ interface Props {
 const ReleaseCalendar = ({ events, loading }: Props) => {
   const queryClient = useQueryClient();
   const { currentTeam, teams } = useExtendedSession();
+  const router = useRouter();
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [selectedEvent, setSelectedEvent] = React.useState<ReleaseEvent>();
+
+  useEffect(() => {
+    if (router.query?.event) {
+      setSelectedEvent(events.find((event) => event.data.id === router.query.event));
+      onOpen();
+    } else {
+      onClose();
+    }
+  }, [onOpen, onClose, events, router.query]);
 
   const { mutateAsync: updateReleaseEvent } = useMutation(updateEventInCalendar, {
     onMutate: async ({ event, targetDate }) => {
@@ -99,16 +113,26 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
     }
   };
 
-  const { isOpen, onClose, onOpen } = useDisclosure();
-
   const onCalendarEventClicked = (event: ReleaseEvent) => {
-    setSelectedEvent(event);
-    onOpen();
+    const { event: _, ...rest } = router.query;
+    const queryParams = stringify({ ...rest, event: event.data.id });
+    router.push(`/planner?${queryParams}`, `/planner?${queryParams}`, {
+      shallow: true,
+    });
   };
 
   const onModalClose = () => {
     setSelectedEvent(undefined);
-    onClose();
+    const { event: _, ...rest } = router.query;
+    const queryParams = stringify(rest);
+
+    router.push(
+      `/planner${queryParams ? '?' : ''}${queryParams}`,
+      `/planner${queryParams ? '?' : ''}${queryParams}`,
+      {
+        shallow: true,
+      }
+    );
   };
 
   return (
