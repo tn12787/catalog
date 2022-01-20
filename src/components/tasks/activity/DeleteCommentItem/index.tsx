@@ -3,6 +3,9 @@ import React from 'react';
 import { Prisma } from '@prisma/client';
 import { formatDistanceToNow } from 'date-fns';
 import { useQuery } from 'react-query';
+import { BiX } from 'react-icons/bi';
+
+import ActivityIcon from '../ActivityIcon';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types';
@@ -24,6 +27,7 @@ const DeleteCommentItem = ({ event }: Props) => {
 
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
+      <ActivityIcon icon={BiX} />
       <AssigneeBadge inline teamMember={event.user} />
       <Text>deleted a comment from </Text>
       <AssigneeBadge

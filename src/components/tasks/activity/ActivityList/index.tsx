@@ -12,7 +12,7 @@ interface Props {
 
 const ActivityList = ({ events }: Props) => {
   return (
-    <Stack spacing={5}>
+    <Stack spacing={8}>
       {events.map((event) => (
         <ActivityListItem event={event} allEvents={events} key={event.id} />
       ))}

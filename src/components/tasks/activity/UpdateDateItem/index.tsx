@@ -2,6 +2,9 @@ import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Prisma } from '@prisma/client';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
+import { BiCalendar } from 'react-icons/bi';
+
+import ActivityIcon from '../ActivityIcon';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser } from 'types';
@@ -18,6 +21,7 @@ const UpdateDateItem = ({ event }: Props) => {
 
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
+      <ActivityIcon icon={BiCalendar} />
       <AssigneeBadge inline teamMember={event.user} />
       <Text>updated the due date from</Text>
       <Text fontSize="sm">{format(parseISO(oldDueDate as string), 'PPP')}</Text>

@@ -1,6 +1,4 @@
 import {
-  Badge,
-  Button,
   HStack,
   IconButton,
   Menu,
@@ -14,9 +12,8 @@ import {
 import React, { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Prisma } from '@prisma/client';
-import { FiChevronDown } from 'react-icons/fi';
 import { useMutation, useQueryClient } from 'react-query';
-import { BiDotsHorizontalRounded, BiDotsVertical, BiDotsVerticalRounded } from 'react-icons/bi';
+import { BiDotsHorizontalRounded } from 'react-icons/bi';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser } from 'types';
@@ -102,11 +99,23 @@ const CommentItem = ({ event, updates }: Props) => {
     <Stack>
       <Card spacing={3}>
         <HStack justifyContent={'space-between'}>
-          <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
+          <HStack alignItems={'center'} fontSize="sm" lineHeight={'normal'} color={bodySub}>
             <AssigneeBadge inline teamMember={event.user} />
             <Text>commented</Text>
             <Text>{formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}</Text>
-            {updates.length && <Badge size="xs">edited</Badge>}
+            {updates.length && (
+              <>
+                <Text color={bodySub} fontSize="sm">
+                  •
+                </Text>
+                <Text color={bodySub} fontSize="xs">
+                  edited{' '}
+                  {formatDistanceToNow(new Date(updates.at(-1)?.timestamp as Date), {
+                    addSuffix: true,
+                  })}
+                </Text>
+              </>
+            )}
           </HStack>
           {(canDeleteComment || canEditComment) && (
             <Menu size="sm" arrowPadding={5}>
@@ -115,6 +124,7 @@ const CommentItem = ({ event, updates }: Props) => {
                 as={IconButton}
                 variant="unstyled"
                 p={0}
+                height="auto"
                 _hover={{
                   color: primary,
                 }}

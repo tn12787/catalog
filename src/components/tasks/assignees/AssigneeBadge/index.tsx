@@ -15,7 +15,7 @@ interface Props {
 }
 
 const AssigneeBadge = ({ teamMember, editable, onClick, onRemoveClick, inline }: Props) => {
-  const { bgPrimary } = useAppColors();
+  const { bgPrimary, bodyText } = useAppColors();
   return (
     <HStack
       p={inline ? 0 : 1}
@@ -25,7 +25,7 @@ const AssigneeBadge = ({ teamMember, editable, onClick, onRemoveClick, inline }:
       onClick={() => onClick?.(teamMember)}
     >
       <Avatar size="2xs" src={teamMember?.user.image || ''} />
-      <Text isTruncated fontSize="xs" fontWeight="semibold">
+      <Text color={bodyText} isTruncated fontSize="xs" fontWeight="semibold">
         {teamMember?.user.name ?? 'User'}
       </Text>
       {editable && (

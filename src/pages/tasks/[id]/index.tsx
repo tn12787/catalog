@@ -1,4 +1,4 @@
-import { Stack, Heading, Text } from '@chakra-ui/layout';
+import { Stack, Heading, Text, HStack, Divider } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -93,21 +93,32 @@ const SingleTaskPage = () => {
             </Heading>
           </Skeleton>
         </Stack>
-        <Stack spacing={5}>
-          <Card>
-            <Heading size="md">Notes</Heading>
+        <HStack alignItems={'flex-start'} flex={1} w="100%">
+          <Stack spacing={5} w="100%">
+            <Card>
+              <Heading size="md">Notes</Heading>
+              <Skeleton isLoaded={!taskLoading}>
+                <Text color={hasNotes ? undefined : bodySub} fontSize={'sm'}>
+                  {taskResponse?.data.notes || 'This task has no notes.'}
+                </Text>
+              </Skeleton>
+            </Card>
+            <Heading as="h3" size="md">
+              Activity
+            </Heading>
+            <ActivityList loading={activityLoading} events={activityResponse?.data ?? []} />
+            <NewCommentBox onSubmit={onSubmit} loading={commentLoading} />
+          </Stack>
+          <Card maxW="300px" w="100%">
+            <Heading size="md">Task info</Heading>
             <Skeleton isLoaded={!taskLoading}>
               <Text color={hasNotes ? undefined : bodySub} fontSize={'sm'}>
                 {taskResponse?.data.notes || 'This task has no notes.'}
               </Text>
             </Skeleton>
           </Card>
-          <Heading as="h3" size="md">
-            Activity
-          </Heading>
-          <ActivityList loading={activityLoading} events={activityResponse?.data ?? []} />
-          <NewCommentBox onSubmit={onSubmit} loading={commentLoading} />
-        </Stack>
+        </HStack>
+        <Divider />
       </Stack>
     </Stack>
   );

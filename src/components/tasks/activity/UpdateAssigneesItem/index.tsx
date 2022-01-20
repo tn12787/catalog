@@ -2,6 +2,9 @@ import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { useQuery } from 'react-query';
+import { FiUsers } from 'react-icons/fi';
+
+import ActivityIcon from '../ActivityIcon';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types';
@@ -27,6 +30,7 @@ const UpdateAssigneesItem = ({ event }: Props) => {
 
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
+      <ActivityIcon icon={FiUsers} />
       <AssigneeBadge inline teamMember={event.user} />
       {newlyAssigned.length > 0 && (
         <>

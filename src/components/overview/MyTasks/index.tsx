@@ -3,9 +3,9 @@ import React from 'react';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/tabs';
 import { TaskStatus } from '@prisma/client';
 
+import TaskTable from 'components/tasks/TaskTable';
 import Card from 'components/Card';
 import { ReleaseEvent } from 'types';
-import ReleaseTaskTable from 'components/ReleaseTaskTable';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {
@@ -19,7 +19,7 @@ const MyTasks = ({ data, loading }: Props) => {
     {
       label: 'Outstanding',
       content: (
-        <ReleaseTaskTable
+        <TaskTable
           data={data.filter((item) => item.data?.status !== TaskStatus.COMPLETE)}
           loading={loading}
           emptyContent={
@@ -33,7 +33,7 @@ const MyTasks = ({ data, loading }: Props) => {
     },
     {
       label: 'All Tasks',
-      content: <ReleaseTaskTable data={data} loading={loading} />,
+      content: <TaskTable data={data} loading={loading} />,
     },
   ];
 

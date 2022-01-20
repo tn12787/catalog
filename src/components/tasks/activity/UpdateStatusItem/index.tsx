@@ -2,6 +2,9 @@ import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Prisma, TaskStatus } from '@prisma/client';
 import { formatDistanceToNow } from 'date-fns';
+import { BiCheck } from 'react-icons/bi';
+
+import ActivityIcon from '../ActivityIcon';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser } from 'types';
@@ -19,6 +22,7 @@ const UpdateStatusItem = ({ event }: Props) => {
 
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
+      <ActivityIcon icon={BiCheck} />
       <AssigneeBadge inline teamMember={event.user} />
       <Text>updated the status from</Text>
       <TaskStatusBadge status={oldStatus as TaskStatus} />
