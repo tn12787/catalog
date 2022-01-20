@@ -47,13 +47,12 @@ extraData: {
 // TaskEventType.UPDATE_COMMENT
 extraData: {
   commentId: string; // The ID of the comment being updated
-  oldComment: string; // The old comment text as a Markdown string
   newComment: string; // The new comment text as a Markdown string
 }
 
 // TaskEventType.DELETE_COMMENT
 extraData: {
-  commentId: string; // The ID of the comment being deleted
+  user: string; // The user who commented originally
 }
 
 // TaskEventType.UPDATE_ASSIGNEES
@@ -70,7 +69,7 @@ extraData: {
 
 // TaskEventType.UPDATE_DATE
 extraData: {
-  oldDate: string // ISO timestamp of the previous date
-  newDate: string // ISO timestamp of the new date
+  oldDueDate: string // ISO timestamp of the previous date
+  newDueDate: string // ISO timestamp of the new date
 }
 ```

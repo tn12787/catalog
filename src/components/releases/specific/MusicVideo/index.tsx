@@ -4,16 +4,15 @@ import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
-import { User } from '@prisma/client';
 import { TaskStatus } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import EditMusicVideoForm from 'components/releases/forms/EditMusicVideoForm';
-import { ClientRelease, EventType } from 'types';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import { ClientRelease, EventType, TeamMemberWithUser } from 'types';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -28,11 +27,11 @@ const buildFields = (musicVideoInfo: ClientRelease['musicVideo'] | undefined): S
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={musicVideoInfo?.assignees as User[]} />,
+      content: <AssigneeBadgeList assignees={musicVideoInfo?.assignees as TeamMemberWithUser[]} />,
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={musicVideoInfo?.status as TaskStatus} />,
+      content: <TaskStatusBadge status={musicVideoInfo?.status as TaskStatus} />,
     },
     musicVideoInfo?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,

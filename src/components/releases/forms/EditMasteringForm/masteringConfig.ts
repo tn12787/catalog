@@ -1,7 +1,7 @@
 import { TaskStatus } from '@prisma/client';
 
 import { FormDatum } from 'types/forms';
-import AssigneeSelect from 'components/AssigneeSelect';
+import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 import { EditMasteringFormData } from 'components/releases/specific/Mastering/types';
 
 export const buildMasteringConfig = (): FormDatum<EditMasteringFormData>[] => [

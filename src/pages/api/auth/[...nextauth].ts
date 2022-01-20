@@ -40,7 +40,6 @@ export default NextAuth({
         }
         return { ...token };
       } catch (e) {
-        console.error(e);
         return { error: e };
       }
     },
@@ -49,6 +48,7 @@ export default NextAuth({
         const userTeams = await prisma.teamMember.findMany({
           where: { userId: token.sub as string },
           select: {
+            id: true,
             teamId: true,
             team: {
               select: { name: true, id: true },

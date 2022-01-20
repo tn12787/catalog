@@ -1,23 +1,8 @@
-import { IsDate, IsEnum, IsString, IsOptional, IsUrl, IsArray } from 'class-validator';
-import { TaskStatus } from '@prisma/client';
+import { IsOptional, IsUrl } from 'class-validator';
 
-export class CreateMusicVideoDto {
-  @IsOptional()
-  @IsDate()
-  dueDate: Date;
+import { CreateBaseReleaseTaskDto } from '../tasks/create';
 
-  @IsOptional()
-  @IsEnum(TaskStatus)
-  status: TaskStatus;
-
-  @IsOptional()
-  @IsString()
-  notes?: string;
-
-  @IsOptional()
-  @IsArray()
-  assignees?: string[];
-
+export class CreateMusicVideoDto extends CreateBaseReleaseTaskDto {
   @IsOptional()
   @IsUrl()
   url?: string;

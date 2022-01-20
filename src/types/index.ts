@@ -1,3 +1,5 @@
+import { Session } from 'next-auth';
+import { NextApiRequest } from 'next';
 import {
   Role,
   Permission,
@@ -14,6 +16,7 @@ import {
   Distributor,
   MarketingLink,
   Artist,
+  ReleaseTaskEvent,
 } from '@prisma/client';
 
 interface DataModel {
@@ -24,8 +27,18 @@ export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date;
 }
 
+export type TeamMemberWithUser = TeamMember & { user: User };
+
+export type TeamMemberWithUserAndRoles = TeamMemberWithUser & {
+  roles: Role[];
+};
+
 export type ReleaseTaskWithAssignees = ReleaseTask & {
-  assignees: User[];
+  assignees: TeamMemberWithUser[];
+};
+
+export type ReleaseTaskEventWithUser = ReleaseTaskEvent & {
+  user: TeamMemberWithUser;
 };
 
 export interface EnrichedRelease extends Release {
@@ -71,8 +84,7 @@ export interface Contact extends DataModel {
 
 export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
 
-export type EnrichedReleaseTask = ReleaseTask & {
-  assignees: User[];
+export type EnrichedReleaseTask = ReleaseTaskWithAssignees & {
   artworkData: ArtworkData | null;
   distributionData: (DistributionData & { distributor?: Distributor }) | null;
   marketingData: (MarketingData & { links?: MarketingLink[] }) | null;
@@ -103,13 +115,17 @@ export type EnrichedTeamMember = TeamMember & {
   roles: Role & { permissions: Permission[] }[];
 };
 
-export interface ExtendedSession {
+export type ExtendedSession = Session & { token: ExtendedToken };
+
+export interface ExtendedToken {
   email: string;
   name: string;
   picture: string;
   teams: EnrichedTeamMember[];
   sub: string;
 }
+
+export type AuthDecoratedRequest = NextApiRequest & { session: ExtendedSession };
 
 export type PermissionType =
   | 'CREATE_RELEASES'
@@ -130,4 +146,5 @@ export type PermissionType =
   | 'VIEW_USERS'
   | 'VIEW_TEAM'
   | 'UPDATE_TEAM'
-  | 'DELETE_TEAM';
+  | 'DELETE_TEAM'
+  | 'DELETE_ALL_COMMENTS';

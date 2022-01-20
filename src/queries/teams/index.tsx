@@ -3,12 +3,12 @@ import { Team } from '@prisma/client';
 
 import { UpdateTeamVars } from './types';
 
-import { TeamMemberWithUser } from 'components/teams/TeamMembersTable/types';
+import { TeamMemberWithUserAndRoles } from 'types';
 
 export const fetchTeam = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
-  const { data: response } = await axios.get<Team & { members: TeamMemberWithUser[] }>(
+  const { data: response } = await axios.get<Team & { members: TeamMemberWithUserAndRoles[] }>(
     `/api/teams/${id}`
   );
 
