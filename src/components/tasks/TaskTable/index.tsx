@@ -11,8 +11,8 @@ interface Props {
   emptyContent?: JSX.Element;
 }
 
-const ReleaseTaskTable = ({ data, loading, emptyContent }: Props) => {
+const TaskTable = ({ data, loading, emptyContent }: Props) => {
   return <Table data={data} columns={columns} loading={loading} emptyContent={emptyContent} />;
 };
 
-export default ReleaseTaskTable;
+export default TaskTable;

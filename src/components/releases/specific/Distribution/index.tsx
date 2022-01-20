@@ -11,8 +11,8 @@ import EditDistributionForm from '../../forms/EditDistributionForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import { ClientRelease, EventType, TeamMemberWithUser } from 'types';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -35,7 +35,7 @@ const buildFields = (
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={distributionTask?.status as TaskStatus} />,
+      content: <TaskStatusBadge status={distributionTask?.status as TaskStatus} />,
     },
     {
       name: 'Distributor',

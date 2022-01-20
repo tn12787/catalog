@@ -10,8 +10,8 @@ import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import { ClientRelease, EventType, TeamMemberWithUser } from 'types';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
 
 dayjs.extend(utc);
@@ -31,7 +31,7 @@ const buildFields = (masteringInfo: ClientRelease['mastering'] | undefined): Sum
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={masteringInfo?.status as TaskStatus} />,
+      content: <TaskStatusBadge status={masteringInfo?.status as TaskStatus} />,
     },
     masteringInfo?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,

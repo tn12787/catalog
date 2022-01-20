@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Release, ReleaseTask } from '@prisma/client';
 
-import { DeleteCommentVars, NewCommentVars } from './types';
+import { DeleteCommentVars, NewCommentVars, UpdateCommentVars } from './types';
 
 import { ReleaseTaskEventWithUser } from 'types';
 
@@ -21,6 +21,12 @@ export const postNewComment = async ({ id, text }: NewCommentVars) => {
   if (!id) return; //TODO: deal with this hack
 
   return await axios.post(`/api/tasks/${id}/activity/comments`, { text });
+};
+
+export const updateComment = async ({ commentId, taskId, text }: UpdateCommentVars) => {
+  if (!taskId || !commentId) return;
+
+  return await axios.put(`/api/tasks/${taskId}/activity/comments/${commentId}`, { text });
 };
 
 export const deleteComment = async ({ commentId, taskId }: DeleteCommentVars) => {

@@ -1,41 +1,61 @@
 import {
-  AlertDialog,
+  Badge,
   Button,
   HStack,
+  IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Stack,
   Text,
-  useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Prisma } from '@prisma/client';
 import { FiChevronDown } from 'react-icons/fi';
 import { useMutation, useQueryClient } from 'react-query';
+import { BiDotsHorizontalRounded, BiDotsVertical, BiDotsVerticalRounded } from 'react-icons/bi';
 
-import AssigneeBadge from 'components/AssigneeBadge';
+import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser } from 'types';
 import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
 import { hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
-import { deleteComment } from 'queries/tasks';
+import { deleteComment, updateComment } from 'queries/tasks';
+import CommentInput from 'components/comments/CommentInput';
+import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
 
 interface Props {
   event: ReleaseTaskEventWithUser;
+  updates: ReleaseTaskEventWithUser[];
 }
 
-const CommentItem = ({ event }: Props) => {
-  const { bodySub } = useAppColors();
+const getLatestCommentUpdate = (updates: ReleaseTaskEventWithUser[]) => {
+  const last = updates.at(-1);
+
+  if (!last) {
+    return undefined;
+  }
+
+  const { newComment } = last.extraData as Prisma.JsonObject;
+
+  return newComment;
+};
+
+const CommentItem = ({ event, updates }: Props) => {
+  const { bodySub, primary } = useAppColors();
+  const [isEditing, setEditing] = useState(false);
 
   const { newComment } = event.extraData as Prisma.JsonObject;
   const { teams, currentTeam } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const canDeleteComment = hasRequiredPermissions(['DELETE_ALL_COMMENTS'], teams?.[currentTeam]);
+  const canEditComment = event.user?.id === teams?.[currentTeam].id;
+  const toast = useToast();
 
   const { mutateAsync: deleteSelected } = useMutation(deleteComment, {
     onSuccess: () => {
@@ -54,27 +74,54 @@ const CommentItem = ({ event }: Props) => {
     }
   };
 
+  const { mutateAsync: updateExistingComment, isLoading: updateCommentLoading } = useMutation(
+    updateComment,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['taskActivity', event.taskId]);
+      },
+    }
+  );
+
+  const onSubmit = async (data: NewCommentFormData) => {
+    try {
+      await updateExistingComment({
+        taskId: event.taskId,
+        commentId: event.id,
+        text: data.text,
+      });
+      setEditing(false);
+    } catch (e: any) {
+      toast({ status: 'error', title: 'Oh no...', description: e.toString() });
+    }
+  };
+
+  const latestCommentText = getLatestCommentUpdate(updates) ?? newComment;
+
   return (
     <Stack>
       <Card spacing={3}>
         <HStack justifyContent={'space-between'}>
           <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
-            <AssigneeBadge teamMember={event.user} />
+            <AssigneeBadge inline teamMember={event.user} />
             <Text>commented</Text>
             <Text>{formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}</Text>
+            {updates.length && <Badge size="xs">edited</Badge>}
           </HStack>
-          {canDeleteComment && (
-            <Menu size="sm">
+          {(canDeleteComment || canEditComment) && (
+            <Menu size="sm" arrowPadding={5}>
               <MenuButton
-                as={Button}
-                variant="outline"
-                colorScheme="purple"
-                rightIcon={<FiChevronDown />}
                 size="sm"
-              >
-                Actions
-              </MenuButton>
+                as={IconButton}
+                variant="unstyled"
+                p={0}
+                _hover={{
+                  color: primary,
+                }}
+                icon={<BiDotsHorizontalRounded fontSize={'24px'} />}
+              ></MenuButton>
               <MenuList>
+                <MenuItem onClick={() => setEditing(true)}>Edit</MenuItem>
                 <MenuItem color="red" onClick={onDelete}>
                   Delete
                 </MenuItem>
@@ -82,8 +129,16 @@ const CommentItem = ({ event }: Props) => {
             </Menu>
           )}
         </HStack>
-
-        <Text whiteSpace={'pre'}>{newComment}</Text>
+        {isEditing ? (
+          <CommentInput
+            defaultValue={latestCommentText as string}
+            onSubmit={onSubmit}
+            loading={updateCommentLoading}
+            onCancel={() => setEditing(false)}
+          />
+        ) : (
+          <Text whiteSpace={'pre'}>{latestCommentText}</Text>
+        )}
       </Card>
     </Stack>
   );

@@ -3,7 +3,10 @@ export interface NewCommentVars {
   text: string;
 }
 
-export interface DeleteCommentVars {
+export type ExistingCommentVars = {
   taskId: string;
   commentId: string;
-}
+};
+
+export type UpdateCommentVars = ExistingCommentVars & { text: string };
+export type DeleteCommentVars = ExistingCommentVars;

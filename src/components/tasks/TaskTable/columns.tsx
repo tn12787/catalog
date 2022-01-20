@@ -6,11 +6,11 @@ import React from 'react';
 import { TaskStatus } from '@prisma/client';
 
 import { ReleaseEvent, TeamMemberWithUser } from 'types';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
 export const StatusBadge = ({ value }: { value: TaskStatus }) => {
-  return <ReleaseTaskBadge status={value} />;
+  return <TaskStatusBadge status={value} />;
 };
 
 const ReleaseLink = ({ value }: { value: ReleaseEvent }) => {

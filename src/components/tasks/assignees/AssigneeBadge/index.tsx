@@ -11,15 +11,22 @@ interface Props {
   onClick?: (item: TeamMemberWithUser) => void;
   onRemoveClick?: (item: TeamMemberWithUser) => void;
   teamMember: TeamMemberWithUser;
+  inline?: boolean;
 }
 
-const AssigneeBadge = ({ teamMember, editable, onClick, onRemoveClick }: Props) => {
+const AssigneeBadge = ({ teamMember, editable, onClick, onRemoveClick, inline }: Props) => {
   const { bgPrimary } = useAppColors();
   return (
-    <HStack p={1} px={2} borderRadius="full" bg={bgPrimary} onClick={() => onClick?.(teamMember)}>
-      <Avatar size="2xs" src={teamMember.user.image || ''} />
+    <HStack
+      p={inline ? 0 : 1}
+      px={inline ? 0 : 2}
+      borderRadius="full"
+      bg={inline ? 'transparent' : bgPrimary}
+      onClick={() => onClick?.(teamMember)}
+    >
+      <Avatar size="2xs" src={teamMember?.user.image || ''} />
       <Text isTruncated fontSize="xs" fontWeight="semibold">
-        {teamMember.user.name}
+        {teamMember?.user.name ?? 'User'}
       </Text>
       {editable && (
         <IconButton

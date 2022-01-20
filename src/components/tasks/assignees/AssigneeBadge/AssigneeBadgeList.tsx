@@ -8,14 +8,17 @@ import { TeamMemberWithUser } from 'types';
 
 interface Props {
   assignees: TeamMemberWithUser[];
+  inline?: boolean;
 }
 
-const AssigneeBadgeList = ({ assignees }: Props) => {
+const AssigneeBadgeList = ({ assignees, inline }: Props) => {
   const { bodySub } = useAppColors();
   return (
     <Wrap>
       {assignees?.length ? (
-        assignees?.map((assignee) => <AssigneeBadge key={assignee.id} teamMember={assignee} />)
+        assignees?.map((assignee) => (
+          <AssigneeBadge inline={inline} key={assignee.id} teamMember={assignee} />
+        ))
       ) : (
         <Text fontSize="xs" color={bodySub}>
           No-one assigned

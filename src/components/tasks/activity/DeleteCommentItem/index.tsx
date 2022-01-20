@@ -1,10 +1,10 @@
 import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Prisma } from '@prisma/client';
-import { format, formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import { useQuery } from 'react-query';
 
-import AssigneeBadge from 'components/AssigneeBadge';
+import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
@@ -24,7 +24,7 @@ const DeleteCommentItem = ({ event }: Props) => {
 
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
-      <AssigneeBadge teamMember={event.user} />
+      <AssigneeBadge inline teamMember={event.user} />
       <Text>deleted a comment from </Text>
       <AssigneeBadge
         teamMember={teamMembers.find((item) => item.id === user) as TeamMemberWithUser}

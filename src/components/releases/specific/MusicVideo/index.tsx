@@ -11,8 +11,8 @@ import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import EditMusicVideoForm from 'components/releases/forms/EditMusicVideoForm';
 import { ClientRelease, EventType, TeamMemberWithUser } from 'types';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -31,7 +31,7 @@ const buildFields = (musicVideoInfo: ClientRelease['musicVideo'] | undefined): S
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={musicVideoInfo?.status as TaskStatus} />,
+      content: <TaskStatusBadge status={musicVideoInfo?.status as TaskStatus} />,
     },
     musicVideoInfo?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,

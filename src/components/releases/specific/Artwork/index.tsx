@@ -11,8 +11,8 @@ import EditArtworkForm from '../../forms/EditArtworkForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import { ClientRelease, EventType, TeamMemberWithUser } from 'types';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -31,7 +31,7 @@ const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): Summary
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={artworkTask?.status as TaskStatus} />,
+      content: <TaskStatusBadge status={artworkTask?.status as TaskStatus} />,
     },
     artworkTask?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,

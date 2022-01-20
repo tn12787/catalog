@@ -15,11 +15,11 @@ import { fetchSingleTask, fetchTaskActivity, postNewComment } from 'queries/task
 import ActivityList from 'components/tasks/activity/ActivityList';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { releaseTaskTypeToDisplayName } from 'utils/display';
-import NewCommentBox from 'components/NewCommentBox';
+import NewCommentBox from 'components/comments/NewCommentBox';
 import Card from 'components/Card';
-import { NewCommentFormData } from 'components/NewCommentBox/types';
+import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
 
-const SingleArtist = () => {
+const SingleTaskPage = () => {
   const router = useRouter();
   const taskId = router.query['id'] as string;
   const { bgPrimary, bodySub } = useAppColors();
@@ -95,10 +95,10 @@ const SingleArtist = () => {
         </Stack>
         <Stack spacing={5}>
           <Card>
-            <Heading size="md">Summary</Heading>
+            <Heading size="md">Notes</Heading>
             <Skeleton isLoaded={!taskLoading}>
               <Text color={hasNotes ? undefined : bodySub} fontSize={'sm'}>
-                {taskResponse?.data.notes || 'This task has no summary.'}
+                {taskResponse?.data.notes || 'This task has no notes.'}
               </Text>
             </Skeleton>
           </Card>
@@ -115,6 +115,6 @@ const SingleArtist = () => {
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
 
-SingleArtist.getLayout = () => DashboardLayout;
+SingleTaskPage.getLayout = () => DashboardLayout;
 
-export default SingleArtist;
+export default SingleTaskPage;

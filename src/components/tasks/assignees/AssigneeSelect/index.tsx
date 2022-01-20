@@ -21,7 +21,7 @@ import AssigneeItem from './AssigneeItem';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
-import AssigneeBadge from 'components/AssigneeBadge';
+import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { TeamMemberWithUser, TeamMemberWithUserAndRoles } from 'types';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {

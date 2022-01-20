@@ -3,12 +3,12 @@ import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { useQuery } from 'react-query';
 
-import AssigneeBadge from 'components/AssigneeBadge';
+import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
 interface Props {
   event: ReleaseTaskEventWithUser;
@@ -27,11 +27,12 @@ const UpdateAssigneesItem = ({ event }: Props) => {
 
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
-      <AssigneeBadge teamMember={event.user} />
+      <AssigneeBadge inline teamMember={event.user} />
       {newlyAssigned.length > 0 && (
         <>
           <Text>assigned</Text>
           <AssigneeBadgeList
+            inline
             assignees={
               newlyAssigned
                 .map((item) => teamMembers.find((x) => x.id === item))

@@ -63,7 +63,7 @@ class ReleaseListHandler {
 
     const result = await prisma.releaseTaskEvent.create({
       data: {
-        user: { connect: { id: req.session.token.sub } },
+        user: { connect: { id: activeTeamMember.id } },
         task: { connect: { id: taskId } },
         type: TaskEventType.UPDATE_COMMENT,
         extraData: {
@@ -118,33 +118,34 @@ class ReleaseListHandler {
     }
 
     // remove original comment and updates
-    await prisma.releaseTaskEvent.deleteMany({
-      where: {
-        OR: [
-          { id: commentId, type: TaskEventType.NEW_COMMENT },
-          {
-            extraData: {
-              path: ['commentId'],
-              equals: commentId,
+    const [_, newEvent] = await prisma.$transaction([
+      prisma.releaseTaskEvent.deleteMany({
+        where: {
+          OR: [
+            { id: commentId, type: TaskEventType.NEW_COMMENT },
+            {
+              extraData: {
+                path: ['commentId'],
+                equals: commentId,
+              },
+              type: TaskEventType.UPDATE_COMMENT,
             },
-            type: TaskEventType.UPDATE_COMMENT,
-          },
-        ],
-      },
-    });
-
-    const result = await prisma.releaseTaskEvent.create({
-      data: {
-        user: { connect: { id: activeTeamMember.id } },
-        task: { connect: { id: taskId } },
-        type: TaskEventType.DELETE_COMMENT,
-        extraData: {
-          user: comment.userId,
+          ],
         },
-      },
-    });
+      }),
+      prisma.releaseTaskEvent.create({
+        data: {
+          user: { connect: { id: activeTeamMember.id } },
+          task: { connect: { id: taskId } },
+          type: TaskEventType.DELETE_COMMENT,
+          extraData: {
+            user: comment.userId,
+          },
+        },
+      }),
+    ]);
 
-    return result;
+    return newEvent;
   }
 }
 

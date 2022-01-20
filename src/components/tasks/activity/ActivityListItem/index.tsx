@@ -1,5 +1,5 @@
 import React from 'react';
-import { TaskEventType } from '@prisma/client';
+import { Prisma, TaskEventType } from '@prisma/client';
 
 import UpdateStatusItem from '../UpdateStatusItem';
 import CreateTaskItem from '../CreateTaskItem';
@@ -12,9 +12,10 @@ import { ReleaseTaskEventWithUser } from 'types';
 
 interface Props {
   event: ReleaseTaskEventWithUser;
+  allEvents: ReleaseTaskEventWithUser[];
 }
 
-const ActivityListItem = ({ event }: Props) => {
+const ActivityListItem = ({ event, allEvents }: Props) => {
   switch (event.type) {
     case TaskEventType.UPDATE_STATUS:
       return <UpdateStatusItem event={event} />;
@@ -25,9 +26,22 @@ const ActivityListItem = ({ event }: Props) => {
     case TaskEventType.CREATE_TASK:
       return <CreateTaskItem event={event} />;
     case TaskEventType.NEW_COMMENT:
-      return <CommentItem event={event} />;
+      return (
+        <CommentItem
+          updates={allEvents?.filter((item) => {
+            if (item.type !== TaskEventType.UPDATE_COMMENT) {
+              return false;
+            }
+            const { commentId } = item.extraData as Prisma.JsonObject;
+            return commentId === event.id;
+          })}
+          event={event}
+        />
+      );
     case TaskEventType.DELETE_COMMENT:
       return <DeleteCommentItem event={event} />;
+    case TaskEventType.UPDATE_COMMENT:
+      return null;
     default:
       return <p>{JSON.stringify(event)}</p>;
   }

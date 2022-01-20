@@ -14,7 +14,7 @@ const ActivityList = ({ events }: Props) => {
   return (
     <Stack spacing={5}>
       {events.map((event) => (
-        <ActivityListItem event={event} key={event.id} />
+        <ActivityListItem event={event} allEvents={events} key={event.id} />
       ))}
     </Stack>
   );

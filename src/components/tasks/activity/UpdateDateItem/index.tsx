@@ -3,7 +3,7 @@ import React from 'react';
 import { Prisma } from '@prisma/client';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 
-import AssigneeBadge from 'components/AssigneeBadge';
+import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser } from 'types';
 import useAppColors from 'hooks/useAppColors';
 
@@ -18,7 +18,7 @@ const UpdateDateItem = ({ event }: Props) => {
 
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
-      <AssigneeBadge teamMember={event.user} />
+      <AssigneeBadge inline teamMember={event.user} />
       <Text>updated the due date from</Text>
       <Text fontSize="sm">{format(parseISO(oldDueDate as string), 'PPP')}</Text>
       <Text>to</Text>

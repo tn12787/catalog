@@ -2,7 +2,7 @@ import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 
-import AssigneeBadge from 'components/AssigneeBadge';
+import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser } from 'types';
 import useAppColors from 'hooks/useAppColors';
 
@@ -15,7 +15,7 @@ const CreateTaskItem = ({ event }: Props) => {
 
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
-      <AssigneeBadge teamMember={event.user} />
+      <AssigneeBadge inline teamMember={event.user} />
       <Text>created this task</Text>
       <Text>{formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}</Text>
     </HStack>
