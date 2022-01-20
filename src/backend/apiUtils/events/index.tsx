@@ -62,7 +62,7 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
         name: `${release.name}: mastering`,
         date: (task.dueDate as Date)?.toISOString() ?? '',
         type: EventType.MASTERING,
-        data: flattenField(release, ReleaseTaskType.MARKETING) as ClientReleaseTaskData,
+        data: flattenField(release, ReleaseTaskType.MASTERING) as ClientReleaseTaskData,
         release: release,
       };
     case ReleaseTaskType.MUSIC_VIDEO:

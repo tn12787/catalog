@@ -26,7 +26,7 @@ class ReleaseListHandler {
         artist: true,
         tasks: {
           include: {
-            assignees: true,
+            assignees: { include: { user: true } },
             artworkData: true,
             distributionData: true,
             musicVideoData: true,

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import create from 'zustand';
 import router from 'next/router';
 
-import { EnrichedTeamMember, ExtendedSession } from 'types';
+import { EnrichedTeamMember, ExtendedToken } from 'types';
 
 interface UseTeamPreferenceState {
   currentTeam: string;
@@ -18,7 +18,7 @@ const useTeamPreference = create<UseTeamPreferenceState>((set) => ({
 
 const useExtendedSession = () => {
   const { data: session, status } = useSession();
-  const token = session?.token as ExtendedSession | undefined;
+  const token = session?.token as ExtendedToken | undefined;
 
   const { currentTeam, setCurrentTeam } = useTeamPreference(
     useCallback(

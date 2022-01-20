@@ -1,24 +1,9 @@
-import { IsDate, IsEnum, IsString, IsOptional, IsArray } from 'class-validator';
-import { TaskStatus } from '@prisma/client';
+import { IsOptional, IsString } from 'class-validator';
 
-export class UpdateDistributionDto {
-  @IsOptional()
-  @IsDate()
-  dueDate?: Date;
+import { UpdateBaseReleaseTaskDto } from '../tasks/update';
 
-  @IsOptional()
-  @IsEnum(TaskStatus)
-  status?: TaskStatus;
-
+export class UpdateDistributionDto extends UpdateBaseReleaseTaskDto {
   @IsOptional()
   @IsString()
   distributor?: string;
-
-  @IsOptional()
-  @IsString()
-  notes?: string;
-
-  @IsOptional()
-  @IsArray()
-  assignees?: string[];
 }

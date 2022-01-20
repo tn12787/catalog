@@ -1,6 +1,7 @@
-import { Flex, Heading, Stack, Text } from '@chakra-ui/layout';
+import { Flex, Heading, Stack, Text, Link, HStack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 import React from 'react';
+import NextLink from 'next/link';
 
 import { SummaryField } from '../Summary';
 
@@ -56,9 +57,16 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
           )}
         </Stack>
         {data && (
-          <Button variant="link" size="sm" onClick={onEditClick} colorScheme="purple">
-            View Details
-          </Button>
+          <HStack>
+            <Button variant="link" size="sm" onClick={onEditClick} colorScheme="purple">
+              Quick Edit
+            </Button>
+            <NextLink passHref href={`/tasks/${data.id}`}>
+              <Button as={Link} variant="link" size="sm" colorScheme="purple">
+                View Details
+              </Button>
+            </NextLink>
+          </HStack>
         )}
       </Flex>
       {data ? (

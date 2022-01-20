@@ -6,7 +6,7 @@ import { TaskStatus } from '@prisma/client';
 
 import Card from 'components/Card';
 import { ReleaseEvent } from 'types';
-import ReleaseTaskTable from 'components/ReleaseTaskTable';
+import TaskTable from 'components/tasks/TaskTable';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {
@@ -29,7 +29,7 @@ const OverdueTasks = ({ data, loading }: Props) => {
       <Heading color={overdueBg} size="md">
         🚨 Overdue Tasks
       </Heading>
-      <ReleaseTaskTable
+      <TaskTable
         data={filteredData}
         loading={loading}
         emptyContent={

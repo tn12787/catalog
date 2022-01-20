@@ -4,14 +4,14 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { TaskStatus, User } from '@prisma/client';
+import { TaskStatus } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { ClientRelease, EventType } from 'types';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import { ClientRelease, EventType, TeamMemberWithUser } from 'types';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
 
 dayjs.extend(utc);
@@ -27,11 +27,11 @@ const buildFields = (masteringInfo: ClientRelease['mastering'] | undefined): Sum
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={masteringInfo?.assignees as User[]} />,
+      content: <AssigneeBadgeList assignees={masteringInfo?.assignees as TeamMemberWithUser[]} />,
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={masteringInfo?.status as TaskStatus} />,
+      content: <TaskStatusBadge status={masteringInfo?.status as TaskStatus} />,
     },
     masteringInfo?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,

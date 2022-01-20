@@ -1,4 +1,4 @@
-import { pickBy, isNil, pick } from 'lodash';
+import { pickBy, isNil } from 'lodash';
 import {
   Body,
   createHandler,
@@ -8,84 +8,81 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
 import { ReleaseTaskType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateDistributionDto } from 'backend/models/distribution/update';
-import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
+import { AuthDecoratedRequest } from 'types';
+import { buildCreateTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
+import {
+  buildCreateReleaseTaskArgs,
+  buildUpdateReleaseTaskArgs,
+  checkTaskUpdatePermissions,
+} from 'backend/apiUtils/tasks';
+import { ForbiddenException } from 'backend/apiUtils/exceptions';
+import { getResourceTeamMembership } from 'backend/apiUtils/teams';
 
 @requiresAuth()
 class ReleaseListHandler {
   @Post()
   async createDistribution(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateDistributionDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
-
-    const optionalArgs = body.assignees
-      ? {
-          assignees: {
-            connect: body.assignees.map((id) => ({
-              id,
-            })),
-          },
-        }
-      : {};
+    const baseArgs = buildCreateReleaseTaskArgs(body);
 
     const result = await prisma.releaseTask.create({
       data: {
-        ...optionalArgs,
+        ...baseArgs,
         type: ReleaseTaskType.DISTRIBUTION,
         distributionData: { create: { distributor: { connect: { id: body.distributor } } } },
         release: { connect: { id } },
-        status: body.status,
-        notes: body.notes,
-        dueDate: body.dueDate,
+        events: {
+          create: [buildCreateTaskEvent({ userId: activeTeamMember.id })],
+        },
       },
     });
+
     return result;
   }
 
   @Patch()
   async updateDistribution(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateDistributionDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
-
-    const updatedData = {
-      ...pick(body, ['status', 'notes', 'dueDate']),
-      assignees: transformAssigneesToPrismaQuery(body.assignees),
-      distributionData: {
-        update: {
-          distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
+    const updateArgs = pickBy(
+      {
+        ...buildUpdateReleaseTaskArgs(body),
+        distributionData: {
+          update: {
+            distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
+          },
         },
       },
-    };
+      (v) => !isNil(v)
+    );
+
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
+    const eventsToCreate = await createUpdateTaskEvents({
+      body,
+      releaseId: id,
+      type: ReleaseTaskType.DISTRIBUTION,
+      userId: activeTeamMember?.id as string,
+    });
 
     const result = await prisma.releaseTask.update({
       where: {
@@ -94,22 +91,15 @@ class ReleaseListHandler {
           type: ReleaseTaskType.DISTRIBUTION,
         },
       },
-      data: pickBy(updatedData, (v) => !isNil(v)),
+      data: { ...updateArgs, events: { create: eventsToCreate as any } }, // TODO: fix type,
     });
+
     return result;
   }
 
   @Delete()
-  async deleteDistribution(@Req() req: NextApiRequest, @PathParam('id') id: string) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+  async deleteDistribution(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
+    await checkTaskUpdatePermissions(req, id);
 
     const result = await prisma.releaseTask.delete({
       where: {

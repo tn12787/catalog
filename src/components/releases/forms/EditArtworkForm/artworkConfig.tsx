@@ -1,8 +1,8 @@
 import { TaskStatus } from '@prisma/client';
 
+import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
 import { FormDatum } from 'types/forms';
-import AssigneeSelect from 'components/AssigneeSelect';
 
 export const buildArtworkConfig = (
   alreadyCompleted: boolean

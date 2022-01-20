@@ -3,7 +3,7 @@ import { Distributor, TaskStatus } from '@prisma/client';
 import { EditDistributionFormData } from '../../specific/Distribution/types';
 
 import { FormDatum } from 'types/forms';
-import AssigneeSelect from 'components/AssigneeSelect';
+import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 
 export const buildDistribConfig = (
   alreadyCompleted: boolean,

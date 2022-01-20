@@ -2,7 +2,7 @@ import { Avatar, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react
 import React from 'react';
 import { CellProps, Column } from 'react-table';
 
-import { TeamMemberWithUser } from './types';
+import { TeamMemberWithUserAndRoles } from 'types';
 
 interface UserCard {
   name: string | null;
@@ -10,10 +10,10 @@ interface UserCard {
   email: string | null;
 }
 
-export const teamMembersColumns: Column<TeamMemberWithUser>[] = [
+export const teamMembersColumns: Column<TeamMemberWithUserAndRoles>[] = [
   {
     Header: 'Name',
-    accessor: (d: TeamMemberWithUser): UserCard => ({
+    accessor: (d: TeamMemberWithUserAndRoles): UserCard => ({
       name: d.user?.name,
       photo: d.user?.image,
       email: d.user?.email,
@@ -37,6 +37,6 @@ export const teamMembersColumns: Column<TeamMemberWithUser>[] = [
   },
   {
     Header: 'Roles',
-    accessor: (d: TeamMemberWithUser) => d.roles.map((item) => item.name).join(', '),
+    accessor: (d: TeamMemberWithUserAndRoles) => d.roles.map((item) => item.name).join(', '),
   },
 ];

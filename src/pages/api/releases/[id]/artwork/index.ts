@@ -2,120 +2,113 @@ import {
   Body,
   createHandler,
   Delete,
+  NotFoundException,
   Patch,
   Post,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { pickBy, isNil, pick } from 'lodash';
-import { NextApiRequest } from 'next';
 import { ReleaseTaskType } from '@prisma/client';
 
+import { getResourceTeamMembership } from './../../../../../backend/apiUtils/teams/index';
+
+import { AuthDecoratedRequest } from 'types';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateArtworkDto } from 'backend/models/artwork/update';
-import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
+import { buildCreateTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
+import {
+  buildCreateReleaseTaskArgs,
+  buildUpdateReleaseTaskArgs,
+  checkTaskUpdatePermissions,
+} from 'backend/apiUtils/tasks';
+import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 @requiresAuth()
 class ReleaseListHandler {
   @Post()
   async createArtwork(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateArtworkDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
-
-    const optionalArgs = pickBy(
-      {
-        assignees: body.assignees
-          ? {
-              connect: body.assignees.map((id) => ({
-                id,
-              })),
-            }
-          : undefined,
-        dueDate: body.dueDate,
-      },
-      (v) => v !== undefined
-    );
+    const baseArgs = buildCreateReleaseTaskArgs(body);
 
     const result = await prisma.releaseTask.create({
       data: {
-        ...optionalArgs,
+        ...baseArgs,
         release: { connect: { id } },
-        status: body.status,
-        notes: body.notes,
         type: ReleaseTaskType.ARTWORK,
-        artworkData: {
-          create: {
-            url: body.url,
-          },
+        artworkData: { create: { url: body.url } },
+        events: {
+          create: [
+            buildCreateTaskEvent({
+              userId: activeTeamMember.id,
+            }),
+          ],
         },
       },
     });
+
     return result;
   }
 
   @Patch()
   async updateArtwork(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateArtworkDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-        targetDate: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    const releaseTeam = await checkTaskUpdatePermissions(req, id);
 
     const updateArgs = {
-      ...pick(body, ['status', 'notes', 'dueDate']),
-      assignees: transformAssigneesToPrismaQuery(body.assignees),
-      artworkData: {
-        update: {
-          url: body.url,
-        },
-      },
+      ...buildUpdateReleaseTaskArgs(body),
+      artworkData: { update: { url: body.url } },
     };
 
-    const result = await prisma.releaseTask.update({
+    const releaseTask = prisma.releaseTask.findUnique({
       where: {
         releaseId_type: {
           releaseId: id,
           type: ReleaseTaskType.ARTWORK,
         },
       },
-      data: pickBy(updateArgs, (v) => !isNil(v)),
     });
-    return result;
+
+    if (!releaseTask) {
+      throw new NotFoundException();
+    }
+
+    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    if (!activeTeamMember) throw new ForbiddenException();
+
+    const eventsToCreate = await createUpdateTaskEvents({
+      body,
+      releaseId: id,
+      type: ReleaseTaskType.ARTWORK,
+      userId: activeTeamMember?.id as string,
+    });
+
+    await prisma.releaseTask.update({
+      where: {
+        releaseId_type: {
+          releaseId: id,
+          type: ReleaseTaskType.ARTWORK,
+        },
+      },
+      data: { ...updateArgs, events: { create: eventsToCreate as any } }, // TODO: find a type for this
+    });
   }
 
   @Delete()
-  async deleteArtwork(@Req() req: NextApiRequest, @PathParam('id') id: string) {
-    const releaseTeam = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        teamId: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+  async deleteArtwork(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
+    await checkTaskUpdatePermissions(req, id);
 
     const result = await prisma.releaseTask.delete({
       where: {

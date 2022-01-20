@@ -4,16 +4,15 @@ import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
-import { User } from '@prisma/client';
 import { TaskStatus } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import EditArtworkForm from '../../forms/EditArtworkForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { ClientRelease, EventType } from 'types';
-import ReleaseTaskBadge from 'components/ReleaseTaskBadge';
-import AssigneeBadgeList from 'components/AssigneeBadge/AssigneeBadgeList';
+import { ClientRelease, EventType, TeamMemberWithUser } from 'types';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -28,11 +27,11 @@ const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): Summary
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={artworkTask?.assignees as User[]} />,
+      content: <AssigneeBadgeList assignees={artworkTask?.assignees as TeamMemberWithUser[]} />,
     },
     {
       name: 'Status',
-      content: <ReleaseTaskBadge status={artworkTask?.status as TaskStatus} />,
+      content: <TaskStatusBadge status={artworkTask?.status as TaskStatus} />,
     },
     artworkTask?.dueDate && {
       name: `${isComplete ? 'Original ' : ''}Due Date`,

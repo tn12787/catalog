@@ -71,7 +71,6 @@ const NewReleaseWizard = () => {
   const router = useRouter();
 
   const submitNewRelease = async (data: CombinedFormState) => {
-    console.log(data);
     try {
       const result = await createRelease({
         ...data.basics,

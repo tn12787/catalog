@@ -16,10 +16,10 @@ import OverdueTasks from 'components/overview/OverdueTasks';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
-  const { currentTeam, token } = useExtendedSession();
-
-  const { data, isLoading } = useQuery(['releaseEvents', currentTeam, token?.sub as string], () =>
-    fetchReleaseEvents(currentTeam, token?.sub as string)
+  const { currentTeam, teams } = useExtendedSession();
+  const { data, isLoading } = useQuery(
+    ['releaseEvents', currentTeam, teams?.[currentTeam]?.id],
+    () => fetchReleaseEvents(currentTeam, teams?.[currentTeam]?.id)
   );
 
   const { data: upcomingReleases } = useQuery(['releases', currentTeam], () =>
