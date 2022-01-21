@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import create from 'zustand';
 import router from 'next/router';
 
-import { EnrichedTeamMember, ExtendedToken } from 'types';
+import { EnrichedTeamMember, ExtendedToken } from 'types/common';
 
 interface UseTeamPreferenceState {
   currentTeam: string;

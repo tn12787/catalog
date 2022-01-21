@@ -13,7 +13,7 @@ import React, { useRef } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 
 import { deleteSingleRelease } from 'queries/releases';
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 
 interface Props extends Omit<AlertDialogProps, 'children' | 'leastDestructiveRef'> {
   releaseData?: ClientRelease;

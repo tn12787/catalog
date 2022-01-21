@@ -6,10 +6,10 @@ import NextLink from 'next/link';
 import { SummaryField } from '../Summary';
 
 import Card from 'components/Card';
-import { ClientReleaseTaskData } from 'types';
+import { ClientReleaseTaskData } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
-import { EventType } from 'types';
+import { EventType } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props<T> {

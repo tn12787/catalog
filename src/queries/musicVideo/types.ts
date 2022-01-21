@@ -1,4 +1,4 @@
-import { ClientMusicVideo } from 'types';
+import { ClientMusicVideo } from 'types/common';
 
 export interface MusicVideoVars extends Pick<ClientMusicVideo, 'status' | 'notes' | 'url'> {
   releaseId: string;

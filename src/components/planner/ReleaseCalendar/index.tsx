@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 
 import ReleaseEventDrawer from '../ReleaseEventDrawer';
 
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 import { updateEventInCalendar } from 'queries/events';
 import UndoToast from 'components/Calendar/UndoToast';
 import Calendar from 'components/Calendar';

@@ -6,7 +6,7 @@ import { EventList } from './EventList';
 import { EventListItem } from './EventListItem';
 
 import Card from 'components/Card';
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import { fetchSpecificReleaseEvents } from 'queries/events';
 
 interface Props {

@@ -4,7 +4,7 @@ import React from 'react';
 import { MdClose } from 'react-icons/md';
 
 import useAppColors from 'hooks/useAppColors';
-import { TeamMemberWithUser } from 'types';
+import { TeamMemberWithUser } from 'types/common';
 
 interface Props {
   editable?: boolean;

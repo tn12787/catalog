@@ -3,7 +3,7 @@ import { Artist } from '@prisma/client';
 
 import { CreateSingleArtistVars, SingleArtistVars } from './types';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 
 export const fetchArtists = async (teamId: string): Promise<Artist[]> => {
   const { data } = await axios.get(`/api/artists`, {

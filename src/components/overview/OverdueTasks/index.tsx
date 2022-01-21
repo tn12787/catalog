@@ -5,7 +5,7 @@ import { useColorModeValue } from '@chakra-ui/color-mode';
 import { TaskStatus } from '@prisma/client';
 
 import Card from 'components/Card';
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 import TaskTable from 'components/tasks/TaskTable';
 import useAppColors from 'hooks/useAppColors';
 

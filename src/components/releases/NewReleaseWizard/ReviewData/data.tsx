@@ -10,7 +10,7 @@ import { ReviewConfigItem } from './types';
 import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
 import { basicInfoConfig } from 'components/releases/forms/NewReleaseForm/releaseConfig';
 import { AssigneeList, StatusBadge } from 'components/tasks/TaskTable/columns';
-import { ClientReleaseTask } from 'types';
+import { ClientReleaseTask } from 'types/common';
 
 export const renderReviewData = <
   T extends BasicInfoFormData | EditArtworkFormData | EditDistributionFormData

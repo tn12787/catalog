@@ -11,7 +11,7 @@ import React from 'react';
 
 import { EventType } from 'components/Calendar/types';
 import EditArtworkForm from 'components/releases/forms/EditArtworkForm';
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 
 interface Props extends Omit<DrawerProps, 'children'> {
   event: ReleaseEvent | undefined;

@@ -5,7 +5,7 @@ import NextImage from 'next/image';
 
 import profilePic from 'images/no-releases-yet.svg';
 import ReleaseCard from 'components/releases/ReleaseCard';
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 

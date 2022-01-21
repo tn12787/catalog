@@ -12,7 +12,7 @@ import { EditArtworkFormData } from '../../specific/Artwork/types';
 import EditArtworkFormBody from './EditArtworkFormBody';
 
 import { createSingleArtwork, updateSingleArtwork, uploadImageToFirebase } from 'queries/artwork';
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 dayjs.extend(utc);

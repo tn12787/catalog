@@ -3,7 +3,7 @@ import React from 'react';
 import { FiCalendar } from 'react-icons/fi';
 import { format, formatDistanceToNow } from 'date-fns';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 
 interface Props {
   releaseData: ClientRelease;

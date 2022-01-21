@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import React from 'react';
 import { TaskStatus } from '@prisma/client';
 
-import { ReleaseEvent, TeamMemberWithUser } from 'types';
+import { ReleaseEvent, TeamMemberWithUser } from 'types/common';
 import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 

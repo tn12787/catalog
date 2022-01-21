@@ -9,7 +9,7 @@ import {
 } from '@storyofams/next-api-decorators';
 import { TaskEventType } from '@prisma/client';
 
-import { AuthDecoratedRequest } from 'types';
+import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';

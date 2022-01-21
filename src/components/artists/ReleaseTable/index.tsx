@@ -3,7 +3,7 @@ import React from 'react';
 import { teamMembersColumns } from './columns';
 
 import Table from 'components/Table';
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 
 interface Props {
   releases: ClientRelease[];

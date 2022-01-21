@@ -10,7 +10,7 @@ import { SummaryField } from '../Summary';
 import EditDistributionForm from '../../forms/EditDistributionForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { ClientRelease, EventType, TeamMemberWithUser } from 'types';
+import { ClientRelease, EventType, TeamMemberWithUser } from 'types/common';
 import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 

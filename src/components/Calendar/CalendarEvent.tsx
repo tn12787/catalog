@@ -7,7 +7,7 @@ import { BaseEvent, EventType } from './types';
 import { deriveBadgeColorFromStatus } from './utils';
 
 import useAppColors from 'hooks/useAppColors';
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 
 interface Props<T> {
   event: T;

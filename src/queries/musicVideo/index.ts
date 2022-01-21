@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { UpdateMusicVideoVars, CreateMusicVideoVars } from './types';
 
-import { ClientMusicVideo } from 'types';
+import { ClientMusicVideo } from 'types/common';
 
 export const updateSingleMusicVideo = async ({
   releaseId,

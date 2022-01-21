@@ -1,6 +1,6 @@
 import { uniq } from 'lodash';
 
-import { EnrichedTeamMember, PermissionType } from 'types';
+import { EnrichedTeamMember, PermissionType } from 'types/common';
 
 export const hasRequiredPermissions = (
   requiredPermissions: PermissionType[],

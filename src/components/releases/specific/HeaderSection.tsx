@@ -18,7 +18,7 @@ import { BiChevronRight } from 'react-icons/bi';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';

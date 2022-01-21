@@ -13,7 +13,7 @@ import * as React from 'react';
 import { BiCalendar, BiFlag, BiImageAlt, BiVideo, BiVolumeFull } from 'react-icons/bi';
 import { ImStack } from 'react-icons/im';
 
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 
 export interface EventListItemProps extends StackProps {
   event: ReleaseEvent;

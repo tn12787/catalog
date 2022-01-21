@@ -15,7 +15,7 @@ import prisma from 'backend/prisma/client';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateDistributionDto } from 'backend/models/distribution/update';
-import { AuthDecoratedRequest } from 'types';
+import { AuthDecoratedRequest } from 'types/common';
 import { buildCreateTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import {
   buildCreateReleaseTaskArgs,

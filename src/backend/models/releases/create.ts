@@ -1,7 +1,7 @@
 import { ReleaseType } from '@prisma/client';
 import { IsNotEmpty, IsDate, IsEnum, IsOptional, ValidateNested } from 'class-validator';
 
-import { ReleaseType as ReleaseTypeEnum } from 'types';
+import { ReleaseType as ReleaseTypeEnum } from 'types/common';
 import { CreateDistributionDto } from 'backend/models/distribution/create';
 import { CreateArtworkDto } from 'backend/models/artwork/create';
 

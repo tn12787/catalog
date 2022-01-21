@@ -3,7 +3,7 @@ import { Release, ReleaseTask } from '@prisma/client';
 
 import { DeleteCommentVars, NewCommentVars, UpdateCommentVars } from './types';
 
-import { ReleaseTaskEventWithUser } from 'types';
+import { ReleaseTaskEventWithUser } from 'types/common';
 
 export const fetchSingleTask = async (id: string) => {
   if (!id) return; //TODO: deal with this hack

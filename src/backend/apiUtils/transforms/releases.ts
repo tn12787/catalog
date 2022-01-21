@@ -1,7 +1,7 @@
 import { ReleaseTaskType } from '@prisma/client';
 import { omit } from 'lodash';
 
-import { EnrichedRelease, ClientRelease, EnrichedReleaseTask } from 'types';
+import { EnrichedRelease, ClientRelease, EnrichedReleaseTask } from 'types/common';
 
 export const transformReleaseToApiShape = (release: EnrichedRelease): ClientRelease => {
   const baseData = omit(release, ['tasks']);

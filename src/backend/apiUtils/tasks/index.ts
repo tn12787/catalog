@@ -6,7 +6,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateBaseReleaseTaskDto } from 'backend/models/tasks/update';
 import { CreateBaseReleaseTaskDto } from 'backend/models/tasks/create';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
-import { AuthDecoratedRequest } from 'types';
+import { AuthDecoratedRequest } from 'types/common';
 import prisma from 'backend/prisma/client';
 
 export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: string) => {

@@ -1,4 +1,4 @@
-import { ClientMastering } from 'types';
+import { ClientMastering } from 'types/common';
 
 export interface MasteringVars extends Pick<ClientMastering, 'status' | 'notes' | 'url'> {
   releaseId: string;

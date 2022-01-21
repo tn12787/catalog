@@ -1,4 +1,4 @@
-import { ClientArtwork } from 'types';
+import { ClientArtwork } from 'types/common';
 
 export interface ArtworkVars extends Pick<ClientArtwork, 'status' | 'notes' | 'url'> {
   artworkData?: File | File[];

@@ -3,7 +3,7 @@ import cuid from 'cuid';
 
 import { CreateArtworkVars, UpdateArtworkVars } from './types';
 
-import { ClientArtwork } from 'types';
+import { ClientArtwork } from 'types/common';
 import firebase from 'firebase-details';
 
 export const updateSingleArtwork = async ({

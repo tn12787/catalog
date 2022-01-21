@@ -8,7 +8,7 @@ import { BiX } from 'react-icons/bi';
 import ActivityIcon from '../ActivityIcon';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
-import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types';
+import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';

@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-import { ClientRelease } from './../../types/index';
+import { ClientRelease } from '../../types/common/index';
+
 import { EventType } from './../../components/Calendar/types';
 
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 
 export const fetchReleaseEvents = async (teamId: string, assigneeId?: string) => {
   const { data: response } = await axios.get<ReleaseEvent[]>(`/api/releases/events`, {

@@ -2,7 +2,7 @@ import { ReleaseTask } from '@prisma/client';
 import firebase from 'firebase';
 
 import { initClient } from 'firebase-details';
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 
 export const listUserCalendars = async () => {
   const calendars = await gapi.client.calendar.calendarList.list();

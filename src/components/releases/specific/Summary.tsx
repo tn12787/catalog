@@ -18,7 +18,7 @@ import React from 'react';
 
 import NewReleaseForm from '../forms/NewReleaseForm';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import Card from 'components/Card';
 import useExtendedSession from 'hooks/useExtendedSession';

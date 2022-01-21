@@ -4,7 +4,7 @@ import { NextApiRequest } from 'next';
 import { getSession } from 'next-auth/react';
 
 import prisma from 'backend/prisma/client';
-import { PermissionType, ExtendedSession } from 'types';
+import { PermissionType, ExtendedSession } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 export const createDefaultTeamForUser = async (name: string, userId: string) => {

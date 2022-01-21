@@ -4,7 +4,7 @@ import React from 'react';
 import AssigneeBadge from '.';
 
 import useAppColors from 'hooks/useAppColors';
-import { TeamMemberWithUser } from 'types';
+import { TeamMemberWithUser } from 'types/common';
 
 interface Props {
   assignees: TeamMemberWithUser[];

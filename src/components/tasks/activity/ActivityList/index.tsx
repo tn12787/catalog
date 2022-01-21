@@ -3,7 +3,7 @@ import React from 'react';
 
 import ActivityListItem from '../ActivityListItem';
 
-import { ReleaseTaskEventWithUser } from 'types';
+import { ReleaseTaskEventWithUser } from 'types/common';
 
 interface Props {
   events: ReleaseTaskEventWithUser[];

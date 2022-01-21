@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FilterOptions, PaginatedQueryResult } from './../types';
 import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 
 export const fetchReleases = async ({
   team,

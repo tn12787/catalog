@@ -17,7 +17,7 @@ import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import useAppColors from 'hooks/useAppColors';
 import { fetchReleaseEvents } from 'queries/events';
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 import ReleaseCalendar from 'components/planner/ReleaseCalendar';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { EventList } from 'components/releases/specific/Events/EventList';
