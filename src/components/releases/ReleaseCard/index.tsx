@@ -7,6 +7,10 @@ import { Image } from '@chakra-ui/image';
 import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { FiChevronDown } from 'react-icons/fi';
 import { useDisclosure } from '@chakra-ui/hooks';
+import { MenuDivider } from '@chakra-ui/react';
+import router from 'next/router';
+import { BiCalendar } from 'react-icons/bi';
+import { format } from 'date-fns';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
@@ -86,12 +90,25 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
                   Actions
                 </MenuButton>
                 <MenuList>
-                  {/* <MenuItem
-                  onClick={() => router.push(`/releases/${releaseData.id}`)}
-                >
-                  View Details
-                </MenuItem> */}
-                  {/* <MenuDivider /> */}
+                  <MenuItem
+                    icon={<BiCalendar />}
+                    onClick={() =>
+                      router.push(
+                        {
+                          pathname: '/planner',
+                          query: {
+                            event: releaseData.id,
+                            date: format(releaseData.targetDate as Date, 'yyyy-D') as string,
+                          },
+                        },
+                        undefined,
+                        { shallow: true }
+                      )
+                    }
+                  >
+                    View in planner
+                  </MenuItem>
+                  <MenuDivider />
                   <MenuItem color="red" onClick={onOpen}>
                     Delete
                   </MenuItem>

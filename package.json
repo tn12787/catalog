@@ -33,7 +33,6 @@
     "framer-motion": "5.3.3",
     "next": "^12.0.8",
     "next-auth": "4.0.0-beta.2",
-    "query-string": "^7.0.1",
     "react": "^17.0.1",
     "react-dnd": "^14.0.3",
     "react-dnd-html5-backend": "^14.0.1",

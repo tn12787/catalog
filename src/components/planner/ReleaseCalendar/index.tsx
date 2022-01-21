@@ -5,7 +5,6 @@ import { useQueryClient, useMutation } from 'react-query';
 import { cloneDeep } from 'lodash';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import { stringify } from 'query-string';
 
 import ReleaseEventDrawer from '../ReleaseEventDrawer';
 
@@ -114,25 +113,22 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
   };
 
   const onCalendarEventClicked = (event: ReleaseEvent) => {
-    const { event: _, ...rest } = router.query;
-    const queryParams = stringify({ ...rest, event: event.data.id });
-    router.push(`/planner?${queryParams}`, `/planner?${queryParams}`, {
-      shallow: true,
-    });
+    router.push(
+      { pathname: '/planner', query: { ...router.query, event: event.data.id } },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
   };
 
   const onModalClose = () => {
     setSelectedEvent(undefined);
     const { event: _, ...rest } = router.query;
-    const queryParams = stringify(rest);
 
-    router.push(
-      `/planner${queryParams ? '?' : ''}${queryParams}`,
-      `/planner${queryParams ? '?' : ''}${queryParams}`,
-      {
-        shallow: true,
-      }
-    );
+    router.push({ pathname: '/planner', query: { ...rest } }, undefined, {
+      shallow: true,
+    });
   };
 
   return (

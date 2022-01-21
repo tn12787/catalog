@@ -7,7 +7,6 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, useToast } from '@cha
 import { BiCalendar, BiChevronRight } from 'react-icons/bi';
 import { ReleaseTaskType } from '@prisma/client';
 import Link from 'next/link';
-import { format } from 'date-fns';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
@@ -20,6 +19,7 @@ import { releaseTaskTypeToDisplayName } from 'utils/display';
 import NewCommentBox from 'components/comments/NewCommentBox';
 import Card from 'components/Card';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
+import { buildPlannerLink } from 'utils/planner';
 
 const SingleTaskPage = () => {
   const router = useRouter();
@@ -96,10 +96,10 @@ const SingleTaskPage = () => {
           </Skeleton>
           <Link
             passHref
-            href={`/planner?event=${taskResponse?.data.id}&date=${format(
-              new Date(taskResponse?.data?.dueDate ?? Date.now()),
-              'yyyy-MM-dd'
-            )}`}
+            href={buildPlannerLink(
+              taskResponse?.data.id as string,
+              taskResponse?.data?.dueDate?.toString() ?? ''
+            )}
           >
             <ChakraLink as={HStack}>
               <Icon as={BiCalendar} />
