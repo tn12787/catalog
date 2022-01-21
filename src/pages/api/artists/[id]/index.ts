@@ -10,10 +10,9 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
 
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
-import { EnrichedRelease } from 'types/common';
+import { AuthDecoratedRequest, EnrichedRelease } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
@@ -69,7 +68,7 @@ class ArtistHandler {
   }
 
   @Delete()
-  async deleteArtist(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async deleteArtist(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     const artist = await prisma.artist.findUnique({
       where: { id },
       select: {
