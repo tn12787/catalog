@@ -125,7 +125,9 @@ export interface ExtendedToken {
   sub: string;
 }
 
-export type AuthDecoratedRequest = NextApiRequest & { session: ExtendedSession };
+export interface AuthDecoratedRequest extends NextApiRequest {
+  session: ExtendedSession;
+}
 
 export type PermissionType =
   | 'CREATE_RELEASES'
