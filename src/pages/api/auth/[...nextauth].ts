@@ -40,7 +40,7 @@ export default NextAuth({
         }
         return { ...token };
       } catch (e) {
-        return { error: e };
+        return { ...token };
       }
     },
     async session({ session, token, user }) {
@@ -61,7 +61,7 @@ export default NextAuth({
         session.accessToken = token.accessToken;
         return { ...session, token: { ...token, teams: userTeams }, user };
       } catch (e) {
-        return { expires: 'now' };
+        return session;
       }
     },
   },
