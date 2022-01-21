@@ -1,5 +1,5 @@
 import { Session } from 'next-auth';
-import { NextApiRequest } from 'next';
+import type { NextApiRequest } from 'next';
 import {
   Role,
   Permission,

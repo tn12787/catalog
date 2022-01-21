@@ -12,7 +12,6 @@ import {
 } from '@storyofams/next-api-decorators';
 import { Release, ReleaseType, ReleaseTaskType } from '@prisma/client';
 import { pickBy } from 'lodash';
-import { NextApiRequest } from 'next';
 import { omit } from 'lodash';
 
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
@@ -22,6 +21,7 @@ import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
+import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
 class ReleaseListHandler {
@@ -89,7 +89,7 @@ class ReleaseListHandler {
   @HttpCode(201)
   async createRelease(
     @Body(ValidationPipe) body: CreateReleaseDto,
-    @Request() req: NextApiRequest
+    @Request() req: AuthDecoratedRequest
   ) {
     const team = await prisma.team.findUnique({ where: { id: body.team } });
 
