@@ -9,8 +9,8 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { ReleaseType } from '@prisma/client';
-import { NextApiRequest } from 'next';
 
+import { AuthDecoratedRequest } from 'types/common';
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -21,7 +21,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 @requiresAuth()
 class SingleReleaseHandler {
   @Get()
-  async singleRelease(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async singleRelease(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     if (!id) throw new NotFoundException();
 
     const releaseTeam = await prisma.release.findUnique({
@@ -59,7 +59,7 @@ class SingleReleaseHandler {
 
   @Put()
   async updateRelease(
-    @Req() req: NextApiRequest,
+    @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateReleaseDto,
     @PathParam('id') id: string
   ) {
@@ -89,7 +89,7 @@ class SingleReleaseHandler {
   }
 
   @Delete()
-  async deleteRelease(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async deleteRelease(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {

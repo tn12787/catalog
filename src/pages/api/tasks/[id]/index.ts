@@ -1,15 +1,15 @@
 import { createHandler, Get, NotFoundException, Req } from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
 class SingleTaskHandler {
   @Get()
-  async taskEvent(@Req() req: NextApiRequest, @PathParam('id') id: string) {
+  async taskEvent(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     if (!id) throw new NotFoundException();
 
     const task = await prisma.releaseTask.findUnique({
