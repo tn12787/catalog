@@ -8,7 +8,7 @@ import UpdateAssigneesItem from '../UpdateAssigneesItem';
 import CommentItem from '../CommentItem';
 import DeleteCommentItem from '../DeleteCommentItem';
 
-import { ReleaseTaskEventWithUser } from 'types';
+import { ReleaseTaskEventWithUser } from 'types/common';
 
 interface Props {
   event: ReleaseTaskEventWithUser;

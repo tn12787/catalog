@@ -3,7 +3,7 @@ import React from 'react';
 import { columns } from './columns';
 
 import Table from 'components/Table';
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 
 interface Props {
   data: ReleaseEvent[];

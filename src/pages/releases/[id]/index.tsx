@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react';
 import React from 'react';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import withReleaseData from 'HOCs/withReleaseData';
 import Artwork from 'components/releases/specific/Artwork';
 import Distribution from 'components/releases/specific/Distribution';

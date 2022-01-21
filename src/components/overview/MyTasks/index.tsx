@@ -5,7 +5,7 @@ import { TaskStatus } from '@prisma/client';
 
 import TaskTable from 'components/tasks/TaskTable';
 import Card from 'components/Card';
-import { ReleaseEvent } from 'types';
+import { ReleaseEvent } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { teamMembersColumns } from './columns';
 
-import { TeamMemberWithUserAndRoles } from 'types';
+import { TeamMemberWithUserAndRoles } from 'types/common';
 import Table from 'components/Table';
 
 interface Props {

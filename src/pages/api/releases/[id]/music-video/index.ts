@@ -15,7 +15,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateMusicVideoDto } from 'backend/models/musicVideo/create';
 import { UpdateMusicVideoDto } from 'backend/models/musicVideo/update';
 import { buildCreateTaskEvent, createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
-import { AuthDecoratedRequest } from 'types';
+import { AuthDecoratedRequest } from 'types/common';
 import {
   buildCreateReleaseTaskArgs,
   buildUpdateReleaseTaskArgs,

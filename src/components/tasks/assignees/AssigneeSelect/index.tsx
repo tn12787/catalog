@@ -22,7 +22,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
-import { TeamMemberWithUser, TeamMemberWithUserAndRoles } from 'types';
+import { TeamMemberWithUser, TeamMemberWithUserAndRoles } from 'types/common';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {
   value: TeamMemberWithUser[];

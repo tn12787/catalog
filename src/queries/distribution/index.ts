@@ -3,7 +3,7 @@ import { Distributor } from '@prisma/client';
 
 import { UpdateDistributionVars, CreateDistributionVars } from './types';
 
-import { ClientDistribution } from 'types';
+import { ClientDistribution } from 'types/common';
 
 export const updateSingleDistribution = async ({
   releaseId,

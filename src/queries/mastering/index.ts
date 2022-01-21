@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { CreateMasteringVars, UpdateMasteringVars } from './types';
 
-import { ClientMastering } from 'types';
+import { ClientMastering } from 'types/common';
 
 export const updateSingleMastering = async ({
   releaseId,

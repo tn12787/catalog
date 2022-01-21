@@ -2,7 +2,7 @@ import { BasicInfoFormData } from '../forms/NewReleaseForm/types';
 import { EditArtworkFormData } from '../specific/Artwork/types';
 import { EditDistributionFormData } from '../specific/Distribution/types';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 
 export interface ReleaseWizardComponentProps<T> {
   onSubmit: (data: T) => void;

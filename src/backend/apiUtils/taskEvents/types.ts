@@ -1,7 +1,7 @@
 import { ReleaseTaskType } from '@prisma/client';
 
 import { UpdateBaseReleaseTaskDto } from 'backend/models/tasks/update';
-import { ReleaseTaskWithAssignees } from 'types';
+import { ReleaseTaskWithAssignees } from 'types/common';
 
 interface BaseTaskEventData {
   userId: string;

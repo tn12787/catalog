@@ -6,7 +6,7 @@ import { EditMusicVideoFormData } from '../../specific/MusicVideo/types';
 
 import EditMusicVideoFormBody from './EditMusicVideoFormBody';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import { createSingleMusicVideo, updateSingleMusicVideo } from 'queries/musicVideo';
 import useExtendedSession from 'hooks/useExtendedSession';
 

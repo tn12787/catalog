@@ -13,7 +13,7 @@ import {
 import { NextApiRequest } from 'next';
 
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
-import { EnrichedRelease } from 'types';
+import { EnrichedRelease } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';

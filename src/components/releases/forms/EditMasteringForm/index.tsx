@@ -6,7 +6,7 @@ import { EditMasteringFormData } from '../../specific/Mastering/types';
 
 import EditMasteringFormBody from './EditMasteringFormBody';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import { createSingleMastering, updateSingleMastering } from 'queries/mastering';
 import useExtendedSession from 'hooks/useExtendedSession';
 

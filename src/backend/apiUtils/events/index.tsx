@@ -9,7 +9,7 @@ import {
   EnrichedReleaseTask,
   EventType,
   ReleaseEvent,
-} from 'types';
+} from 'types/common';
 
 export const getEventsForRelease = (
   release: EnrichedRelease,

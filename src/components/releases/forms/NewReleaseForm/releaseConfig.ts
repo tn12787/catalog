@@ -2,7 +2,7 @@ import { Artist } from '@prisma/client';
 
 import { BasicInfoFormData } from './types';
 
-import { ReleaseType } from 'types';
+import { ReleaseType } from 'types/common';
 import { FormDatum } from 'types/forms';
 
 export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>[] => [

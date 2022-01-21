@@ -12,7 +12,7 @@ import { ReleaseTaskType } from '@prisma/client';
 
 import { getResourceTeamMembership } from './../../../../../backend/apiUtils/teams/index';
 
-import { AuthDecoratedRequest } from 'types';
+import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { CreateArtworkDto } from 'backend/models/artwork/create';

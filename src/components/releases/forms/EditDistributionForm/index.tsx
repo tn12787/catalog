@@ -6,7 +6,7 @@ import { EditDistributionFormData } from '../../specific/Distribution/types';
 
 import EditDistributionFormBody from './EditDistributionFormBody';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import { createSingleDistribution, updateSingleDistribution } from 'queries/distribution';
 import useExtendedSession from 'hooks/useExtendedSession';
 

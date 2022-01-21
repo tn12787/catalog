@@ -1,4 +1,4 @@
-import { ClientDistribution } from 'types';
+import { ClientDistribution } from 'types/common';
 
 export interface DistributionVars extends Pick<ClientDistribution, 'status' | 'notes'> {
   releaseId: string;

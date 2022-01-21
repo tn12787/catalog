@@ -19,7 +19,7 @@ import { Artist } from '@prisma/client';
 
 import ReleaseCard from 'components/releases/ReleaseCard';
 import DashboardLayout from 'components/layouts/DashboardLayout';
-import { ClientRelease, ReleaseType } from 'types';
+import { ClientRelease, ReleaseType } from 'types/common';
 import { fetchReleases } from 'queries/releases';
 import useDebounce from 'hooks/useDebounce';
 import ReleaseList from 'components/releases/ReleaseList';

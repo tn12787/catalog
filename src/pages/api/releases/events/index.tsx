@@ -3,7 +3,7 @@ import { createHandler, Get, Query } from '@storyofams/next-api-decorators';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { getEventsForRelease } from 'backend/apiUtils/events';
 import prisma from 'backend/prisma/client';
-import { EnrichedRelease } from 'types';
+import { EnrichedRelease } from 'types/common';
 
 @requiresAuth()
 class ReleaseListHandler {

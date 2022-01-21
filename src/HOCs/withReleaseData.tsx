@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 
 import { LayoutablePage } from './types';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 import { fetchSingleRelease } from 'queries/releases';
 import NotFound from 'components/releases/specific/NotFound';
 import useExtendedSession from 'hooks/useExtendedSession';

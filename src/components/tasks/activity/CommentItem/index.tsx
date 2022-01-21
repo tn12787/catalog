@@ -16,7 +16,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
-import { ReleaseTaskEventWithUser } from 'types';
+import { ReleaseTaskEventWithUser } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
 import { hasRequiredPermissions } from 'utils/auth';

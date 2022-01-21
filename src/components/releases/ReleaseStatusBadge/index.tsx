@@ -1,7 +1,7 @@
 import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
-import { ClientRelease } from 'types';
+import { ClientRelease } from 'types/common';
 
 interface Props {
   releaseData: ClientRelease;

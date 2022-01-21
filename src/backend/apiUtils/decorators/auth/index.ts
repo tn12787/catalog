@@ -7,7 +7,7 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
-import { AuthDecoratedRequest, ExtendedSession } from 'types';
+import { AuthDecoratedRequest, ExtendedSession } from 'types/common';
 
 const requiresAuth = createMiddlewareDecorator(
   async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
