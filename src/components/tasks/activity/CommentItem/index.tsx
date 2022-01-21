@@ -50,8 +50,11 @@ const CommentItem = ({ event, updates }: Props) => {
   const { teams, currentTeam } = useExtendedSession();
   const queryClient = useQueryClient();
 
-  const canDeleteComment = hasRequiredPermissions(['DELETE_ALL_COMMENTS'], teams?.[currentTeam]);
-  const canEditComment = event.user?.id === teams?.[currentTeam].id;
+  const isAuthor = event.user?.id === teams?.[currentTeam].id;
+
+  const canDeleteComment =
+    isAuthor || hasRequiredPermissions(['DELETE_ALL_COMMENTS'], teams?.[currentTeam]);
+  const canEditComment = isAuthor;
   const toast = useToast();
 
   const { mutateAsync: deleteSelected } = useMutation(deleteComment, {
