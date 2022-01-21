@@ -131,10 +131,12 @@ const CommentItem = ({ event, updates }: Props) => {
                 icon={<BiDotsHorizontalRounded fontSize={'24px'} />}
               ></MenuButton>
               <MenuList>
-                <MenuItem onClick={() => setEditing(true)}>Edit</MenuItem>
-                <MenuItem color="red" onClick={onDelete}>
-                  Delete
-                </MenuItem>
+                {canEditComment && <MenuItem onClick={() => setEditing(true)}>Edit</MenuItem>}
+                {canDeleteComment && (
+                  <MenuItem color="red" onClick={onDelete}>
+                    Delete
+                  </MenuItem>
+                )}
               </MenuList>
             </Menu>
           )}
