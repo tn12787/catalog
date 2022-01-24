@@ -63,6 +63,7 @@ class SingleTaskHandler {
       },
       select: {
         releaseId: true,
+        release: { select: { targetDate: true } },
         type: true,
       },
     });
