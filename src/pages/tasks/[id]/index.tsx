@@ -5,7 +5,7 @@ import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, useToast } from '@chakra-ui/react';
 import { BiCalendar, BiChevronRight } from 'react-icons/bi';
-import { ReleaseTaskType } from '@prisma/client';
+import { ReleaseTask, ReleaseTaskType } from '@prisma/client';
 import Link from 'next/link';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
@@ -17,14 +17,15 @@ import ActivityList from 'components/tasks/activity/ActivityList';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { releaseTaskTypeToDisplayName } from 'utils/display';
 import NewCommentBox from 'components/comments/NewCommentBox';
-import Card from 'components/Card';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
 import { buildPlannerLink } from 'utils/planner';
+import TaskInfo from 'components/tasks/TaskInfo';
+import TaskNotes from 'components/tasks/TaskNotes';
 
 const SingleTaskPage = () => {
   const router = useRouter();
   const taskId = router.query['id'] as string;
-  const { bgPrimary, bodySub } = useAppColors();
+  const { bgPrimary } = useAppColors();
   const { teams, currentTeam } = useExtendedSession();
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -37,8 +38,6 @@ const SingleTaskPage = () => {
     ['taskActivity', taskId],
     () => fetchTaskActivity(taskId)
   );
-
-  const hasNotes = taskResponse?.data.notes;
 
   const { mutateAsync: postComment, isLoading: commentLoading } = useMutation(postNewComment, {
     onSuccess: () => {
@@ -111,28 +110,16 @@ const SingleTaskPage = () => {
         </Stack>
         <HStack alignItems={'flex-start'} flex={1} w="100%">
           <Stack spacing={5} w="100%">
-            <Card>
-              <Heading size="md">Notes</Heading>
-              <Skeleton isLoaded={!taskLoading}>
-                <Text color={hasNotes ? undefined : bodySub} fontSize={'sm'}>
-                  {taskResponse?.data.notes || 'This task has no notes.'}
-                </Text>
-              </Skeleton>
-            </Card>
+            <Skeleton isLoaded={!taskLoading}>
+              <TaskNotes task={taskResponse?.data as ReleaseTask} />
+            </Skeleton>
             <Heading as="h3" size="md">
               Activity
             </Heading>
             <ActivityList loading={activityLoading} events={activityResponse?.data ?? []} />
             <NewCommentBox onSubmit={onSubmit} loading={commentLoading} />
           </Stack>
-          <Card maxW="300px" w="100%">
-            <Heading size="md">Task info</Heading>
-            <Skeleton isLoaded={!taskLoading}>
-              <Text color={hasNotes ? undefined : bodySub} fontSize={'sm'}>
-                {taskResponse?.data.notes || 'This task has no notes.'}
-              </Text>
-            </Skeleton>
-          </Card>
+          <TaskInfo loading={taskLoading} task={taskResponse?.data} />
         </HStack>
         <Divider />
       </Stack>
