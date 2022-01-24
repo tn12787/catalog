@@ -1,4 +1,4 @@
-import { TaskStatus } from '@prisma/client';
+import { TaskStatus, ReleaseTaskType, Release } from '@prisma/client';
 
 export enum EventType {
   ARTWORK = 'artwork',
@@ -12,5 +12,6 @@ export enum EventType {
 export interface BaseEvent {
   date: string;
   name: string;
-  data: { status: TaskStatus };
+  data: { status: TaskStatus; type: ReleaseTaskType };
+  release: Release;
 }

@@ -1,20 +1,26 @@
 import axios from 'axios';
 import { Release, ReleaseTask } from '@prisma/client';
 
-import { DeleteCommentVars, NewCommentVars, UpdateCommentVars } from './types';
+import { DeleteCommentVars, NewCommentVars, UpdateCommentVars, UpdateTaskVars } from './types';
 
-import { ReleaseTaskEventWithUser } from 'types/common';
+import { ReleaseTaskEventWithUser, ReleaseTaskWithAssignees } from 'types/common';
 
 export const fetchSingleTask = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
-  return await axios.get<ReleaseTask & { release: Release }>(`/api/tasks/${id}`);
+  return await axios.get<ReleaseTaskWithAssignees & { release: Release }>(`/api/tasks/${id}`);
 };
 
 export const fetchTaskActivity = async (id: string) => {
   if (!id) return; //TODO: deal with this hack
 
   return await axios.get<ReleaseTaskEventWithUser[]>(`/api/tasks/${id}/activity`);
+};
+
+export const updateTask = async ({ id, ...rest }: UpdateTaskVars) => {
+  if (!id) return; //TODO: deal with this hack
+
+  return await axios.patch<ReleaseTaskEventWithUser[]>(`/api/tasks/${id}`, rest);
 };
 
 export const postNewComment = async ({ id, text }: NewCommentVars) => {

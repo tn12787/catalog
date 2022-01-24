@@ -1,13 +1,14 @@
 import { HStack, Box, Text, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import { useDrag } from 'react-dnd';
-import { TaskStatus } from '@prisma/client';
+import { ReleaseTaskType, TaskStatus } from '@prisma/client';
 
 import { BaseEvent, EventType } from './types';
 import { deriveBadgeColorFromStatus } from './utils';
 
 import useAppColors from 'hooks/useAppColors';
 import { ReleaseEvent } from 'types/common';
+import { taskHeadingByType } from 'utils/tasks';
 
 interface Props<T> {
   event: T;
@@ -60,7 +61,10 @@ const CalendarEvent = <T extends BaseEvent = ReleaseEvent>({
           bg={deriveBadgeColorFromStatus(event)}
         ></Box>
       </Tooltip>
-      <Text isTruncated>{event.name}</Text>
+      <Text isTruncated>
+        {taskHeadingByType(event?.data?.type as ReleaseTaskType, event.release.name) ??
+          event.release.name}
+      </Text>
     </HStack>
   );
 };

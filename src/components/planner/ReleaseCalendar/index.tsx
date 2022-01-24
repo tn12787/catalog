@@ -132,10 +132,11 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
         shallow: true,
       }
     );
+
+    setSelectedEvent(undefined);
   };
 
   const onModalClose = () => {
-    setSelectedEvent(undefined);
     const { event: _, ...rest } = router.query;
 
     router.push({ pathname: '/planner', query: { ...rest } }, undefined, {

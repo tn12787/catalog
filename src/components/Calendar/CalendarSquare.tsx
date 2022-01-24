@@ -109,7 +109,7 @@ const CalendarSquare = <T extends BaseEvent>({
       >
         {date}
       </Text>
-      <Stack spacing={'2px'}>
+      <Stack spacing={'2px'} my={'5px'}>
         {day.events.map((event, index) => (
           <CalendarEvent
             isDragDisabled={isDragDisabled}

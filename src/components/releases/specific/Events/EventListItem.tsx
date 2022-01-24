@@ -14,6 +14,7 @@ import { BiCalendar, BiFlag, BiImageAlt, BiVideo, BiVolumeFull } from 'react-ico
 import { ImStack } from 'react-icons/im';
 
 import { ReleaseEvent } from 'types/common';
+import { taskHeadingByType } from 'utils/tasks';
 
 export interface EventListItemProps extends StackProps {
   event: ReleaseEvent;
@@ -80,7 +81,8 @@ export const EventListItem = ({
       </Flex>
       <Stack alignItems="flex-start" spacing="1" pt="1" flex="1">
         <Heading fontSize="md" fontWeight="semibold">
-          {includeReleaseName ? `${event.release.name}: ${title}` : title}
+          {/* {includeReleaseName ? `${event.release.name}: ${title}` : title} */}
+          {taskHeadingByType(event.data.type, includeReleaseName ? event.release.name : undefined)}
         </Heading>
         <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>
           {format(new Date(event.date), 'MMMM d, yyyy')}

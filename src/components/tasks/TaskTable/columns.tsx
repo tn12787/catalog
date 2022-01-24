@@ -15,7 +15,7 @@ export const StatusBadge = ({ value }: { value: TaskStatus }) => {
 
 const ReleaseLink = ({ value }: { value: ReleaseEvent }) => {
   return (
-    <NextLink href={`/releases/${value.release.id}`} passHref>
+    <NextLink href={`/tasks/${value.data.id}`} passHref>
       <Link>{value.name}</Link>
     </NextLink>
   );

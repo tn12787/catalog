@@ -22,7 +22,7 @@ const Events = ({ releaseData }: Props) => {
     <Card>
       <Flex direction="column">
         <Heading fontWeight="semibold" fontSize="2xl">
-          📅 Events
+          📅 Timeline
         </Heading>
       </Flex>
       <Flex
