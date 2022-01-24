@@ -1,19 +1,11 @@
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  AlertDialogProps,
-} from '@chakra-ui/modal';
-import { Button, useToast } from '@chakra-ui/react';
+import { AlertDialogProps } from '@chakra-ui/modal';
+import { Button, ButtonGroup, useToast } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 
 import { deleteSingleRelease } from 'queries/releases';
 import { ClientRelease } from 'types/common';
+import Dialog from 'components/Dialog';
 
 interface Props extends Omit<AlertDialogProps, 'children' | 'leastDestructiveRef'> {
   releaseData?: ClientRelease;
@@ -21,14 +13,7 @@ interface Props extends Omit<AlertDialogProps, 'children' | 'leastDestructiveRef
   onConfirm: () => void;
 }
 
-const DeleteReleaseDialog = ({
-  onClose,
-  isOpen,
-  releaseData,
-  onCancel,
-  onConfirm,
-  ...rest
-}: Props) => {
+const DeleteReleaseDialog = ({ releaseData, onCancel, onConfirm, ...rest }: Props) => {
   const cancelRef = useRef<HTMLButtonElement>(null);
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -59,32 +44,24 @@ const DeleteReleaseDialog = ({
   };
 
   return (
-    <AlertDialog
-      motionPreset="slideInBottom"
-      onClose={onClose}
-      isOpen={isOpen}
-      isCentered
+    <Dialog
+      onConfirm={onDelete}
       leastDestructiveRef={cancelRef}
-      {...rest}
-    >
-      <AlertDialogOverlay />
-
-      <AlertDialogContent>
-        <AlertDialogHeader>Remove Release?</AlertDialogHeader>
-        <AlertDialogCloseButton />
-        <AlertDialogBody>
-          Are you sure you want to delete this release? This action cannot be undone.
-        </AlertDialogBody>
-        <AlertDialogFooter>
+      loading={isLoading}
+      title="Remove release?"
+      message="Are you sure you want to delete this release? This action cannot be undone."
+      buttons={
+        <ButtonGroup>
           <Button ref={cancelRef} onClick={onCancel}>
             No
           </Button>
           <Button colorScheme="red" isLoading={isLoading} ml={3} onClick={onDelete}>
             Yes
           </Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        </ButtonGroup>
+      }
+      {...rest}
+    />
   );
 };
 

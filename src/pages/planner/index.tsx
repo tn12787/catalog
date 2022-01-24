@@ -50,7 +50,6 @@ const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
 
 const Planner = () => {
   const { bgPrimary, primary } = useAppColors();
-
   const { currentTeam, teams } = useExtendedSession();
   const { data, isLoading } = useQuery(
     ['releaseEvents', currentTeam],
@@ -61,7 +60,6 @@ const Planner = () => {
   );
 
   const canEditReleases = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
-
   const tabsToRender = tabData(data ?? [], isLoading);
 
   return (
