@@ -21,6 +21,7 @@ import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
 import { buildPlannerLink } from 'utils/planner';
 import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
+import { taskHeadingByType } from 'utils/tasks';
 
 const SingleTaskPage = () => {
   const router = useRouter();
@@ -81,16 +82,17 @@ const SingleTaskPage = () => {
 
           <BreadcrumbItem isCurrentPage>
             <BreadcrumbLink fontWeight="bold" href={router.pathname}>
-              {releaseTaskTypeToDisplayName(taskResponse?.data?.type as ReleaseTaskType)}
+              {taskHeadingByType(taskResponse?.data?.type as ReleaseTaskType)}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!taskLoading && !activityLoading}>
             <Heading as="h1" size="xl" alignSelf="flex-start">
-              {`${taskResponse?.data?.release.name}: ${releaseTaskTypeToDisplayName(
-                taskResponse?.data?.type as ReleaseTaskType
-              )}` ?? 'Loading Artists'}
+              {taskHeadingByType(
+                taskResponse?.data?.type as ReleaseTaskType,
+                taskResponse?.data?.release.name
+              ) ?? 'Loading Artists'}
             </Heading>
           </Skeleton>
           <Link

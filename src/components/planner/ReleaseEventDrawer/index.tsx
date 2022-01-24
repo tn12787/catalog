@@ -35,9 +35,7 @@ const ReleaseEventDrawer = ({ event, isOpen, onClose, ...rest }: Props) => {
       <DrawerContent>
         <DrawerCloseButton />
 
-        <DrawerBody>
-          <ReleaseDrawerContent event={event as ReleaseEvent} />
-        </DrawerBody>
+        <DrawerBody>{event && <ReleaseDrawerContent event={event as ReleaseEvent} />}</DrawerBody>
         <DrawerFooter>
           <Stack spacing={4} w="100%" alignItems={'center'}>
             <Divider />

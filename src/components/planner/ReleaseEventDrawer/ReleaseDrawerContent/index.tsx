@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Heading, Skeleton, Stack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Divider, Heading, Skeleton, Stack } from '@chakra-ui/react';
 import { Release, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
@@ -10,6 +10,9 @@ import { updateTask } from 'queries/tasks';
 import { UpdateTaskVars } from 'queries/tasks/types';
 import { ReleaseEvent, ReleaseTaskWithAssignees, TeamMemberWithUser } from 'types/common';
 import { releaseTaskTypeToDisplayName } from 'utils/display';
+import TaskNotes from 'components/tasks/TaskNotes';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { taskHeadingByType } from 'utils/tasks';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -20,9 +23,12 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
   const task = event?.data;
   const releaseName = event?.release?.name;
   const queryClient = useQueryClient();
+  const { currentTeam } = useExtendedSession();
+
   const { mutateAsync: submitUpdate } = useMutation(updateTask, {
     onSuccess: () => {
       queryClient.invalidateQueries(['tasks', task?.id]);
+      queryClient.invalidateQueries(['releaseEvents', currentTeam]);
     },
   });
 
@@ -42,15 +48,21 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
     event.data.status !== TaskStatus.COMPLETE;
 
   return (
-    <Stack w="100%" spacing={5}>
+    <Stack w="100%" spacing={5} pt={10}>
       <Heading size="md">
-        {releaseName}: {releaseTaskTypeToDisplayName(task?.type as ReleaseTaskType)}
+        {taskHeadingByType(event?.data?.type as ReleaseTaskType, event?.release.name) ??
+          'Loading Artists'}
       </Heading>
       {isOutstanding && (
-        <Alert fvariant="subtle" borderRadius={'md'} status="error">
+        <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
           <AlertIcon></AlertIcon>This task is overdue.
         </Alert>
       )}
+      <Divider />
+      <Skeleton isLoaded={!loading}>
+        <TaskNotes collapsible p={0} bg="transparent" task={event.data} />
+      </Skeleton>
+      <Divider />
       <Skeleton isLoaded={!loading}>
         <StatusField
           status={task?.status as TaskStatus}
