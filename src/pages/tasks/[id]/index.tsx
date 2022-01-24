@@ -1,11 +1,12 @@
-import { Stack, Heading, Text, HStack, Divider } from '@chakra-ui/layout';
+import { Stack, Heading, Text, HStack, Divider, Link as ChakraLink } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Breadcrumb, BreadcrumbItem, Link, BreadcrumbLink, useToast } from '@chakra-ui/react';
-import { BiChevronRight } from 'react-icons/bi';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, useToast } from '@chakra-ui/react';
+import { BiCalendar, BiChevronRight } from 'react-icons/bi';
 import { ReleaseTaskType } from '@prisma/client';
+import Link from 'next/link';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
@@ -18,6 +19,7 @@ import { releaseTaskTypeToDisplayName } from 'utils/display';
 import NewCommentBox from 'components/comments/NewCommentBox';
 import Card from 'components/Card';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
+import { buildPlannerLink } from 'utils/planner';
 
 const SingleTaskPage = () => {
   const router = useRouter();
@@ -57,7 +59,7 @@ const SingleTaskPage = () => {
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
-      <PageHead title={taskResponse?.data?.release.name ?? 'Artist Overview'} />
+      <PageHead title={taskResponse?.data?.release.name ?? 'Task Details'} />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
@@ -92,6 +94,20 @@ const SingleTaskPage = () => {
               )}` ?? 'Loading Artists'}
             </Heading>
           </Skeleton>
+          <Link
+            passHref
+            href={buildPlannerLink(
+              taskResponse?.data.id as string,
+              taskResponse?.data?.dueDate?.toString() ?? ''
+            )}
+          >
+            <ChakraLink as={HStack}>
+              <Icon as={BiCalendar} />
+              <Text fontSize="sm" fontWeight="semibold">
+                View in Planner
+              </Text>
+            </ChakraLink>
+          </Link>
         </Stack>
         <HStack alignItems={'flex-start'} flex={1} w="100%">
           <Stack spacing={5} w="100%">
