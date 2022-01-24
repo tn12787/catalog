@@ -3,13 +3,11 @@ import { Release, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
-import Card from 'components/Card';
 import AssigneesField from 'components/forms/QuickForm/AssigneesField';
 import StatusField from 'components/forms/QuickForm/StatusField';
 import { updateTask } from 'queries/tasks';
 import { UpdateTaskVars } from 'queries/tasks/types';
 import { ReleaseEvent, ReleaseTaskWithAssignees, TeamMemberWithUser } from 'types/common';
-import { releaseTaskTypeToDisplayName } from 'utils/display';
 import TaskNotes from 'components/tasks/TaskNotes';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { taskHeadingByType } from 'utils/tasks';
@@ -21,7 +19,6 @@ type Props = {
 
 const ReleaseDrawerContent = ({ event, loading }: Props) => {
   const task = event?.data;
-  const releaseName = event?.release?.name;
   const queryClient = useQueryClient();
   const { currentTeam } = useExtendedSession();
 

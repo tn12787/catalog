@@ -15,7 +15,6 @@ import PageHead from 'components/PageHead';
 import { fetchSingleTask, fetchTaskActivity, postNewComment } from 'queries/tasks';
 import ActivityList from 'components/tasks/activity/ActivityList';
 import useExtendedSession from 'hooks/useExtendedSession';
-import { releaseTaskTypeToDisplayName } from 'utils/display';
 import NewCommentBox from 'components/comments/NewCommentBox';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
 import { buildPlannerLink } from 'utils/planner';
