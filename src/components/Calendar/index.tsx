@@ -77,7 +77,8 @@ const Calendar = <T extends BaseEvent>({
 
   const setDate = useCallback(
     (date: string) => {
-      router.push(
+      const routerFunction = router.query?.date ? router.push : router.replace;
+      routerFunction(
         {
           pathname: '/planner',
           query: { ...router.query, date: format(new Date(date), 'yyyy-MM-dd') },

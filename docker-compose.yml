@@ -1,6 +1,6 @@
 version: '3'
 services:
-  postgres-db:
+  postgres-main:
     image: postgres:10.3
     restart: always
     environment:
@@ -10,6 +10,18 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - '5000:5432'
+  postgres-shadow:
+    image: postgres:10.3
+    restart: always
+    environment:
+      POSTGRES_DB: launchday-shadow
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: launchdayPassword
+    volumes:
+      - postgres-shadow:/var/lib/postgresql/data
+    ports:
+      - '6000:5432'
 volumes:
   postgres: ~
+  postgres-shadow: ~
