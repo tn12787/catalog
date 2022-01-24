@@ -5,17 +5,20 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerFooter,
+  DrawerHeader,
   DrawerOverlay,
   DrawerProps,
 } from '@chakra-ui/modal';
 import { Button, Divider, Link as ChakraLink, Stack } from '@chakra-ui/react';
 import React from 'react';
 import Link from 'next/link';
+import { ReleaseTaskType } from '@prisma/client';
 
 import ReleaseDrawerContent from './ReleaseDrawerContent';
 
 import { EventType, ReleaseEvent } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
+import { taskHeadingByType } from 'utils/tasks';
 
 interface Props extends Omit<DrawerProps, 'children'> {
   event: ReleaseEvent | undefined;
@@ -34,7 +37,10 @@ const ReleaseEventDrawer = ({ event, isOpen, onClose, ...rest }: Props) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-
+        <DrawerHeader>
+          {taskHeadingByType(event?.data?.type as ReleaseTaskType, event?.release.name) ??
+            'Loading Artists'}
+        </DrawerHeader>
         <DrawerBody>{event && <ReleaseDrawerContent event={event as ReleaseEvent} />}</DrawerBody>
         <DrawerFooter>
           <Stack spacing={4} w="100%" alignItems={'center'}>

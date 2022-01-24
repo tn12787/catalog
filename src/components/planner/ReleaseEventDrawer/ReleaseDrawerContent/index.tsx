@@ -1,5 +1,5 @@
-import { Alert, AlertIcon, Divider, Heading, Skeleton, Stack } from '@chakra-ui/react';
-import { Release, ReleaseTaskType, TaskStatus } from '@prisma/client';
+import { Alert, AlertIcon, Divider, Skeleton, Stack } from '@chakra-ui/react';
+import { Release, TaskStatus } from '@prisma/client';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -10,7 +10,7 @@ import { UpdateTaskVars } from 'queries/tasks/types';
 import { ReleaseEvent, ReleaseTaskWithAssignees, TeamMemberWithUser } from 'types/common';
 import TaskNotes from 'components/tasks/TaskNotes';
 import useExtendedSession from 'hooks/useExtendedSession';
-import { taskHeadingByType } from 'utils/tasks';
+import DueDateField from 'components/forms/QuickForm/DueDateField';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -45,21 +45,13 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
     event.data.status !== TaskStatus.COMPLETE;
 
   return (
-    <Stack w="100%" spacing={5} pt={10}>
-      <Heading size="md">
-        {taskHeadingByType(event?.data?.type as ReleaseTaskType, event?.release.name) ??
-          'Loading Artists'}
-      </Heading>
+    <Stack w="100%" spacing={5}>
       {isOutstanding && (
         <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
           <AlertIcon></AlertIcon>This task is overdue.
         </Alert>
       )}
-      <Divider />
-      <Skeleton isLoaded={!loading}>
-        <TaskNotes collapsible p={0} bg="transparent" task={event.data} />
-      </Skeleton>
-      <Divider />
+
       <Skeleton isLoaded={!loading}>
         <StatusField
           status={task?.status as TaskStatus}
@@ -71,6 +63,16 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
           assignees={task?.assignees as TeamMemberWithUser[]}
           onChange={(assignees) => onSubmit('assignees', { assignees })}
         />
+      </Skeleton>
+      <Skeleton isLoaded={!loading}>
+        <DueDateField
+          date={task?.dueDate as Date}
+          onChange={(dueDate) => onSubmit('assignees', { dueDate: dueDate as Date })}
+        />
+      </Skeleton>
+      <Divider />
+      <Skeleton isLoaded={!loading}>
+        <TaskNotes collapsible p={0} bg="transparent" task={event.data} />
       </Skeleton>
     </Stack>
   );

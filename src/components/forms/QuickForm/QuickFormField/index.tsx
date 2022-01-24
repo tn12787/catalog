@@ -17,12 +17,12 @@ import { FiEdit } from 'react-icons/fi';
 import { TaskStatus } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
-import { ReleaseTaskWithAssignees, TeamMemberWithUser } from 'types/common';
+import { TeamMemberWithUser } from 'types/common';
 
-type FieldValues = string | TaskStatus | string[] | TeamMemberWithUser[] | undefined;
+type FieldValues = string | TaskStatus | string[] | TeamMemberWithUser[] | Date | undefined;
 
 type Props<T extends FieldValues> = PopoverProps & {
-  field: keyof ReleaseTaskWithAssignees;
+  fieldName: string;
   value: T;
   renderValue?: ({ value }: any) => JSX.Element;
   onSubmit: (value: T) => void | Promise<void>;
@@ -30,7 +30,7 @@ type Props<T extends FieldValues> = PopoverProps & {
 };
 
 const QuickFormField = <T extends FieldValues>({
-  field,
+  fieldName,
   value,
   renderValue,
   onSubmit,
@@ -58,7 +58,7 @@ const QuickFormField = <T extends FieldValues>({
             onClick={onOpen}
             h="auto"
           >
-            <Text textTransform={'capitalize'}>{field}</Text>
+            <Text textTransform={'capitalize'}>{fieldName}</Text>
             <Icon as={FiEdit} />
           </HStack>
         </PopoverTrigger>

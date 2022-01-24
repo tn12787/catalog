@@ -18,7 +18,7 @@ const AssigneesField = ({ assignees, onChange }: Props) => {
 
   return (
     <QuickFormField
-      field="assignees"
+      fieldName="assignees"
       value={assignees}
       renderValue={({ value }) => <AssigneeBadgeList assignees={value} />}
       onSubmit={onChange}

@@ -14,10 +14,9 @@ type Props = {
 };
 
 const StatusField = ({ status, onChange }: Props) => {
-  console.log(status);
   return (
     <QuickFormField
-      field="status"
+      fieldName="status"
       value={status}
       renderValue={({ value }) => (
         <Box>

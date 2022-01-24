@@ -9,6 +9,7 @@ import { ReleaseTaskWithAssignees, TeamMemberWithUser } from 'types/common';
 import { updateTask } from 'queries/tasks';
 import AssigneesField from 'components/forms/QuickForm/AssigneesField';
 import { UpdateTaskVars } from 'queries/tasks/types';
+import DueDateField from 'components/forms/QuickForm/DueDateField';
 
 type Props = { loading?: boolean; task: ReleaseTaskWithAssignees | undefined };
 
@@ -45,6 +46,12 @@ const TaskInfo = ({ loading, task }: Props) => {
         <AssigneesField
           assignees={task?.assignees as TeamMemberWithUser[]}
           onChange={(assignees) => onSubmit('assignees', { assignees })}
+        />
+      </Skeleton>
+      <Skeleton isLoaded={!loading}>
+        <DueDateField
+          date={new Date(task?.dueDate ?? Date.now())}
+          onChange={(dueDate) => onSubmit('assignees', { dueDate: dueDate as Date })}
         />
       </Skeleton>
     </Card>
