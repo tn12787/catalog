@@ -87,16 +87,6 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
                 </Stack>
               );
             })}
-            <Stack width={['auto', 'auto', '50%']}>
-              {data?.notes ? (
-                <Stack>
-                  <Text fontSize="md" fontWeight="bold">
-                    Notes
-                  </Text>
-                  <Text whiteSpace="pre-wrap">{data?.notes}</Text>
-                </Stack>
-              ) : null}
-            </Stack>
           </Stack>
         </Flex>
       ) : (

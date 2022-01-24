@@ -4,14 +4,21 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
   DrawerOverlay,
   DrawerProps,
 } from '@chakra-ui/modal';
+import { Button, Divider, Link as ChakraLink, Stack } from '@chakra-ui/react';
 import React from 'react';
+import Link from 'next/link';
+import { ReleaseTaskType } from '@prisma/client';
 
-import { EventType } from 'components/Calendar/types';
-import EditArtworkForm from 'components/releases/forms/EditArtworkForm';
-import { ReleaseEvent } from 'types/common';
+import ReleaseDrawerContent from './ReleaseDrawerContent';
+
+import { EventType, ReleaseEvent } from 'types/common';
+import useAppColors from 'hooks/useAppColors';
+import { taskHeadingByType } from 'utils/tasks';
 
 interface Props extends Omit<DrawerProps, 'children'> {
   event: ReleaseEvent | undefined;
@@ -22,18 +29,36 @@ const ReleaseEventDrawer = ({ event, isOpen, onClose, ...rest }: Props) => {
     base: 'bottom',
     md: 'right',
   });
+
+  const { primary } = useAppColors();
+
   return (
-    <Drawer size="lg" placement={variant} isOpen={isOpen} onClose={onClose} {...rest}>
+    <Drawer placement={variant} isOpen={isOpen} onClose={onClose} {...rest}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerBody>
-          {event?.type === EventType.ARTWORK ? (
-            <EditArtworkForm releaseData={event.release} onSubmitSuccess={onClose} />
-          ) : (
-            'form'
-          )}
-        </DrawerBody>
+        <DrawerHeader>
+          {taskHeadingByType(event?.data?.type as ReleaseTaskType, event?.release.name) ??
+            'Loading Artists'}
+        </DrawerHeader>
+        <DrawerBody>{event && <ReleaseDrawerContent event={event as ReleaseEvent} />}</DrawerBody>
+        <DrawerFooter>
+          <Stack spacing={4} w="100%" alignItems={'center'}>
+            <Divider />
+            <Link
+              passHref
+              href={
+                event?.type === EventType.RELEASE
+                  ? `/releases/${event.data.id}/`
+                  : `/tasks/${event?.data.id}`
+              }
+            >
+              <ChakraLink w="100%" as={Button} fontWeight={'semibold'} color={primary}>
+                View full details
+              </ChakraLink>
+            </Link>
+          </Stack>
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
