@@ -1,4 +1,4 @@
-import { Box, HStack } from '@chakra-ui/layout';
+import { Box, Wrap } from '@chakra-ui/layout';
 import React from 'react';
 
 import { Step } from './Step';
@@ -19,7 +19,7 @@ const WizardSteps = ({ steps, currentStep }: Props) => {
   return (
     <Box>
       <Box as="nav" aria-label="Steps" position="relative">
-        <HStack justify="space-between" align="center" as="ol" listStyleType="none" zIndex={1}>
+        <Wrap justify="space-between" align="center" as="ol" listStyleType="none" zIndex={1}>
           {steps.map((step, index) => (
             <Step
               label={step.name}
@@ -29,7 +29,7 @@ const WizardSteps = ({ steps, currentStep }: Props) => {
               isLastChild={index === steps.length - 1}
             />
           ))}
-        </HStack>
+        </Wrap>
       </Box>
     </Box>
   );
