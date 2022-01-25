@@ -58,21 +58,6 @@ class ReleaseListHandler {
 
     return result;
   }
-
-  @Delete()
-  async deleteArtwork(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
-    await checkTaskUpdatePermissions(req, id);
-
-    const result = await prisma.releaseTask.delete({
-      where: {
-        releaseId_type: {
-          releaseId: id,
-          type: ReleaseTaskType.ARTWORK,
-        },
-      },
-    });
-    return result;
-  }
 }
 
 export default createHandler(ReleaseListHandler);
