@@ -12,9 +12,8 @@ import {
 } from '@storyofams/next-api-decorators';
 import { Release, ReleaseType, ReleaseTaskType } from '@prisma/client';
 import { pickBy } from 'lodash';
-import { omit } from 'lodash';
 
-import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
+import { buildCreateReleaseTaskArgs } from 'backend/apiUtils/tasks';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';
 import prisma from 'backend/prisma/client';
@@ -96,24 +95,10 @@ class ReleaseListHandler {
     await checkRequiredPermissions(req, ['CREATE_RELEASES'], team?.id);
 
     const optionalArgs = [
-      body.artwork && {
-        ...omit(body.artwork, 'url'),
-        assignees: transformAssigneesToPrismaQuery(body.artwork.assignees, true),
-        type: ReleaseTaskType.ARTWORK,
-        artworkData: {
-          create: {
-            url: body.artwork.url,
-          },
-        },
-      },
-      body.distribution && {
-        ...omit(body.distribution, 'distributor'),
-        type: ReleaseTaskType.DISTRIBUTION,
-        assignees: transformAssigneesToPrismaQuery(body.distribution.assignees, true),
-        distributionData: {
-          create: { distributor: { connect: { id: body.distribution.distributor } } },
-        },
-      },
+      body.artwork &&
+        buildCreateReleaseTaskArgs({ ...body.artwork, type: ReleaseTaskType.ARTWORK }),
+      body.distribution &&
+        buildCreateReleaseTaskArgs({ ...body.distribution, type: ReleaseTaskType.DISTRIBUTION }),
     ].filter(Boolean) as any; // TODO: Find a type for this
 
     const result = await prisma.release.create({

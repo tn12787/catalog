@@ -1,9 +1,9 @@
 import { ReleaseType } from '@prisma/client';
 import { IsNotEmpty, IsDate, IsEnum, IsOptional, ValidateNested } from 'class-validator';
 
+import { CreateReleaseTaskDto } from '../tasks/combined';
+
 import { ReleaseType as ReleaseTypeEnum } from 'types/common';
-import { CreateDistributionDto } from 'backend/models/distribution/create';
-import { CreateArtworkDto } from 'backend/models/artwork/create';
 
 export class CreateReleaseDto {
   @IsNotEmpty()
@@ -18,11 +18,11 @@ export class CreateReleaseDto {
 
   @IsOptional()
   @ValidateNested()
-  artwork?: CreateArtworkDto;
+  artwork?: CreateReleaseTaskDto;
 
   @IsOptional()
   @ValidateNested()
-  distribution?: CreateDistributionDto;
+  distribution?: CreateReleaseTaskDto;
 
   @IsNotEmpty()
   @IsDate()
