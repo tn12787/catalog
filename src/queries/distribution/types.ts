@@ -9,4 +9,6 @@ export interface DistributionVars extends Pick<ClientDistribution, 'status' | 'n
 
 export type CreateDistributionVars = DistributionVars;
 
-export type UpdateDistributionVars = Partial<DistributionVars>;
+export type UpdateDistributionVars = Omit<Partial<DistributionVars>, 'releaseId'> & {
+  taskId: string;
+};

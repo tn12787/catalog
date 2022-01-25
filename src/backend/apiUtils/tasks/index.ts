@@ -75,7 +75,13 @@ export const deriveTypeSpecificArgs = (body: UpdateReleaseTaskDto, type: Release
       return body.url ? { musicVideoData: { update: { url: body.url } } } : undefined;
     case ReleaseTaskType.DISTRIBUTION:
       return body.distributor
-        ? { distributionData: { connect: { id: body.distributor } } }
+        ? {
+            distributionData: {
+              update: {
+                distributor: body.distributor ? { connect: { id: body.distributor } } : undefined,
+              },
+            },
+          }
         : undefined;
     default:
       return undefined;

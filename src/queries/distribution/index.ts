@@ -6,12 +6,12 @@ import { UpdateDistributionVars, CreateDistributionVars } from './types';
 import { ClientDistribution } from 'types/common';
 
 export const updateSingleDistribution = async ({
-  releaseId,
+  taskId,
   ...rest
 }: UpdateDistributionVars): Promise<ClientDistribution | void> => {
-  if (!releaseId) return Promise.reject();
+  if (!taskId) return Promise.reject();
 
-  const { data: response } = await axios.patch(`/api/releases/${releaseId}/distribution`, {
+  const { data: response } = await axios.patch(`/api/tasks/${taskId}`, {
     ...rest,
   });
   return response;
@@ -24,13 +24,6 @@ export const createSingleDistribution = async ({
   const { data: response } = await axios.post(`/api/releases/${releaseId}/distribution`, {
     ...rest,
   });
-  return response;
-};
-
-export const deleteSingleDistribution = async (
-  releaseId: string
-): Promise<ClientDistribution | void> => {
-  const { data: response } = await axios.delete(`/api/releases/${releaseId}/distribution`);
   return response;
 };
 

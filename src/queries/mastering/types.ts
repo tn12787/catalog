@@ -8,4 +8,6 @@ export interface MasteringVars extends Pick<ClientMastering, 'status' | 'notes' 
 
 export type CreateMasteringVars = MasteringVars;
 
-export type UpdateMasteringVars = Partial<MasteringVars>;
+export type UpdateMasteringVars = Omit<Partial<MasteringVars>, 'releaseId'> & {
+  taskId: string;
+};

@@ -5,12 +5,12 @@ import { CreateMasteringVars, UpdateMasteringVars } from './types';
 import { ClientMastering } from 'types/common';
 
 export const updateSingleMastering = async ({
-  releaseId,
+  taskId,
   ...rest
 }: UpdateMasteringVars): Promise<ClientMastering | void> => {
-  if (!releaseId) return Promise.reject();
+  if (!taskId) return Promise.reject();
 
-  const { data: response } = await axios.patch(`/api/releases/${releaseId}/mastering`, {
+  const { data: response } = await axios.patch(`/api/tasks/${taskId}`, {
     ...rest,
   });
   return response;
@@ -23,10 +23,5 @@ export const createSingleMastering = async ({
   const { data: response } = await axios.post(`/api/releases/${releaseId}/mastering`, {
     ...rest,
   });
-  return response;
-};
-
-export const deleteSingleMastering = async (releaseId: string): Promise<ClientMastering | void> => {
-  const { data: response } = await axios.delete(`/api/releases/${releaseId}/mastering`);
   return response;
 };

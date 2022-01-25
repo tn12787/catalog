@@ -50,57 +50,6 @@ class MusicVideoHandler {
 
     return result;
   }
-
-  @Patch()
-  async updateMusicVideo(
-    @Req() req: AuthDecoratedRequest,
-    @Body(ValidationPipe) body: UpdateMusicVideoDto,
-    @PathParam('id') id: string
-  ) {
-    const releaseTeam = await checkTaskUpdatePermissions(req, id);
-
-    const updateArgs = {
-      ...buildUpdateReleaseTaskArgs(body),
-      musicVideoData: { update: { url: body.url } },
-    };
-
-    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
-    if (!activeTeamMember) throw new ForbiddenException();
-
-    const createdEvents = await createUpdateTaskEvents({
-      body,
-      releaseId: id,
-      type: ReleaseTaskType.MUSIC_VIDEO,
-      userId: activeTeamMember?.id as string,
-    });
-
-    const result = await prisma.releaseTask.update({
-      where: {
-        releaseId_type: {
-          releaseId: id,
-          type: ReleaseTaskType.MUSIC_VIDEO,
-        },
-      },
-      data: { ...updateArgs, events: createdEvents as any },
-    });
-
-    return result;
-  }
-
-  @Delete()
-  async deleteMusicVideo(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
-    await checkTaskUpdatePermissions(req, id);
-
-    const result = await prisma.releaseTask.delete({
-      where: {
-        releaseId_type: {
-          releaseId: id,
-          type: ReleaseTaskType.MUSIC_VIDEO,
-        },
-      },
-    });
-    return result;
-  }
 }
 
 export default createHandler(MusicVideoHandler);

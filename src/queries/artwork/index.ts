@@ -28,11 +28,6 @@ export const createSingleArtwork = async ({
   return response;
 };
 
-export const deleteSingleArtwork = async (releaseId: string): Promise<ClientArtwork | void> => {
-  const { data: response } = await axios.delete(`/api/releases/${releaseId}/artwork`);
-  return response;
-};
-
 export const uploadImageToFirebase = async (artworkData: File, releaseId?: string) => {
   try {
     if (!artworkData) return;
