@@ -58,9 +58,6 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
         </Stack>
         {data && (
           <HStack>
-            <Button variant="link" size="sm" onClick={onEditClick} colorScheme="purple">
-              Quick Edit
-            </Button>
             <NextLink passHref href={`/tasks/${data.id}`}>
               <Button as={Link} variant="link" size="sm" colorScheme="purple">
                 View Details
