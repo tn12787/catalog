@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   createHandler,
   Delete,
@@ -69,10 +70,25 @@ class SingleReleaseHandler {
       where: { id },
       select: {
         teamId: true,
+        tasks: { select: { dueDate: true } },
       },
     });
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+
+    if (!releaseTeam) throw new NotFoundException();
+
+    // check if there are any tasks with a due date after the new target date
+    if (body.targetDate) {
+      if (
+        releaseTeam?.tasks.some(({ dueDate }) => {
+          if (!dueDate) return false;
+          return new Date(body.targetDate) < new Date(dueDate);
+        })
+      ) {
+        throw new BadRequestException("Release target date cannot be before any task's due date");
+      }
+    }
 
     const result = await prisma.release.update({
       where: {

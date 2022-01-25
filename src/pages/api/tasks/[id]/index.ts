@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   createHandler,
   Get,
@@ -70,6 +71,10 @@ class SingleTaskHandler {
 
     if (!releaseTask) {
       throw new NotFoundException();
+    }
+
+    if (body.dueDate && new Date(body.dueDate) > releaseTask.release.targetDate) {
+      throw new BadRequestException();
     }
 
     const releaseTeam = await checkTaskUpdatePermissions(req, releaseTask.releaseId);

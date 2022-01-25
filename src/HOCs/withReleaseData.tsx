@@ -19,8 +19,10 @@ const withReleaseData = <T extends ComponentWithReleaseData>(Component: Layoutab
     const router = useRouter();
     const releaseId = router.query['id'] as string;
     const { currentTeam } = useExtendedSession();
-    const { data: response, isLoading } = useQuery(['releases', currentTeam, releaseId], () =>
-      fetchSingleRelease(releaseId)
+    const { data: response, isLoading } = useQuery(
+      ['releases', currentTeam, releaseId],
+      () => fetchSingleRelease(releaseId),
+      { enabled: !!releaseId }
     );
 
     if (isLoading) {
