@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Divider, Skeleton, Stack, useToast } from '@chakra-ui/react';
-import { Release, TaskStatus } from '@prisma/client';
+import { Release, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { AxiosResponse } from 'axios';
@@ -8,10 +8,17 @@ import AssigneesField from 'components/forms/QuickForm/AssigneesField';
 import StatusField from 'components/forms/QuickForm/StatusField';
 import { updateTask } from 'queries/tasks';
 import { UpdateTaskVars } from 'queries/tasks/types';
-import { ReleaseEvent, ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types/common';
+import {
+  ClientMastering,
+  ClientMusicVideo,
+  ReleaseEvent,
+  ReleaseTaskEventWithUser,
+  TeamMemberWithUser,
+} from 'types/common';
 import TaskNotes from 'components/tasks/TaskNotes';
 import useExtendedSession from 'hooks/useExtendedSession';
 import DueDateField from 'components/forms/QuickForm/DueDateField';
+import UrlField from 'components/forms/QuickForm/UrlField';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -82,6 +89,22 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
         <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
           <AlertIcon></AlertIcon>This task is overdue.
         </Alert>
+      )}
+      {task?.type === ReleaseTaskType.MASTERING && (
+        <Skeleton isLoaded={!loading}>
+          <UrlField
+            url={(task as ClientMastering).url ?? ''}
+            onChange={(url) => onSubmit({ url })}
+          />
+        </Skeleton>
+      )}
+      {task?.type === ReleaseTaskType.MUSIC_VIDEO && (
+        <Skeleton isLoaded={!loading}>
+          <UrlField
+            url={(task as ClientMusicVideo).url ?? ''}
+            onChange={(url) => onSubmit({ url })}
+          />
+        </Skeleton>
       )}
 
       <Skeleton isLoaded={!loading}>
