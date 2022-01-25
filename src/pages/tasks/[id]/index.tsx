@@ -63,38 +63,42 @@ const SingleTaskPage = () => {
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead
         title={
-          taskHeadingByType(
-            taskResponse?.data?.type as ReleaseTaskType,
-            taskResponse?.data?.release.name
-          ) ?? 'Task Details'
+          taskLoading
+            ? 'Task Details'
+            : taskHeadingByType(
+                taskResponse?.data?.type as ReleaseTaskType,
+                taskResponse?.data?.release.name
+              )
         }
       />
       <Stack spacing={4} width="90%" maxW="container.lg">
-        <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
-          <BreadcrumbItem>
-            <Link passHref href={`/teams/${currentTeam}/overview`}>
-              <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
-            </Link>
-          </BreadcrumbItem>
+        <Skeleton isLoaded={!taskLoading}>
+          <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
+            <BreadcrumbItem>
+              <Link passHref href={`/teams/${currentTeam}/overview`}>
+                <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
+              </Link>
+            </BreadcrumbItem>
 
-          <BreadcrumbItem>
-            <Link passHref href={'/releases'}>
-              <BreadcrumbLink>Releases</BreadcrumbLink>
-            </Link>
-          </BreadcrumbItem>
+            <BreadcrumbItem>
+              <Link passHref href={'/releases'}>
+                <BreadcrumbLink>Releases</BreadcrumbLink>
+              </Link>
+            </BreadcrumbItem>
 
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/releases/${taskResponse?.data.release.id}`}>
-              {taskResponse?.data?.release.name}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/releases/${taskResponse?.data.release.id}`}>
+                {taskResponse?.data?.release.name}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
 
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink fontWeight="bold" href={router.pathname}>
-              {taskHeadingByType(taskResponse?.data?.type as ReleaseTaskType)}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink fontWeight="bold" href={router.pathname}>
+                {taskHeadingByType(taskResponse?.data?.type as ReleaseTaskType)}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Skeleton>
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!taskLoading && !activityLoading}>
             <Heading as="h1" size="xl" alignSelf="flex-start">
