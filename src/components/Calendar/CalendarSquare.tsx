@@ -25,6 +25,7 @@ interface Props<T> {
   onEventClicked?: (event: T) => void;
   onEventDropped?: (event: T, targetDate: Date) => void | Promise<void>;
   canDropEvent?: (event: T, targetDate: Date) => boolean;
+  onDateClicked?: (date: Date) => void;
 }
 
 const CalendarSquare = <T extends BaseEvent>({
@@ -33,6 +34,7 @@ const CalendarSquare = <T extends BaseEvent>({
   onEventClicked,
   onEventDropped,
   canDropEvent,
+  onDateClicked,
 }: Props<T>) => {
   const { key, date, isCurrentDate, isCurrentMonth, isWeekend, value } = day;
 
@@ -101,6 +103,8 @@ const CalendarSquare = <T extends BaseEvent>({
         alignSelf="center"
         alignItems="center"
         borderRadius="full"
+        cursor={'pointer'}
+        onClick={() => onDateClicked?.(value)}
         fontWeight={isCurrentDate ? 'bold' : 'normal'}
         bg={isCurrentDate ? 'purple.500' : 'transparent'}
         color={isCurrentDate ? 'white' : isWeekend ? 'gray.400' : 'default'}
