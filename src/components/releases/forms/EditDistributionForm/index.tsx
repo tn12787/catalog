@@ -65,7 +65,7 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await updateDistribution({
         ...data,
         assignees: data.assignees.map((item) => item.id),
-        releaseId: releaseData.id,
+        taskId: releaseData.distribution?.id as string,
       });
 
       toast({

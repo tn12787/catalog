@@ -65,7 +65,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await updateMastering({
         ...data,
         assignees: data.assignees.map((item) => item.id),
-        releaseId: releaseData.id,
+        taskId: releaseData.mastering?.id as string,
       });
 
       toast({

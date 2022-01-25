@@ -78,8 +78,8 @@ export const createOrUpdateCalendarEventForReleaseTask = async <T extends Releas
   existingEventId?: string
 ) => {
   const calendarData = {
-    start: { date: (data.dueDate as Date).toISOString() },
-    end: { date: (data.dueDate as Date).toISOString() },
+    start: { date: new Date(data.dueDate as Date).toISOString() },
+    end: { date: new Date(data.dueDate as Date).toISOString() },
     summary: `${releaseName}`,
     description: buildReleaseTaskEventDescription(data),
   };

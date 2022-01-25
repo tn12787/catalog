@@ -9,4 +9,4 @@ export interface ArtworkVars extends Pick<ClientArtwork, 'status' | 'notes' | 'u
 
 export type CreateArtworkVars = ArtworkVars;
 
-export type UpdateArtworkVars = Partial<ArtworkVars>;
+export type UpdateArtworkVars = Omit<Partial<ArtworkVars>, 'releaseId'> & { taskId: string };

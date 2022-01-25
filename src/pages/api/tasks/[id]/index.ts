@@ -9,7 +9,6 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
-import { UpdateBaseReleaseTaskDto } from 'backend/models/tasks/update';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
@@ -18,6 +17,7 @@ import { AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import { checkTaskUpdatePermissions, buildUpdateReleaseTaskArgs } from 'backend/apiUtils/tasks';
+import { UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
 
 @requiresAuth()
 class SingleTaskHandler {
@@ -52,7 +52,7 @@ class SingleTaskHandler {
   @Patch()
   async updateTask(
     @Req() req: AuthDecoratedRequest,
-    @Body(ValidationPipe) body: UpdateBaseReleaseTaskDto,
+    @Body(ValidationPipe) body: UpdateReleaseTaskDto,
     @PathParam('id') id: string
   ) {
     if (!id) throw new NotFoundException();
@@ -80,7 +80,7 @@ class SingleTaskHandler {
     const releaseTeam = await checkTaskUpdatePermissions(req, releaseTask.releaseId);
 
     const updateArgs = {
-      ...buildUpdateReleaseTaskArgs(body),
+      ...buildUpdateReleaseTaskArgs(body, releaseTask.type),
     };
 
     const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);

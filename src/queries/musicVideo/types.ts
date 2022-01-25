@@ -7,4 +7,6 @@ export interface MusicVideoVars extends Pick<ClientMusicVideo, 'status' | 'notes
 }
 
 export type CreateMusicVideoVars = MusicVideoVars;
-export type UpdateMusicVideoVars = Partial<MusicVideoVars>;
+export type UpdateMusicVideoVars = Omit<Partial<MusicVideoVars>, 'releaseId'> & {
+  taskId: string;
+};

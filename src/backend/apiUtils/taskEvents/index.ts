@@ -85,8 +85,8 @@ const createDueDateEventIfNeeded = ({ dueDate, task, userId }: CreateDueDateEven
   if (!dueDate) return;
 
   const extraData = {
-    oldDueDate: task.dueDate?.toISOString(),
-    newDueDate: dueDate.toISOString(),
+    oldDueDate: new Date(task.dueDate as Date).toISOString(),
+    newDueDate: new Date(dueDate).toISOString(),
   };
 
   if (isEqual(extraData.oldDueDate, extraData.newDueDate)) return;

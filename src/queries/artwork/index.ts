@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cuid from 'cuid';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { CreateArtworkVars, UpdateArtworkVars } from './types';
 
@@ -7,12 +8,12 @@ import { ClientArtwork } from 'types/common';
 import firebase from 'firebase-details';
 
 export const updateSingleArtwork = async ({
-  releaseId,
+  taskId,
   ...rest
 }: UpdateArtworkVars): Promise<ClientArtwork | void> => {
-  if (!releaseId) return Promise.reject();
+  if (!taskId) return Promise.reject();
 
-  const { data: response } = await axios.patch(`/api/releases/${releaseId}/artwork`, {
+  const { data: response } = await axios.patch(`/api/tasks/${taskId}`, {
     ...rest,
   });
   return response;
@@ -22,14 +23,10 @@ export const createSingleArtwork = async ({
   releaseId,
   ...rest
 }: CreateArtworkVars): Promise<ClientArtwork | void> => {
-  const { data: response } = await axios.post(`/api/releases/${releaseId}/artwork`, {
+  const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
     ...rest,
+    type: ReleaseTaskType.ARTWORK,
   });
-  return response;
-};
-
-export const deleteSingleArtwork = async (releaseId: string): Promise<ClientArtwork | void> => {
-  const { data: response } = await axios.delete(`/api/releases/${releaseId}/artwork`);
   return response;
 };
 

@@ -65,7 +65,7 @@ const EditMusicVideoForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await updateMusicVideo({
         ...data,
         assignees: data.assignees.map((item) => item.id),
-        releaseId: releaseData.id,
+        taskId: releaseData.musicVideo?.id as string,
       });
 
       toast({

@@ -63,7 +63,7 @@ const HeaderSection = ({ releaseData }: Props) => {
           bgGradient={`linear(to-b, transparent, ${bgPrimary})`}
         ></Box>
       </Flex>
-      <Stack w="100%">
+      <Stack w={{ base: '90%', md: '100%' }}>
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/teams/${currentTeam}/overview`}>

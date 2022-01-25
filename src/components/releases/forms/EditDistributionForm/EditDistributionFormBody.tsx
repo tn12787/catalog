@@ -43,7 +43,7 @@ const EditDistributionFormBody = ({
           distributor: existingRelease?.distribution?.distributor?.id,
           dueDate: formattedDueDate,
         }
-      : {},
+      : { assignees: [] },
   });
 
   const { data: distributors } = useQuery('distributors', fetchDistributors);
