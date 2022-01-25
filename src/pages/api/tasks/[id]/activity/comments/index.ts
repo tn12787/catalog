@@ -8,8 +8,6 @@ import {
 } from '@storyofams/next-api-decorators';
 import { TaskEventType } from '@prisma/client';
 
-import { checkTaskUpdatePermissions } from './../../../../../../backend/apiUtils/tasks/index';
-
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -19,7 +17,7 @@ import { CreateCommentDto } from 'backend/models/tasks/activity/comments/create'
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 @requiresAuth()
-class ReleaseListHandler {
+class CommentHandler {
   @Post()
   async createComment(
     @Req() req: AuthDecoratedRequest,
@@ -55,4 +53,4 @@ class ReleaseListHandler {
   }
 }
 
-export default createHandler(ReleaseListHandler);
+export default createHandler(CommentHandler);
