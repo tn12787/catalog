@@ -100,7 +100,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
         <Text>
           {existingArtist
             ? 'Add or change basic info about the artist.'
-            : 'Enter the basic info about your release.'}
+            : 'Add basic info about the artist.'}
         </Text>
         <Stack as="form" onSubmit={handleSubmit(existingArtist ? onUpdate : onCreate)} width="100%">
           <Card width="100%">
