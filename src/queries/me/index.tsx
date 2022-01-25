@@ -11,7 +11,7 @@ export const fetchMe = async () => {
 };
 
 export const updateSingleUser = async ({ id, ...data }: UpdateUserVars) => {
-  if (!id) return; //TODO: deal with this hack
+  if (!id) throw new Error('Missing user id for update');
 
   const { data: response } = await axios.put(`/api/users/${id}`, {
     ...data,

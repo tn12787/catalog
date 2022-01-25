@@ -23,5 +23,5 @@ services:
     ports:
       - '6000:5432'
 volumes:
-  postgres: ~
-  postgres-shadow: ~
+  postgres: dev-db-data/main
+  postgres-shadow: dev-db-data/shadow

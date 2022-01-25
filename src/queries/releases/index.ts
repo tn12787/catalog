@@ -29,8 +29,6 @@ export const fetchReleases = async ({
 };
 
 export const fetchSingleRelease = async (id: string) => {
-  if (!id) return; //TODO: deal with this hack
-
   return await axios.get<ClientRelease>(`/api/releases/${id}`);
 };
 
