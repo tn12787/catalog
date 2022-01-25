@@ -10,7 +10,7 @@ type Props = {
   onChange: (value: string) => void | Promise<void>;
 };
 
-const ImageSelect = ({ value, onChange }: Props) => {
+const ImageSelect = ({ onChange }: Props) => {
   const [uploading, setUploading] = React.useState(false);
   const { bgPrimary } = useAppColors();
   const toast = useToast();
