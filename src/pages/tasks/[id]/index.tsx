@@ -30,13 +30,16 @@ const SingleTaskPage = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const { data: taskResponse, isLoading: taskLoading } = useQuery(['tasks', taskId], () =>
-    fetchSingleTask(taskId)
+  const { data: taskResponse, isLoading: taskLoading } = useQuery(
+    ['tasks', taskId],
+    () => fetchSingleTask(taskId),
+    { enabled: !!taskId }
   );
 
   const { data: activityResponse, isLoading: activityLoading } = useQuery(
     ['taskActivity', taskId],
-    () => fetchTaskActivity(taskId)
+    () => fetchTaskActivity(taskId),
+    { enabled: !!taskId }
   );
 
   const { mutateAsync: postComment, isLoading: commentLoading } = useMutation(postNewComment, {

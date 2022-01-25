@@ -32,8 +32,10 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
   const { currentTeam } = useExtendedSession();
   const currentAssignees = value || [];
 
-  const { data: teamData, isLoading } = useQuery(['team', currentTeam as string], () =>
-    fetchTeam(currentTeam as string)
+  const { data: teamData, isLoading } = useQuery(
+    ['team', currentTeam as string],
+    () => fetchTeam(currentTeam as string),
+    { enabled: !!currentTeam }
   );
 
   const [searchString, setSearchString] = React.useState('');
@@ -154,6 +156,6 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(({ value, onChange }: P
   );
 });
 
-AssigneeSelect.displayName = 'AssigneeSelect'; // TODO: understand why build fails without this
+AssigneeSelect.displayName = 'AssigneeSelect';
 
 export default AssigneeSelect;

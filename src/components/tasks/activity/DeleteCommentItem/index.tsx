@@ -21,7 +21,10 @@ const DeleteCommentItem = ({ event }: Props) => {
   const { bodySub } = useAppColors();
   const { currentTeam } = useExtendedSession();
 
-  const { data: teamData } = useQuery(['team', currentTeam], () => fetchTeam(currentTeam));
+  const { data: teamData } = useQuery(['team', currentTeam], () => fetchTeam(currentTeam), {
+    enabled: !!currentTeam,
+  });
+
   const teamMembers = teamData?.members ?? [];
   const { user } = event.extraData as Prisma.JsonObject;
 

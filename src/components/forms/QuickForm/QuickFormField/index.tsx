@@ -40,7 +40,7 @@ const QuickFormField = <T extends FieldValues>({
   const { onOpen, isOpen, onClose } = useDisclosure();
 
   const onChange = async (value: T) => {
-    await onSubmit(value);
+    onSubmit(value);
     onClose();
   };
 

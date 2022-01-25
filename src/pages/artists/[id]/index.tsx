@@ -17,8 +17,10 @@ const SingleArtist = () => {
   const artistId = router.query['id'] as string;
   const { bgPrimary } = useAppColors();
 
-  const { data: response, isLoading } = useQuery(['artists', artistId], () =>
-    fetchSingleArtist(artistId)
+  const { data: response, isLoading } = useQuery(
+    ['artists', artistId],
+    () => fetchSingleArtist(artistId),
+    { enabled: !!artistId }
   );
 
   return (

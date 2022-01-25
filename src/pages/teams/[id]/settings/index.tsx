@@ -16,7 +16,9 @@ const TeamOverview = () => {
 
   const { bgPrimary } = useAppColors();
 
-  const { data: teamData, isLoading } = useQuery(['team', teamId], () => fetchTeam(teamId));
+  const { data: teamData, isLoading } = useQuery(['team', teamId], () => fetchTeam(teamId), {
+    enabled: !!teamId,
+  });
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
