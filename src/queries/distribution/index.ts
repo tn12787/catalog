@@ -1,17 +1,17 @@
 import axios from 'axios';
-import { Distributor } from '@prisma/client';
+import { Distributor, ReleaseTaskType } from '@prisma/client';
 
 import { UpdateDistributionVars, CreateDistributionVars } from './types';
 
 import { ClientDistribution } from 'types/common';
 
 export const updateSingleDistribution = async ({
-  releaseId,
+  taskId,
   ...rest
 }: UpdateDistributionVars): Promise<ClientDistribution | void> => {
-  if (!releaseId) return Promise.reject();
+  if (!taskId) return Promise.reject();
 
-  const { data: response } = await axios.patch(`/api/releases/${releaseId}/distribution`, {
+  const { data: response } = await axios.patch(`/api/tasks/${taskId}`, {
     ...rest,
   });
   return response;
@@ -21,16 +21,10 @@ export const createSingleDistribution = async ({
   releaseId,
   ...rest
 }: CreateDistributionVars): Promise<ClientDistribution | void> => {
-  const { data: response } = await axios.post(`/api/releases/${releaseId}/distribution`, {
+  const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
     ...rest,
+    type: ReleaseTaskType.DISTRIBUTION,
   });
-  return response;
-};
-
-export const deleteSingleDistribution = async (
-  releaseId: string
-): Promise<ClientDistribution | void> => {
-  const { data: response } = await axios.delete(`/api/releases/${releaseId}/distribution`);
   return response;
 };
 

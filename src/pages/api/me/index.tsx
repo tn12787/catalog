@@ -14,7 +14,7 @@ class MeHandler {
     const session = (await getSession({ req })) as Session & { token: JWT };
 
     const user = await prisma.user.findUnique({
-      where: { email: session?.user?.email as string },
+      where: { email: session?.token?.email as string },
       include: {
         teams: {
           include: {

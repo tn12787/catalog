@@ -22,7 +22,7 @@ import { UpdateCommentDto } from 'backend/models/tasks/activity/comments/update'
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 @requiresAuth()
-class ReleaseListHandler {
+class SpecificCommentHandler {
   @Put()
   async updateComment(
     @Req() req: AuthDecoratedRequest,
@@ -149,4 +149,4 @@ class ReleaseListHandler {
   }
 }
 
-export default createHandler(ReleaseListHandler);
+export default createHandler(SpecificCommentHandler);

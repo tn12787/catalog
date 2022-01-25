@@ -35,7 +35,7 @@ const EditArtworkFormBody = ({
           ...existingRelease?.artwork,
           dueDate: formattedDueDate,
         }
-      : {},
+      : { assignees: [] },
   });
 
   const status = watch('status');

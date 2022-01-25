@@ -39,23 +39,6 @@ const deriveEventIcon = (type: ReleaseEvent['type']) => {
   }
 };
 
-const deriveEventTitle = (type: ReleaseEvent['type']) => {
-  switch (type) {
-    case 'release':
-      return 'Release Day';
-    case 'artwork':
-      return 'Artwork Due';
-    case 'distribution':
-      return 'Distribution Due';
-    case 'mastering':
-      return 'Mastering Due';
-    case 'musicVideo':
-      return 'Music Video Due';
-    default:
-      return 'Event';
-  }
-};
-
 export const EventListItem = ({
   event,
   isLastItem,
@@ -63,7 +46,6 @@ export const EventListItem = ({
   ...stackProps
 }: EventListItemProps) => {
   const icon = deriveEventIcon(event.type);
-  const title = deriveEventTitle(event.type);
 
   return (
     <Stack as="li" direction="row" spacing="4" {...stackProps}>
