@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Divider, Skeleton, Stack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Divider, Skeleton, Stack, useToast } from '@chakra-ui/react';
 import { Release, TaskStatus } from '@prisma/client';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
@@ -27,6 +27,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
   const task = event?.data;
   const queryClient = useQueryClient();
   const { currentTeam } = useExtendedSession();
+  const toast = useToast();
 
   const { mutateAsync: submitUpdate } = useMutation(updateTask, {
     onMutate: async (data): Promise<RollbackContext> => {
@@ -63,6 +64,11 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
       });
     } catch (e) {
       console.error(e);
+      toast({
+        status: 'error',
+        title: 'Oh no...',
+        description: (e as Error).toString(),
+      });
     }
   };
 
