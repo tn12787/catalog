@@ -23,7 +23,7 @@ const AssigneesField = ({ assignees, onChange }: Props) => {
       renderValue={({ value }) => <AssigneeBadgeList assignees={value} />}
       onSubmit={onChange}
       renderEditing={({ value, onChange }) => (
-        <Stack p={1} px={2}>
+        <Stack p={2}>
           <Text fontSize={'sm'} fontWeight={'semibold'}>
             Edit assignees
           </Text>

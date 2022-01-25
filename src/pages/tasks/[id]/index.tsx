@@ -61,7 +61,14 @@ const SingleTaskPage = () => {
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
-      <PageHead title={taskResponse?.data?.release.name ?? 'Task Details'} />
+      <PageHead
+        title={
+          taskHeadingByType(
+            taskResponse?.data?.type as ReleaseTaskType,
+            taskResponse?.data?.release.name
+          ) ?? 'Task Details'
+        }
+      />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
@@ -112,7 +119,12 @@ const SingleTaskPage = () => {
             </ChakraLink>
           </Link>
         </Stack>
-        <HStack alignItems={'flex-start'} flex={1} w="100%">
+        <Stack
+          alignItems={'flex-start'}
+          direction={{ base: 'column-reverse', md: 'row' }}
+          spacing={5}
+          w="100%"
+        >
           <Stack spacing={5} w="100%">
             <Skeleton isLoaded={!taskLoading}>
               <TaskNotes task={taskResponse?.data as ReleaseTask} />
@@ -124,7 +136,7 @@ const SingleTaskPage = () => {
             <NewCommentBox onSubmit={onSubmit} loading={commentLoading} />
           </Stack>
           <TaskInfo loading={taskLoading} task={taskResponse?.data} />
-        </HStack>
+        </Stack>
         <Divider />
       </Stack>
     </Stack>

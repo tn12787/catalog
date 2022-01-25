@@ -91,8 +91,10 @@ const Releases = () => {
     offset: offset,
   };
 
-  const { data: response, isLoading } = useQuery(['releases', queryArgs], () =>
-    fetchReleases(queryArgs)
+  const { data: response, isLoading } = useQuery(
+    ['releases', queryArgs],
+    () => fetchReleases(queryArgs),
+    { enabled: !!currentTeam }
   );
 
   const canCreateRelease = hasRequiredPermissions(['CREATE_RELEASES'], teams?.[currentTeam]);

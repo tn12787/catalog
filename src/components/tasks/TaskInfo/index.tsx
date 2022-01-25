@@ -12,6 +12,7 @@ import { UpdateTaskVars } from 'queries/tasks/types';
 import DueDateField from 'components/forms/QuickForm/DueDateField';
 import UrlField from 'components/forms/QuickForm/UrlField';
 import ImageField from 'components/forms/QuickForm/ImageField';
+import DistributorField from 'components/forms/QuickForm/DistributorField';
 
 type Props = { loading?: boolean; task: EnrichedReleaseTask | undefined };
 
@@ -36,7 +37,7 @@ const TaskInfo = ({ loading, task }: Props) => {
   };
 
   return (
-    <Card maxW="300px" w="100%">
+    <Card maxW={{ base: '100%', md: '300px' }} w="100%">
       <Heading size="md">Task info</Heading>
       {task?.type === ReleaseTaskType.MASTERING && (
         <Skeleton isLoaded={!loading}>
@@ -51,6 +52,14 @@ const TaskInfo = ({ loading, task }: Props) => {
       {task?.type === ReleaseTaskType.ARTWORK && (
         <Skeleton isLoaded={!loading}>
           <ImageField url={task?.artworkData?.url ?? ''} onChange={(url) => onSubmit({ url })} />
+        </Skeleton>
+      )}
+      {task?.type === ReleaseTaskType.DISTRIBUTION && (
+        <Skeleton isLoaded={!loading}>
+          <DistributorField
+            distributor={task?.distributionData?.distributorId ?? ''}
+            onChange={(distributor) => onSubmit({ distributor })}
+          />
         </Skeleton>
       )}
       <Skeleton isLoaded={!loading}>

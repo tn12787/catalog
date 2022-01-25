@@ -22,8 +22,10 @@ const OverviewPage = () => {
     () => fetchReleaseEvents(currentTeam, teams?.[currentTeam]?.id)
   );
 
-  const { data: upcomingReleases } = useQuery(['releases', currentTeam], () =>
-    fetchReleases({ team: currentTeam, dates: { after: new Date() } })
+  const { data: upcomingReleases } = useQuery(
+    ['releases', currentTeam],
+    () => fetchReleases({ team: currentTeam, dates: { after: new Date() } }),
+    { enabled: !!currentTeam }
   );
 
   return (

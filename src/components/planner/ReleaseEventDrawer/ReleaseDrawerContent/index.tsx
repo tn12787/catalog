@@ -10,6 +10,7 @@ import { updateTask } from 'queries/tasks';
 import { UpdateTaskVars } from 'queries/tasks/types';
 import {
   ClientArtwork,
+  ClientDistribution,
   ClientMastering,
   ClientMusicVideo,
   ReleaseEvent,
@@ -21,6 +22,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import DueDateField from 'components/forms/QuickForm/DueDateField';
 import UrlField from 'components/forms/QuickForm/UrlField';
 import ImageField from 'components/forms/QuickForm/ImageField';
+import DistributorField from 'components/forms/QuickForm/DistributorField';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -100,6 +102,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
           />
         </Skeleton>
       )}
+
       {task?.type === ReleaseTaskType.MUSIC_VIDEO && (
         <Skeleton isLoaded={!loading}>
           <UrlField
@@ -113,6 +116,14 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
           <ImageField
             url={(task as ClientArtwork).url ?? ''}
             onChange={(url) => onSubmit({ url })}
+          />
+        </Skeleton>
+      )}
+      {task?.type === ReleaseTaskType.DISTRIBUTION && (
+        <Skeleton isLoaded={!loading}>
+          <DistributorField
+            distributor={(task as ClientDistribution).distributorId ?? ''}
+            onChange={(distributor) => onSubmit({ distributor })}
           />
         </Skeleton>
       )}
