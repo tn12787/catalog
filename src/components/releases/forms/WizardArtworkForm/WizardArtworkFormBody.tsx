@@ -10,7 +10,7 @@ import { EditArtworkFormData } from '../../specific/Artwork/types';
 
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
-import ImageDropzone from 'components/ImageDropper';
+import ImageDropper from 'components/ImageDropper';
 import useAppColors from 'hooks/useAppColors';
 import { uploadImageToFirebase } from 'queries/artwork';
 
@@ -114,9 +114,10 @@ const WizardArtworkFormBody = ({
           <Stack>
             <Controller
               render={({ field }: any) => (
-                <ImageDropzone
+                <ImageDropper
                   onChange={(e) => field.onChange(e.target.files?.[0])}
                   onDrop={(files) => field.onChange(files[0])}
+                  accept={'image/jpeg, image/png'}
                 />
               )}
               name={'artworkData'}

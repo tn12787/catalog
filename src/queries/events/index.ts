@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-import { ClientRelease } from '../../types/common/index';
-
-import { EventType } from './../../components/Calendar/types';
-
+import { EventType } from 'components/Calendar/types';
 import { ReleaseEvent } from 'types/common';
 
 export const fetchReleaseEvents = async (teamId: string, assigneeId?: string) => {
@@ -35,25 +32,12 @@ export const updateEventInCalendar = async ({
         artist: event.release.artist.id,
         targetDate,
       });
-    case EventType.ARTWORK:
-      return axios.patch(`/api/releases/${event.release.id}/artwork`, {
-        dueDate: targetDate,
-      });
+
     case EventType.DISTRIBUTION:
-      return axios.patch(`/api/releases/${event.release.id}/distribution`, {
-        distributor: (event.data as ClientRelease['distribution'])?.distributorId,
-        dueDate: targetDate,
-      });
     case EventType.MASTERING:
-      return axios.patch(`/api/releases/${event.release.id}/mastering`, {
-        dueDate: targetDate,
-      });
     case EventType.MUSIC_VIDEO:
-      return axios.patch(`/api/releases/${event.release.id}/musicVideo`, {
-        dueDate: targetDate,
-      });
-    case EventType.MARKETING:
-      return axios.patch(`/api/releases/${event.release.id}/marketing`, {
+    case EventType.ARTWORK:
+      return axios.patch(`/api/tasks/${event.data.id}`, {
         dueDate: targetDate,
       });
   }

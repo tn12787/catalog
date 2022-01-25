@@ -7,9 +7,14 @@ import useAppColors from 'hooks/useAppColors';
 
 type ImageDropzoneProps = DropzoneOptions & {
   onChange: ChangeEventHandler<HTMLInputElement>;
+  message?: string;
 };
 
-const ImageDropzone = ({ onChange, ...rest }: ImageDropzoneProps) => {
+const ImageDropper = ({
+  onChange,
+  message = 'Drop an image or click here...',
+  ...rest
+}: ImageDropzoneProps) => {
   const { getRootProps, getInputProps } = useDropzone({
     ...rest,
   });
@@ -22,15 +27,18 @@ const ImageDropzone = ({ onChange, ...rest }: ImageDropzoneProps) => {
       borderStyle="dashed"
       borderWidth={'1px'}
       minH="200px"
+      flex={1}
       borderRadius="md"
       alignItems="center"
       cursor="pointer"
       justifyContent="center"
+      p={2}
+      w="100%"
     >
-      <Text color={bodySub}>Drop an image or click here...</Text>
+      <Text color={bodySub}>{message}</Text>
       <Input {...getInputProps({ onChange })} accept={'image/jpeg, image/png'} />
     </Stack>
   );
 };
 
-export default ImageDropzone;
+export default ImageDropper;

@@ -14,12 +14,19 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { FiEdit } from 'react-icons/fi';
-import { TaskStatus } from '@prisma/client';
+import { Distributor, TaskStatus } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
 import { TeamMemberWithUser } from 'types/common';
 
-type FieldValues = string | TaskStatus | string[] | TeamMemberWithUser[] | Date | undefined;
+type FieldValues =
+  | string
+  | TaskStatus
+  | string[]
+  | TeamMemberWithUser[]
+  | Date
+  | Distributor
+  | undefined;
 
 type Props<T extends FieldValues> = PopoverProps & {
   fieldName: string;
@@ -63,8 +70,8 @@ const QuickFormField = <T extends FieldValues>({
           </HStack>
         </PopoverTrigger>
         {renderValue ? renderValue({ value }) : <Box>{value}</Box>}
-        <PopoverContent bg={bgSecondary} w="auto" as={Stack}>
-          <PopoverArrow />
+        <PopoverContent bg={bgSecondary} w="auto" as={Stack} spacing={0}>
+          <PopoverArrow bg={bgSecondary} />
           {renderEditing({ value, onChange })}
         </PopoverContent>
       </Popover>

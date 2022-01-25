@@ -14,7 +14,7 @@ type Props = {
 const StatusSelect = ({ value, onChange }: Props) => {
   const { bgPrimary, bodyText } = useAppColors();
   return (
-    <Stack p={1} px={2} alignItems={'flex-start'} w="100%">
+    <Stack p={2} alignItems={'flex-start'} w="100%">
       <Text fontSize="sm" fontWeight={'semibold'}>
         Edit status
       </Text>

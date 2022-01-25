@@ -3,10 +3,10 @@ import { Release } from '@prisma/client';
 
 import { DeleteCommentVars, NewCommentVars, UpdateCommentVars, UpdateTaskVars } from './types';
 
-import { ReleaseTaskEventWithUser, ReleaseTaskWithAssignees } from 'types/common';
+import { EnrichedReleaseTask, ReleaseTaskEventWithUser } from 'types/common';
 
 export const fetchSingleTask = async (id: string) => {
-  return await axios.get<ReleaseTaskWithAssignees & { release: Release }>(`/api/tasks/${id}`);
+  return await axios.get<EnrichedReleaseTask & { release: Release }>(`/api/tasks/${id}`);
 };
 
 export const fetchTaskActivity = async (id: string) => {

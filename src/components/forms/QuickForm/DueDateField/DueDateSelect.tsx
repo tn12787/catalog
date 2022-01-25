@@ -15,7 +15,7 @@ const DueDateSelect = ({ onChange }: Props) => {
   const { bodyText, bgPrimary } = useAppColors();
   const { headers, body, cursorDate, navigation } = useCalendar();
   return (
-    <Stack p={1} px={2} alignItems={'flex-start'} w="100%">
+    <Stack p={2} alignItems={'flex-start'} w="100%">
       <HStack w="100%" justify="space-between">
         <Text fontSize="xl" fontWeight="bold">
           {format(cursorDate, 'MMMM Y')}
