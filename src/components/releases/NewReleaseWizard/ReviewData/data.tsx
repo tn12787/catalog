@@ -26,10 +26,16 @@ export const renderReviewData = <
         {cfg.map(({ key, label, CustomComponent }) => {
           return (
             <HStack justifyContent="space-between" key={key.toString()}>
-              <Text fontWeight="medium" color={'gray.500'}>
-                {label}
-              </Text>
-              {CustomComponent ? <CustomComponent value={data[key]} /> : <Text>{data[key]}</Text>}
+              {CustomComponent ? (
+                <CustomComponent value={data[key]} />
+              ) : (
+                <>
+                  <Text fontWeight="medium" color={'gray.500'}>
+                    {label}
+                  </Text>
+                  <Text>{data[key]}</Text>
+                </>
+              )}
             </HStack>
           );
         })}

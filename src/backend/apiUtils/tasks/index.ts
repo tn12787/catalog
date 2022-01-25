@@ -28,7 +28,7 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
 export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto) => {
   const baseArgs = pickBy(
     {
-      ...pick(body, ['status', 'notes', 'dueDate']),
+      ...pick(body, ['status', 'notes', 'dueDate', 'type']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees, true),
     },
