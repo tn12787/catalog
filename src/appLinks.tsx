@@ -1,5 +1,5 @@
 import { BiCalendar, BiDisc } from 'react-icons/bi';
-import { BsGear } from 'react-icons/bs';
+import { BsGear, BsListCheck } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
 import { RiLayoutMasonryLine, RiTeamLine } from 'react-icons/ri';
 
@@ -31,7 +31,7 @@ export const appLinks: NavLinkConfig = {
         icon: BiDisc,
         href: '/releases',
         text: 'Releases',
-        activeRegex: /^\/releases/,
+        activeRegex: /^\/(releases|tasks)/,
       },
       {
         icon: BiCalendar,

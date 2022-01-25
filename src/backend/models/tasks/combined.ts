@@ -13,6 +13,15 @@ export class UpdateReleaseTaskDto extends UpdateBaseReleaseTaskDto {
   distributor?: string;
 }
 
+export class CreateReleaseTaskWithoutTypeDto extends UpdateBaseReleaseTaskDto {
+  @IsOptional()
+  @IsUrl()
+  url?: string;
+
+  @IsOptional()
+  distributor?: string;
+}
+
 export class CreateReleaseTaskDto extends CreateBaseReleaseTaskDto {
   @IsOptional()
   @IsUrl()

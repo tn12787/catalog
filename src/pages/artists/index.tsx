@@ -1,6 +1,15 @@
 import React from 'react';
-import { Button, Heading, Stack } from '@chakra-ui/react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button,
+  Heading,
+  Link,
+  Stack,
+} from '@chakra-ui/react';
 import { useQuery } from 'react-query';
+import { BiChevronRight } from 'react-icons/bi';
 
 import { fetchArtists } from 'queries/artists';
 import DashboardLayout from 'components/layouts/DashboardLayout';
@@ -24,8 +33,21 @@ const Artists = () => {
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="Artists" />
       <Stack spacing={4} width="90%" maxW="container.lg">
+        <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
+          <BreadcrumbItem>
+            <Link passHref href={`/teams/${currentTeam}/overview`}>
+              <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
+            </Link>
+          </BreadcrumbItem>
+
+          <BreadcrumbItem isCurrentPage>
+            <Link passHref href={'/artists'}>
+              <BreadcrumbLink fontWeight="bold">Artists</BreadcrumbLink>
+            </Link>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">
-          <Heading size="2xl" fontWeight="black" py={4} alignSelf="flex-start">
+          <Heading size="2xl" fontWeight="black" alignSelf="flex-start">
             Artists
           </Heading>
           {canCreateArtists && (

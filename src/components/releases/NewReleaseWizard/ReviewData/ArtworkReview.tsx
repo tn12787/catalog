@@ -21,8 +21,8 @@ const ArtworkReview = ({ data }: Props) => {
   const config = [
     data.status === TaskStatus.COMPLETE && {
       key: 'url',
-      customContent: (
-        <HStack justifyContent="space-between" s>
+      CustomComponent: () => (
+        <HStack justifyContent="space-between" w="100%">
           <Text fontWeight="medium" color={'gray.500'}>
             {'Artwork File'}
           </Text>

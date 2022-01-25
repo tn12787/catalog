@@ -10,7 +10,7 @@ import {
   Request,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { Release, ReleaseType, ReleaseTaskType } from '@prisma/client';
+import { Release, ReleaseType, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import { pickBy } from 'lodash';
 
 import { buildCreateReleaseTaskArgs } from 'backend/apiUtils/tasks';
@@ -96,9 +96,19 @@ class ReleaseListHandler {
 
     const optionalArgs = [
       body.artwork &&
-        buildCreateReleaseTaskArgs({ ...body.artwork, type: ReleaseTaskType.ARTWORK }),
+        buildCreateReleaseTaskArgs({
+          ...body.artwork,
+          type: ReleaseTaskType.ARTWORK,
+          dueDate: body.artwork?.dueDate ?? new Date(),
+          status: body.artwork?.status as TaskStatus,
+        }),
       body.distribution &&
-        buildCreateReleaseTaskArgs({ ...body.distribution, type: ReleaseTaskType.DISTRIBUTION }),
+        buildCreateReleaseTaskArgs({
+          ...body.distribution,
+          type: ReleaseTaskType.DISTRIBUTION,
+          dueDate: body.distribution?.dueDate ?? new Date(),
+          status: body.distribution?.status as TaskStatus,
+        }),
     ].filter(Boolean) as any; // TODO: Find a type for this
 
     const result = await prisma.release.create({
