@@ -9,6 +9,7 @@ import StatusField from 'components/forms/QuickForm/StatusField';
 import { updateTask } from 'queries/tasks';
 import { UpdateTaskVars } from 'queries/tasks/types';
 import {
+  ClientArtwork,
   ClientMastering,
   ClientMusicVideo,
   ReleaseEvent,
@@ -19,6 +20,7 @@ import TaskNotes from 'components/tasks/TaskNotes';
 import useExtendedSession from 'hooks/useExtendedSession';
 import DueDateField from 'components/forms/QuickForm/DueDateField';
 import UrlField from 'components/forms/QuickForm/UrlField';
+import ImageField from 'components/forms/QuickForm/ImageField';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -106,7 +108,14 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
           />
         </Skeleton>
       )}
-
+      {task?.type === ReleaseTaskType.ARTWORK && (
+        <Skeleton isLoaded={!loading}>
+          <ImageField
+            url={(task as ClientArtwork).url ?? ''}
+            onChange={(url) => onSubmit({ url })}
+          />
+        </Skeleton>
+      )}
       <Skeleton isLoaded={!loading}>
         <StatusField
           status={task?.status as TaskStatus}

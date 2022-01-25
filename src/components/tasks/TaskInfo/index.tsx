@@ -11,6 +11,7 @@ import AssigneesField from 'components/forms/QuickForm/AssigneesField';
 import { UpdateTaskVars } from 'queries/tasks/types';
 import DueDateField from 'components/forms/QuickForm/DueDateField';
 import UrlField from 'components/forms/QuickForm/UrlField';
+import ImageField from 'components/forms/QuickForm/ImageField';
 
 type Props = { loading?: boolean; task: EnrichedReleaseTask | undefined };
 
@@ -45,6 +46,11 @@ const TaskInfo = ({ loading, task }: Props) => {
       {task?.type === ReleaseTaskType.MUSIC_VIDEO && (
         <Skeleton isLoaded={!loading}>
           <UrlField url={task?.musicVideoData?.url ?? ''} onChange={(url) => onSubmit({ url })} />
+        </Skeleton>
+      )}
+      {task?.type === ReleaseTaskType.ARTWORK && (
+        <Skeleton isLoaded={!loading}>
+          <ImageField url={task?.artworkData?.url ?? ''} onChange={(url) => onSubmit({ url })} />
         </Skeleton>
       )}
       <Skeleton isLoaded={!loading}>

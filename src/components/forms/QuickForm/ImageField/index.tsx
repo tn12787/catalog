@@ -1,9 +1,9 @@
 import React from 'react';
-import { Box, Link, Text } from '@chakra-ui/react';
+import { Box, Image, Text } from '@chakra-ui/react';
 
 import QuickFormField from '../QuickFormField';
 
-import UrlSelect from './UrlSelect';
+import ImageSelect from './ImageSelect';
 
 import useAppColors from 'hooks/useAppColors';
 
@@ -12,29 +12,27 @@ type Props = {
   onChange: (value: string) => void | Promise<void>;
 };
 
-const UrlField = ({ url, onChange }: Props) => {
+const ImageField = ({ url, onChange }: Props) => {
   const { bodySub, primary } = useAppColors();
   return (
     <QuickFormField
-      fieldName="url"
+      fieldName="Artwork"
       value={url as string}
       renderValue={({ value }) => (
         <Box fontSize="sm">
           {value ? (
-            <Link color={primary} isExternal href={value}>
-              {value}
-            </Link>
+            <Image borderRadius="md" src={value} alt="artwork" />
           ) : (
             <Text fontSize="xs" color={bodySub}>
-              {'No URL specified'}
+              {'No Image specified'}
             </Text>
           )}
         </Box>
       )}
       onSubmit={onChange}
-      renderEditing={UrlSelect}
+      renderEditing={ImageSelect}
     />
   );
 };
 
-export default UrlField;
+export default ImageField;
