@@ -41,9 +41,7 @@ const Login = () => {
   };
 
   const signInWithGoogle = async () => {
-    await signIn('google', {
-      callbackUrl: `${process.env.NEXTAUTH_URL}/releases`,
-    });
+    await signIn('google');
   };
 
   return (

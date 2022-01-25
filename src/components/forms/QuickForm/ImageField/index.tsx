@@ -13,7 +13,7 @@ type Props = {
 };
 
 const ImageField = ({ url, onChange }: Props) => {
-  const { bodySub, primary } = useAppColors();
+  const { bodySub } = useAppColors();
   return (
     <QuickFormField
       fieldName="Artwork"
