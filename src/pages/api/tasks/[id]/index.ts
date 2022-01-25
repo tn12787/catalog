@@ -73,7 +73,7 @@ class SingleTaskHandler {
       throw new NotFoundException();
     }
 
-    if (body.dueDate && new Date(body.dueDate) >= releaseTask.release.targetDate) {
+    if (body.dueDate && new Date(body.dueDate) > releaseTask.release.targetDate) {
       throw new BadRequestException();
     }
 
