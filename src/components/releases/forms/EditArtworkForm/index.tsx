@@ -81,7 +81,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
         ...data,
         url,
         assignees: data.assignees.map((item) => item.id),
-        releaseId: releaseData.id,
+        taskId: releaseData.artwork?.id as string,
       });
 
       toast({

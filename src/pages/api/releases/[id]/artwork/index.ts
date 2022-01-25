@@ -59,53 +59,6 @@ class ReleaseListHandler {
     return result;
   }
 
-  @Patch()
-  async updateArtwork(
-    @Req() req: AuthDecoratedRequest,
-    @Body(ValidationPipe) body: UpdateArtworkDto,
-    @PathParam('id') id: string
-  ) {
-    const releaseTeam = await checkTaskUpdatePermissions(req, id);
-
-    const updateArgs = {
-      ...buildUpdateReleaseTaskArgs(body),
-      artworkData: { update: { url: body.url } },
-    };
-
-    const releaseTask = prisma.releaseTask.findUnique({
-      where: {
-        releaseId_type: {
-          releaseId: id,
-          type: ReleaseTaskType.ARTWORK,
-        },
-      },
-    });
-
-    if (!releaseTask) {
-      throw new NotFoundException();
-    }
-
-    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
-    if (!activeTeamMember) throw new ForbiddenException();
-
-    const eventsToCreate = await createUpdateTaskEvents({
-      body,
-      releaseId: id,
-      type: ReleaseTaskType.ARTWORK,
-      userId: activeTeamMember?.id as string,
-    });
-
-    await prisma.releaseTask.update({
-      where: {
-        releaseId_type: {
-          releaseId: id,
-          type: ReleaseTaskType.ARTWORK,
-        },
-      },
-      data: { ...updateArgs, events: { create: eventsToCreate as any } }, // TODO: find a type for this
-    });
-  }
-
   @Delete()
   async deleteArtwork(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     await checkTaskUpdatePermissions(req, id);

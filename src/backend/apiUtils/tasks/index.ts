@@ -1,7 +1,9 @@
 import { pickBy, isNil } from 'lodash';
 import { NotFoundException } from '@storyofams/next-api-decorators';
 import { pick } from 'lodash';
+import { ReleaseTaskType } from '@prisma/client';
 
+import { UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { UpdateBaseReleaseTaskDto } from 'backend/models/tasks/update';
 import { CreateBaseReleaseTaskDto } from 'backend/models/tasks/create';
@@ -47,12 +49,35 @@ export const buildCreateReleaseTaskArgs = (body: CreateBaseReleaseTaskDto) => {
   };
 };
 
-export const buildUpdateReleaseTaskArgs = (body: UpdateBaseReleaseTaskDto) => {
-  return pickBy(
+export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
+  const baseArgs = pickBy(
     {
       ...pick(body, ['status', 'notes', 'dueDate']),
+      dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees),
     },
     (v) => !isNil(v)
   );
+
+  const specificArgs = deriveTypeSpecificArgs(body, type);
+
+  return { ...baseArgs, ...specificArgs };
+};
+
+export const deriveTypeSpecificArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
+  // TODO: Support marketing
+  switch (type) {
+    case ReleaseTaskType.ARTWORK:
+      return body.url ? { artworkData: { update: { url: body.url } } } : undefined;
+    case ReleaseTaskType.MASTERING:
+      return body.url ? { masteringData: { update: { url: body.url } } } : undefined;
+    case ReleaseTaskType.MUSIC_VIDEO:
+      return body.url ? { musicVideoData: { update: { url: body.url } } } : undefined;
+    case ReleaseTaskType.DISTRIBUTION:
+      return body.distributor
+        ? { distributionData: { connect: { id: body.distributor } } }
+        : undefined;
+    default:
+      return undefined;
+  }
 };

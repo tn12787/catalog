@@ -7,12 +7,12 @@ import { ClientArtwork } from 'types/common';
 import firebase from 'firebase-details';
 
 export const updateSingleArtwork = async ({
-  releaseId,
+  taskId,
   ...rest
 }: UpdateArtworkVars): Promise<ClientArtwork | void> => {
-  if (!releaseId) return Promise.reject();
+  if (!taskId) return Promise.reject();
 
-  const { data: response } = await axios.patch(`/api/releases/${releaseId}/artwork`, {
+  const { data: response } = await axios.patch(`/api/tasks/${taskId}`, {
     ...rest,
   });
   return response;
