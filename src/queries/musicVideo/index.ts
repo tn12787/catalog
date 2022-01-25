@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { UpdateMusicVideoVars, CreateMusicVideoVars } from './types';
 
@@ -20,8 +21,9 @@ export const createSingleMusicVideo = async ({
   releaseId,
   ...rest
 }: CreateMusicVideoVars): Promise<ClientMusicVideo | void> => {
-  const { data: response } = await axios.post(`/api/releases/${releaseId}/music-video`, {
+  const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
     ...rest,
+    type: ReleaseTaskType.MUSIC_VIDEO,
   });
   return response;
 };

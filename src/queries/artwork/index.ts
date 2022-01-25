@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cuid from 'cuid';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { CreateArtworkVars, UpdateArtworkVars } from './types';
 
@@ -22,8 +23,9 @@ export const createSingleArtwork = async ({
   releaseId,
   ...rest
 }: CreateArtworkVars): Promise<ClientArtwork | void> => {
-  const { data: response } = await axios.post(`/api/releases/${releaseId}/artwork`, {
+  const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
     ...rest,
+    type: ReleaseTaskType.ARTWORK,
   });
   return response;
 };

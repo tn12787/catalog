@@ -37,7 +37,7 @@ const EditMusicVideoFormBody = ({
           ...existingRelease?.musicVideo,
           dueDate: formattedDueDate,
         }
-      : {},
+      : { assignees: [] },
   });
 
   useEffect(() => {

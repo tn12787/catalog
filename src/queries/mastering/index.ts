@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { CreateMasteringVars, UpdateMasteringVars } from './types';
 
@@ -20,8 +21,9 @@ export const createSingleMastering = async ({
   releaseId,
   ...rest
 }: CreateMasteringVars): Promise<ClientMastering | void> => {
-  const { data: response } = await axios.post(`/api/releases/${releaseId}/mastering`, {
+  const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
     ...rest,
+    type: ReleaseTaskType.MASTERING,
   });
   return response;
 };

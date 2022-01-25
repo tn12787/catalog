@@ -3,10 +3,8 @@ import { NotFoundException } from '@storyofams/next-api-decorators';
 import { pick } from 'lodash';
 import { ReleaseTaskType } from '@prisma/client';
 
-import { UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
+import { CreateReleaseTaskDto, UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
-import { UpdateBaseReleaseTaskDto } from 'backend/models/tasks/update';
-import { CreateBaseReleaseTaskDto } from 'backend/models/tasks/create';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { AuthDecoratedRequest } from 'types/common';
 import prisma from 'backend/prisma/client';
@@ -27,26 +25,19 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
   return releaseTeam;
 };
 
-export const buildCreateReleaseTaskArgs = (body: CreateBaseReleaseTaskDto) => {
-  const optionalArgs = pickBy(
+export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto) => {
+  const baseArgs = pickBy(
     {
-      assignees: body.assignees
-        ? {
-            connect: body.assignees.map((id) => ({
-              id,
-            })),
-          }
-        : undefined,
-      notes: body.notes,
+      ...pick(body, ['status', 'notes', 'dueDate']),
+      dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
+      assignees: transformAssigneesToPrismaQuery(body.assignees, true),
     },
-    (v) => v !== undefined
+    (v) => !isNil(v)
   );
 
-  return {
-    ...optionalArgs,
-    dueDate: body.dueDate,
-    status: body.status,
-  };
+  const specificArgs = deriveTypeSpecificCreateArgs(body);
+
+  return { ...baseArgs, ...specificArgs };
 };
 
 export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
@@ -59,12 +50,12 @@ export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: Rel
     (v) => !isNil(v)
   );
 
-  const specificArgs = deriveTypeSpecificArgs(body, type);
+  const specificArgs = deriveTypeSpecificUpdateArgs(body, type);
 
   return { ...baseArgs, ...specificArgs };
 };
 
-export const deriveTypeSpecificArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
+export const deriveTypeSpecificUpdateArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
   // TODO: Support marketing
   switch (type) {
     case ReleaseTaskType.ARTWORK:
@@ -83,6 +74,32 @@ export const deriveTypeSpecificArgs = (body: UpdateReleaseTaskDto, type: Release
             },
           }
         : undefined;
+    default:
+      return undefined;
+  }
+};
+
+export const deriveTypeSpecificCreateArgs = (body: CreateReleaseTaskDto) => {
+  switch (body.type) {
+    case ReleaseTaskType.ARTWORK:
+      return { artworkData: { create: { url: body.url } } };
+    case ReleaseTaskType.MASTERING:
+      return { masteringData: { create: { url: body.url } } };
+    case ReleaseTaskType.MUSIC_VIDEO:
+      return { musicVideoData: { create: { url: body.url } } };
+    case ReleaseTaskType.DISTRIBUTION:
+      return {
+        distributionData: {
+          create: {
+            distributor: {
+              connect: {
+                id: body.distributor,
+              },
+            },
+          },
+        },
+      };
+
     default:
       return undefined;
   }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Distributor } from '@prisma/client';
+import { Distributor, ReleaseTaskType } from '@prisma/client';
 
 import { UpdateDistributionVars, CreateDistributionVars } from './types';
 
@@ -21,8 +21,9 @@ export const createSingleDistribution = async ({
   releaseId,
   ...rest
 }: CreateDistributionVars): Promise<ClientDistribution | void> => {
-  const { data: response } = await axios.post(`/api/releases/${releaseId}/distribution`, {
+  const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
     ...rest,
+    type: ReleaseTaskType.DISTRIBUTION,
   });
   return response;
 };

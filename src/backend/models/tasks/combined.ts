@@ -1,10 +1,23 @@
-import { UpdateArtworkDto } from '../artwork/update';
-import { UpdateDistributionDto } from '../distribution/update';
-import { UpdateMasteringDto } from '../mastering/update';
+import { IsOptional, IsUrl } from 'class-validator';
 
 import { UpdateBaseReleaseTaskDto } from './update';
 
-export type UpdateReleaseTaskDto = UpdateBaseReleaseTaskDto &
-  UpdateArtworkDto &
-  UpdateDistributionDto &
-  UpdateMasteringDto;
+import { CreateBaseReleaseTaskDto } from 'backend/models/tasks/create';
+
+export class UpdateReleaseTaskDto extends UpdateBaseReleaseTaskDto {
+  @IsOptional()
+  @IsUrl()
+  url?: string;
+
+  @IsOptional()
+  distributor?: string;
+}
+
+export class CreateReleaseTaskDto extends CreateBaseReleaseTaskDto {
+  @IsOptional()
+  @IsUrl()
+  url?: string;
+
+  @IsOptional()
+  distributor?: string;
+}

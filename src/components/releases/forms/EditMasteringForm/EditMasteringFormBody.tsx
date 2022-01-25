@@ -36,7 +36,7 @@ const EditMasteringFormBody = ({
           ...existingRelease?.mastering,
           dueDate: formattedDueDate,
         }
-      : {},
+      : { assignees: [] },
   });
 
   useEffect(() => {
