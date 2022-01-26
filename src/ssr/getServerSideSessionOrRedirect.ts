@@ -7,7 +7,7 @@ export const getServerSideSessionOrRedirect: GetServerSideProps = async (context
   if (!session) {
     return {
       redirect: {
-        destination: '/login',
+        destination: `/login?callbackUrl=${context.req.url as string}`,
         permanent: false,
       },
     };

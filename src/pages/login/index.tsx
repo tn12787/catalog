@@ -1,9 +1,10 @@
 import { Button, Divider, Flex, HStack, Stack, Text, useToast } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import GoogleButton from 'react-google-button';
-import { getSession, signIn } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
 import { loginConfig } from 'data/login/loginConfig';
 import { LoginData } from 'data/login/types';
@@ -19,6 +20,15 @@ const Login = () => {
   } = useForm<LoginData>();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const router = useRouter();
+
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.replace('/releases');
+    }
+  }, [status, router]);
 
   const onEmailPassSubmit = async ({}: LoginData) => {
     try {
@@ -41,7 +51,7 @@ const Login = () => {
   };
 
   const signInWithGoogle = async () => {
-    await signIn('google');
+    await signIn('google', { callbackUrl: router.query.callbackUrl as string });
   };
 
   return (
@@ -75,15 +85,8 @@ const Login = () => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (session) {
-    return {
-      redirect: {
-        destination: '/releases',
-        permanent: false,
-      },
-    };
-  }
-  return { props: {} };
+
+  return { props: { session } };
 };
 
 export default Login;

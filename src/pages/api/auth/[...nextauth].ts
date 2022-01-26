@@ -64,6 +64,11 @@ export default NextAuth({
         return session;
       }
     },
+    redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl)) return url;
+      else if (url.startsWith('/')) return new URL(url, baseUrl).toString();
+      return baseUrl;
+    },
   },
   adapter: PrismaAdapter(prisma),
 });

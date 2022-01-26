@@ -28,7 +28,7 @@ export const AccountSwitcher = () => {
 
   const onLogout = async () => {
     localStorage.removeItem('activeTeam');
-    signOut();
+    signOut({ callbackUrl: '/login' });
   };
 
   const userTeams = userData?.teams || token?.teams;
