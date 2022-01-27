@@ -98,7 +98,7 @@ const Releases = () => {
 
   const canCreateRelease = hasRequiredPermissions(['CREATE_RELEASES'], teams?.[currentTeam]);
 
-  const shouldHideControls = response?.results?.length === 0 && !debouncedSearch && !isLoading;
+  const shouldHideControls = (response?.results?.length === 0 && !debouncedSearch) || isLoading;
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
@@ -179,14 +179,16 @@ const Releases = () => {
         ) : (
           <ReleaseList releases={response?.results} search={debouncedSearch} />
         )}
-        <PaginationControl
-          loading={isLoading}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={setPageSize}
-          totalItems={response?.total ?? 0}
-        />
+        {!shouldHideControls && (
+          <PaginationControl
+            loading={isLoading}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={setPageSize}
+            totalItems={response?.total ?? 0}
+          />
+        )}
       </Stack>
     </Stack>
   );
