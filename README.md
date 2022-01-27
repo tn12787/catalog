@@ -73,3 +73,34 @@ extraData: {
   newDueDate: string // ISO timestamp of the new date
 }
 ```
+
+## Environments
+
+Here are the vars we currently use for development etc. SHOULD NOT be used for production code.
+
+### .env
+
+```env
+DATABASE_URL=postgresql://prisma:launchdayPassword@localhost:5000/launchday
+SHADOW_DATABASE_URL=postgresql://prisma:launchdayPassword@localhost:6000/launchday-shadow
+
+GOOGLE_CLIENT_ID=419424197757-7n7f5frs3qof0mk9gh0h04ntiu7d36kc.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=pIgN-zdaT1uJZPWNF-N8nAzz
+
+SECRET=oSP6fHFPSbJ9PGAi0mntml5HmonoZAbgBc3XlzfadmktB0TVFU32bnyRFAuchWC
+JWT_SIGNING_KEY={"kty":"oct","kid":"ou9FioRsqHUs45s-X-uruzRGnUWeXTK2Y0R_fUea9QA","alg":"HS512","k":"EXarnnTTwxfcxWJYeRlFCBoknYKEUpgvZaANEeEFeQY"}
+```
+
+### .env.local
+
+```env
+NEXTAUTH_URL=http://localhost:3000
+```
+
+### .env.production
+
+```env
+NEXTAUTH_URL=https://launchday.vercel.app
+DATABASE_URL=<redacted>
+SHADOW_DATABASE_URL=<redacted>
+```

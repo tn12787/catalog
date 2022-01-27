@@ -1,4 +1,4 @@
-import { HStack, Text } from '@chakra-ui/react';
+import { HStack, Text, Wrap } from '@chakra-ui/react';
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { useQuery } from 'react-query';
@@ -31,7 +31,7 @@ const UpdateAssigneesItem = ({ event }: Props) => {
   const teamMembers = teamData?.members ?? [];
 
   return (
-    <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
+    <Wrap as={HStack} align={'center'} fontSize="sm" color={bodySub}>
       <ActivityIcon icon={FiUsers} />
       <AssigneeBadge inline teamMember={event.user} />
       {newlyAssigned.length > 0 && (
@@ -61,7 +61,7 @@ const UpdateAssigneesItem = ({ event }: Props) => {
         </>
       )}
       <Text>{formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}</Text>
-    </HStack>
+    </Wrap>
   );
 };
 
