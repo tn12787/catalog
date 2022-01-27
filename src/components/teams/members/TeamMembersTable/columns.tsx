@@ -2,6 +2,8 @@ import { Avatar, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react
 import React from 'react';
 import { CellProps, Column } from 'react-table';
 
+import TeamMemberMenu from './TeamMemberMenu';
+
 import { TeamMemberWithUserAndRoles } from 'types/common';
 
 interface UserCard {
@@ -38,5 +40,12 @@ export const teamMembersColumns: Column<TeamMemberWithUserAndRoles>[] = [
   {
     Header: 'Roles',
     accessor: (d: TeamMemberWithUserAndRoles) => d.roles.map((item) => item.name).join(', '),
+  },
+  {
+    Header: '',
+    accessor: (d) => d,
+    Cell: TeamMemberMenu,
+    id: 'actions',
+    minWidth: 100,
   },
 ];
