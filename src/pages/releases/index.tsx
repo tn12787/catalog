@@ -3,7 +3,6 @@ import {
   Stack,
   Heading,
   Button,
-  Flex,
   Input,
   InputGroup,
   Icon,
@@ -99,13 +98,17 @@ const Releases = () => {
 
   const canCreateRelease = hasRequiredPermissions(['CREATE_RELEASES'], teams?.[currentTeam]);
 
-  const shouldHideControls = response?.results?.length === 0 && !debouncedSearch && !isLoading;
+  const shouldHideControls = (response?.results?.length === 0 && !debouncedSearch) || isLoading;
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="All Releases" />
       <Stack spacing={4} width="90%" maxW="container.lg">
-        <Flex align="center" justify="space-between">
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          align={{ base: 'stretch', md: 'center' }}
+          justify="space-between"
+        >
           <Heading
             py={4}
             color={primary}
@@ -121,7 +124,7 @@ const Releases = () => {
               Create New Release
             </Button>
           )}
-        </Flex>
+        </Stack>
         {!shouldHideControls && (
           <HStack justifyContent="space-between">
             <InputGroup borderRadius="md" maxW="400px" bg={bgSecondary}>
@@ -176,14 +179,16 @@ const Releases = () => {
         ) : (
           <ReleaseList releases={response?.results} search={debouncedSearch} />
         )}
-        <PaginationControl
-          loading={isLoading}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={setPageSize}
-          totalItems={response?.total ?? 0}
-        />
+        {!shouldHideControls && (
+          <PaginationControl
+            loading={isLoading}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={setPageSize}
+            totalItems={response?.total ?? 0}
+          />
+        )}
       </Stack>
     </Stack>
   );

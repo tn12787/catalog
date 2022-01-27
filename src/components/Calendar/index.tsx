@@ -234,6 +234,7 @@ const Calendar = <T extends BaseEvent>({
                       onEventClicked={onEventClicked}
                       onEventDropped={onEventDropped}
                       canDropEvent={canDropEvent}
+                      onDateClicked={navigation.setDate}
                     />
                   );
                 })}
