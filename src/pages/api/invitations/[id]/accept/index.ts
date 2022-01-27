@@ -11,7 +11,8 @@ class TeamHandler {
   async acceptInvite(@PathParam('id') id: string, @Request() req: AuthDecoratedRequest) {
     if (!id) throw new NotFoundException();
 
-    const acceptingUser = req.session.user?.email;
+    const acceptingUser = req.session.token?.email;
+    console.log(req.session);
 
     const invite = await prisma.invite.findUnique({
       where: { id },

@@ -1,10 +1,14 @@
 import { User } from '@prisma/client';
 import axios from 'axios';
 
-export const sendUserInvitation = async ({ id, email }: Partial<User>): Promise<void> => {
+export const sendUserInvitation = async ({
+  id,
+  email,
+  role,
+}: Pick<User, 'email'> & { id: string; role: string }): Promise<void> => {
   if (!id) return Promise.reject();
 
-  const { data: response } = await axios.post(`/api/teams/${id}/invitations`, { email });
+  const { data: response } = await axios.post(`/api/teams/${id}/invitations`, { email, role });
   return response;
 };
 

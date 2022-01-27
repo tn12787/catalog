@@ -26,7 +26,7 @@ const AcceptInvitationPage = () => {
     if (!router.query) return;
 
     attemptInviteAcceptance(router.query.invitationId as string);
-  });
+  }, [router.query.invitationId]);
 
   return (
     <Flex direction="column" align="center" justify="center" flex={1} minH="100vh">

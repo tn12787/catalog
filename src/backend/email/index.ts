@@ -9,7 +9,7 @@ export const sendDynamicEmail = async <T>({ to, dynamic_template_data }: EmailDa
     await sendgrid.send({
       to: to,
       from: 'info@tpjnorton.com',
-      templateId: `d-a9ea4ba83f8b4761abda9ce9be228121`,
+      templateId: `d-324235f107c041f58e03d8fd8a66e104`,
       dynamicTemplateData: dynamic_template_data,
     });
   } catch (error) {

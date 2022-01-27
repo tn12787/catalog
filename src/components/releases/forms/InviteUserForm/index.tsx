@@ -5,7 +5,6 @@ import { User } from '@prisma/client';
 
 import InviteUserFormBody from './InviteUserFormBody';
 
-import { ClientRelease } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { sendUserInvitation } from 'queries/invitations';
 
@@ -29,16 +28,18 @@ const InviteUserForm = ({ onSubmitSuccess }: Props) => {
 
   const toast = useToast();
 
-  const onCreate = async (data: Pick<User, 'email'>) => {
+  const onCreate = async (data: Pick<User, 'email'> & { role: string }) => {
     try {
       await sendInvitation({
         email: data.email,
+        role: data.role,
+        id: currentTeam,
       });
 
       toast({
         status: 'success',
         title: 'Success',
-        description: 'Your changes were saved.',
+        description: 'Your invite was sent successfully.',
       });
       onSubmitSuccess?.();
     } catch (e: any) {

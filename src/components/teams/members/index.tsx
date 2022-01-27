@@ -18,18 +18,20 @@ import {
 import React from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { RiAddFill, RiArrowRightUpLine } from 'react-icons/ri';
+import { useQuery } from 'react-query';
 
 import TeamMembersTable from './TeamMembersTable';
 
 import { TeamMemberWithUserAndRoles } from 'types/common';
 import InviteUserForm from 'components/releases/forms/InviteUserForm';
+import { fetchRoles } from 'queries/roles';
 
 type Props = {
   members: TeamMemberWithUserAndRoles[];
 };
 
 const TeamMembers = ({ members }: Props) => {
-  const { isOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Stack spacing={4}>
@@ -46,7 +48,7 @@ const TeamMembers = ({ members }: Props) => {
           </FormControl>
         </HStack>
         <ButtonGroup size="sm" variant="outline">
-          <Button iconSpacing="1" leftIcon={<RiAddFill fontSize="1.25em" />}>
+          <Button iconSpacing="1" onClick={onOpen} leftIcon={<RiAddFill fontSize="1.25em" />}>
             New member
           </Button>
           <Button iconSpacing="1" leftIcon={<RiArrowRightUpLine fontSize="1.25em" />}>
