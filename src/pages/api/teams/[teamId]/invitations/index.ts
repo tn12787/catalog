@@ -1,44 +1,37 @@
 import {
   Body,
   createHandler,
-  Get,
-  Put,
-  Request,
   ValidationPipe,
+  Post,
+  Request,
 } from '@storyofams/next-api-decorators';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { UpdateTeamDto } from 'backend/models/teams/update';
+import { CreateInvitationDto } from 'backend/models/invitations/create';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
 class TeamHandler {
-  @Get()
-  async team(@PathParam('teamId') id: string) {
-    const team = await prisma.team.findUnique({
-      where: { id },
-      include: {
-        members: { include: { roles: true, user: true } },
-      },
-    });
-
-    return team;
-  }
-
-  @Put()
-  async updateTeam(
+  @Post()
+  async createInvite(
     @PathParam('teamId') id: string,
     @Request() req: AuthDecoratedRequest,
-    @Body(ValidationPipe) body: UpdateTeamDto
+    @Body(ValidationPipe) body: CreateInvitationDto
   ) {
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], id);
-    const team = await prisma.team.update({
-      where: { id },
+
+    const team = await prisma.invite.create({
       data: {
-        name: body.name,
+        email: body.email,
+        role: { connect: { id: body.role } },
+        team: {
+          connect: {
+            id,
+          },
+        },
       },
     });
 

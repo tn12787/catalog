@@ -13,3 +13,8 @@ export interface FormDatum<T, K = any> {
   isLoading?: boolean;
   CustomComponent?: React.FC<ControllerRenderProps>;
 }
+
+export interface FormBodyProps<T> {
+  onSubmit: (data: T) => void;
+  loading?: boolean;
+}
