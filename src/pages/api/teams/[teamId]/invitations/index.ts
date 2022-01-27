@@ -12,7 +12,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateInvitationDto } from 'backend/models/invitations/create';
-import { checkRequiredPermissions, getResourceTeamMembership } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { AuthDecoratedRequest } from 'types/common';
 import { sendDynamicEmail } from 'backend/email';
 
@@ -65,7 +65,7 @@ class TeamHandler {
       },
     });
 
-    return invite;
+    return team;
   }
 }
 

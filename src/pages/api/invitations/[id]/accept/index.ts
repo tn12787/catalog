@@ -12,7 +12,6 @@ class TeamHandler {
     if (!id) throw new NotFoundException();
 
     const acceptingUser = req.session.token?.email;
-    console.log(req.session);
 
     const invite = await prisma.invite.findUnique({
       where: { id },
@@ -22,7 +21,31 @@ class TeamHandler {
       throw new NotFoundException();
     }
 
-    return { accepted: true };
+    // create team member and delete invite
+    const [newMembership] = await prisma.$transaction([
+      prisma.teamMember.create({
+        data: {
+          team: {
+            connect: {
+              id: invite.teamId,
+            },
+          },
+          user: {
+            connect: {
+              email: invite.email,
+            },
+          },
+          roles: { connect: [{ id: invite.roleId }] },
+        },
+      }),
+      prisma.invite.delete({
+        where: {
+          id,
+        },
+      }),
+    ]);
+
+    return newMembership;
   }
 }
 
