@@ -1,12 +1,10 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { User } from '@prisma/client';
 
 import ManageUserFormBody from './ManageUserFormBody';
 
 import useExtendedSession from 'hooks/useExtendedSession';
-import { sendUserInvitation } from 'queries/invitations';
 import { TeamMemberWithUserAndRoles } from 'types/common';
 import { updateTeamMemberRoles } from 'queries/teams';
 

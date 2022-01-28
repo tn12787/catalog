@@ -16,6 +16,8 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { AuthDecoratedRequest } from 'types/common';
 import { sendDynamicEmail } from 'backend/email';
 
+const inviteUserTemplateId = `d-324235f107c041f58e03d8fd8a66e104`;
+
 type InvitationEmailData = {
   invitedBy: string;
   teamName: string;
@@ -57,7 +59,8 @@ class TeamHandler {
 
     await sendDynamicEmail<InvitationEmailData>({
       to: body.email,
-      dynamic_template_data: {
+      templateId: inviteUserTemplateId,
+      dynamicTemplateData: {
         invitedBy: req.session.token?.name as string,
         teamName: team.name,
         domain: process.env.NEXTAUTH_URL as string,
