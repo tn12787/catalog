@@ -7,14 +7,14 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY as string);
 export const sendDynamicEmail = async <T>({
   to,
   templateId,
-  dynamicTemplateData: dynamic_template_data,
+  dynamicTemplateData,
 }: EmailData<T>) => {
   try {
     await sendgrid.send({
       from: 'Launchday <info@tpjnorton.com>',
       to,
       templateId,
-      dynamicTemplateData: dynamic_template_data,
+      dynamicTemplateData,
     });
   } catch (error) {
     console.log(error);
