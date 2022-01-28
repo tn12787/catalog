@@ -11,4 +11,3 @@ class JobHandler {
 }
 
 export default createHandler(JobHandler);
-s;
