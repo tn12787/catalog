@@ -55,7 +55,7 @@ const Planner = () => {
     ['releaseEvents', currentTeam],
     () => fetchReleaseEvents(currentTeam),
     {
-      refetchInterval: 2000,
+      refetchInterval: 5000,
     }
   );
 
