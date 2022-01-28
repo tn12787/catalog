@@ -1,7 +1,7 @@
 name: First cron job
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '*/5 * * * *'
 jobs:
   cron:
     runs-on: ubuntu-latest
