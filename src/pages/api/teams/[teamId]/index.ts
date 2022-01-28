@@ -1,9 +1,18 @@
-import { Body, createHandler, Get, Put, ValidationPipe } from '@storyofams/next-api-decorators';
+import {
+  Body,
+  createHandler,
+  Get,
+  Put,
+  Request,
+  ValidationPipe,
+} from '@storyofams/next-api-decorators';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateTeamDto } from 'backend/models/teams/update';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
 class TeamHandler {
@@ -20,7 +29,12 @@ class TeamHandler {
   }
 
   @Put()
-  async updateTeam(@PathParam('teamId') id: string, @Body(ValidationPipe) body: UpdateTeamDto) {
+  async updateTeam(
+    @PathParam('teamId') id: string,
+    @Request() req: AuthDecoratedRequest,
+    @Body(ValidationPipe) body: UpdateTeamDto
+  ) {
+    await checkRequiredPermissions(req, ['UPDATE_TEAM'], id);
     const team = await prisma.team.update({
       where: { id },
       data: {

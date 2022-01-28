@@ -15,7 +15,7 @@ interface Props<T> extends StackProps {
 
 const FormContent = <T,>({ errors, config, register, control, ...rest }: Props<T>) => {
   return (
-    <Stack py={6} spacing={6} width="100%" margin="0 auto" {...rest}>
+    <Stack py={6} spacing={5} width="100%" margin="0 auto" {...rest}>
       {config.map((item) => (
         <FormField
           register={register}

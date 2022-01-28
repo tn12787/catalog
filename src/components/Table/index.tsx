@@ -58,7 +58,7 @@ const Table = <T extends object>({ columns, data, loading, emptyContent = <></> 
               return (
                 <Tr {...row.getRowProps()} key={index.toString()}>
                   {row.cells.map((cell, index) => (
-                    <Td {...cell.getCellProps()} key={index.toString()}>
+                    <Td py={2} {...cell.getCellProps()} key={index.toString()}>
                       {cell.render('Cell')}
                     </Td>
                   ))}

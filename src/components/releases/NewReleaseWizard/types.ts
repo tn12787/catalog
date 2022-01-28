@@ -3,15 +3,14 @@ import { EditArtworkFormData } from '../specific/Artwork/types';
 import { EditDistributionFormData } from '../specific/Distribution/types';
 
 import { ClientRelease } from 'types/common';
+import { FormBodyProps } from 'types/forms';
 
-export interface ReleaseWizardComponentProps<T> {
-  onSubmit: (data: T) => void;
+export interface ReleaseWizardComponentProps<T> extends FormBodyProps<T> {
   existingRelease?: ClientRelease;
   isSkippable?: boolean;
   canGoBack?: boolean;
   onSkip?: (key: ReleaseWizardKey) => void;
   onBack?: () => void;
-  loading?: boolean;
   completeState?: CombinedFormState;
 }
 
