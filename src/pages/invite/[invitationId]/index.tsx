@@ -25,14 +25,13 @@ const AcceptInvitationPage = () => {
 
       try {
         const data = await acceptInvitation(id);
-        console.log(data);
         toast({ title: 'Invitation accepted!', status: 'success' });
         onChangeTeam(data.teamId);
       } catch (e) {
         console.error(e);
       }
     },
-    [router.query, onChangeTeam, toast, acceptInvitation]
+    [onChangeTeam, router, toast, acceptInvitation]
   );
 
   useEffect(() => {
