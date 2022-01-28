@@ -26,7 +26,11 @@ const requiresAuth = createMiddlewareDecorator(
 
 export const requiresServiceAccount = createMiddlewareDecorator(
   async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
-    const CRON_JOB_KEY = req.headers.authorization?.split(' ')?.at(1) ?? '';
+    const authorization = req.headers.authorization;
+
+    if (!authorization) throw new UnauthorizedException();
+
+    const [_, CRON_JOB_KEY] = authorization.split(' ');
 
     if (CRON_JOB_KEY !== (process.env.CRON_SERVICE_ACCOUNT_KEY as string)) {
       throw new UnauthorizedException();
