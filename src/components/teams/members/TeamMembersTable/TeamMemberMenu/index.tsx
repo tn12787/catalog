@@ -2,11 +2,16 @@ import {
   Button,
   ButtonGroup,
   Flex,
+  Heading,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -21,21 +26,25 @@ import { TeamMemberWithUserAndRoles } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';
 import { deleteTeamMember } from 'queries/teams';
+import InviteUserForm from 'components/teams/forms/InviteUserForm';
+import ManageUserForm from 'components/teams/forms/ManageUserForm';
 
 type Props = CellProps<TeamMemberWithUserAndRoles>;
 
 const TeamMemberMenu = ({ value }: Props) => {
   const { teams, currentTeam } = useExtendedSession();
-  const canEdit = hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]);
+
+  const canEdit = [
+    hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]),
+    teams?.[currentTeam].id !== value.id,
+  ].every(Boolean);
+
   const { primary } = useAppColors();
   const cancelRef = useRef(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
   const queryClient = useQueryClient();
   const toast = useToast();
-
-  const onDeleteConfirm = () => {
-    onOpen();
-  };
 
   const { mutateAsync: removeTeamMember, isLoading } = useMutation(deleteTeamMember, {
     onSuccess: () => {
@@ -50,7 +59,7 @@ const TeamMemberMenu = ({ value }: Props) => {
         status: 'success',
         title: 'Team member removed',
       });
-      onClose();
+      onDeleteClose();
     } catch (error: any) {
       toast({
         status: 'error',
@@ -76,7 +85,8 @@ const TeamMemberMenu = ({ value }: Props) => {
           icon={<BiDotsHorizontalRounded fontSize={'24px'} />}
         ></MenuButton>
         <MenuList>
-          <MenuItem color="red" onClick={onDeleteConfirm}>
+          <MenuItem onClick={onEditOpen}>Manage roles</MenuItem>
+          <MenuItem color="red" onClick={onDeleteOpen}>
             Remove from team
           </MenuItem>
         </MenuList>
@@ -85,8 +95,8 @@ const TeamMemberMenu = ({ value }: Props) => {
         onConfirm={onDelete}
         leastDestructiveRef={cancelRef}
         loading={isLoading}
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isDeleteOpen}
+        onClose={onDeleteClose}
         title={`Remove ${value.user.name} from team?`}
         message="Don't worry, you can always invite them back later."
         buttons={
@@ -94,12 +104,21 @@ const TeamMemberMenu = ({ value }: Props) => {
             <Button colorScheme="red" isLoading={isLoading} ml={3} onClick={onDelete}>
               Remove
             </Button>
-            <Button ref={cancelRef} onClick={onClose}>
+            <Button ref={cancelRef} onClick={onDeleteClose}>
               Cancel
             </Button>
           </ButtonGroup>
         }
       />
+      <Modal isOpen={isEditOpen} onClose={onEditClose}>
+        <ModalOverlay></ModalOverlay>
+        <ModalHeader>
+          <Heading>Invite user</Heading>
+        </ModalHeader>
+        <ModalContent>
+          <ManageUserForm teamMember={value} onSubmitSuccess={() => onEditClose()} />
+        </ModalContent>
+      </Modal>
     </Flex>
   ) : (
     <></>

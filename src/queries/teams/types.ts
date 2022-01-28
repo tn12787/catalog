@@ -6,3 +6,7 @@ export interface DeleteTeamMemberVars {
   teamId: string;
   teamMemberId: string;
 }
+
+export interface UpdateTeamMemberVars extends DeleteTeamMemberVars {
+  roles: string[];
+}

@@ -12,33 +12,34 @@ import {
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { UpdateTeamDto } from 'backend/models/teams/update';
 import { checkRequiredPermissions, getResourceTeamMembership } from 'backend/apiUtils/teams';
 import { AuthDecoratedRequest } from 'types/common';
+import { UpdateTeamMemberDto } from 'backend/models/teams/members/update';
 
 @requiresAuth()
 class TeamHandler {
   @Patch()
   async updateTeam(
-    @PathParam('teamId') id: string,
     @Request() req: AuthDecoratedRequest,
-    @Body(ValidationPipe) body: UpdateTeamDto
+    @PathParam('teamId') teamId: string,
+    @PathParam('teamMemberId') teamMemberId: string,
+    @Body(ValidationPipe) body: UpdateTeamMemberDto
   ) {
-    await checkRequiredPermissions(req, ['UPDATE_TEAM'], id);
-    const team = await prisma.team.update({
-      where: { id },
+    await checkRequiredPermissions(req, ['UPDATE_TEAM'], teamId);
+    const teamMember = await prisma.teamMember.update({
+      where: { id: teamMemberId },
       data: {
-        name: body.name,
+        roles: { set: body.roles.map((id) => ({ id })) },
       },
     });
 
-    return team;
+    return teamMember;
   }
 
   @Delete()
   async removeTeamMember(
-    @PathParam('teamId') teamId: string,
     @Request() req: AuthDecoratedRequest,
+    @PathParam('teamId') teamId: string,
     @PathParam('teamMemberId') teamMemberId: string
   ) {
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], teamId);

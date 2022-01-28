@@ -1,8 +1,8 @@
 import { Stack, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React from 'react';
-import { FiSave, FiSend } from 'react-icons/fi';
+import { FiSend } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import { Role, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { useQuery } from 'react-query';
 
 import { buildInviteUserConfig } from './inviteUserConfig';

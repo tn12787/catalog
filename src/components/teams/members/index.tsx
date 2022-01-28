@@ -23,7 +23,7 @@ import { useQuery } from 'react-query';
 import TeamMembersTable from './TeamMembersTable';
 
 import { TeamMemberWithUserAndRoles } from 'types/common';
-import InviteUserForm from 'components/releases/forms/InviteUserForm';
+import InviteUserForm from 'components/teams/forms/InviteUserForm';
 import { fetchRoles } from 'queries/roles';
 
 type Props = {

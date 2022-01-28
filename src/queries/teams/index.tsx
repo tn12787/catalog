@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Team } from '@prisma/client';
 
-import { DeleteTeamMemberVars, UpdateTeamVars } from './types';
+import { DeleteTeamMemberVars, UpdateTeamMemberVars, UpdateTeamVars } from './types';
 
 import { TeamMemberWithUserAndRoles } from 'types/common';
 
@@ -20,6 +20,17 @@ export const updateSingleTeam = async ({ id, ...data }: UpdateTeamVars) => {
     ...data,
   });
 
+  return response;
+};
+
+export const updateTeamMemberRoles = async ({
+  teamId,
+  teamMemberId,
+  roles,
+}: UpdateTeamMemberVars) => {
+  const { data: response } = await axios.patch(`/api/teams/${teamId}/members/${teamMemberId}`, {
+    roles,
+  });
   return response;
 };
 
