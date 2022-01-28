@@ -24,6 +24,22 @@ const requiresAuth = createMiddlewareDecorator(
   }
 );
 
+export const requiresServiceAccount = createMiddlewareDecorator(
+  async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
+    const authorization = req.headers.authorization;
+
+    if (!authorization) throw new UnauthorizedException();
+
+    const [_, CRON_JOB_KEY] = authorization.split(' ');
+
+    if (CRON_JOB_KEY !== (process.env.CRON_SERVICE_ACCOUNT_KEY as string)) {
+      throw new UnauthorizedException();
+    }
+
+    next();
+  }
+);
+
 const requiresTeamMembership = createMiddlewareDecorator(
   async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
     const { session } = req as AuthDecoratedRequest;
