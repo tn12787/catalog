@@ -91,12 +91,15 @@ model User {
 
 model Invite {
   id        String    @id @default(cuid())
-  email     String    @unique
-  accepted  Boolean
+  email     String
   team      Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId    String
+  role      Role      @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  roleId    String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+
+  @@unique([email, teamId])
 }
 
 model Session {
@@ -291,6 +294,7 @@ model Role {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?    @updatedAt
   users       TeamMember[]
+  Invite      Invite[]
 }
 
 model Permission {

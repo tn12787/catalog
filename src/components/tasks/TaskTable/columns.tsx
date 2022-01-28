@@ -31,7 +31,6 @@ export const columns: Column<ReleaseEvent>[] = [
     accessor: (d) => d,
     Cell: ReleaseLink,
   },
-
   {
     Header: 'Status',
     accessor: (d: ReleaseEvent) => d?.data.status,

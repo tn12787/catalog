@@ -1,3 +1,5 @@
+// TODO: Refactor this and AssigneeSelect to share some more stuff
+
 import { Input } from '@chakra-ui/input';
 import {
   InputGroup,
@@ -14,48 +16,42 @@ import { useCombobox } from 'downshift';
 import { useQuery } from 'react-query';
 import { BiChevronDown } from 'react-icons/bi';
 import { uniqBy } from 'lodash';
+import { Role } from '@prisma/client';
 
-import AssigneeSelectList from './AssigneeSelectList';
-import AssigneeItem from './AssigneeItem';
+import RoleBadge from '../RoleBadge';
 
-import useExtendedSession from 'hooks/useExtendedSession';
-import { fetchTeam } from 'queries/teams';
+import RoleSelectList from './RoleSelectList';
+import RoleItem from './RoleItem';
+
 import useAppColors from 'hooks/useAppColors';
-import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
-import { TeamMemberWithUser, TeamMemberWithUserAndRoles } from 'types/common';
+import { fetchRoles } from 'queries/roles';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {
-  value: TeamMemberWithUser[];
+  value: Role[];
   borderless?: boolean;
 }
 
-const AssigneeSelect: React.FC<Props> = React.forwardRef(
-  ({ value, borderless = false, onChange }: Props, ref) => {
-    const { currentTeam } = useExtendedSession();
-    const currentAssignees = value || [];
+const RoleSelect: React.FC<Props> = React.forwardRef(
+  ({ value, borderless, onChange }: Props, ref) => {
+    const currentRoles = value || [];
 
-    const { data: teamData, isLoading } = useQuery(
-      ['team', currentTeam as string],
-      () => fetchTeam(currentTeam as string),
-      { enabled: !!currentTeam }
-    );
+    const { data: allRoles, isLoading } = useQuery(['roles'], fetchRoles);
 
     const [searchString, setSearchString] = React.useState('');
 
-    const allTeamMembers =
-      teamData?.members.filter((item) =>
-        item.user.name?.toLowerCase().includes(searchString.toLowerCase())
+    const filteredRoles =
+      (allRoles ?? []).filter((item) =>
+        item.name?.toLowerCase().includes(searchString.toLowerCase())
       ) || [];
 
-    const { bgPrimary, primary, bodySub, border } = useAppColors();
+    const { bgPrimary, primary, border, bodySub } = useAppColors();
 
-    const onItemChange = (item: TeamMemberWithUser) => {
-      const newAssigneesWithoutDuplicate = uniqBy(
-        [...currentAssignees, item],
-        (item) => item.id
-      ).filter(Boolean);
+    const onItemChange = (item: Role) => {
+      const newRolesWithoutDuplicate = uniqBy([...currentRoles, item], (item) => item.id).filter(
+        Boolean
+      );
 
-      onChange(newAssigneesWithoutDuplicate);
+      onChange(newRolesWithoutDuplicate);
     };
 
     const {
@@ -69,32 +65,32 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
       highlightedIndex,
       selectItem,
     } = useCombobox({
-      items: allTeamMembers,
+      items: filteredRoles,
       onInputValueChange: ({ inputValue }) => {
         setSearchString(inputValue ?? '');
       },
       inputValue: searchString,
       onSelectedItemChange: (changes) => {
-        onItemChange(changes.selectedItem as TeamMemberWithUser);
+        onItemChange(changes.selectedItem as Role);
         setSearchString('');
       },
 
-      itemToString: (item) => item?.user.name ?? '',
+      itemToString: (item) => item?.name ?? '',
     });
 
     return (
       <Stack>
         <Wrap>
-          {currentAssignees?.length
-            ? currentAssignees?.map((assignee) => {
+          {currentRoles?.length
+            ? currentRoles?.map((role) => {
                 return (
-                  <AssigneeBadge
+                  <RoleBadge
                     onRemoveClick={(removedUser) => {
-                      onChange(currentAssignees?.filter((item) => item?.id !== removedUser.id));
+                      onChange(currentRoles?.filter((item) => item?.id !== removedUser.id));
                     }}
                     editable
-                    key={assignee.id}
-                    teamMember={assignee}
+                    key={role.id}
+                    role={role}
                   />
                 );
               })
@@ -121,18 +117,18 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
               />
             </InputRightElement>
 
-            <AssigneeSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
-              {allTeamMembers.length ? (
-                allTeamMembers.map((item: TeamMemberWithUserAndRoles, index: number) => (
-                  <AssigneeItem
+            <RoleSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
+              {filteredRoles.length ? (
+                filteredRoles.map((item: Role, index: number) => (
+                  <RoleItem
                     ref={ref}
-                    selected={currentAssignees?.some((assignee) => assignee.id === item.id)}
+                    selected={currentRoles?.some((assignee) => assignee.id === item.id)}
                     {...getItemProps({ item: item, index })}
                     _hover={{
                       bgColor: bgPrimary,
                     }}
                     key={index}
-                    item={item.user}
+                    item={item}
                     itemIndex={index}
                     highlightedIndex={highlightedIndex}
                     onClick={() => {
@@ -153,7 +149,7 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
                   No users match your search.
                 </Text>
               )}
-            </AssigneeSelectList>
+            </RoleSelectList>
           </Flex>
         </InputGroup>
       </Stack>
@@ -161,6 +157,6 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
   }
 );
 
-AssigneeSelect.displayName = 'AssigneeSelect';
+RoleSelect.displayName = 'RoleSelect';
 
-export default AssigneeSelect;
+export default RoleSelect;
