@@ -72,6 +72,7 @@ model TeamMember {
   roles         Role[]
   tasksAssigned ReleaseTask[]
   actionsTaken  ReleaseTaskEvent[]
+  notifications Notification[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
@@ -304,4 +305,19 @@ model Permission {
   roles     Role[]
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+enum NotificationType {
+  TASKS_OVERDUE
+  // todo: add more
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  user      TeamMember       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  read      Boolean          @default(false)
+  extraData Json
+  createdAt DateTime         @default(now())
 }
