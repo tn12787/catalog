@@ -62,7 +62,7 @@ const useExtendedSession = () => {
       }
       queryClient.clear();
       setCurrentTeam(val as string);
-      router.replace('/releases');
+      router.replace('/overview', '/overview', { shallow: false });
     },
     [setCurrentTeam, queryClient]
   );

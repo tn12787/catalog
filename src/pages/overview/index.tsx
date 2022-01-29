@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/layout';
 import React from 'react';
-import { Flex, Heading, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
+import { Flex, Heading, Skeleton, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
@@ -13,10 +13,20 @@ import MyTasks from 'components/overview/MyTasks';
 import Card from 'components/Card';
 import { fetchReleases } from 'queries/releases';
 import OverdueTasks from 'components/overview/OverdueTasks';
+import { fetchTeam } from 'queries/teams';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
   const { currentTeam, teams } = useExtendedSession();
+
+  const { data: teamData, isLoading: isTeamLoading } = useQuery(
+    ['team', currentTeam],
+    () => fetchTeam(currentTeam),
+    {
+      enabled: !!currentTeam,
+    }
+  );
+
   const { data, isLoading } = useQuery(
     ['releaseEvents', currentTeam, teams?.[currentTeam]?.id],
     () => fetchReleaseEvents(currentTeam, teams?.[currentTeam]?.id)
@@ -31,12 +41,15 @@ const OverviewPage = () => {
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
       <PageHead title="Overview"></PageHead>
+
       <Stack spacing={4} width="90%" maxW="container.lg">
-        <Flex align="center" justify="space-between">
-          <Heading py={4} as="h1" size="2xl" fontWeight="black" alignSelf="flex-start">
-            Overview
-          </Heading>
-        </Flex>
+        <Stack direction="row" align="center" justify="space-between">
+          <Skeleton isLoaded={!isLoading}>
+            <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
+              {isTeamLoading ? 'Loading team name' : teamData?.name}
+            </Heading>
+          </Skeleton>
+        </Stack>
         <Stack spacing={4} direction={{ base: 'column', md: 'row' }}>
           <Card w="100%">
             <Stat>

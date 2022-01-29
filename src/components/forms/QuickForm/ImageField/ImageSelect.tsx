@@ -1,16 +1,16 @@
-import { Flex, Spinner, Stack, useToast } from '@chakra-ui/react';
+import { Flex, Spinner, Stack, StackProps, useToast } from '@chakra-ui/react';
 import React from 'react';
 
 import ImageDropper from 'components/images/ImageDropper';
 import { uploadImageToFirebase } from 'queries/artwork';
 import useAppColors from 'hooks/useAppColors';
 
-type Props = {
-  value: string;
+type Props = Omit<StackProps, 'onChange'> & {
   onChange: (value: string) => void | Promise<void>;
+  message?: string;
 };
 
-const ImageSelect = ({ value, onChange }: Props) => {
+const ImageSelect = ({ onChange, message = 'Click to upload an image', ...rest }: Props) => {
   const [uploading, setUploading] = React.useState(false);
   const { bgPrimary } = useAppColors();
   const toast = useToast();
@@ -35,11 +35,11 @@ const ImageSelect = ({ value, onChange }: Props) => {
   };
 
   return (
-    <Stack alignItems={'flex-start'} spacing={0} p={2} position="relative" minW={'300px'} w="100%">
+    <Stack alignItems={'flex-start'} spacing={0} p={2} position="relative" w="100%" {...rest}>
       <ImageDropper
         onChange={(e) => uploadImage(e.target.files?.[0] as File)}
         accept={'image/jpeg, image/png'}
-        message="Click to upload an image"
+        message={message}
       />
       {uploading && (
         <Flex

@@ -45,15 +45,9 @@ export const appLinks: NavLinkConfig = {
   settings: (currentTeam) => ({
     links: [
       {
-        icon: RiTeamLine,
-        href: `/teams/${currentTeam}/overview`,
-        text: 'Team Overview',
-        activeRegex: /^\/teams\/.+\/overview/,
-      },
-      {
         icon: BsGear,
         href: `/teams/${currentTeam}/settings`,
-        text: 'Team Settings',
+        text: 'Manage Team',
         activeRegex: /^\/teams\/.+\/settings/,
       },
     ],

@@ -33,9 +33,8 @@ export const AccountSwitcherButton = ({ teamName, userName, photoUrl, ...rest }:
     >
       <HStack flex="1" spacing="3">
         <Avatar
-          w="8"
-          h="8"
-          rounded="md"
+          size="sm"
+          borderRadius="md"
           objectFit="cover"
           src={photoUrl}
           referrerPolicy="no-referrer"

@@ -4,6 +4,7 @@ import {
   Icon,
   Menu,
   MenuDivider,
+  MenuGroup,
   MenuItem,
   MenuItemOption,
   MenuList,
@@ -58,10 +59,9 @@ export const AccountSwitcher = () => {
         spacing={5}
         borderColor={border}
         color={useColorModeValue('gray.600', 'gray.200')}
-        px="3"
       >
         <Stack>
-          <HStack fontSize="xs" color={bodySub}>
+          <HStack px={4} fontSize="xs" color={bodySub}>
             <Avatar
               size="2xs"
               src={userData?.image as string}
@@ -71,6 +71,7 @@ export const AccountSwitcher = () => {
           </HStack>
           <MenuOptionGroup
             type="radio"
+            title="Teams"
             defaultValue={currentTeam as string}
             value={currentTeam as string}
             onChange={(val) => onChangeTeam(val as string)}
@@ -80,24 +81,36 @@ export const AccountSwitcher = () => {
                 key={index.toString()}
                 value={team.id}
                 fontWeight="semibold"
-                rounded="md"
                 type="radio"
               >
-                {team.name}
+                <HStack>
+                  <Avatar
+                    size="sm"
+                    borderRadius="md"
+                    objectFit="cover"
+                    src={team.imageUrl ?? ''}
+                    referrerPolicy="no-referrer"
+                    alt="Team Image"
+                    name={team.name}
+                  />
+                  <Text>{team.name}</Text>
+                </HStack>
               </MenuItemOption>
             ))}
           </MenuOptionGroup>
           <MenuDivider />
-          <MenuItem
-            icon={<Icon as={BiCog} fontSize="lg" />}
-            onClick={() => router.push('/user/settings')}
-          >
-            User settings
-          </MenuItem>
+          <MenuGroup>
+            <MenuItem
+              icon={<Icon as={BiCog} fontSize="lg" />}
+              onClick={() => router.push('/user/settings')}
+            >
+              User settings
+            </MenuItem>
 
-          <MenuItem icon={<Icon as={BiLogOut} fontSize="lg" />} onClick={onLogout}>
-            Log out
-          </MenuItem>
+            <MenuItem icon={<Icon as={BiLogOut} fontSize="lg" />} onClick={onLogout}>
+              Log out
+            </MenuItem>
+          </MenuGroup>
         </Stack>
       </MenuList>
     </Menu>

@@ -23,14 +23,14 @@ const TeamInformation = ({ team }: Props) => {
     {
       label: 'Logo',
       content: (
-        <Avatar
-          size="lg"
-          rounded="md"
+        <Image
+          boxSize="100px"
+          borderRadius="md"
           alt="team_image"
           name={team?.name}
           src={team?.imageUrl ?? ''}
           fontWeight="semibold"
-        ></Avatar>
+        ></Image>
       ),
     },
     {

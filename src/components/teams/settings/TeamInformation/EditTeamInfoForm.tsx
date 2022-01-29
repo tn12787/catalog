@@ -1,4 +1,4 @@
-import { Stack, Button, Avatar } from '@chakra-ui/react';
+import { Stack, Button, Image, HStack } from '@chakra-ui/react';
 import React, { ChangeEventHandler } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
@@ -18,32 +18,40 @@ interface Props {
   teamData?: Team;
 }
 
-interface EditTeamInfoFormData {
-  name: string;
-}
+type EditTeamInfoFormData = Pick<Team, 'name' | 'imageUrl'>;
 
 const EditTeamInfoForm = ({ onSubmit, onCancel, teamData }: Props) => {
   const {
     register,
     handleSubmit,
     control,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<EditTeamInfoFormData>({
-    defaultValues: { name: teamData?.name },
+    defaultValues: { name: teamData?.name, imageUrl: teamData?.imageUrl },
   });
 
-  const onImageChange = (image: ChangeEventHandler) => {};
+  const currentImage = watch('imageUrl');
+
+  const onImageChange = (url: string) => {
+    setValue('imageUrl', url);
+  };
 
   const config = [
     {
       label: 'Logo',
       content: (
-        <ImageSelect
-          rounded="md"
-          name={teamData?.name}
-          src={teamData?.imageUrl ?? ''}
-          fontWeight="semibold"
-        ></ImageSelect>
+        <HStack>
+          {currentImage && (
+            <Image boxSize={'100px'} borderRadius="md" src={currentImage} alt="team image" />
+          )}
+          <ImageSelect
+            message="Choose"
+            fontWeight="semibold"
+            onChange={onImageChange}
+          ></ImageSelect>
+        </HStack>
       ),
     },
     {
