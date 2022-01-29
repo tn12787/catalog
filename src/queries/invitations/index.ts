@@ -1,4 +1,4 @@
-import { User, TeamMember } from '@prisma/client';
+import { User, TeamMember, Invite } from '@prisma/client';
 import axios from 'axios';
 
 export const sendUserInvitation = async ({
@@ -16,5 +16,12 @@ export const acceptInvite = async (id: string): Promise<TeamMember> => {
   if (!id) return Promise.reject();
 
   const { data: response } = await axios.post(`/api/invitations/${id}/accept`, {});
+  return response;
+};
+
+export const rescindInvitation = async (id: string): Promise<Invite> => {
+  if (!id) return Promise.reject();
+
+  const { data: response } = await axios.delete(`/api/invitations/${id}`, {});
   return response;
 };

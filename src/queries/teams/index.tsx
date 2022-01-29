@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { Team } from '@prisma/client';
+import { Invite, Team } from '@prisma/client';
 
 import { DeleteTeamMemberVars, UpdateTeamMemberVars, UpdateTeamVars } from './types';
 
 import { TeamMemberWithUserAndRoles } from 'types/common';
 
 export const fetchTeam = async (id: string) => {
-  const { data: response } = await axios.get<Team & { members: TeamMemberWithUserAndRoles[] }>(
-    `/api/teams/${id}`
-  );
+  const { data: response } = await axios.get<
+    Team & { invites: Invite[]; members: TeamMemberWithUserAndRoles[] }
+  >(`/api/teams/${id}`);
 
   return response;
 };
