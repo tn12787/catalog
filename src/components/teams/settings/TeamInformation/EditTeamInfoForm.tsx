@@ -1,5 +1,5 @@
 import { Stack, Button, Image, HStack } from '@chakra-ui/react';
-import React, { ChangeEventHandler } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
 import { useMutation, useQueryClient } from 'react-query';
@@ -8,8 +8,6 @@ import { Team } from '@prisma/client';
 import FormField from 'components/forms/FormContent/FormField';
 import DataList from 'components/DataList';
 import { updateSingleTeam } from 'queries/teams';
-import ImageField from 'components/forms/QuickForm/ImageField';
-import SwappableAvatar from 'components/images/SwappableAvatar';
 import ImageSelect from 'components/forms/QuickForm/ImageField/ImageSelect';
 
 interface Props {
