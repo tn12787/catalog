@@ -26,7 +26,6 @@ const ImageDropper = ({
       {...getRootProps()}
       borderStyle="dashed"
       borderWidth={'1px'}
-      minH="200px"
       flex={1}
       borderRadius="md"
       alignItems="center"

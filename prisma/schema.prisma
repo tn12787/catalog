@@ -53,6 +53,7 @@ enum TaskEventType {
 model Team {
   id       String        @id @default(cuid())
   name     String
+  imageUrl String?
   plan     TeamPlan      @default(Artist)
   provider CloudProvider
   members  TeamMember[]
