@@ -1,7 +1,7 @@
 import { Flex, Spinner, Stack, useToast } from '@chakra-ui/react';
 import React from 'react';
 
-import ImageDropper from 'components/ImageDropper';
+import ImageDropper from 'components/images/ImageDropper';
 import { uploadImageToFirebase } from 'queries/artwork';
 import useAppColors from 'hooks/useAppColors';
 
@@ -10,7 +10,7 @@ type Props = {
   onChange: (value: string) => void | Promise<void>;
 };
 
-const ImageSelect = ({ onChange }: Props) => {
+const ImageSelect = ({ value, onChange }: Props) => {
   const [uploading, setUploading] = React.useState(false);
   const { bgPrimary } = useAppColors();
   const toast = useToast();

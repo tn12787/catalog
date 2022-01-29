@@ -10,7 +10,7 @@ import { EditArtworkFormData } from '../../specific/Artwork/types';
 
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
-import ImageDropper from 'components/ImageDropper';
+import ImageDropper from 'components/images/ImageDropper';
 import useAppColors from 'hooks/useAppColors';
 import { uploadImageToFirebase } from 'queries/artwork';
 

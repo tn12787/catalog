@@ -1,4 +1,7 @@
 import {
+  Avatar,
+  HStack,
+  Icon,
   Menu,
   MenuDivider,
   MenuItem,
@@ -6,6 +9,7 @@ import {
   MenuList,
   MenuOptionGroup,
   Skeleton,
+  Stack,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -18,11 +22,13 @@ import { AccountSwitcherButton } from './AccountSwitcherButton';
 
 import useExtendedSession from 'hooks/useExtendedSession';
 import useUser from 'hooks/useUser';
+import useAppColors from 'hooks/useAppColors';
 
 export const AccountSwitcher = () => {
   const { token, currentTeam, onChangeTeam, status } = useExtendedSession();
   const router = useRouter();
   const [userData] = useUser();
+  const { bodySub, border } = useAppColors();
 
   const sessionLoading = status === 'loading';
 
@@ -43,39 +49,56 @@ export const AccountSwitcher = () => {
         <AccountSwitcherButton
           teamName={(activeTeam?.team.name as string) ?? 'loadingTeam'}
           userName={(userData?.name || (token?.name as string)) ?? 'loadingUser'}
-          photoUrl={token?.picture as string}
+          photoUrl={activeTeam?.team.imageUrl as string}
         />
       </Skeleton>
-      <MenuList shadow="lg" py="4" color={useColorModeValue('gray.600', 'gray.200')} px="3">
-        <Text fontWeight="medium" mb="2" fontSize="sm">
-          {token?.email}
-        </Text>
-        <MenuOptionGroup
-          type="radio"
-          defaultValue={currentTeam as string}
-          value={currentTeam as string}
-          onChange={(val) => onChangeTeam(val as string)}
-        >
-          {userTeams?.map(({ team }, index) => (
-            <MenuItemOption
-              key={index.toString()}
-              value={team.id}
-              fontWeight="semibold"
-              rounded="md"
-              type="radio"
-            >
-              {team.name}
-            </MenuItemOption>
-          ))}
-        </MenuOptionGroup>
-        <MenuDivider />
-        <MenuItem icon={<BiCog />} onClick={() => router.push('/user/settings')}>
-          User settings
-        </MenuItem>
+      <MenuList
+        shadow="xl"
+        py="4"
+        spacing={5}
+        borderColor={border}
+        color={useColorModeValue('gray.600', 'gray.200')}
+        px="3"
+      >
+        <Stack>
+          <HStack fontSize="xs" color={bodySub}>
+            <Avatar
+              size="2xs"
+              src={userData?.image as string}
+              name={userData?.name || (token?.name as string)}
+            />
+            <Text fontSize="xs">{token?.email}</Text>
+          </HStack>
+          <MenuOptionGroup
+            type="radio"
+            defaultValue={currentTeam as string}
+            value={currentTeam as string}
+            onChange={(val) => onChangeTeam(val as string)}
+          >
+            {userTeams?.map(({ team }, index) => (
+              <MenuItemOption
+                key={index.toString()}
+                value={team.id}
+                fontWeight="semibold"
+                rounded="md"
+                type="radio"
+              >
+                {team.name}
+              </MenuItemOption>
+            ))}
+          </MenuOptionGroup>
+          <MenuDivider />
+          <MenuItem
+            icon={<Icon as={BiCog} fontSize="lg" />}
+            onClick={() => router.push('/user/settings')}
+          >
+            User settings
+          </MenuItem>
 
-        <MenuItem icon={<BiLogOut />} onClick={onLogout}>
-          Log out
-        </MenuItem>
+          <MenuItem icon={<Icon as={BiLogOut} fontSize="lg" />} onClick={onLogout}>
+            Log out
+          </MenuItem>
+        </Stack>
       </MenuList>
     </Menu>
   );
