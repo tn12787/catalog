@@ -24,7 +24,7 @@ const TeamInformation = ({ team }: Props) => {
       label: 'Logo',
       content: (
         <Image
-          boxSize="100px"
+          boxSize="75px"
           borderRadius="md"
           alt="team_image"
           name={team?.name}

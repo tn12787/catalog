@@ -44,7 +44,7 @@ const EditTeamInfoForm = ({ onSubmit, onCancel, teamData }: Props) => {
       content: (
         <HStack>
           {currentImage && (
-            <Image boxSize={'100px'} borderRadius="md" src={currentImage} alt="team image" />
+            <Image boxSize={'75px'} borderRadius="md" src={currentImage} alt="team image" />
           )}
           <ImageSelect
             message="Choose"
