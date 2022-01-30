@@ -13,20 +13,19 @@ const daysFromNow = (days: number) => {
 // TODO: Reenable service account access
 //@requiresServiceAccount()
 class JobHandler {
-  @Get() // TODO: Change back to post after testing
+  // TODO: Change back to post after testing
+  // @Post()
+  @Get()
   async runJob() {
-    // Here do something with prisma that finds tasks that are potentiall overdue or almost due and write a notification for them
-
-    // Get all tasks with due date < today +2 and not completed yet
-
-    // TaskStatus != COMPLETE
-
+    // TODO: Should be able to write this query from the other direction ie
+    // prisma.teamMember.findMany({
+    //  where: some tasksAssigned are not done && overdue/nearly overdue
+    //})
     const releasetasks = await prisma.releaseTask.findMany({
       where: {
         AND: {
           // TODO: Why  { not: 'COMPLETE' } failing?
-          // TODO: Can we use types rather than strings?
-          status: { in: ['OUTSTANDING', 'IN_PROGRESS'] },
+          status: { in: [TaskStatus.OUTSTANDING, TaskStatus.IN_PROGRESS] },
           dueDate: { lte: daysFromNow(2) },
         },
       },
@@ -35,15 +34,17 @@ class JobHandler {
       },
     });
 
-    // Unique users with overdue/upcoming (Alertable) tasks
+    // Find all users with overdue/upcoming (Alertable) tasks
     const notificationsToPost = releasetasks
       .flatMap((task) => task.assignees)
       .map((assignee) => ({
         type: NotificationType.TASKS_OVERDUE,
+        // This userId is a bit confusing - is it userId or teamMember.id?
         userId: assignee.id,
         extraData: { message: 'What to put here?' },
       }));
 
+    // Create the notifications that users have tasks due/overdue
     await prisma.notification.createMany({
       data: notificationsToPost,
       skipDuplicates: true,
