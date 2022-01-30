@@ -24,8 +24,7 @@ class JobHandler {
     const releasetasks = await prisma.releaseTask.findMany({
       where: {
         AND: {
-          // TODO: Why  { not: 'COMPLETE' } failing?
-          status: { in: [TaskStatus.OUTSTANDING, TaskStatus.IN_PROGRESS] },
+          status: { not: TaskStatus.COMPLETE },
           dueDate: { lte: daysFromNow(2) },
         },
       },
