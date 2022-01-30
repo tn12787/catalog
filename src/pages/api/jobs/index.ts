@@ -14,11 +14,11 @@ class JobHandler {
     // Get all tasks with due date < today +2 and not completed yet
     // TaskStatus != COMPLETE
 
-    const releasetasks = prisma.releaseTask.findMany({
+    const releasetasks = await prisma.releaseTask.findMany({
       where: { 
-        status: {
-          not: TaskStatus.COMPLETE
-        }
+        // TODO: Why  { not: 'COMPLETE' } failing? 
+        // TODO: Can we use types rather than strings?
+        status: { in: ['OUTSTANDING', 'IN_PROGRESS'] }
       }
     });
 
