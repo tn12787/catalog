@@ -1,4 +1,4 @@
-import { TaskStatus } from '@prisma/client';
+import { NotificationType, TaskStatus } from '@prisma/client';
 import { createHandler, Get } from '@storyofams/next-api-decorators';
 
 // import { requiresServiceAccount } from 'backend/apiUtils/decorators/auth';
@@ -36,13 +36,23 @@ class JobHandler {
     });
 
     // Unique users with overdue/upcoming (Alertable) tasks
-    const usersWithAlertableTasks = new Set(releasetasks.flatMap((task) => task.assignees));
+    const notificationsToPost = releasetasks
+      .flatMap((task) => task.assignees)
+      .map((assignee) => ({
+        type: NotificationType.TASKS_OVERDUE,
+        userId: assignee.id,
+        extraData: { message: 'What to put here?' },
+      }));
+
+    await prisma.notification.createMany({
+      data: notificationsToPost,
+      skipDuplicates: true,
+    });
 
     return {
       acknowledged: true,
       releasetasks,
-      // Why can't this handle sets?
-      usersWithAlertableTasks: Array.from(usersWithAlertableTasks.values()),
+      notificationsToPost: notificationsToPost,
     };
   }
 }
