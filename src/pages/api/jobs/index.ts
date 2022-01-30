@@ -38,8 +38,9 @@ class JobHandler {
       .flatMap((task) => task.assignees)
       .map((assignee) => ({
         type: NotificationType.TASKS_OVERDUE,
-        // This userId is a bit confusing - is it userId or teamMember.id?
+        // TODO: This userId is a bit confusing - is it userId or teamMember.id?
         userId: assignee.id,
+        // TODO: What are we going to use the extra data for?
         extraData: { message: 'What to put here?' },
       }));
 
