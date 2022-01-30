@@ -30,11 +30,19 @@ class JobHandler {
           dueDate: { lte: daysFromNow(2) },
         },
       },
+      include: {
+        assignees: true,
+      },
     });
+
+    // Unique users with overdue/upcoming (Alertable) tasks
+    const usersWithAlertableTasks = new Set(releasetasks.flatMap((task) => task.assignees));
 
     return {
       acknowledged: true,
       releasetasks,
+      // Why can't this handle sets?
+      usersWithAlertableTasks: Array.from(usersWithAlertableTasks.values()),
     };
   }
 }
