@@ -52,9 +52,11 @@ const Nav = ({ links }: Props) => {
               Launchday
             </Text>
           </HStack>
-          <button onClick={() => alert('Settings page')}>
-            <BiBell />
-          </button>
+          {/*
+          TODO: NavLink is not the right component here
+          Look for something better
+          */}
+          <NavLink icon={BiBell} href="/overview" text="" activeRegex={/^\/overview/} />
         </HStack>
         <AccountSwitcher />
         <Stack>
