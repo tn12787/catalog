@@ -2,10 +2,10 @@ import { NotificationType, TaskStatus } from '@prisma/client';
 import { createHandler, Get } from '@storyofams/next-api-decorators';
 
 import { daysFromNow } from 'backend/apiUtils/dates';
+import { requiresServiceAccount } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 
-// TODO: Reenable service account access
-//@requiresServiceAccount()
+@requiresServiceAccount()
 class JobHandler {
   // TODO: Change back to post after testing
   // @Post()
@@ -18,7 +18,7 @@ class JobHandler {
       },
     };
 
-    const teamMemberToNotify = await prisma.teamMember.findMany({
+    const teamMembersToNotify = await prisma.teamMember.findMany({
       where: {
         tasksAssigned: {
           some: tasksAreOutstanding,
@@ -39,16 +39,14 @@ class JobHandler {
       },
     });
 
-    const notificationsToPost = teamMemberToNotify.map(({ id, tasksAssigned }) => {
+    const notificationsToPost = teamMembersToNotify.map(({ id, tasksAssigned }) => {
       return {
         type: NotificationType.TASKS_OVERDUE,
-        // TODO: This userId is a bit confusing - is it userId or teamMember.id?
-        userId: id,
+        teamMemberId: id,
         extraData: { tasks: tasksAssigned.map((item) => item.id) },
       };
     });
 
-    // Create the notifications that users have tasks due/overdue
     await prisma.notification.createMany({
       data: notificationsToPost,
       skipDuplicates: true,
