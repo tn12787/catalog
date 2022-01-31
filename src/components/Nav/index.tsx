@@ -1,4 +1,4 @@
-import { Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import NavLink from './NavLink';
@@ -19,7 +19,6 @@ const Nav = ({ links }: Props) => {
 
   const canManageTeam = hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]);
   const { bgSecondary, bodySub } = useAppColors();
-  const lightModeText = useColorModeValue('gray.500', 'gray.500');
 
   const settingsLinks = links.settings(currentTeam);
 
