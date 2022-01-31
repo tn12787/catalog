@@ -1,14 +1,8 @@
 import { NotificationType, TaskStatus } from '@prisma/client';
 import { createHandler, Get } from '@storyofams/next-api-decorators';
 
-// import { requiresServiceAccount } from 'backend/apiUtils/decorators/auth';
+import { daysFromNow } from 'backend/apiUtils/dates';
 import prisma from 'backend/prisma/client';
-
-const daysFromNow = (days: number) => {
-  const nowTime = new Date().getTime();
-  const daysInMillis = days * 24 * 60 * 60 * 1000;
-  return new Date(nowTime + daysInMillis);
-};
 
 // TODO: Reenable service account access
 //@requiresServiceAccount()
@@ -53,17 +47,6 @@ class JobHandler {
         extraData: { tasks: tasksAssigned.map((item) => item.id) },
       };
     });
-
-    // // Find all users with overdue/upcoming (Alertable) tasks
-    // const notificationsToPost = releasetasks
-    //   .flatMap((task) => task.assignees)
-    //   .map((assignee) => ({
-    //     type: NotificationType.TASKS_OVERDUE,
-    //     // TODO: This userId is a bit confusing - is it userId or teamMember.id?
-    //     userId: assignee.id,
-    //     // TODO: What are we going to use the extra data for?
-    //     extraData: { message: 'What to put here?' },
-    //   }));
 
     // Create the notifications that users have tasks due/overdue
     await prisma.notification.createMany({
