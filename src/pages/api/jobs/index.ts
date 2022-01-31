@@ -1,5 +1,5 @@
 import { NotificationType, TaskStatus } from '@prisma/client';
-import { createHandler, Get } from '@storyofams/next-api-decorators';
+import { createHandler, Post } from '@storyofams/next-api-decorators';
 
 import { daysFromNow } from 'backend/apiUtils/dates';
 import { requiresServiceAccount } from 'backend/apiUtils/decorators/auth';
@@ -7,9 +7,7 @@ import prisma from 'backend/prisma/client';
 
 @requiresServiceAccount()
 class JobHandler {
-  // TODO: Change back to post after testing
-  // @Post()
-  @Get()
+  @Post()
   async runJob() {
     const tasksAreOutstanding = {
       AND: {
