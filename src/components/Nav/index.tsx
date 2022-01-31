@@ -19,6 +19,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import useAppColors from 'hooks/useAppColors';
 import logo from 'images/logo.svg';
+import { BiBell } from 'react-icons/bi';
 
 interface Props {
   links: NavLinkConfig;
@@ -42,13 +43,16 @@ const Nav = ({ links }: Props) => {
       justifyContent="space-between"
     >
       <Stack flex={'1 1 auto'} spacing={'20px'}>
-        <HStack justify="flex-start">
-          <Box boxSize={'20px'}>
-            <NextImage src={logo} />
-          </Box>
-          <Text fontSize="xs" color={lightModeText} fontWeight={'bold'}>
-            Launchday
-          </Text>
+        <HStack justify="space-between">
+          <HStack justify="flex-start">
+            <Box boxSize={'20px'}>
+              <NextImage src={logo} />
+            </Box>
+            <Text fontSize="xs" color={lightModeText} fontWeight={'bold'}>
+              Launchday
+            </Text>
+          </HStack>
+          <BiBell />
         </HStack>
         <AccountSwitcher />
         <Stack>
