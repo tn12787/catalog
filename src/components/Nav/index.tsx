@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import NextImage from 'next/image';
+import { BiBell } from 'react-icons/bi';
 
 import NavLink from './NavLink';
 import { AccountSwitcher } from './AccountSwitcher';
@@ -19,7 +20,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import useAppColors from 'hooks/useAppColors';
 import logo from 'images/logo.svg';
-import { BiBell } from 'react-icons/bi';
+import NotificationPopover from 'components/notifications/NotificationPopover';
 
 interface Props {
   links: NavLinkConfig;
@@ -52,11 +53,7 @@ const Nav = ({ links }: Props) => {
               Launchday
             </Text>
           </HStack>
-          {/*
-          TODO: NavLink is not the right component here
-          Look for something better
-          */}
-          <NavLink icon={BiBell} href="/overview" text="" activeRegex={/^\/overview/} />
+          <NotificationPopover />
         </HStack>
         <AccountSwitcher />
         <Stack>

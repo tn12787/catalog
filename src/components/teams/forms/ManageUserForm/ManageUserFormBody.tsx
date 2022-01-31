@@ -1,15 +1,12 @@
 import { Stack, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React from 'react';
-import { FiSave, FiSend } from 'react-icons/fi';
+import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import { User } from '@prisma/client';
-import { useQuery } from 'react-query';
 
 import { buildManageUserConfig } from './manageUserConfig';
 
 import FormContent from 'components/forms/FormContent';
 import { FormBodyProps } from 'types/forms';
-import { fetchRoles } from 'queries/roles';
 import { TeamMemberWithUserAndRoles } from 'types/common';
 
 interface ManageUserFormBodyProps<T> extends FormBodyProps<T> {
