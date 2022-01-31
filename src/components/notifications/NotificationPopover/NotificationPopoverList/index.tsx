@@ -14,7 +14,7 @@ type Props = {
 const NotificationPopoverList = ({ notifications, loading }: Props) => {
   const { bodySub } = useAppColors();
   return (
-    <Stack>
+    <Stack spacing={0} maxH={'250px'} overflowY={'auto'}>
       {loading ? (
         <NotificationPopoverListItem
           loading
@@ -34,7 +34,7 @@ const NotificationPopoverList = ({ notifications, loading }: Props) => {
       ) : (
         <Stack py={3} alignItems="center" w="100%" alignSelf="center">
           <Text fontSize="2xl">🎉</Text>
-          <Text fontSize="xs" color={bodySub}>
+          <Text fontSize="sm" color={bodySub}>
             You have no new notifications. Congrats!
           </Text>
         </Stack>
