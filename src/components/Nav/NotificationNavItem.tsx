@@ -1,7 +1,7 @@
 import React from 'react';
 import { BiBell } from 'react-icons/bi';
 import { useQuery } from 'react-query';
-import { Badge, Box } from '@chakra-ui/react';
+import { Badge } from '@chakra-ui/react';
 
 import NavItem from './NavItem';
 

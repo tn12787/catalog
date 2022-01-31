@@ -3,17 +3,14 @@ import {
   PopoverTrigger,
   HStack,
   Text,
-  Icon,
   Link,
   PopoverContent,
   Stack,
   PopoverArrow,
-  IconButton,
   Divider,
   Badge,
 } from '@chakra-ui/react';
 import React from 'react';
-import { BiBell } from 'react-icons/bi';
 import NextLink from 'next/link';
 import { useQuery } from 'react-query';
 
