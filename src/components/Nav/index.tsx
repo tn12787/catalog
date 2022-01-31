@@ -52,7 +52,9 @@ const Nav = ({ links }: Props) => {
               Launchday
             </Text>
           </HStack>
-          <BiBell />
+          <button onClick={() => alert('Settings page')}>
+            <BiBell />
+          </button>
         </HStack>
         <AccountSwitcher />
         <Stack>
