@@ -17,32 +17,53 @@ class JobHandler {
   // @Post()
   @Get()
   async runJob() {
-    // TODO: Should be able to write this query from the other direction ie
-    // prisma.teamMember.findMany({
-    //  where: some tasksAssigned are not done && overdue/nearly overdue
-    //})
-    const releasetasks = await prisma.releaseTask.findMany({
+    const tasksAreOutstanding = {
+      AND: {
+        status: { not: TaskStatus.COMPLETE },
+        dueDate: { lte: daysFromNow(2) },
+      },
+    };
+
+    const teamMemberToNotify = await prisma.teamMember.findMany({
       where: {
-        AND: {
-          status: { not: TaskStatus.COMPLETE },
-          dueDate: { lte: daysFromNow(2) },
+        tasksAssigned: {
+          some: tasksAreOutstanding,
         },
       },
       include: {
-        assignees: true,
+        user: true,
+        tasksAssigned: {
+          where: tasksAreOutstanding,
+          select: {
+            id: true,
+            type: true,
+            release: { select: { name: true } },
+            status: true,
+            dueDate: true,
+          },
+        },
       },
     });
 
-    // Find all users with overdue/upcoming (Alertable) tasks
-    const notificationsToPost = releasetasks
-      .flatMap((task) => task.assignees)
-      .map((assignee) => ({
+    const notificationsToPost = teamMemberToNotify.map(({ id, tasksAssigned }) => {
+      return {
         type: NotificationType.TASKS_OVERDUE,
         // TODO: This userId is a bit confusing - is it userId or teamMember.id?
-        userId: assignee.id,
-        // TODO: What are we going to use the extra data for?
-        extraData: { message: 'What to put here?' },
-      }));
+        userId: id,
+        extraData: { tasks: tasksAssigned.map((item) => item.id) },
+      };
+    });
+
+    // // Find all users with overdue/upcoming (Alertable) tasks
+    // const notificationsToPost = releasetasks
+    //   .flatMap((task) => task.assignees)
+    //   .map((assignee) => ({
+    //     type: NotificationType.TASKS_OVERDUE,
+    //     // TODO: This userId is a bit confusing - is it userId or teamMember.id?
+    //     userId: assignee.id,
+    //     // TODO: What are we going to use the extra data for?
+    //     extraData: { message: 'What to put here?' },
+    //   }));
 
     // Create the notifications that users have tasks due/overdue
     await prisma.notification.createMany({
@@ -52,7 +73,6 @@ class JobHandler {
 
     return {
       acknowledged: true,
-      releasetasks,
       notificationsToPost: notificationsToPost,
     };
   }

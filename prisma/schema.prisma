@@ -312,11 +312,11 @@ enum NotificationType {
 }
 
 model Notification {
-  id        String           @id @default(cuid())
-  type      NotificationType
-  user      TeamMember       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  read      Boolean          @default(false)
-  extraData Json
-  createdAt DateTime         @default(now())
+  id           String           @id @default(cuid())
+  type         NotificationType
+  teamMember   TeamMember       @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  teamMemberId String
+  read         Boolean          @default(false)
+  extraData    Json
+  createdAt    DateTime         @default(now())
 }
