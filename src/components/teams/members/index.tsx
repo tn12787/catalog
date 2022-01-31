@@ -17,14 +17,12 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { BsSearch } from 'react-icons/bs';
-import { RiAddFill, RiArrowRightUpLine } from 'react-icons/ri';
-import { useQuery } from 'react-query';
+import { RiAddFill } from 'react-icons/ri';
 
 import TeamMembersTable from './TeamMembersTable';
 
 import { TeamMemberWithUserAndRoles } from 'types/common';
 import InviteUserForm from 'components/teams/forms/InviteUserForm';
-import { fetchRoles } from 'queries/roles';
 
 type Props = {
   members: TeamMemberWithUserAndRoles[];
@@ -47,12 +45,9 @@ const TeamMembers = ({ members }: Props) => {
             </InputGroup>
           </FormControl>
         </HStack>
-        <ButtonGroup size="sm" variant="outline">
-          <Button iconSpacing="1" onClick={onOpen} leftIcon={<RiAddFill fontSize="1.25em" />}>
+        <ButtonGroup size="sm">
+          <Button iconSpacing={1} onClick={onOpen} leftIcon={<RiAddFill fontSize="1.25em" />}>
             New member
-          </Button>
-          <Button iconSpacing="1" leftIcon={<RiArrowRightUpLine fontSize="1.25em" />}>
-            Export CSV
           </Button>
         </ButtonGroup>
       </HStack>

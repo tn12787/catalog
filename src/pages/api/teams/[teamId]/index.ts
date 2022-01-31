@@ -22,6 +22,7 @@ class TeamHandler {
       where: { id },
       include: {
         members: { include: { roles: true, user: true } },
+        invites: true,
       },
     });
 
@@ -39,6 +40,7 @@ class TeamHandler {
       where: { id },
       data: {
         name: body.name,
+        imageUrl: body.imageUrl,
       },
     });
 

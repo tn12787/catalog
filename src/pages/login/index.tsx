@@ -14,7 +14,7 @@ const Login = () => {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.replace('/releases');
+      router.replace('/overview', undefined, { shallow: false });
     }
   }, [status, router]);
 

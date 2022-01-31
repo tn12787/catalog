@@ -56,9 +56,14 @@ const Table = <T extends object>({ columns, data, loading, emptyContent = <></> 
             {rows.map((row, index) => {
               prepareRow(row);
               return (
-                <Tr {...row.getRowProps()} key={index.toString()}>
+                <Tr
+                  _last={{ borderBottom: 'none' }}
+                  borderBottomWidth={'1px'}
+                  {...row.getRowProps()}
+                  key={index.toString()}
+                >
                   {row.cells.map((cell, index) => (
-                    <Td py={2} {...cell.getCellProps()} key={index.toString()}>
+                    <Td borderBottom="none" py={2} {...cell.getCellProps()} key={index.toString()}>
                       {cell.render('Cell')}
                     </Td>
                   ))}
