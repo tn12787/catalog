@@ -1,16 +1,6 @@
-import {
-  Avatar,
-  Box,
-  HStack,
-  Stack,
-  Switch,
-  Text,
-  useColorMode,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import NextImage from 'next/image';
-import { BiBell } from 'react-icons/bi';
 
 import NavLink from './NavLink';
 import { AccountSwitcher } from './AccountSwitcher';
@@ -27,11 +17,10 @@ interface Props {
 }
 
 const Nav = ({ links }: Props) => {
-  const { colorMode, toggleColorMode } = useColorMode();
   const { currentTeam, teams } = useExtendedSession();
 
   const canManageTeam = hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]);
-  const { bgPrimary, bgSecondary } = useAppColors();
+  const { bgSecondary } = useAppColors();
   const lightModeText = useColorModeValue('gray.500', 'gray.500');
   return (
     <Stack
@@ -55,7 +44,7 @@ const Nav = ({ links }: Props) => {
           </HStack>
           <NotificationPopover />
         </HStack>
-        <AccountSwitcher />
+
         <Stack>
           {links.main.links.map((link, index) => (
             <NavLink {...link} key={index.toString()} />
@@ -69,12 +58,7 @@ const Nav = ({ links }: Props) => {
           ))}
         </Stack>
       )}
-      <HStack bg={bgPrimary} borderRadius="2xl" p={5} justify="center">
-        <Text fontSize="xs" color={lightModeText} textTransform="uppercase">
-          Light mode
-        </Text>
-        <Switch colorScheme="purple" isChecked={colorMode === 'light'} onChange={toggleColorMode} />
-      </HStack>
+      <AccountSwitcher />
     </Stack>
   );
 };
