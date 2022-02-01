@@ -16,7 +16,7 @@ import NextLink from 'next/link';
 import NotificationPopoverList from './NotificationPopoverList';
 
 import useAppColors from 'hooks/useAppColors';
-import useNotifications from 'hooks/data/useNotifications';
+import useNotifications from 'hooks/data/notifications/useNotifications';
 
 const NotificationPopover: React.FC = ({ children }) => {
   const { bgSecondary, primary, border } = useAppColors();
@@ -24,8 +24,7 @@ const NotificationPopover: React.FC = ({ children }) => {
   const onOpen = () => {};
 
   const { data: notifications, isLoading } = useNotifications({});
-
-  const unreadNotifications = notifications?.results.filter((notification) => !notification.read);
+  const { data: unreadNotifications } = useNotifications({ read: false });
 
   return (
     <Popover placement="right-start" onOpen={onOpen}>
@@ -46,9 +45,9 @@ const NotificationPopover: React.FC = ({ children }) => {
                 <Text fontWeight={'semibold'} fontSize="md">
                   Notifications
                 </Text>
-                {unreadNotifications?.length && (
+                {unreadNotifications?.total && (
                   <Badge variant={'solid'} colorScheme={'purple'}>
-                    {unreadNotifications?.length}
+                    {unreadNotifications?.total}
                   </Badge>
                 )}
               </HStack>

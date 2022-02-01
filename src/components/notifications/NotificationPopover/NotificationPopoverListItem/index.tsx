@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { updateNotification } from 'queries/notifications';
+import UnreadDot from 'components/notifications/UnreadDot';
 
 type Props = {
   notification: Notification;
@@ -44,20 +45,23 @@ const NotificationPopoverListItem = ({ notification, loading }: Props) => {
     >
       <LinkBox as={HStack}>
         <Skeleton isLoaded={!loading}>
-          <LinkOverlay href="#" onClick={() => markAsRead({ id: notification.id, read: true })}>
-            <Text
-              fontWeight={notification.read ? 'normal' : 'semibold'}
-              color={notification.read ? bodySub : bodyText}
-              fontSize={'sm'}
-            >
-              {notification.type}
-            </Text>
-          </LinkOverlay>
+          <HStack>
+            <UnreadDot read={notification.read} />
+            <LinkOverlay href="#" onClick={() => markAsRead({ id: notification.id, read: true })}>
+              <Text
+                fontWeight={notification.read ? 'normal' : 'semibold'}
+                color={notification.read ? bodySub : bodyText}
+                fontSize={'sm'}
+              >
+                {notification.type}
+              </Text>
+              <Text fontSize={'xs'} color={bodySub}>
+                {format(new Date(notification.createdAt), 'MMM d, yyyy h:mm a')}
+              </Text>
+            </LinkOverlay>
+          </HStack>
         </Skeleton>
       </LinkBox>
-      <Text fontSize={'xs'} color={bodySub}>
-        {format(new Date(notification.createdAt), 'MMM d, yyyy h:mm a')}
-      </Text>
     </Stack>
   );
 };

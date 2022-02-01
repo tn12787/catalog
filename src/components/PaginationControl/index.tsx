@@ -74,7 +74,7 @@ const PaginationControl = ({
           <IconButton
             size="sm"
             aria-label="last page"
-            isDisabled={currentPage === 1}
+            isDisabled={currentPage === numberOfPages}
             onClick={() => onPageChange(numberOfPages)}
             icon={<BiChevronsRight />}
           ></IconButton>

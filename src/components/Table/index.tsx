@@ -13,6 +13,7 @@ import {
   useTable,
 } from 'react-table';
 import { BiDownArrow, BiUpArrow } from 'react-icons/bi';
+import { isEqual } from 'lodash';
 
 import IndeterminateCheckbox from './IndeterminateCheckbox';
 
@@ -34,6 +35,7 @@ const Table = <T extends object>({
   currentPage = 1,
   totalPages = 1,
   emptyContent = <></>,
+  selectedRows = {} as Record<IdType<T>, boolean>,
   onSelectedRowsChange,
 }: Props<T>) => {
   const {
@@ -86,14 +88,12 @@ const Table = <T extends object>({
     }
   );
 
-  const selectedRowsMemod = useMemo(() => selectedRowIds, [selectedRowIds]);
-
   // Keep parent/store state in sync with local state
   // No need to update on mount since we are passing initial state
   useMountedLayoutEffect(() => {
-    console.log(selectedRowsMemod);
-    onSelectedRowsChange?.(selectedRowsMemod);
-  }, [selectedRowsMemod, onSelectedRowsChange]);
+    console.log(selectedRowIds, selectedRows);
+    if (!isEqual(selectedRows, selectedRowIds)) onSelectedRowsChange?.(selectedRowIds);
+  }, [selectedRows, selectedRowIds, onSelectedRowsChange]);
 
   const hasData = page?.length || loading;
 

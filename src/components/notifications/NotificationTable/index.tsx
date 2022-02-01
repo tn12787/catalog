@@ -1,5 +1,4 @@
-import { isEqual } from 'lodash';
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Notification } from '@prisma/client';
 import { IdType } from 'react-table';
 
@@ -28,13 +27,6 @@ const NotificationTable = ({
 }: Props) => {
   const memoizedData = useMemo(() => data, [data]);
 
-  const memoizedOnChange = useCallback(
-    (rows: Record<IdType<Notification>, boolean>) => {
-      if (!isEqual(rows, selectedRows)) onSelectedRowsChange?.(rows);
-    },
-    [onSelectedRowsChange, selectedRows]
-  );
-
   return (
     <Table
       data={memoizedData}
@@ -42,7 +34,8 @@ const NotificationTable = ({
       totalPages={totalPages}
       columns={columns}
       loading={loading}
-      onSelectedRowsChange={memoizedOnChange}
+      selectedRows={selectedRows}
+      onSelectedRowsChange={onSelectedRowsChange}
       emptyContent={emptyContent}
     />
   );

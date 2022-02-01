@@ -5,7 +5,7 @@ import { Badge } from '@chakra-ui/react';
 import NavItem from './NavItem';
 
 import NotificationPopover from 'components/notifications/NotificationPopover';
-import useNotifications from 'hooks/data/useNotifications';
+import useNotifications from 'hooks/data/notifications/useNotifications';
 
 const NotificationNavItem = () => {
   const notificationLinkInfo = {
@@ -14,18 +14,18 @@ const NotificationNavItem = () => {
     activeRegex: /^\/notifications/,
   };
 
-  const { data: notifications } = useNotifications({});
+  const { data: notifications } = useNotifications({ read: false });
 
-  const unreadNotifications = notifications?.results.filter((notification) => !notification.read);
+  const unreadNotifications = notifications?.total;
 
   return (
     <NotificationPopover>
       <NavItem
         {...notificationLinkInfo}
         rightContent={
-          unreadNotifications?.length && (
+          unreadNotifications && (
             <Badge variant={'solid'} colorScheme={'purple'}>
-              {unreadNotifications?.length}
+              {unreadNotifications}
             </Badge>
           )
         }

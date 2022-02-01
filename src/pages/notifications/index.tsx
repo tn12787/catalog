@@ -1,6 +1,8 @@
 import { HStack, Stack, Text } from '@chakra-ui/layout';
-import React, { useState } from 'react';
-import { Heading } from '@chakra-ui/react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Button, ButtonGroup, Heading } from '@chakra-ui/react';
+import { BiCheckDouble, BiX } from 'react-icons/bi';
+import { Notification } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -9,9 +11,10 @@ import DashboardLayout from 'components/layouts/DashboardLayout';
 import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';
 import { FilterOptions } from 'queries/types';
-import useNotifications from 'hooks/data/useNotifications';
+import useNotifications from 'hooks/data/notifications/useNotifications';
 import NotificationTable from 'components/notifications/NotificationTable';
 import Card from 'components/Card';
+import useBatchUpdateNotifications from 'hooks/data/notifications/useBatchUpdateNotifications';
 
 const NoficationsPage = () => {
   const { bgPrimary } = useAppColors();
@@ -28,6 +31,31 @@ const NoficationsPage = () => {
   const totalPages = Math.ceil(notifications?.total ?? 0 / pageSize);
 
   const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
+  const [selectAll, setSelectAll] = useState(false);
+
+  const hasSelection = Object.values(selectedRows).some(Boolean);
+
+  const onSelectionChange = useCallback((rows: Record<string, boolean>) => {
+    setSelectedRows(rows);
+    setSelectAll(false);
+  }, []);
+
+  const mappedSelectedRows = useMemo(() => {
+    return Object.keys(selectedRows)
+      .map((id) => notifications?.results.at(parseInt(id)) as Notification)
+      .filter(Boolean) as Notification[];
+  }, [selectedRows, notifications]);
+
+  const shouldShowSelectAll =
+    !selectAll &&
+    mappedSelectedRows.length === notifications?.results.length &&
+    mappedSelectedRows.length < notifications?.total;
+
+  const { batchUpdate, isLoading: isBatchUpdateLoading } = useBatchUpdateNotifications({
+    ids: mappedSelectedRows.map(({ id }) => id),
+    read: true,
+    all: selectAll,
+  });
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
@@ -36,20 +64,64 @@ const NoficationsPage = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
           <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-            Notifications
+            All Notifications
           </Heading>
         </Stack>
         <Card>
-          <HStack justify="space-between">
-            <Text>{Object.values(selectedRows).filter(Boolean).length} item(s) selected</Text>
-          </HStack>
-          <NotificationTable
-            data={notifications?.results ?? []}
-            page={currentPage}
-            totalPages={totalPages}
-            loading={isLoading}
-            onSelectedRowsChange={setSelectedRows}
-          />
+          <Stack>
+            <HStack justify={'space-between'}>
+              <HStack>
+                <Text fontWeight={'semibold'} fontSize="sm">
+                  {selectAll
+                    ? notifications?.total
+                    : Object.values(selectedRows).filter(Boolean).length}{' '}
+                  item(s) selected
+                </Text>
+                {hasSelection && (
+                  <ButtonGroup size="sm">
+                    {shouldShowSelectAll && (
+                      <Button
+                        colorScheme={'purple'}
+                        size="xs"
+                        variant="link"
+                        onClick={() => setSelectAll(true)}
+                      >
+                        Select all {notifications?.total} items
+                      </Button>
+                    )}
+                  </ButtonGroup>
+                )}
+              </HStack>
+              {/* <ButtonGroup size="sm">
+                <Button leftIcon={<BiCheckDouble />}>Mark all as read</Button>
+                <Button color={'red.500'} leftIcon={<BiX />}>
+                  Clear all
+                </Button>
+              </ButtonGroup> */}
+              {hasSelection && (
+                <ButtonGroup size="sm">
+                  <Button
+                    onClick={batchUpdate}
+                    isLoading={isBatchUpdateLoading}
+                    leftIcon={<BiCheckDouble />}
+                  >
+                    Mark as read
+                  </Button>
+                  <Button leftIcon={<BiX />} color="red.400">
+                    Delete
+                  </Button>
+                </ButtonGroup>
+              )}
+            </HStack>
+            <NotificationTable
+              data={notifications?.results ?? []}
+              page={currentPage}
+              totalPages={totalPages}
+              loading={isLoading}
+              selectedRows={selectedRows}
+              onSelectedRowsChange={onSelectionChange}
+            />
+          </Stack>
         </Card>
         {!shouldHideControls && (
           <PaginationControl

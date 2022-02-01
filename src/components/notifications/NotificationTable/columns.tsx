@@ -1,14 +1,15 @@
-import { Box, Text } from '@chakra-ui/layout';
+import { Text } from '@chakra-ui/layout';
 import { format } from 'date-fns';
 import { Column } from 'react-table';
 import React from 'react';
 import { Notification } from '@prisma/client';
 
+import UnreadDot from '../UnreadDot';
+
 import useAppColors from 'hooks/useAppColors';
 
 export const HasRead = ({ value }: { value: boolean }) => {
-  const { primary } = useAppColors();
-  return <Box w={2} h={2} borderRadius="full" bg={value ? 'transparent' : primary}></Box>;
+  return <UnreadDot read={value} />;
 };
 
 const NotificationDate = ({ value }: { value: Notification }) => {

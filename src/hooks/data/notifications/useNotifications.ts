@@ -1,17 +1,18 @@
 import { useQuery } from 'react-query';
 import { Notification } from '@prisma/client';
 
-import { FilterOptions } from 'queries/types';
+import { NotificationFilterOptions } from 'queries/notifications/types';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchNotifications } from 'queries/notifications';
 
-type UseNotificationsOptions = Pick<FilterOptions<Notification>, 'pagination'>;
+type UseNotificationsOptions = Pick<NotificationFilterOptions, 'pagination' | 'read'>;
 
-const useNotifications = ({ pagination }: UseNotificationsOptions) => {
+const useNotifications = ({ pagination, read }: UseNotificationsOptions) => {
   const { currentTeam, teams } = useExtendedSession();
 
   const queryArgs = {
     pagination,
+    read,
   };
 
   return useQuery(

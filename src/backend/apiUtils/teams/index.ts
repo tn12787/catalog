@@ -1,6 +1,5 @@
 import { uniq } from 'lodash';
-import { NotFoundException, BadRequestException } from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
+import { NotFoundException } from '@storyofams/next-api-decorators';
 import { getSession } from 'next-auth/react';
 
 import prisma from 'backend/prisma/client';
@@ -28,12 +27,10 @@ export const getResourceTeamMembership = async (req: AuthDecoratedRequest, teamI
   return session?.token.teams.find((userTeam) => userTeam.teamId === teamId);
 };
 
-export const ensureUserHasTeamMembership = async (
-  req: AuthDecoratedRequest,
+export const ensureUserHasTeamMembershipSync = (
+  session: ExtendedSession,
   teamMemberId?: string
 ) => {
-  const session = (await getSession({ req })) as ExtendedSession;
-
   const teamMembership = session?.token.teams.find((userTeam) => userTeam.id === teamMemberId);
 
   if (!teamMembership || !teamMemberId) {
@@ -41,6 +38,15 @@ export const ensureUserHasTeamMembership = async (
   }
 
   return teamMembership;
+};
+
+export const ensureUserHasTeamMembership = async (
+  req: AuthDecoratedRequest,
+  teamMemberId?: string
+) => {
+  const session = (await getSession({ req })) as ExtendedSession;
+
+  return ensureUserHasTeamMembershipSync(session, teamMemberId);
 };
 
 export const getAllUserPermissionsForTeam = async (
@@ -62,7 +68,7 @@ export const getAllUserPermissionsForTeam = async (
 };
 
 export const checkRequiredPermissions = async (
-  req: NextApiRequest,
+  req: AuthDecoratedRequest,
   permissions: PermissionType[],
   resourceTeam?: string
 ) => {
