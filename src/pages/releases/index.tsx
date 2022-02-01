@@ -77,7 +77,7 @@ const Releases = () => {
 
   const debouncedSearch = useDebounce(search, 150);
 
-  const { pageSize, currentPage, setCurrentPage, setPageSize, offset } = usePagination();
+  const { pageSize, currentPage, setCurrentPage, setPageSize } = usePagination();
 
   const queryArgs = {
     search: debouncedSearch,

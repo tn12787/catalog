@@ -4,7 +4,7 @@ import { Notification } from '@prisma/client';
 import { NotificationFilterOptions } from './../../pages/notifications/types';
 import { UpdateNotificationVars } from './types';
 
-import { FilterOptions, PaginatedQueryResult } from 'queries/types';
+import { PaginatedQueryResult } from 'queries/types';
 
 export const fetchNotifications = async ({
   teamMemberId,

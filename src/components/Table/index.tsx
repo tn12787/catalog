@@ -1,7 +1,7 @@
 import { Text, Box } from '@chakra-ui/react';
 import { Thead, Tr, Th, Tbody, Td, Table as ChakraTable } from '@chakra-ui/table';
-import React from 'react';
-import { Column, useSortBy, useTable } from 'react-table';
+import React, { useMemo } from 'react';
+import { Column, useFlexLayout, usePagination, useSortBy, useTable } from 'react-table';
 import { BiDownArrow, BiUpArrow } from 'react-icons/bi';
 
 interface Props<T extends object> {
@@ -9,15 +9,40 @@ interface Props<T extends object> {
   data: Array<T>;
   emptyContent?: JSX.Element;
   loading?: boolean;
+  currentPage?: number;
+  totalPages?: number;
 }
 
-const Table = <T extends object>({ columns, data, loading, emptyContent = <></> }: Props<T>) => {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
-    { columns, data },
-    useSortBy
+const Table = <T extends object>({
+  columns,
+  data,
+  loading,
+  currentPage = 1,
+  totalPages = 1,
+  emptyContent = <></>,
+}: Props<T>) => {
+  const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow } = useTable(
+    {
+      columns,
+      data,
+      useControlledState: (state) =>
+        useMemo(
+          () => ({
+            ...state,
+            pageIndex: currentPage,
+          }),
+          [state]
+        ),
+      initialState: { pageIndex: currentPage }, // Pass our hoisted table state
+      manualPagination: true,
+      pageCount: totalPages,
+    },
+    useFlexLayout,
+    useSortBy,
+    usePagination
   );
 
-  const hasData = rows?.length || loading;
+  const hasData = page?.length || loading;
 
   return (
     <Box overflowX="auto" borderWidth={'1px'} borderRadius={'md'}>
@@ -33,6 +58,8 @@ const Table = <T extends object>({ columns, data, loading, emptyContent = <></> 
             <Tr {...headerGroup.getHeaderGroupProps()} key={i.toString()}>
               {headerGroup.headers.map((column, index) => (
                 <Th
+                  py={2}
+                  px={2}
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   key={index.toString()}
                 >
@@ -53,7 +80,7 @@ const Table = <T extends object>({ columns, data, loading, emptyContent = <></> 
         </Thead>
         {hasData && (
           <Tbody {...getTableBodyProps()}>
-            {rows.map((row, index) => {
+            {page.map((row, index) => {
               prepareRow(row);
               return (
                 <Tr
@@ -63,7 +90,16 @@ const Table = <T extends object>({ columns, data, loading, emptyContent = <></> 
                   key={index.toString()}
                 >
                   {row.cells.map((cell, index) => (
-                    <Td borderBottom="none" py={2} {...cell.getCellProps()} key={index.toString()}>
+                    <Td
+                      borderBottom="none"
+                      display="flex"
+                      alignItems={'center'}
+                      py={2}
+                      px={2}
+                      {...(cell.column?.extraProps ?? {})}
+                      {...cell.getCellProps()}
+                      key={index.toString()}
+                    >
                       {cell.render('Cell')}
                     </Td>
                   ))}

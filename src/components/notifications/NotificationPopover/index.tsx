@@ -12,13 +12,10 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
-import { useQuery } from 'react-query';
 
 import NotificationPopoverList from './NotificationPopoverList';
 
 import useAppColors from 'hooks/useAppColors';
-import useExtendedSession from 'hooks/useExtendedSession';
-import { fetchNotifications } from 'queries/notifications';
 import useNotifications from 'hooks/data/useNotifications';
 
 const NotificationPopover: React.FC = ({ children }) => {

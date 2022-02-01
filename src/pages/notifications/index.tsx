@@ -10,6 +10,8 @@ import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';
 import { FilterOptions } from 'queries/types';
 import useNotifications from 'hooks/data/useNotifications';
+import NotificationTable from 'components/notifications/NotificationTable';
+import Card from 'components/Card';
 
 const NoficationsPage = () => {
   const { bgPrimary } = useAppColors();
@@ -23,6 +25,7 @@ const NoficationsPage = () => {
   const { data: notifications, isLoading } = useNotifications(queryArgs);
 
   const shouldHideControls = notifications?.total === 0;
+  const totalPages = Math.ceil(notifications?.total ?? 0 / pageSize);
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
@@ -34,6 +37,14 @@ const NoficationsPage = () => {
             Notifications
           </Heading>
         </Stack>
+        <Card>
+          <NotificationTable
+            data={notifications?.results ?? []}
+            page={currentPage}
+            totalPages={totalPages}
+            loading={isLoading}
+          />
+        </Card>
         {!shouldHideControls && (
           <PaginationControl
             loading={isLoading}
