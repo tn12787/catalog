@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { Notification } from '@prisma/client';
 import { IdType } from 'react-table';
 
 import { columns } from './columns';
