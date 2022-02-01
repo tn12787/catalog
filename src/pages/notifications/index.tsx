@@ -73,7 +73,7 @@ const NoficationsPage = () => {
           <Stack>
             <HStack justify={'space-between'}>
               <HStack>
-                <Text fontWeight={'semibold'} fontSize="sm">
+                <Text color={bodySub} fontWeight={'semibold'} fontSize="sm">
                   {selectAll
                     ? notifications?.total
                     : Object.values(selectedRows).filter(Boolean).length}{' '}

@@ -24,15 +24,13 @@ import useUpdateAllNotifications from 'hooks/data/notifications/useUpdateAllNoti
 const NotificationPopover: React.FC = ({ children }) => {
   const { bgSecondary, primary, border } = useAppColors();
 
-  const onOpen = () => {};
-
   const { data: notifications, isLoading } = useNotifications({});
   const { data: unreadNotifications } = useNotifications({ read: false });
 
   const { updateAll, isLoading: isUpdateAllLoading } = useUpdateAllNotifications();
 
   return (
-    <Popover placement="right-start" onOpen={onOpen}>
+    <Popover placement="right-start">
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent
         borderColor={border}
