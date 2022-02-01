@@ -81,7 +81,8 @@ const Table = <T extends object>({
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </div>
             ),
-            width: 7,
+            width: 4,
+            flexGrow: 0,
           },
           ...columns,
         ]);
@@ -91,7 +92,6 @@ const Table = <T extends object>({
   // Keep parent/store state in sync with local state
   // No need to update on mount since we are passing initial state
   useMountedLayoutEffect(() => {
-    console.log(selectedRowIds, selectedRows);
     if (!isEqual(selectedRows, selectedRowIds)) onSelectedRowsChange?.(selectedRowIds);
   }, [selectedRows, selectedRowIds, onSelectedRowsChange]);
 

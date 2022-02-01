@@ -37,13 +37,18 @@ class RemindersHandler {
       },
     });
 
-    const notificationsToPost = teamMembersToNotify.map(({ id, tasksAssigned }) => {
-      return {
-        type: NotificationType.TASKS_OVERDUE,
-        teamMemberId: id,
-        extraData: { tasks: tasksAssigned.map((item) => item.id) },
-      };
-    });
+    const notificationsToPost = teamMembersToNotify
+      .map(({ id, tasksAssigned }) => {
+        return tasksAssigned
+          .filter((item) => item.dueDate ?? new Date() < new Date())
+          .map((task) => ({
+            type: NotificationType.TASK_OVERDUE,
+            teamMemberId: id,
+            taskId: task.id,
+            extraData: {},
+          }));
+      })
+      .flat(1);
 
     await prisma.notification.createMany({
       data: notificationsToPost,

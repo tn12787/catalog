@@ -5,11 +5,12 @@ import { IdType } from 'react-table';
 import { columns } from './columns';
 
 import Table from 'components/Table';
+import { NotificationWithTask } from 'types/common';
 
 interface Props {
-  data: Notification[];
-  selectedRows?: Record<IdType<Notification>, boolean>;
-  onSelectedRowsChange?: (rows: Record<IdType<Notification>, boolean>) => void;
+  data: NotificationWithTask[];
+  selectedRows?: Record<IdType<NotificationWithTask>, boolean>;
+  onSelectedRowsChange?: (rows: Record<IdType<NotificationWithTask>, boolean>) => void;
   page?: number;
   totalPages?: number;
   loading: boolean;

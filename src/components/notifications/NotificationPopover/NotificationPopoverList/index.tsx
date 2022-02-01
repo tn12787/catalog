@@ -1,13 +1,14 @@
 import { Text, Stack } from '@chakra-ui/react';
-import { Notification, NotificationType } from '@prisma/client';
+import { NotificationType, ReleaseTask } from '@prisma/client';
 import React from 'react';
 
 import NotificationPopoverListItem from '../NotificationPopoverListItem';
 
 import useAppColors from 'hooks/useAppColors';
+import { NotificationWithTask } from 'types/common';
 
 type Props = {
-  notifications: Notification[];
+  notifications: NotificationWithTask[];
   loading?: boolean;
 };
 
@@ -21,10 +22,12 @@ const NotificationPopoverList = ({ notifications, loading }: Props) => {
           notification={{
             id: 'loading',
             createdAt: new Date(),
-            type: NotificationType.TASKS_OVERDUE,
+            type: NotificationType.TASK_OVERDUE,
             read: true,
             extraData: {},
             teamMemberId: 'loading_user',
+            taskId: 'loading_task',
+            task: { id: 'test', name: 'Loading...', notes: '', status: 'COMPLETE' } as any,
           }}
         />
       ) : notifications.length ? (

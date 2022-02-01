@@ -53,6 +53,9 @@ class NotificationHandler {
         orderBy: {
           createdAt: 'desc',
         },
+        include: {
+          task: { include: { release: true } },
+        },
       }),
       prisma.notification.count(commonArgs),
     ]);

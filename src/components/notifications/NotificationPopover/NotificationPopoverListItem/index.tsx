@@ -1,40 +1,25 @@
 import { format } from 'date-fns';
-import { HStack, LinkBox, LinkOverlay, Skeleton, Stack, Text, useToast } from '@chakra-ui/react';
-import { Notification } from '@prisma/client';
+import { HStack, LinkBox, LinkOverlay, Skeleton, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import NextLink from 'next/link';
 
 import useAppColors from 'hooks/useAppColors';
-import useExtendedSession from 'hooks/useExtendedSession';
-import { updateNotification } from 'queries/notifications';
 import UnreadDot from 'components/notifications/UnreadDot';
+import { NotificationWithTask } from 'types/common';
+import { notificationToCopyAndLink } from 'utils/notifications';
+import useMarkNotificationAsRead from 'hooks/data/notifications/useMarkNotificationAsRead';
 
 type Props = {
-  notification: Notification;
+  notification: NotificationWithTask;
   loading?: boolean;
 };
 
 const NotificationPopoverListItem = ({ notification, loading }: Props) => {
   const { bgPrimary, bgSecondary, bodyText, bodySub } = useAppColors();
 
-  const { currentTeam } = useExtendedSession();
-  const queryClient = useQueryClient();
-  const toast = useToast();
+  const { markAsRead } = useMarkNotificationAsRead();
 
-  const { mutateAsync: markAsRead } = useMutation(updateNotification, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['notifications', currentTeam]);
-    },
-    onError: () => {
-      toast({
-        title: 'Oh no',
-        description: "Couldn't mark notification as read",
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      });
-    },
-  });
+  const { message, link } = notificationToCopyAndLink(notification);
 
   return (
     <Stack
@@ -47,18 +32,20 @@ const NotificationPopoverListItem = ({ notification, loading }: Props) => {
         <Skeleton isLoaded={!loading}>
           <HStack>
             <UnreadDot read={notification.read} />
-            <LinkOverlay href="#" onClick={() => markAsRead({ id: notification.id, read: true })}>
-              <Text
-                fontWeight={notification.read ? 'normal' : 'semibold'}
-                color={notification.read ? bodySub : bodyText}
-                fontSize={'sm'}
-              >
-                {notification.type}
-              </Text>
-              <Text fontSize={'xs'} color={bodySub}>
-                {format(new Date(notification.createdAt), 'MMM d, yyyy h:mm a')}
-              </Text>
-            </LinkOverlay>
+            <NextLink passHref href={link}>
+              <LinkOverlay onClick={() => markAsRead({ id: notification.id, read: true })}>
+                <Text
+                  fontWeight={notification.read ? 'normal' : 'semibold'}
+                  color={bodyText}
+                  fontSize={'sm'}
+                >
+                  {message}
+                </Text>
+                <Text fontSize={'xs'} color={bodySub}>
+                  {format(new Date(notification.createdAt), 'MMM d, yyyy h:mm a')}
+                </Text>
+              </LinkOverlay>
+            </NextLink>
           </HStack>
         </Skeleton>
       </LinkBox>

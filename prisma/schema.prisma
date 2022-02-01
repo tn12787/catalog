@@ -206,6 +206,7 @@ model ReleaseTask {
   musicVideoData   MusicVideoData?
   masteringData    MasteringData?
   events           ReleaseTaskEvent[]
+  notifications    Notification[]
 
   @@unique([releaseId, type])
 }
@@ -308,7 +309,9 @@ model Permission {
 }
 
 enum NotificationType {
-  TASKS_OVERDUE
+  TASK_DUE_IN_48_HOURS
+  TASK_DUE_TODAY
+  TASK_OVERDUE
 }
 
 model Notification {
@@ -317,6 +320,10 @@ model Notification {
   teamMember   TeamMember       @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
   teamMemberId String
   read         Boolean          @default(false)
+  task         ReleaseTask?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId       String
   extraData    Json
   createdAt    DateTime         @default(now())
+
+  @@unique([teamMemberId, taskId, type])
 }

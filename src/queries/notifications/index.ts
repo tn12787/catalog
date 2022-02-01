@@ -5,13 +5,14 @@ import { UpdateNotificationVars, BatchUpdateNotificationVars } from './types';
 
 import { NotificationFilterOptions } from 'queries/notifications/types';
 import { PaginatedQueryResult } from 'queries/types';
+import { NotificationWithTask } from 'types/common';
 
 export const fetchNotifications = async ({
   teamMemberId,
   read,
   pagination,
 }: NotificationFilterOptions) => {
-  const { data: response } = await axios.get<PaginatedQueryResult<Notification>>(
+  const { data: response } = await axios.get<PaginatedQueryResult<NotificationWithTask>>(
     '/api/notifications',
     {
       params: {

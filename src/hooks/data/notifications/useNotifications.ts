@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query';
-import { Notification } from '@prisma/client';
 
 import { NotificationFilterOptions } from 'queries/notifications/types';
 import useExtendedSession from 'hooks/useExtendedSession';
