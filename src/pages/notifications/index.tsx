@@ -103,7 +103,7 @@ const NoficationsPage = () => {
               {hasSelection && (
                 <ButtonGroup size="sm">
                   <Button
-                    onClick={() => (selectAll ? batchUpdate() : updateAll('read'))}
+                    onClick={() => (selectAll ? updateAll('read') : batchUpdate())}
                     isLoading={isBatchUpdateLoading || isUpdateAllLoading}
                     leftIcon={<BiCheckDouble />}
                   >
@@ -128,7 +128,7 @@ const NoficationsPage = () => {
               emptyContent={
                 <Stack py={8} alignItems="center" w="100%" alignSelf="center">
                   <Text fontSize="2xl">🎉</Text>
-                  <Text color={bodySub}>Woo hoo! You're at inbox zero.</Text>
+                  <Text color={bodySub}>{"Woo hoo! You're at inbox zero."}</Text>
                 </Stack>
               }
             />
