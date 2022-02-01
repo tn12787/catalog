@@ -47,9 +47,8 @@ export const batchUpdateNotifications = async (
 
 export const markAllAsRead = async (teamMemberId: string) => {
   const { data: response } = await axios.patch('/api/notifications/all', {
-    params: {
-      teamMemberId,
-    },
+    teamMemberId,
+    read: true,
   });
 
   return response;

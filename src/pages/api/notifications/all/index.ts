@@ -12,9 +12,9 @@ class AllNotificationsHandler {
   @Patch()
   async updateAllNotifications(
     @Req() req: AuthDecoratedRequest,
-    @Body() body: UpdateNotificationDto,
-    @RequiredQuery('teamMemberId') teamMemberId: string
+    @Body() body: UpdateNotificationDto
   ) {
+    const teamMemberId = body.teamMemberId;
     // ensure user is updating one of their own notifications
     await ensureUserHasTeamMembership(req, teamMemberId);
 

@@ -9,14 +9,17 @@ import {
   PopoverArrow,
   Divider,
   Badge,
+  Button,
 } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
+import { BiCheckDouble } from 'react-icons/bi';
 
 import NotificationPopoverList from './NotificationPopoverList';
 
 import useAppColors from 'hooks/useAppColors';
 import useNotifications from 'hooks/data/notifications/useNotifications';
+import useUpdateAllNotifications from 'hooks/data/notifications/useUpdateAllNotifications.ts';
 
 const NotificationPopover: React.FC = ({ children }) => {
   const { bgSecondary, primary, border } = useAppColors();
@@ -25,6 +28,8 @@ const NotificationPopover: React.FC = ({ children }) => {
 
   const { data: notifications, isLoading } = useNotifications({});
   const { data: unreadNotifications } = useNotifications({ read: false });
+
+  const { updateAll, isLoading: isUpdateAllLoading } = useUpdateAllNotifications();
 
   return (
     <Popover placement="right-start" onOpen={onOpen}>
@@ -51,6 +56,18 @@ const NotificationPopover: React.FC = ({ children }) => {
                   </Badge>
                 )}
               </HStack>
+              {unreadNotifications?.total && (
+                <Button
+                  isLoading={isUpdateAllLoading}
+                  onClick={() => updateAll('read')}
+                  colorScheme="purple"
+                  size="xs"
+                  variant="link"
+                  leftIcon={<BiCheckDouble />}
+                >
+                  Mark all as read
+                </Button>
+              )}
             </HStack>
             <Divider />
           </Stack>
