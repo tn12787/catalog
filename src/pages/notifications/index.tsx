@@ -22,6 +22,8 @@ const NoficationsPage = () => {
 
   const { data: notifications, isLoading } = useNotifications(queryArgs);
 
+  const shouldHideControls = notifications?.total === 0;
+
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
       <PageHead title="Notifications"></PageHead>
@@ -31,6 +33,8 @@ const NoficationsPage = () => {
           <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
             Notifications
           </Heading>
+        </Stack>
+        {!shouldHideControls && (
           <PaginationControl
             loading={isLoading}
             currentPage={currentPage}
@@ -39,7 +43,7 @@ const NoficationsPage = () => {
             onPageSizeChange={setPageSize}
             totalItems={notifications?.total ?? 0}
           />
-        </Stack>
+        )}
       </Stack>
     </Stack>
   );
