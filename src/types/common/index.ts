@@ -15,6 +15,7 @@ import {
   Release,
   Distributor,
   MarketingLink,
+  Notification,
   Artist,
   ReleaseTaskEvent,
 } from '@prisma/client';
@@ -31,6 +32,10 @@ export type TeamMemberWithUser = TeamMember & { user: User };
 
 export type TeamMemberWithUserAndRoles = TeamMemberWithUser & {
   roles: Role[];
+};
+
+export type NotificationWithTask = Notification & {
+  task: ReleaseTask & { release: Release };
 };
 
 export type ReleaseTaskWithAssignees = ReleaseTask & {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { FilterOptions, PaginatedQueryResult } from './../types';
-import { SingleReleaseVars, CreateSingleReleaseVars } from './types';
+import { PaginatedQueryResult } from './../types';
+import { SingleReleaseVars, CreateSingleReleaseVars, ReleaseFilterOptions } from './types';
 
 import { ClientRelease } from 'types/common';
 
@@ -11,7 +11,7 @@ export const fetchReleases = async ({
   pagination,
   sorting,
   dates,
-}: FilterOptions<ClientRelease>) => {
+}: ReleaseFilterOptions) => {
   const response = await axios.get<PaginatedQueryResult<ClientRelease>>(`/api/releases`, {
     params: {
       team,
@@ -19,7 +19,7 @@ export const fetchReleases = async ({
       sortBy: sorting?.key,
       sortOrder: sorting?.order,
       pageSize: pagination?.pageSize,
-      offset: pagination?.offset,
+      page: pagination?.page,
       before: dates?.before,
       after: dates?.after,
     },

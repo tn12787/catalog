@@ -36,6 +36,7 @@ export const teamMembersColumns: Column<TeamMemberWithUserAndRoles>[] = [
         </Stack>
       );
     },
+    extraProps: { px: 4, py: 3 },
   },
   {
     Header: 'Roles',
@@ -46,6 +47,6 @@ export const teamMembersColumns: Column<TeamMemberWithUserAndRoles>[] = [
     accessor: (d) => d,
     Cell: TeamMemberMenu,
     id: 'actions',
-    minWidth: 100,
+    width: 25,
   },
 ];

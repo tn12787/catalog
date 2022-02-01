@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, FlexProps, HStack, Img, useMenuButton } from '@chakra-ui/react';
+import { Avatar, Box, Text, Flex, FlexProps, HStack, useMenuButton, Stack } from '@chakra-ui/react';
 import * as React from 'react';
 import { HiSelector } from 'react-icons/hi';
 
@@ -31,7 +31,7 @@ export const AccountSwitcherButton = ({ teamName, userName, photoUrl, ...rest }:
       transition="all 0.2s"
       _active={{ bg: bgSecondary }}
     >
-      <HStack flex="1" spacing="3">
+      <HStack overflow="hidden" flex="1" spacing="3">
         <Avatar
           size="sm"
           borderRadius="md"
@@ -41,14 +41,14 @@ export const AccountSwitcherButton = ({ teamName, userName, photoUrl, ...rest }:
           alt="Team Image"
           name={teamName}
         />
-        <Box textAlign="start">
-          <Box isTruncated fontWeight="semibold">
+        <Stack overflow="hidden" textAlign="start" spacing={0}>
+          <Text isTruncated fontWeight="semibold">
             {teamName}
-          </Box>
+          </Text>
           <Box fontSize="xs" color="gray.400">
             {userName}
           </Box>
-        </Box>
+        </Stack>
       </HStack>
       <Box fontSize="lg" color="gray.400">
         <HiSelector />

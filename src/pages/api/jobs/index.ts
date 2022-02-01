@@ -6,7 +6,9 @@ import { requiresServiceAccount } from 'backend/apiUtils/decorators/auth';
 class JobHandler {
   @Post()
   async runJob() {
-    return { acknowledged: true };
+    return {
+      acknowledged: true,
+    };
   }
 }
 

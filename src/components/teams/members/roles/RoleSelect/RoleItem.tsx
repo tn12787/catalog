@@ -1,6 +1,5 @@
 import { Flex, HStack, ListItem, ListItemProps, Text } from '@chakra-ui/layout';
 import React from 'react';
-import { Avatar } from '@chakra-ui/avatar';
 import { Role } from '@prisma/client';
 import { BiCheck } from 'react-icons/bi';
 import { Icon } from '@chakra-ui/icon';

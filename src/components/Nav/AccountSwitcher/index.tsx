@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Divider,
   HStack,
   Icon,
   Menu,
@@ -11,7 +12,9 @@ import {
   MenuOptionGroup,
   Skeleton,
   Stack,
+  Switch,
   Text,
+  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { signOut } from 'next-auth/react';
@@ -26,6 +29,7 @@ import useUser from 'hooks/useUser';
 import useAppColors from 'hooks/useAppColors';
 
 export const AccountSwitcher = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const { token, currentTeam, onChangeTeam, status } = useExtendedSession();
   const router = useRouter();
   const [userData] = useUser();
@@ -55,8 +59,8 @@ export const AccountSwitcher = () => {
       </Skeleton>
       <MenuList
         shadow="xl"
-        py="4"
-        spacing={5}
+        py={4}
+        spacing={4}
         borderColor={border}
         color={useColorModeValue('gray.600', 'gray.200')}
       >
@@ -106,11 +110,21 @@ export const AccountSwitcher = () => {
             >
               User settings
             </MenuItem>
-
             <MenuItem icon={<Icon as={BiLogOut} fontSize="lg" />} onClick={onLogout}>
               Log out
             </MenuItem>
           </MenuGroup>
+          <Divider />
+          <HStack pt={2} px={4} justify={'space-between'}>
+            <Text fontSize={'sm'} fontWeight={'semibold'}>
+              Light mode
+            </Text>
+            <Switch
+              colorScheme="purple"
+              isChecked={colorMode === 'light'}
+              onChange={toggleColorMode}
+            />
+          </HStack>
         </Stack>
       </MenuList>
     </Menu>

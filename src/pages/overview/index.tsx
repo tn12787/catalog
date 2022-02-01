@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/layout';
 import React from 'react';
-import { Flex, Heading, Skeleton, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
+import { Heading, Skeleton, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
