@@ -10,7 +10,7 @@ import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';
 import { FilterOptions } from 'queries/types';
 import useNotifications from 'hooks/data/useNotifications';
-import NotificationTable from 'components/notifications/notificationsTable';
+import NotificationTable from 'components/notifications/NotificationTable';
 import Card from 'components/Card';
 
 const NoficationsPage = () => {
