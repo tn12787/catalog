@@ -9,6 +9,7 @@ import {
   ParseBooleanPipe,
   Body,
   Patch,
+  BadRequestException,
 } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/common';

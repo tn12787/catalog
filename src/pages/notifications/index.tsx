@@ -15,9 +15,10 @@ import useNotifications from 'hooks/data/notifications/useNotifications';
 import NotificationTable from 'components/notifications/NotificationTable';
 import Card from 'components/Card';
 import useBatchUpdateNotifications from 'hooks/data/notifications/useBatchUpdateNotifications';
+import useUpdateAllNotifications from 'hooks/data/notifications/useUpdateAllNotifications.ts';
 
 const NoficationsPage = () => {
-  const { bgPrimary } = useAppColors();
+  const { bgPrimary, bodySub } = useAppColors();
 
   const { pageSize, currentPage, setCurrentPage, setPageSize } = usePagination();
 
@@ -54,8 +55,9 @@ const NoficationsPage = () => {
   const { batchUpdate, isLoading: isBatchUpdateLoading } = useBatchUpdateNotifications({
     ids: mappedSelectedRows.map(({ id }) => id),
     read: true,
-    all: selectAll,
   });
+
+  const { updateAll, isLoading: isUpdateAllLoading } = useUpdateAllNotifications();
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
@@ -101,15 +103,18 @@ const NoficationsPage = () => {
               {hasSelection && (
                 <ButtonGroup size="sm">
                   <Button
-                    onClick={batchUpdate}
-                    isLoading={isBatchUpdateLoading}
+                    onClick={() => (selectAll ? batchUpdate() : updateAll('read'))}
+                    isLoading={isBatchUpdateLoading || isUpdateAllLoading}
                     leftIcon={<BiCheckDouble />}
                   >
                     Mark as read
                   </Button>
-                  <Button leftIcon={<BiX />} color="red.400">
-                    Delete
-                  </Button>
+
+                  {selectAll && (
+                    <Button onClick={() => updateAll('delete')} leftIcon={<BiX />} color="red.400">
+                      Clear all
+                    </Button>
+                  )}
                 </ButtonGroup>
               )}
             </HStack>
@@ -120,6 +125,12 @@ const NoficationsPage = () => {
               loading={isLoading}
               selectedRows={selectedRows}
               onSelectedRowsChange={onSelectionChange}
+              emptyContent={
+                <Stack py={8} alignItems="center" w="100%" alignSelf="center">
+                  <Text fontSize="2xl">🎉</Text>
+                  <Text color={bodySub}>Woo hoo! You're at inbox zero.</Text>
+                </Stack>
+              }
             />
           </Stack>
         </Card>

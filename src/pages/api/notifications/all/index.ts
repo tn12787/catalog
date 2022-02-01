@@ -1,4 +1,4 @@
-import { createHandler, Req, Patch, Body } from '@storyofams/next-api-decorators';
+import { createHandler, Req, Patch, Body, Delete } from '@storyofams/next-api-decorators';
 
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
 import { AuthDecoratedRequest } from 'types/common';
@@ -30,7 +30,7 @@ class AllNotificationsHandler {
     return updatedNotification;
   }
 
-  @Patch()
+  @Delete()
   async deleteAllNotifications(
     @Req() req: AuthDecoratedRequest,
     @RequiredQuery('teamMemberId') teamMemberId: string

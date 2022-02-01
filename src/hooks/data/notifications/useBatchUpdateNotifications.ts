@@ -7,7 +7,6 @@ import useExtendedSession from 'hooks/useExtendedSession';
 
 type UseReadNotificationsOptions = {
   ids: string[];
-  all?: boolean;
   read: boolean;
 };
 
@@ -20,13 +19,19 @@ const useBatchUpdateNotifications = ({ ids, read }: UseReadNotificationsOptions)
   const { mutateAsync, isLoading } = useMutation(batchUpdateNotifications, {
     onSuccess: () => {
       queryClient.invalidateQueries(['notifications', currentTeam]);
+      toast({
+        title: 'Notifications updated',
+        status: 'success',
+        duration: 4000,
+        isClosable: true,
+      });
     },
     onError: () => {
       toast({
         title: 'Oh no',
         description: "Couldn't mark notification as read",
         status: 'error',
-        duration: 9000,
+        duration: 4000,
         isClosable: true,
       });
     },
