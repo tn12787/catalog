@@ -1,7 +1,7 @@
-import { BiCalendar, BiDisc } from 'react-icons/bi';
+import { BiBell, BiCalendar, BiDisc } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
-import { RiLayoutMasonryLine, RiTeamLine } from 'react-icons/ri';
+import { RiLayoutMasonryLine } from 'react-icons/ri';
 
 import { NavBarLink } from 'components/Nav/types';
 
@@ -9,7 +9,10 @@ export interface NavLinkConfig {
   main: {
     links: NavBarLink[];
   };
-  settings: (currentTeam: string) => { links: NavBarLink[] };
+  settings: (currentTeam: string) => { links: NavBarLink[]; name: string };
+  bottom: {
+    links: NavBarLink[];
+  };
 }
 
 export const appLinks: NavLinkConfig = {
@@ -43,6 +46,7 @@ export const appLinks: NavLinkConfig = {
     ],
   },
   settings: (currentTeam) => ({
+    name: 'Admin',
     links: [
       {
         icon: BsGear,
@@ -52,4 +56,14 @@ export const appLinks: NavLinkConfig = {
       },
     ],
   }),
+  bottom: {
+    links: [
+      {
+        icon: BiBell,
+        href: '/notifications',
+        text: 'Notifications',
+        activeRegex: /^\/notifications/,
+      },
+    ],
+  },
 };

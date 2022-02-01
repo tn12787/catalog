@@ -72,6 +72,7 @@ model TeamMember {
   roles         Role[]
   tasksAssigned ReleaseTask[]
   actionsTaken  ReleaseTaskEvent[]
+  notifications Notification[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
@@ -205,6 +206,7 @@ model ReleaseTask {
   musicVideoData   MusicVideoData?
   masteringData    MasteringData?
   events           ReleaseTaskEvent[]
+  notifications    Notification[]
 
   @@unique([releaseId, type])
 }
@@ -304,4 +306,24 @@ model Permission {
   roles     Role[]
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+enum NotificationType {
+  TASK_DUE_IN_48_HOURS
+  TASK_DUE_TODAY
+  TASK_OVERDUE
+}
+
+model Notification {
+  id           String           @id @default(cuid())
+  type         NotificationType
+  teamMember   TeamMember       @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  teamMemberId String
+  read         Boolean          @default(false)
+  task         ReleaseTask?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId       String
+  extraData    Json
+  createdAt    DateTime         @default(now())
+
+  @@unique([teamMemberId, taskId, type])
 }

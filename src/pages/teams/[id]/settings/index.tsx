@@ -23,8 +23,6 @@ const TeamOverview = () => {
     enabled: !!teamId,
   });
 
-  console.log(teamData);
-
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="Team Settings" />

@@ -21,12 +21,13 @@ import { SortOrder } from 'queries/types';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 import { AuthDecoratedRequest } from 'types/common';
+import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
 
 @requiresAuth()
 class ReleaseListHandler {
   @Get()
   async releases(
-    @Query('team') team: string,
+    @RequiredQuery('team') team: string,
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Release>('targetDate')) sortBy: keyof Release,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,

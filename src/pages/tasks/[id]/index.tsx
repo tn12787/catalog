@@ -7,6 +7,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, useToast } from '@cha
 import { BiCalendar, BiChevronRight } from 'react-icons/bi';
 import { ReleaseTask, ReleaseTaskType } from '@prisma/client';
 import Link from 'next/link';
+import { AxiosError } from 'axios';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
@@ -21,6 +22,7 @@ import { buildPlannerLink } from 'utils/planner';
 import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
 import { taskHeadingByType } from 'utils/tasks';
+import activity from 'pages/api/tasks/[id]/activity';
 
 const SingleTaskPage = () => {
   const router = useRouter();
@@ -30,16 +32,22 @@ const SingleTaskPage = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
+  const redirectTo404OnError = (data: AxiosError) => {
+    if (data?.response?.status === 404) {
+      router.replace('/404');
+    }
+  };
+
   const { data: taskResponse, isLoading: taskLoading } = useQuery(
     ['tasks', taskId],
     () => fetchSingleTask(taskId),
-    { enabled: !!taskId }
+    { enabled: !!taskId, onError: redirectTo404OnError }
   );
 
   const { data: activityResponse, isLoading: activityLoading } = useQuery(
     ['taskActivity', taskId],
     () => fetchTaskActivity(taskId),
-    { enabled: !!taskId }
+    { enabled: !!taskId, onError: redirectTo404OnError }
   );
 
   const { mutateAsync: postComment, isLoading: commentLoading } = useMutation(postNewComment, {
@@ -47,6 +55,10 @@ const SingleTaskPage = () => {
       queryClient.invalidateQueries(['taskActivity', taskId]);
     },
   });
+
+  // if ([taskResponse?.status, activityResponse?.status].includes(404)) {
+  //   router.replace('/404');
+  // }
 
   const onSubmit = async (data: NewCommentFormData) => {
     try {
