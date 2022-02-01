@@ -1,13 +1,11 @@
 import React from 'react';
 import { BiBell } from 'react-icons/bi';
-import { useQuery } from 'react-query';
 import { Badge } from '@chakra-ui/react';
 
 import NavItem from './NavItem';
 
 import NotificationPopover from 'components/notifications/NotificationPopover';
-import useExtendedSession from 'hooks/useExtendedSession';
-import { fetchNotifications } from 'queries/notifications';
+import useNotifications from 'hooks/data/useNotifications';
 
 const NotificationNavItem = () => {
   const notificationLinkInfo = {
@@ -16,15 +14,9 @@ const NotificationNavItem = () => {
     activeRegex: /^\/notifications/,
   };
 
-  const { currentTeam, teams } = useExtendedSession();
+  const { data: notifications } = useNotifications({});
 
-  const { data: notifications } = useQuery(
-    ['notifications', currentTeam],
-    () => fetchNotifications(teams?.[currentTeam].id ?? ''),
-    { enabled: !!currentTeam && !!teams }
-  );
-
-  const unreadNotifications = notifications?.filter((notification) => !notification.read);
+  const unreadNotifications = notifications?.results.filter((notification) => !notification.read);
 
   return (
     <NotificationPopover>

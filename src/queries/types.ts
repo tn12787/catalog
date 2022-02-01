@@ -9,11 +9,10 @@ export interface SortByOptions<T> {
 }
 
 export interface FilterOptions<T> {
-  team: string;
   search?: string;
   pagination?: {
     pageSize: number;
-    offset: number;
+    page: number;
   };
   sorting?: SortByOptions<T>;
   dates?: {

@@ -1,10 +1,10 @@
 import { uniq } from 'lodash';
-import { NotFoundException } from '@storyofams/next-api-decorators';
+import { NotFoundException, BadRequestException } from '@storyofams/next-api-decorators';
 import { NextApiRequest } from 'next';
 import { getSession } from 'next-auth/react';
 
 import prisma from 'backend/prisma/client';
-import { PermissionType, ExtendedSession } from 'types/common';
+import { PermissionType, ExtendedSession, AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
 export const createDefaultTeamForUser = async (name: string, userId: string) => {
@@ -22,13 +22,31 @@ export const createDefaultTeamForUser = async (name: string, userId: string) => 
   });
 };
 
-export const getResourceTeamMembership = async (req: NextApiRequest, teamId?: string) => {
+export const getResourceTeamMembership = async (req: AuthDecoratedRequest, teamId?: string) => {
   const session = (await getSession({ req })) as ExtendedSession;
 
   return session?.token.teams.find((userTeam) => userTeam.teamId === teamId);
 };
 
-export const getAllUserPermissionsForTeam = async (req: NextApiRequest, resourceTeam?: string) => {
+export const ensureUserHasTeamMembership = async (
+  req: AuthDecoratedRequest,
+  teamMemberId?: string
+) => {
+  const session = (await getSession({ req })) as ExtendedSession;
+
+  const teamMembership = session?.token.teams.find((userTeam) => userTeam.id === teamMemberId);
+
+  if (!teamMembership || !teamMemberId) {
+    throw new NotFoundException();
+  }
+
+  return teamMembership;
+};
+
+export const getAllUserPermissionsForTeam = async (
+  req: AuthDecoratedRequest,
+  resourceTeam?: string
+) => {
   const teamMembership = await getResourceTeamMembership(req, resourceTeam);
   if (!teamMembership || !resourceTeam) {
     throw new NotFoundException();

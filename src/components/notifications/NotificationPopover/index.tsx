@@ -19,20 +19,16 @@ import NotificationPopoverList from './NotificationPopoverList';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchNotifications } from 'queries/notifications';
+import useNotifications from 'hooks/data/useNotifications';
 
 const NotificationPopover: React.FC = ({ children }) => {
   const { bgSecondary, primary, border } = useAppColors();
-  const { currentTeam, teams } = useExtendedSession();
 
   const onOpen = () => {};
 
-  const { data: notifications } = useQuery(
-    ['notifications', currentTeam],
-    () => fetchNotifications(teams?.[currentTeam].id ?? ''),
-    { enabled: !!currentTeam && !!teams }
-  );
+  const { data: notifications, isLoading } = useNotifications({});
 
-  const unreadNotifications = notifications?.filter((notification) => !notification.read);
+  const unreadNotifications = notifications?.results.filter((notification) => !notification.read);
 
   return (
     <Popover placement="right-start" onOpen={onOpen}>
@@ -62,7 +58,10 @@ const NotificationPopover: React.FC = ({ children }) => {
             </HStack>
             <Divider />
           </Stack>
-          <NotificationPopoverList notifications={notifications ?? []} loading={false} />
+          <NotificationPopoverList
+            notifications={notifications?.results ?? []}
+            loading={isLoading}
+          />
           <Stack spacing={0}>
             <Divider />
             <HStack pt={2} justify={'center'}>

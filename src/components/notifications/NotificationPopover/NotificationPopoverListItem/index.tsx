@@ -1,9 +1,12 @@
 import { format } from 'date-fns';
-import { HStack, LinkBox, LinkOverlay, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { HStack, LinkBox, LinkOverlay, Skeleton, Stack, Text, useToast } from '@chakra-ui/react';
 import { Notification } from '@prisma/client';
 import React from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { updateNotification } from 'queries/notifications';
 
 type Props = {
   notification: Notification;
@@ -12,6 +15,26 @@ type Props = {
 
 const NotificationPopoverListItem = ({ notification, loading }: Props) => {
   const { bgPrimary, bgSecondary, bodyText, bodySub } = useAppColors();
+
+  const { currentTeam } = useExtendedSession();
+  const queryClient = useQueryClient();
+  const toast = useToast();
+
+  const { mutateAsync: markAsRead } = useMutation(updateNotification, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notifications', currentTeam]);
+    },
+    onError: () => {
+      toast({
+        title: 'Oh no',
+        description: "Couldn't mark notification as read",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+    },
+  });
+
   return (
     <Stack
       py={3}
@@ -21,7 +44,7 @@ const NotificationPopoverListItem = ({ notification, loading }: Props) => {
     >
       <LinkBox as={HStack}>
         <Skeleton isLoaded={!loading}>
-          <LinkOverlay href="#">
+          <LinkOverlay href="#" onClick={() => markAsRead({ id: notification.id, read: true })}>
             <Text
               fontWeight={notification.read ? 'normal' : 'semibold'}
               color={notification.read ? bodySub : bodyText}

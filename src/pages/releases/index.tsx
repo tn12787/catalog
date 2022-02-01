@@ -86,8 +86,8 @@ const Releases = () => {
       order: sortBy.value.order,
     },
     team: currentTeam ?? '',
-    pageSize: pageSize,
-    offset: offset,
+    pageSize,
+    page: currentPage,
   };
 
   const { data: response, isLoading } = useQuery(
