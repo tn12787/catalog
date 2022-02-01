@@ -1,5 +1,5 @@
-import { Stack } from '@chakra-ui/layout';
-import React from 'react';
+import { HStack, Stack, Text } from '@chakra-ui/layout';
+import React, { useState } from 'react';
 import { Heading } from '@chakra-ui/react';
 
 import useAppColors from 'hooks/useAppColors';
@@ -10,7 +10,7 @@ import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';
 import { FilterOptions } from 'queries/types';
 import useNotifications from 'hooks/data/useNotifications';
-import NotificationTable from 'components/notifications/NotificationTable';
+import NotificationTable from 'components/notifications/notificationsTable';
 import Card from 'components/Card';
 
 const NoficationsPage = () => {
@@ -27,6 +27,8 @@ const NoficationsPage = () => {
   const shouldHideControls = notifications?.total === 0;
   const totalPages = Math.ceil(notifications?.total ?? 0 / pageSize);
 
+  const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
+
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
       <PageHead title="Notifications"></PageHead>
@@ -38,11 +40,15 @@ const NoficationsPage = () => {
           </Heading>
         </Stack>
         <Card>
+          <HStack justify="space-between">
+            <Text>{Object.values(selectedRows).filter(Boolean).length} item(s) selected</Text>
+          </HStack>
           <NotificationTable
             data={notifications?.results ?? []}
             page={currentPage}
             totalPages={totalPages}
             loading={isLoading}
+            onSelectedRowsChange={setSelectedRows}
           />
         </Card>
         {!shouldHideControls && (
