@@ -23,12 +23,12 @@ export const teamMembersColumns: Column<TeamMemberWithUserAndRoles>[] = [
     Cell: function UserCell({ value }: CellProps<UserCard>) {
       const textColor = useColorModeValue('gray.500', 'gray.500');
       return (
-        <Stack>
+        <Stack overflowX={'hidden'}>
           <HStack spacing={3}>
             <Avatar size="sm" name={value.name} src={value.photo} />
-            <Stack spacing={0}>
-              <Text>{value.name}</Text>
-              <Text color={textColor} fontSize="xs">
+            <Stack overflowX={'hidden'} spacing={0}>
+              <Text isTruncated>{value.name}</Text>
+              <Text isTruncated color={textColor} fontSize="xs">
                 {value.email}
               </Text>
             </Stack>

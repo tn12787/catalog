@@ -28,7 +28,11 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import useUser from 'hooks/useUser';
 import useAppColors from 'hooks/useAppColors';
 
-export const AccountSwitcher = () => {
+type Props = {
+  onChange: () => void;
+};
+
+export const AccountSwitcher = ({ onChange }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { token, currentTeam, onChangeTeam, status } = useExtendedSession();
   const router = useRouter();
@@ -78,7 +82,10 @@ export const AccountSwitcher = () => {
             title="Teams"
             defaultValue={currentTeam as string}
             value={currentTeam as string}
-            onChange={(val) => onChangeTeam(val as string)}
+            onChange={(val) => {
+              onChangeTeam(val as string);
+              onChange();
+            }}
           >
             {userTeams?.map(({ team }, index) => (
               <MenuItemOption
@@ -106,11 +113,20 @@ export const AccountSwitcher = () => {
           <MenuGroup>
             <MenuItem
               icon={<Icon as={BiCog} fontSize="lg" />}
-              onClick={() => router.push('/user/settings')}
+              onClick={() => {
+                router.push('/user/settings');
+                onChange();
+              }}
             >
               User settings
             </MenuItem>
-            <MenuItem icon={<Icon as={BiLogOut} fontSize="lg" />} onClick={onLogout}>
+            <MenuItem
+              icon={<Icon as={BiLogOut} fontSize="lg" />}
+              onClick={() => {
+                onChange();
+                onLogout();
+              }}
+            >
               Log out
             </MenuItem>
           </MenuGroup>

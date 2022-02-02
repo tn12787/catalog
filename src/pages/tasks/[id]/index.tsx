@@ -22,7 +22,6 @@ import { buildPlannerLink } from 'utils/planner';
 import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
 import { taskHeadingByType } from 'utils/tasks';
-import activity from 'pages/api/tasks/[id]/activity';
 
 const SingleTaskPage = () => {
   const router = useRouter();
@@ -56,10 +55,6 @@ const SingleTaskPage = () => {
     },
   });
 
-  // if ([taskResponse?.status, activityResponse?.status].includes(404)) {
-  //   router.replace('/404');
-  // }
-
   const onSubmit = async (data: NewCommentFormData) => {
     try {
       await postComment({
@@ -83,11 +78,11 @@ const SingleTaskPage = () => {
               )
         }
       />
-      <Stack spacing={4} width="90%" maxW="container.lg">
+      <Stack spacing={4} width="90%" maxW="container.xl">
         <Skeleton isLoaded={!taskLoading}>
           <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
             <BreadcrumbItem>
-              <Link passHref href={`/teams/${currentTeam}/overview`}>
+              <Link passHref href={`/teams/${currentTeam ?? 'noTeam'}/overview`}>
                 <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
               </Link>
             </BreadcrumbItem>

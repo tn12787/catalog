@@ -55,7 +55,7 @@ const Dialog = ({
       <AlertDialogContent>
         <AlertDialogHeader>{title}</AlertDialogHeader>
         <AlertDialogCloseButton />
-        <AlertDialogBody>{message}</AlertDialogBody>
+        <AlertDialogBody fontSize={'sm'}>{message}</AlertDialogBody>
         <AlertDialogFooter>{buttons ?? defaultButtons}</AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

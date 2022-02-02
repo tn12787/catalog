@@ -9,6 +9,7 @@ import {
   InputRightElement,
   HStack,
   Select,
+  Wrap,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { isEqual } from 'lodash';
@@ -126,8 +127,8 @@ const Releases = () => {
           )}
         </Stack>
         {!shouldHideControls && (
-          <HStack justifyContent="space-between">
-            <InputGroup borderRadius="md" maxW="400px" bg={bgSecondary}>
+          <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
+            <InputGroup borderRadius="md" maxW={{ base: '100%', md: '400px' }} bg={bgSecondary}>
               <Input
                 focusBorderColor={primary}
                 placeholder="Search releases..."
@@ -159,7 +160,7 @@ const Releases = () => {
                 ))}
               </Select>
             </HStack>
-          </HStack>
+          </Stack>
         )}
         {isLoading ? (
           <ReleaseCard

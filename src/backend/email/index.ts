@@ -17,6 +17,6 @@ export const sendDynamicEmail = async <T>({
       dynamicTemplateData,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };

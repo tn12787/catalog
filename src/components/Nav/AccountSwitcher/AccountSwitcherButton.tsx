@@ -25,10 +25,6 @@ export const AccountSwitcherButton = ({ teamName, userName, photoUrl, ...rest }:
       px="3"
       py="2"
       fontSize="sm"
-      userSelect="none"
-      cursor="pointer"
-      outline="none"
-      transition="all 0.2s"
       _active={{ bg: bgSecondary }}
     >
       <HStack overflow="hidden" flex="1" spacing="3">

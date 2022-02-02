@@ -5,4 +5,5 @@ export interface NavBarLink {
   href: string;
   activeRegex: RegExp;
   icon: IconType;
+  onClick?: () => void;
 }

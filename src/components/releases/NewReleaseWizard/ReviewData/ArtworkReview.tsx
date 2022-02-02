@@ -36,7 +36,6 @@ const ArtworkReview = ({ data }: Props) => {
           ></Image>
         </HStack>
       ),
-      label: 'Url',
     },
     data.status === TaskStatus.OUTSTANDING && {
       key: 'dueDate',

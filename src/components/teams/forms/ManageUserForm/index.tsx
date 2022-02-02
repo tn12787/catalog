@@ -52,7 +52,7 @@ const ManageUserForm = ({ onSubmitSuccess, teamMember }: Props) => {
     <Stack flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
         <Heading>Edit User Roles</Heading>
-        <Text>{"Update this user's roles in your team."}</Text>
+        <Text fontSize={'sm'}>{"Update this user's roles in your team."}</Text>
         <ManageUserFormBody existingData={teamMember} onSubmit={update} loading={createLoading} />
       </Stack>
     </Stack>

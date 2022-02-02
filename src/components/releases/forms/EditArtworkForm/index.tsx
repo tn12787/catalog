@@ -52,7 +52,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const onCreate = async (data: EditArtworkFormData) => {
     const artworkData: File[] = data.artworkData as File[];
     try {
-      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id);
+      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id, 'artwork');
       await createArtwork({
         ...data,
         url,
@@ -67,7 +67,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       });
       onSubmitSuccess?.();
     } catch (e: any) {
-      console.log(e);
+      console.error(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     }
   };
@@ -75,7 +75,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const onUpdate = async (data: EditArtworkFormData) => {
     try {
       const artworkData: File[] = data.artworkData as File[];
-      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id);
+      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id, 'artwork');
 
       await updateArtwork({
         ...data,
@@ -91,7 +91,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       });
       onSubmitSuccess?.();
     } catch (e: any) {
-      console.log(e);
+      console.error(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
     }

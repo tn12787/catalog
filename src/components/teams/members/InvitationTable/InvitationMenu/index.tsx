@@ -77,7 +77,7 @@ const InvitationMenu = ({ value }: Props) => {
           icon={<BiDotsHorizontalRounded fontSize={'24px'} />}
         ></MenuButton>
         <MenuList>
-          <MenuItem color="red" onClick={onDeleteOpen}>
+          <MenuItem color="red.500" onClick={onDeleteOpen}>
             Rescind invitation
           </MenuItem>
         </MenuList>

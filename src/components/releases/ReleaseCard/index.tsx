@@ -10,7 +10,6 @@ import { useDisclosure } from '@chakra-ui/hooks';
 import { MenuDivider } from '@chakra-ui/react';
 import router from 'next/router';
 import { BiCalendar } from 'react-icons/bi';
-import { format } from 'date-fns';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 
@@ -23,6 +22,7 @@ import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import { buildPlannerLink } from 'utils/planner';
 
 interface ReleaseCardProps {
   releaseData: ClientRelease;
@@ -56,19 +56,19 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           alt="this is an image"
           width={{ base: '100%', md: '170px' }}
           minW={{ base: '100%', md: '170px' }}
-          height="170px"
+          height={{ base: '220px', md: '170px' }}
           backgroundSize="cover"
           objectFit="cover"
           borderRight="1px solid"
           borderColor={border}
         />
       </Skeleton>
-      <Stack spacing={2} width="100%" direction="column" px={5}>
-        <Stack align="center" direction={{ base: 'column', md: 'row' }} justify="space-between">
+      <Stack spacing={2} py={{ base: 3, md: 0 }} width="100%" direction="column" px={5}>
+        <Stack direction={{ base: 'column', md: 'row' }} justify="space-between">
           <HStack alignItems="center" direction={{ base: 'column', md: 'row' }}>
             <Skeleton isLoaded={!loading}>
               <NextLink passHref href={`/releases/${releaseData.id}`}>
-                <Text fontSize="25px" as={Link} isTruncated fontWeight="semibold">
+                <Text fontSize={'2xl'} as={Link} isTruncated fontWeight="semibold">
                   {releaseData.name}
                 </Text>
               </NextLink>
@@ -94,14 +94,8 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
                     icon={<BiCalendar />}
                     onClick={() =>
                       router.push(
-                        {
-                          pathname: '/planner',
-                          query: {
-                            event: releaseData.id,
-                            date: format(releaseData.targetDate as Date, 'yyyy-D') as string,
-                          },
-                        },
-                        undefined,
+                        buildPlannerLink(releaseData.id, new Date(releaseData.targetDate)),
+                        buildPlannerLink(releaseData.id, new Date(releaseData.targetDate)),
                         { shallow: true }
                       )
                     }

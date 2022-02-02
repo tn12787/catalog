@@ -13,6 +13,7 @@ import {
   ClientDistribution,
   ClientMastering,
   ClientMusicVideo,
+  EventType,
   ReleaseEvent,
   ReleaseTaskEventWithUser,
   TeamMemberWithUser,
@@ -141,7 +142,11 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <DueDateField
-          date={task?.dueDate as Date}
+          date={
+            event.type === EventType.RELEASE
+              ? (event.release.targetDate as Date)
+              : (task?.dueDate as Date)
+          }
           onChange={(dueDate) => onSubmit({ dueDate: dueDate as Date })}
         />
       </Skeleton>
