@@ -41,10 +41,12 @@ const WizardArtworkFormBody = ({
 
   const watchedAlbumArt = watch('artworkData');
 
+  console.log(watchedAlbumArt);
+
   const onSubmitFn = async (data: EditArtworkFormData) => {
     const { artworkData, ...rest } = data;
     setUploading(true);
-    const url: string = await uploadImageToFirebase(artworkData as File);
+    const url: string = await uploadImageToFirebase(artworkData as File, undefined, 'artwork');
     setUploading(false);
 
     onSubmit({ ...rest, url: url ?? completeState?.artwork?.url });
@@ -54,7 +56,7 @@ const WizardArtworkFormBody = ({
     const newStatus =
       watchedAlbumArt || completeState?.artwork?.url ? TaskStatus.COMPLETE : TaskStatus.OUTSTANDING;
     if (completeState?.artwork) {
-      reset({ ...completeState?.artwork, status: newStatus });
+      reset({ ...completeState?.artwork, status: newStatus, artworkData: watchedAlbumArt });
     } else {
       setValue('status', newStatus);
     }

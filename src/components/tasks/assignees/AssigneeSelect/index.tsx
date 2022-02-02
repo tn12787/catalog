@@ -106,7 +106,6 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
               {...getToggleButtonProps()}
               {...getInputProps()}
               placeholder="Search for a user..."
-              border={borderless ? 'none' : 'solid'}
               borderWidth={borderless ? '0' : '1px'}
               borderColor={border}
               value={searchString}

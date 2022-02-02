@@ -26,7 +26,6 @@ import { TeamMemberWithUserAndRoles } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';
 import { deleteTeamMember } from 'queries/teams';
-import InviteUserForm from 'components/teams/forms/InviteUserForm';
 import ManageUserForm from 'components/teams/forms/ManageUserForm';
 
 type Props = CellProps<TeamMemberWithUserAndRoles>;
@@ -86,7 +85,7 @@ const TeamMemberMenu = ({ value }: Props) => {
         ></MenuButton>
         <MenuList>
           <MenuItem onClick={onEditOpen}>Manage roles</MenuItem>
-          <MenuItem color="red" onClick={onDeleteOpen}>
+          <MenuItem color="red.500" onClick={onDeleteOpen}>
             Remove from team
           </MenuItem>
         </MenuList>

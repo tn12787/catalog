@@ -40,7 +40,14 @@ const DashboardLayout: React.FC = ({ children }) => {
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
           <DrawerOverlay />
           <DrawerContent maxW="300px" bg={bgPrimary}>
-            <Nav links={appLinks} />
+            <Nav
+              links={appLinks}
+              onItemSelected={(href) => {
+                if (href === '/notifications') return;
+
+                onClose();
+              }}
+            />
           </DrawerContent>
         </Drawer>
       </Box>

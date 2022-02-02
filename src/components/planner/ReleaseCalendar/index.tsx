@@ -115,7 +115,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
         render: ({ onClose }) => <UndoToast onClose={onClose} onUndo={() => onUndo(backupItem)} />,
       });
     } catch (e: any) {
-      console.log(e);
+      console.error(e);
       toast({
         status: 'error',
         title: 'Oh no...',

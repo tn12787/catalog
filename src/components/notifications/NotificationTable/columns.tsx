@@ -16,7 +16,6 @@ export const HasRead = ({ value }: { value: boolean }) => {
 
 const NotificationData = ({ value: notification }: { value: NotificationWithTask }) => {
   const { bodySub, bodyText } = useAppColors();
-  console.log(notification);
   const { message, link } = notificationToCopyAndLink(notification);
   return (
     <LinkBox as={HStack}>

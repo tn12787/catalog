@@ -14,6 +14,7 @@ import EditArtworkFormBody from './EditArtworkFormBody';
 import { createSingleArtwork, updateSingleArtwork, uploadImageToFirebase } from 'queries/artwork';
 import { ClientRelease } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
+import useAppColors from 'hooks/useAppColors';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -26,6 +27,7 @@ interface Props {
 
 const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const toast = useToast();
+  const { bgPrimary } = useAppColors();
 
   const queryClient = useQueryClient();
 
@@ -52,7 +54,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const onCreate = async (data: EditArtworkFormData) => {
     const artworkData: File[] = data.artworkData as File[];
     try {
-      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id);
+      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id, 'artwork');
       await createArtwork({
         ...data,
         url,
@@ -67,7 +69,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       });
       onSubmitSuccess?.();
     } catch (e: any) {
-      console.log(e);
+      console.error(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     }
   };
@@ -75,7 +77,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const onUpdate = async (data: EditArtworkFormData) => {
     try {
       const artworkData: File[] = data.artworkData as File[];
-      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id);
+      const url = await uploadImageToFirebase(artworkData?.[0], releaseData.id, 'artwork');
 
       await updateArtwork({
         ...data,
@@ -91,7 +93,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       });
       onSubmitSuccess?.();
     } catch (e: any) {
-      console.log(e);
+      console.error(e);
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     } finally {
     }
@@ -100,10 +102,18 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const artworkData = releaseData.artwork;
 
   return (
-    <Stack flex={1} align="center" direction="column" width="100%" height="100%">
+    <Stack
+      flex={1}
+      align="center"
+      direction="column"
+      bg={bgPrimary}
+      borderRadius={'lg'}
+      width="100%"
+      height="100%"
+    >
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
         <Heading>Artwork</Heading>
-        <Text>Edit your artwork task and tracking the status</Text>
+        <Text>Edit task info below.</Text>
         <EditArtworkFormBody
           existingRelease={releaseData}
           onSubmit={artworkData ? onUpdate : onCreate}

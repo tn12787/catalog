@@ -10,6 +10,8 @@ import {
   Divider,
   Badge,
   Button,
+  useBreakpointValue,
+  PlacementWithLogical,
 } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
@@ -28,9 +30,10 @@ const NotificationPopover: React.FC = ({ children }) => {
   const { data: unreadNotifications } = useNotifications({ read: false });
 
   const { updateAll, isLoading: isUpdateAllLoading } = useUpdateAllNotifications();
+  const popoverPlacement = useBreakpointValue({ base: 'top', md: 'right-start' }) ?? 'right-start';
 
   return (
-    <Popover placement="right-start">
+    <Popover placement={popoverPlacement as PlacementWithLogical}>
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent
         borderColor={border}
