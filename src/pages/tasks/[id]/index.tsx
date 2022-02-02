@@ -78,7 +78,7 @@ const SingleTaskPage = () => {
               )
         }
       />
-      <Stack spacing={4} width="90%" maxW="container.xl">
+      <Stack spacing={4} width="90%" maxW="container.lg">
         <Skeleton isLoaded={!taskLoading}>
           <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
             <BreadcrumbItem>
