@@ -30,14 +30,18 @@ export const createSingleArtwork = async ({
   return response;
 };
 
-export const uploadImageToFirebase = async (artworkData: File, releaseId?: string) => {
+export const uploadImageToFirebase = async (
+  artworkData: File,
+  fileName?: string,
+  storagePath?: string
+) => {
   try {
     if (!artworkData) return;
 
     const artworkFileRef = firebase
       .storage()
       .ref()
-      .child(`artwork/${releaseId ?? cuid()}`);
+      .child(`${storagePath ?? 'artwork'}/${fileName ?? cuid()}`);
     await artworkFileRef.put(artworkData);
     const downloadUrl = await artworkFileRef.getDownloadURL();
     return downloadUrl;

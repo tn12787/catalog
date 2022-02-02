@@ -14,6 +14,9 @@ export const inviteColumns: Column<Invite>[] = [
     accessor: (d) => d,
     Cell: InvitationMenu,
     id: 'actions',
-    minWidth: 100,
+    extraProps: {
+      justifyContent: 'flex-end',
+    },
+    width: 50,
   },
 ];

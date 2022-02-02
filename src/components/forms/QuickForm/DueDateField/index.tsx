@@ -15,7 +15,7 @@ const DueDateField = ({ date, onChange }: Props) => {
   return (
     <QuickFormField
       fieldName="Due Date"
-      value={new Date(date)}
+      value={new Date(date ?? Date.now())}
       renderValue={({ value }) => {
         return <Box>{format(new Date(value ?? Date.now()), 'PP')}</Box>;
       }}

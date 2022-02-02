@@ -30,7 +30,7 @@ const ImageField = ({ url, onChange }: Props) => {
         </Box>
       )}
       onSubmit={onChange}
-      renderEditing={ImageSelect}
+      renderEditing={(props) => <ImageSelect {...props} filePath="artwork" />}
     />
   );
 };

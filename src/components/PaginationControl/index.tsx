@@ -1,5 +1,5 @@
 import { Button, IconButton } from '@chakra-ui/button';
-import { Flex, HStack, Text } from '@chakra-ui/layout';
+import { Flex, HStack, Stack, Text, Wrap } from '@chakra-ui/layout';
 import { Select } from '@chakra-ui/select';
 import { Skeleton } from '@chakra-ui/skeleton';
 import React from 'react';
@@ -36,7 +36,7 @@ const PaginationControl = ({
   ].filter((page) => page >= 1 && page <= numberOfPages);
 
   return (
-    <HStack justifyContent="space-between">
+    <Stack direction={{ base: 'column', md: 'row' }} align="center" justifyContent="space-between">
       <Skeleton isLoaded={!loading}>
         <HStack>
           <IconButton
@@ -104,7 +104,7 @@ const PaginationControl = ({
           </Text>
         </Flex>
       </Skeleton>
-    </HStack>
+    </Stack>
   );
 };
 

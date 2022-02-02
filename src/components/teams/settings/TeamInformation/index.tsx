@@ -4,7 +4,7 @@ import { Heading, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { FiEdit } from 'react-icons/fi';
 import { BiRocket } from 'react-icons/bi';
-import { Image } from '@chakra-ui/react';
+import { Avatar, Image } from '@chakra-ui/react';
 
 import EditTeamInfoForm from './EditTeamInfoForm';
 
@@ -23,14 +23,14 @@ const TeamInformation = ({ team }: Props) => {
     {
       label: 'Logo',
       content: (
-        <Image
-          boxSize="75px"
+        <Avatar
+          size="lg"
           borderRadius="md"
           alt="team_image"
           name={team?.name}
           src={team?.imageUrl ?? ''}
           fontWeight="semibold"
-        ></Image>
+        ></Avatar>
       ),
     },
     {

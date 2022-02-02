@@ -12,9 +12,10 @@ import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   links: NavLinkConfig;
+  onItemSelected?: (href: string) => void;
 }
 
-const Nav = ({ links }: Props) => {
+const Nav = ({ links, onItemSelected }: Props) => {
   const { currentTeam, teams } = useExtendedSession();
 
   const canManageTeam = hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]);
@@ -31,13 +32,14 @@ const Nav = ({ links }: Props) => {
       w={'300px'}
       position="fixed"
       justifyContent="space-between"
+      zIndex={'docked'}
     >
       <Stack flex={'1 1 auto'} spacing={'20px'}>
-        <AccountSwitcher />
+        <AccountSwitcher onChange={() => onItemSelected?.('account')} />
 
         <Stack>
           {links.main.links.map((link, index) => (
-            <NavLink {...link} key={index.toString()} />
+            <NavLink onClick={() => onItemSelected?.(link.href)} {...link} key={index.toString()} />
           ))}
         </Stack>
         {canManageTeam && (
@@ -46,13 +48,17 @@ const Nav = ({ links }: Props) => {
               {settingsLinks.name}
             </Text>
             {settingsLinks.links.map((link, index) => (
-              <NavLink {...link} key={index.toString()} />
+              <NavLink
+                onClick={() => onItemSelected?.(link.href)}
+                {...link}
+                key={index.toString()}
+              />
             ))}
           </Stack>
         )}
       </Stack>
       <Stack>
-        <NotificationNavItem />
+        <NotificationNavItem onClick={() => onItemSelected?.('/notifications')} />
       </Stack>
     </Stack>
   );

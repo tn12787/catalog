@@ -1,4 +1,4 @@
-import { Stack, Button, Image, HStack } from '@chakra-ui/react';
+import { Stack, Button, Image } from '@chakra-ui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
@@ -40,16 +40,26 @@ const EditTeamInfoForm = ({ onSubmit, onCancel, teamData }: Props) => {
     {
       label: 'Logo',
       content: (
-        <HStack>
+        <Stack
+          alignItems={{ base: 'flex-start', md: 'center' }}
+          direction={{ base: 'column', md: 'row' }}
+        >
           {currentImage && (
-            <Image boxSize={'75px'} borderRadius="md" src={currentImage} alt="team image" />
+            <Image
+              boxSize={{ base: '75px', md: '75px' }}
+              borderRadius="md"
+              src={currentImage}
+              alt="team image"
+            />
           )}
           <ImageSelect
             message="Choose"
             fontWeight="semibold"
             onChange={onImageChange}
+            filePath="logos"
+            entityId={teamData?.id}
           ></ImageSelect>
-        </HStack>
+        </Stack>
       ),
     },
     {

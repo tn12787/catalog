@@ -33,7 +33,11 @@ const TeamMembers = ({ members }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <HStack direction={{ base: 'column', md: 'row' }} justify="space-between">
+      <Stack
+        alignItems={{ base: 'stretch', md: 'center' }}
+        direction={{ base: 'column', md: 'row' }}
+        justify="space-between"
+      >
         <HStack>
           <FormControl minW={{ md: '320px' }} id="search">
             <InputGroup size="sm">
@@ -45,19 +49,28 @@ const TeamMembers = ({ members }: Props) => {
             </InputGroup>
           </FormControl>
         </HStack>
-        <ButtonGroup size="sm">
-          <Button iconSpacing={1} onClick={onOpen} leftIcon={<RiAddFill fontSize="1.25em" />}>
+        <ButtonGroup
+          alignItems={{ base: 'stretch', md: 'center' }}
+          direction={{ base: 'column', md: 'row' }}
+          size="sm"
+        >
+          <Button
+            w="100%"
+            iconSpacing={1}
+            onClick={onOpen}
+            leftIcon={<RiAddFill fontSize="1.25em" />}
+          >
             New member
           </Button>
         </ButtonGroup>
-      </HStack>
+      </Stack>
       <TeamMembersTable teamMembers={members}></TeamMembersTable>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalHeader>
           <Heading>Invite user</Heading>
         </ModalHeader>
-        <ModalContent>
+        <ModalContent w="90%">
           <InviteUserForm onSubmitSuccess={() => onClose()} />
         </ModalContent>
       </Modal>
