@@ -8,7 +8,6 @@ import {
   Stack,
   PopoverArrow,
   Divider,
-  Badge,
   Button,
   useBreakpointValue,
   PlacementWithLogical,
@@ -16,6 +15,8 @@ import {
 import React from 'react';
 import NextLink from 'next/link';
 import { BiCheckDouble } from 'react-icons/bi';
+
+import UnreadCountBadge from '../UnreadCountBadge';
 
 import NotificationPopoverList from './NotificationPopoverList';
 
@@ -51,11 +52,7 @@ const NotificationPopover: React.FC = ({ children }) => {
                 <Text fontWeight={'semibold'} fontSize="md">
                   Notifications
                 </Text>
-                {unreadNotifications?.total && (
-                  <Badge variant={'solid'} colorScheme={'purple'}>
-                    {unreadNotifications?.total}
-                  </Badge>
-                )}
+                <UnreadCountBadge count={unreadNotifications?.total ?? 0} />
               </HStack>
               {unreadNotifications?.total && (
                 <Button

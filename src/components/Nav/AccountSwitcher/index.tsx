@@ -27,6 +27,8 @@ import { AccountSwitcherButton } from './AccountSwitcherButton';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useUser from 'hooks/useUser';
 import useAppColors from 'hooks/useAppColors';
+import useAllTeamNotifications from 'hooks/data/notifications/useAllTeamNotifications';
+import UnreadCountBadge from 'components/notifications/UnreadCountBadge';
 
 type Props = {
   onChange: () => void;
@@ -46,8 +48,9 @@ export const AccountSwitcher = ({ onChange }: Props) => {
     signOut({ callbackUrl: '/login' });
   };
 
-  const userTeams = userData?.teams || token?.teams;
+  const { withoutCurrent, mapped } = useAllTeamNotifications();
 
+  const userTeams = userData?.teams || token?.teams;
   const activeTeam = useMemo(() => {
     return userTeams?.find((item) => item.teamId === currentTeam);
   }, [currentTeam, userTeams]);
@@ -59,6 +62,9 @@ export const AccountSwitcher = ({ onChange }: Props) => {
           teamName={(activeTeam?.team.name as string) ?? 'loadingTeam'}
           userName={(userData?.name || (token?.name as string)) ?? 'loadingUser'}
           photoUrl={activeTeam?.team.imageUrl as string}
+          unreadNotificationCount={
+            withoutCurrent?.reduce((acc, item) => acc + item.notifications.total, 0) ?? 0
+          }
         />
       </Skeleton>
       <MenuList
@@ -105,6 +111,9 @@ export const AccountSwitcher = ({ onChange }: Props) => {
                     name={team.name}
                   />
                   <Text>{team.name}</Text>
+                  {currentTeam !== team.id && (
+                    <UnreadCountBadge count={mapped[team.id].notifications.total} />
+                  )}
                 </HStack>
               </MenuItemOption>
             ))}
