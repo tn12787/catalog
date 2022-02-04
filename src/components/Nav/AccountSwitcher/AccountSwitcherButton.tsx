@@ -8,9 +8,16 @@ interface Props extends FlexProps {
   teamName: string;
   userName: string;
   photoUrl: string;
+  unreadNotificationCount: number;
 }
 
-export const AccountSwitcherButton = ({ teamName, userName, photoUrl, ...rest }: Props) => {
+export const AccountSwitcherButton = ({
+  teamName,
+  userName,
+  photoUrl,
+  unreadNotificationCount,
+  ...rest
+}: Props) => {
   const buttonProps = useMenuButton(rest);
   const { bgPrimary, bgSecondary } = useAppColors();
   return (
@@ -49,6 +56,7 @@ export const AccountSwitcherButton = ({ teamName, userName, photoUrl, ...rest }:
       <Box fontSize="lg" color="gray.400">
         <HiSelector />
       </Box>
+      {unreadNotificationCount > 0 && <Box bg="red.500" borderRadius={'full'} w={2} h={2}></Box>}
     </Flex>
   );
 };
