@@ -12,7 +12,7 @@ const useAllTeamNotifications = () => {
 
   const allNotifications = useQueries(
     (teamList ?? []).map((team) => ({
-      queryKey: ['notifications', team.id, { read: false }],
+      queryKey: ['notifications', team.id, queryArgs],
       queryFn: () => fetchNotifications({ ...queryArgs, teamMemberId: team.id }),
     }))
   );
