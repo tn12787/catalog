@@ -39,6 +39,10 @@ const useExtendedSession = () => {
     }, {} as { [key: string]: EnrichedTeamMember });
   }, [token?.teams]);
 
+  const teamList = useMemo(() => {
+    return token?.teams;
+  }, [token?.teams]);
+
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -70,6 +74,7 @@ const useExtendedSession = () => {
   return {
     token,
     teams: teamMap,
+    teamList: teamList,
     currentTeam,
     onChangeTeam,
     status,
