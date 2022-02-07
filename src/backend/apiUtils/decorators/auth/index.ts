@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   createMiddlewareDecorator,
   NextFunction,
   NotFoundException,
@@ -6,6 +7,12 @@ import {
 } from '@storyofams/next-api-decorators';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+  // https://github.com/stripe/stripe-node#configuration
+  apiVersion: '2020-08-27',
+});
 
 import { AuthDecoratedRequest, ExtendedSession } from 'types/common';
 
@@ -19,6 +26,22 @@ const requiresAuth = createMiddlewareDecorator(
 
     const updatedReq = req as AuthDecoratedRequest;
     updatedReq.session = session;
+
+    next();
+  }
+);
+
+export const requiresStripeSignature = createMiddlewareDecorator(
+  async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
+
+    const sig = req.headers['stripe-signature'];
+    try {
+      stripe.webhooks.constructEvent(req.body, sig as string, webhookSecret);
+    } catch (err) {
+      const error = err as Stripe.StripeError;
+      throw new BadRequestException(error.message);
+    }
 
     next();
   }
