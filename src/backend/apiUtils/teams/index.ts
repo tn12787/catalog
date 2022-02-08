@@ -34,6 +34,13 @@ export const createDefaultTeamForUser = async ({ name, userId, email }: UserCrea
   });
 };
 
+export const manageSubscriptionChange = async (customer: string, id?: string) => {
+  await prisma.team.update({
+    where: { stripeCustomerId: customer },
+    data: { stripeSubscriptionId: id ?? null },
+  });
+};
+
 export const getResourceTeamMembership = async (req: AuthDecoratedRequest, teamId?: string) => {
   const session = (await getSession({ req })) as ExtendedSession;
 

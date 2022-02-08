@@ -5,16 +5,17 @@ import { Button } from '@chakra-ui/button';
 import { FiEdit } from 'react-icons/fi';
 import { BiRocket } from 'react-icons/bi';
 import { Avatar, Image } from '@chakra-ui/react';
+import Stripe from 'stripe';
 
 import EditTeamInfoForm from './EditTeamInfoForm';
 
 import Card from 'components/Card';
 import DataList from 'components/DataList';
-import { createCheckout } from 'queries/payments';
+import { createCheckout, createPortalLink } from 'queries/payments';
 import getStripe from 'backend/apiUtils/stripe/client';
 
 interface Props {
-  team?: Team;
+  team?: Team & { subscription?: Stripe.Subscription };
   loading?: boolean;
 }
 
@@ -22,20 +23,26 @@ const TeamInformation = ({ team }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleCheckout = async () => {
-    try {
-      const {
-        data: { sessionId },
-      } = await createCheckout({
-        teamId: team?.id ?? '',
-        quantity: 1,
-        priceId: 'price_1KNFZDHNIzcgCVUetxiopYBO',
-      });
+    const {
+      data: { sessionId },
+    } = await createCheckout({
+      teamId: team?.id ?? '',
+      quantity: 1,
+      priceId: 'price_1KNFjFHNIzcgCVUerPbXkONu',
+    });
 
-      const stripe = await getStripe();
-      stripe?.redirectToCheckout({ sessionId });
-    } catch (error) {
-      return alert((error as Error)?.message);
-    }
+    const stripe = await getStripe();
+    stripe?.redirectToCheckout({ sessionId });
+  };
+
+  const handleManagePortal = async () => {
+    const {
+      data: { url },
+    } = await createPortalLink({
+      teamId: team?.id ?? '',
+    });
+
+    window.location.assign(url);
   };
 
   const config = [
@@ -58,7 +65,7 @@ const TeamInformation = ({ team }: Props) => {
     },
     {
       label: 'Current Plan',
-      content: <Text fontWeight="semibold">{team?.plan}</Text>,
+      content: <Text fontWeight="semibold">{JSON.stringify(team?.subscription)}</Text>,
     },
   ];
 
@@ -80,7 +87,7 @@ const TeamInformation = ({ team }: Props) => {
           <DataList config={config} />
           <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4} variant="solid">
             <Button
-              onClick={handleCheckout}
+              onClick={team?.subscription ? handleManagePortal : handleCheckout}
               colorScheme="purple"
               iconSpacing="1"
               leftIcon={<BiRocket />}

@@ -37,6 +37,11 @@ class CheckoutHandler {
         {
           price: priceId,
           quantity,
+          adjustable_quantity: {
+            enabled: true,
+            minimum: 1,
+            maximum: 999,
+          },
         },
       ],
       mode: 'subscription',
@@ -45,8 +50,9 @@ class CheckoutHandler {
         trial_period_days: 14,
         metadata,
       },
-      success_url: `${process.env.NEXTAUTH_URL}/account`,
-      cancel_url: `${process.env.NEXTAUTH_URL}`,
+
+      success_url: `${process.env.NEXTAUTH_URL}/teams/${teamId}/settings`,
+      cancel_url: `${process.env.NEXTAUTH_URL}/teams/${teamId}/settings`,
     });
 
     return { sessionId: session.id };

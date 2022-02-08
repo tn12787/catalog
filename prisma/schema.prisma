@@ -54,8 +54,8 @@ model Team {
   contacts             Contact[]
   releases             Release[]
   invites              Invite[]
-  stripeCustomerId     String
-  stripeSubscriptionId String?
+  stripeCustomerId     String        @unique
+  stripeSubscriptionId String?       @unique
 }
 
 model TeamMember {
