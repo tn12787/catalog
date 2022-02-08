@@ -10,6 +10,8 @@ import EditTeamInfoForm from './EditTeamInfoForm';
 
 import Card from 'components/Card';
 import DataList from 'components/DataList';
+import { createCheckout } from 'queries/payments';
+import getStripe from 'backend/apiUtils/stripe/client';
 
 interface Props {
   team?: Team;
@@ -18,6 +20,23 @@ interface Props {
 
 const TeamInformation = ({ team }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const handleCheckout = async () => {
+    try {
+      const {
+        data: { sessionId },
+      } = await createCheckout({
+        teamId: team?.id ?? '',
+        quantity: 1,
+        priceId: 'price_1KNFZDHNIzcgCVUetxiopYBO',
+      });
+
+      const stripe = await getStripe();
+      stripe?.redirectToCheckout({ sessionId });
+    } catch (error) {
+      return alert((error as Error)?.message);
+    }
+  };
 
   const config = [
     {
@@ -60,7 +79,12 @@ const TeamInformation = ({ team }: Props) => {
         <>
           <DataList config={config} />
           <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4} variant="solid">
-            <Button colorScheme="purple" iconSpacing="1" leftIcon={<BiRocket />}>
+            <Button
+              onClick={handleCheckout}
+              colorScheme="purple"
+              iconSpacing="1"
+              leftIcon={<BiRocket />}
+            >
               Change Plan
             </Button>
             <Button

@@ -13,6 +13,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateTeamDto } from 'backend/models/teams/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { AuthDecoratedRequest } from 'types/common';
+import { stripe } from 'backend/apiUtils/stripe/server';
 
 @requiresAuth()
 class TeamHandler {
@@ -26,7 +27,12 @@ class TeamHandler {
       },
     });
 
-    return team;
+    if (team?.stripeSubscriptionId) {
+      const subscription = await stripe.subscriptions.retrieve(team?.stripeSubscriptionId);
+      return { ...team, subscription: subscription };
+    }
+
+    return { ...team, subscription: undefined };
   }
 
   @Put()

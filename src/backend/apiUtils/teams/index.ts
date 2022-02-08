@@ -2,14 +2,26 @@ import { uniq } from 'lodash';
 import { NotFoundException } from '@storyofams/next-api-decorators';
 import { getSession } from 'next-auth/react';
 
+import { stripe } from './../stripe/server';
+
 import prisma from 'backend/prisma/client';
 import { PermissionType, ExtendedSession, AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
-export const createDefaultTeamForUser = async (name: string, userId: string) => {
-  return await prisma.team.create({
+type UserCreateArgs = {
+  name: string;
+  userId: string;
+  email: string;
+};
+
+export const createDefaultTeamForUser = async ({ name, userId, email }: UserCreateArgs) => {
+  const nameString = `${name}'s Team`;
+
+  const customer = await stripe.customers.create({ name: nameString, email });
+
+  await prisma.team.create({
     data: {
-      name: `${name}'s Team`,
+      name: nameString,
       provider: 'GSUITE',
       members: {
         create: {
@@ -17,6 +29,7 @@ export const createDefaultTeamForUser = async (name: string, userId: string) => 
           roles: { connect: { name: 'Admin' } },
         },
       },
+      stripeCustomerId: customer.id,
     },
   });
 };
