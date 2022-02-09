@@ -1,19 +1,21 @@
-import { Flex, border, Button, Heading, Stack, Text } from '@chakra-ui/react';
+import { Flex, Heading, Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import Card from 'components/Card';
 import TeamMembers from 'components/teams/members';
 import InvitationTable from 'components/teams/members/InvitationTable';
 import useAppColors from 'hooks/useAppColors';
-import { EnrichedTeam } from 'types/common';
+import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
 
-type Props = { team?: EnrichedTeam; isDisabled?: boolean; loading?: boolean };
+const MembersCard = () => {
+  const { bgPrimary } = useAppColors();
+  const { team, remainingLicenseSeats, isLoading } = useCurrentTeam();
+  const isDisabled = !team?.subscription;
 
-const MembersCard = ({ team, isDisabled, loading }: Props) => {
-  const { bgPrimary, bgSecondary, border } = useAppColors();
+  if (isLoading) return null;
   return (
     <Card position="relative" spacing={6}>
-      {isDisabled && !loading && (
+      {isDisabled && (
         <Flex
           justifyContent={'center'}
           alignItems="center"
@@ -35,16 +37,6 @@ const MembersCard = ({ team, isDisabled, loading }: Props) => {
             zIndex={'overlay'}
             opacity={0.5}
           ></Flex>
-          {/* <Card
-            border="1px solid"
-            bg={bgSecondary}
-            borderColor={border}
-            zIndex={'modal'}
-            opacity={1}
-          >
-            <Text fontSize={'sm'}>Upgrade now to manage teams, assign roles & more.</Text>
-            <Button colorScheme={'purple'}>Manage plan</Button>
-          </Card> */}
         </Flex>
       )}
       <Heading fontSize="2xl" as="h4" fontWeight="semibold">
@@ -62,7 +54,7 @@ const MembersCard = ({ team, isDisabled, loading }: Props) => {
         <Heading fontSize="lg" as="h4" fontWeight="semibold">
           All members
         </Heading>
-        <TeamMembers members={team?.members ?? []} />
+        <TeamMembers team={team} remainingSeats={remainingLicenseSeats} />
       </Stack>
     </Card>
   );

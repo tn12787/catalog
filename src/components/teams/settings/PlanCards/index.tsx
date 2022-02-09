@@ -8,30 +8,19 @@ import {
   Button,
   HStack,
 } from '@chakra-ui/react';
-import { format, formatDistance } from 'date-fns';
+import { format } from 'date-fns';
 import React from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 
 import Card from 'components/Card';
-import { EnrichedTeam } from 'types/common';
-import { createPortalLink } from 'queries/payments';
+import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
 
-type Props = { team: EnrichedTeam; loading?: boolean };
+const PlanCards = () => {
+  const { manageTeam, team, remainingLicenseSeats } = useCurrentTeam();
 
-const PlanCards = ({ team, loading }: Props) => {
   if (!team?.subscription) {
     return null;
   }
-
-  const onManageClick = async () => {
-    const {
-      data: { url },
-    } = await createPortalLink({
-      teamId: team?.id ?? '',
-    });
-
-    window.location.assign(url);
-  };
 
   return (
     <Stack spacing={4} direction={{ base: 'column', md: 'row' }}>
@@ -42,7 +31,7 @@ const PlanCards = ({ team, loading }: Props) => {
             <Button
               rightIcon={<FiExternalLink></FiExternalLink>}
               size="xs"
-              onClick={onManageClick}
+              onClick={manageTeam}
               colorScheme={'purple'}
               variant="link"
             >
@@ -69,18 +58,12 @@ const PlanCards = ({ team, loading }: Props) => {
         <Stat>
           <HStack spacing={3}>
             <StatLabel>License seats</StatLabel>
-            <Button size="xs" onClick={onManageClick} colorScheme={'purple'} variant="link">
+            <Button size="xs" onClick={manageTeam} colorScheme={'purple'} variant="link">
               Get more
             </Button>
           </HStack>
           <StatNumber>{team.subscription.totalSeats}</StatNumber>
-          <StatHelpText>
-            {(team.subscription.totalSeats ?? 1) -
-              (team.members.filter((item) => {
-                return item.roles.some((role) => role.name !== 'Viewer');
-              }).length ?? 0)}
-            {' remaining'}
-          </StatHelpText>
+          <StatHelpText>{remainingLicenseSeats} seats remaining</StatHelpText>
         </Stat>
       </Card>
       {team.subscription.cancelTime ? (

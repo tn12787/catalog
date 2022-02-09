@@ -15,6 +15,7 @@ import {
   ModalHeader,
   Heading,
   Skeleton,
+  Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import { BsSearch } from 'react-icons/bs';
@@ -22,17 +23,22 @@ import { RiAddFill } from 'react-icons/ri';
 
 import TeamMembersTable from './TeamMembersTable';
 
-import { TeamMemberWithUserAndRoles } from 'types/common';
+import { EnrichedTeam } from 'types/common';
 import InviteUserForm from 'components/teams/forms/InviteUserForm';
+import useAppColors from 'hooks/useAppColors';
+import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
 
 type Props = {
-  members: TeamMemberWithUserAndRoles[];
+  team?: EnrichedTeam;
+  remainingSeats: number;
   isDisabled?: boolean;
   loading?: boolean;
 };
 
-const TeamMembers = ({ members, isDisabled, loading }: Props) => {
+const TeamMembers = ({ team, remainingSeats, isDisabled, loading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bodySub } = useAppColors();
+  const { manageTeam } = useCurrentTeam();
 
   return (
     <Stack spacing={4} position="relative">
@@ -54,17 +60,26 @@ const TeamMembers = ({ members, isDisabled, loading }: Props) => {
             </FormControl>
           </Skeleton>
         </HStack>
+
         <ButtonGroup
           alignItems={{ base: 'stretch', md: 'center' }}
           direction={{ base: 'column', md: 'row' }}
           size="sm"
         >
+          {!remainingSeats && (
+            <HStack fontSize="xs">
+              <Text color={bodySub}>No license seats left. </Text>
+              <Button size="xs" onClick={manageTeam} colorScheme={'purple'} variant="link">
+                Get more
+              </Button>
+            </HStack>
+          )}
           <Skeleton isLoaded={!loading}>
             <Button
               w="100%"
               iconSpacing={1}
               onClick={onOpen}
-              isDisabled={isDisabled}
+              isDisabled={isDisabled || !remainingSeats}
               leftIcon={<RiAddFill fontSize="1.25em" />}
             >
               New member
@@ -72,7 +87,7 @@ const TeamMembers = ({ members, isDisabled, loading }: Props) => {
           </Skeleton>
         </ButtonGroup>
       </Stack>
-      <TeamMembersTable teamMembers={members} loading={loading}></TeamMembersTable>
+      <TeamMembersTable teamMembers={team?.members ?? []} loading={loading}></TeamMembersTable>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalHeader>
