@@ -3,6 +3,7 @@ import {
   createHandler,
   Get,
   Put,
+  Req,
   Request,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
@@ -14,11 +15,14 @@ import { UpdateTeamDto } from 'backend/models/teams/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { AuthDecoratedRequest } from 'types/common';
 import { stripe } from 'backend/apiUtils/stripe/server';
+import { transformSubscriptionToBasicData } from 'backend/apiUtils/transforms/subscriptions';
 
 @requiresAuth()
 class TeamHandler {
   @Get()
-  async team(@PathParam('teamId') id: string) {
+  async team(@Req() req: AuthDecoratedRequest, @PathParam('teamId') id: string) {
+    await checkRequiredPermissions(req, ['UPDATE_TEAM'], id);
+
     const team = await prisma.team.findUnique({
       where: { id },
       include: {
@@ -29,7 +33,8 @@ class TeamHandler {
 
     if (team?.stripeSubscriptionId) {
       const subscription = await stripe.subscriptions.retrieve(team?.stripeSubscriptionId);
-      return { ...team, subscription: subscription };
+      const mappedData = await transformSubscriptionToBasicData(subscription);
+      return { ...team, subscription: mappedData };
     }
 
     return { ...team, subscription: undefined };

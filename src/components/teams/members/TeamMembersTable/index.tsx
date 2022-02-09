@@ -7,10 +7,11 @@ import Table from 'components/Table';
 
 interface Props {
   teamMembers: TeamMemberWithUserAndRoles[];
+  loading?: boolean;
 }
 
-const TeamMembersTable = ({ teamMembers }: Props) => {
-  return <Table data={teamMembers} columns={teamMembersColumns} />;
+const TeamMembersTable = ({ teamMembers, loading }: Props) => {
+  return <Table loading={loading} data={teamMembers} columns={teamMembersColumns} />;
 };
 
 export default TeamMembersTable;

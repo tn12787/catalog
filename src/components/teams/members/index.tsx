@@ -14,6 +14,7 @@ import {
   ModalOverlay,
   ModalHeader,
   Heading,
+  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 import { BsSearch } from 'react-icons/bs';
@@ -26,45 +27,52 @@ import InviteUserForm from 'components/teams/forms/InviteUserForm';
 
 type Props = {
   members: TeamMemberWithUserAndRoles[];
+  isDisabled?: boolean;
+  loading?: boolean;
 };
 
-const TeamMembers = ({ members }: Props) => {
+const TeamMembers = ({ members, isDisabled, loading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={4} position="relative">
       <Stack
         alignItems={{ base: 'stretch', md: 'center' }}
         direction={{ base: 'column', md: 'row' }}
         justify="space-between"
       >
         <HStack>
-          <FormControl minW={{ md: '320px' }} id="search">
-            <InputGroup size="sm">
-              <FormLabel srOnly>Filter by name or email</FormLabel>
-              <InputLeftElement pointerEvents="none" color="gray.400">
-                <BsSearch />
-              </InputLeftElement>
-              <Input borderRadius="md" type="search" placeholder="Filter by name or email..." />
-            </InputGroup>
-          </FormControl>
+          <Skeleton isLoaded={!loading}>
+            <FormControl minW={{ md: '320px' }} id="search" isDisabled={isDisabled}>
+              <InputGroup size="sm">
+                <FormLabel srOnly>Filter by name or email</FormLabel>
+                <InputLeftElement pointerEvents="none" color="gray.400">
+                  <BsSearch />
+                </InputLeftElement>
+                <Input borderRadius="md" type="search" placeholder="Filter by name or email..." />
+              </InputGroup>
+            </FormControl>
+          </Skeleton>
         </HStack>
         <ButtonGroup
           alignItems={{ base: 'stretch', md: 'center' }}
           direction={{ base: 'column', md: 'row' }}
           size="sm"
         >
-          <Button
-            w="100%"
-            iconSpacing={1}
-            onClick={onOpen}
-            leftIcon={<RiAddFill fontSize="1.25em" />}
-          >
-            New member
-          </Button>
+          <Skeleton isLoaded={!loading}>
+            <Button
+              w="100%"
+              iconSpacing={1}
+              onClick={onOpen}
+              isDisabled={isDisabled}
+              leftIcon={<RiAddFill fontSize="1.25em" />}
+            >
+              New member
+            </Button>
+          </Skeleton>
         </ButtonGroup>
       </Stack>
-      <TeamMembersTable teamMembers={members}></TeamMembersTable>
+      <TeamMembersTable teamMembers={members} loading={loading}></TeamMembersTable>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalHeader>

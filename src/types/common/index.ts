@@ -18,7 +18,9 @@ import {
   Notification,
   Artist,
   ReleaseTaskEvent,
+  Invite,
 } from '@prisma/client';
+import Stripe from 'stripe';
 
 interface DataModel {
   id: string;
@@ -122,6 +124,12 @@ export type EnrichedTeamMember = TeamMember & {
 
 export type ExtendedSession = Session & { token: ExtendedToken };
 
+export type EnrichedTeam = Team & {
+  invites: Invite[];
+  members: TeamMemberWithUserAndRoles[];
+  subscription?: MappedSubscription;
+};
+
 export interface ExtendedToken {
   email: string;
   name: string;
@@ -160,4 +168,18 @@ export type MailingListData = {
   firstName: string;
   lastName: string;
   email: string;
+};
+
+export type MappedSubscription = {
+  product: {
+    id: string;
+    name: string;
+  };
+  status: Stripe.Subscription.Status;
+  trialEnd: Date | null;
+  totalSeats: number;
+  currentPeriodStart: Date;
+  currentPeriodEnd: Date;
+  cancelTime: Date | null;
+  interval: Stripe.SubscriptionItem['plan']['interval'];
 };
