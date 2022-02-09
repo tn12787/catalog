@@ -1,7 +1,6 @@
 import { HStack, Text, Wrap } from '@chakra-ui/react';
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { useQuery } from 'react-query';
 import { FiUsers } from 'react-icons/fi';
 
 import ActivityIcon from '../ActivityIcon';
@@ -9,9 +8,8 @@ import ActivityIcon from '../ActivityIcon';
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
-import useExtendedSession from 'hooks/useExtendedSession';
-import { fetchTeam } from 'queries/teams';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
+import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
 
 interface Props {
   event: ReleaseTaskEventWithUser;
@@ -19,11 +17,8 @@ interface Props {
 
 const UpdateAssigneesItem = ({ event }: Props) => {
   const { bodySub } = useAppColors();
-  const { currentTeam } = useExtendedSession();
 
-  const { data: teamData } = useQuery(['team', currentTeam], () => fetchTeam(currentTeam), {
-    enabled: !!currentTeam,
-  });
+  const { team: teamData } = useCurrentTeam();
 
   const data = event.extraData as { oldAssignees: string[]; newAssignees: string[] };
   const newlyAssigned = data.newAssignees.filter((x) => !data.oldAssignees.includes(x));
