@@ -9,9 +9,10 @@ import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import TeamInformation from 'components/teams/settings/TeamInformation';
 import PageHead from 'components/PageHead';
-import Card from 'components/Card';
-import TeamMembers from 'components/teams/members';
-import InvitationTable from 'components/teams/members/InvitationTable';
+import PlanCards from 'components/teams/settings/PlanCards';
+import { EnrichedTeam } from 'types/common';
+import MembersCard from 'components/teams/settings/MembersCard';
+import UpgradeCards from 'components/teams/settings/UpgradeCards';
 
 const TeamOverview = () => {
   const router = useRouter();
@@ -30,29 +31,14 @@ const TeamOverview = () => {
         <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
           Manage Team
         </Heading>
-
         <TeamInformation loading={isLoading} team={teamData} />
-        <Stack spacing={4}>
-          <Card spacing={6}>
-            <Heading fontSize="2xl" as="h4" fontWeight="semibold">
-              Members
-            </Heading>
-            {teamData?.invites?.length && (
-              <Stack spacing={3}>
-                <Heading fontSize="lg" as="h4" fontWeight="semibold">
-                  Pending invitations
-                </Heading>
-                <InvitationTable invites={teamData?.invites ?? []} />
-              </Stack>
-            )}
-            <Stack spacing={3}>
-              <Heading fontSize="lg" as="h4" fontWeight="semibold">
-                All members
-              </Heading>
-              <TeamMembers members={teamData?.members ?? []} />
-            </Stack>
-          </Card>
-        </Stack>
+        <PlanCards loading={isLoading} team={teamData as EnrichedTeam} />
+        <UpgradeCards loading={isLoading} team={teamData as EnrichedTeam} />
+        <MembersCard
+          team={teamData as EnrichedTeam}
+          isDisabled={!teamData?.subscription}
+          loading={isLoading}
+        />
       </Stack>
     </Stack>
   );

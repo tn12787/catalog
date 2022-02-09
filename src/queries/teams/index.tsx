@@ -1,19 +1,11 @@
 import axios from 'axios';
-import { Invite, Team } from '@prisma/client';
-import Stripe from 'stripe';
 
 import { DeleteTeamMemberVars, UpdateTeamMemberVars, UpdateTeamVars } from './types';
 
-import { TeamMemberWithUserAndRoles } from 'types/common';
+import { EnrichedTeam } from 'types/common';
 
 export const fetchTeam = async (id: string) => {
-  const { data: response } = await axios.get<
-    Team & {
-      invites: Invite[];
-      members: TeamMemberWithUserAndRoles[];
-      subscription?: Stripe.Subscription;
-    }
-  >(`/api/teams/${id}`);
+  const { data: response } = await axios.get<EnrichedTeam>(`/api/teams/${id}`);
 
   return response;
 };

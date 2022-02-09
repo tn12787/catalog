@@ -11,39 +11,15 @@ import EditTeamInfoForm from './EditTeamInfoForm';
 
 import Card from 'components/Card';
 import DataList from 'components/DataList';
-import { createCheckout, createPortalLink } from 'queries/payments';
-import getStripe from 'backend/apiUtils/stripe/client';
+import { MappedSubscription } from 'types/common';
 
 interface Props {
-  team?: Team & { subscription?: Stripe.Subscription };
+  team?: Team & { subscription?: MappedSubscription };
   loading?: boolean;
 }
 
 const TeamInformation = ({ team }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
-
-  const handleCheckout = async () => {
-    const {
-      data: { sessionId },
-    } = await createCheckout({
-      teamId: team?.id ?? '',
-      quantity: 1,
-      priceId: 'price_1KNFjFHNIzcgCVUerPbXkONu',
-    });
-
-    const stripe = await getStripe();
-    stripe?.redirectToCheckout({ sessionId });
-  };
-
-  const handleManagePortal = async () => {
-    const {
-      data: { url },
-    } = await createPortalLink({
-      teamId: team?.id ?? '',
-    });
-
-    window.location.assign(url);
-  };
 
   const config = [
     {
@@ -62,10 +38,6 @@ const TeamInformation = ({ team }: Props) => {
     {
       label: 'Team name',
       content: <Text fontWeight="semibold">{team?.name}</Text>,
-    },
-    {
-      label: 'Current Plan',
-      content: <Text fontWeight="semibold">{JSON.stringify(team?.subscription)}</Text>,
     },
   ];
 
@@ -86,14 +58,6 @@ const TeamInformation = ({ team }: Props) => {
         <>
           <DataList config={config} />
           <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4} variant="solid">
-            <Button
-              onClick={team?.subscription ? handleManagePortal : handleCheckout}
-              colorScheme="purple"
-              iconSpacing="1"
-              leftIcon={<BiRocket />}
-            >
-              Change Plan
-            </Button>
             <Button
               iconSpacing="1"
               onClick={() => {
