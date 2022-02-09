@@ -3,9 +3,12 @@ import {
   createHandler,
   NotFoundException,
   Post,
+  Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/common/index';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams/index';
 import { CreatePortalSessionDto } from 'backend/models/payments/portal/create';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
@@ -14,8 +17,13 @@ import prisma from 'backend/prisma/client';
 @requiresAuth()
 class PortalHandler {
   @Post()
-  async createCheckoutSession(@Body(ValidationPipe) body: CreatePortalSessionDto) {
+  async createPortalSession(
+    @Req() request: AuthDecoratedRequest,
+    @Body(ValidationPipe) body: CreatePortalSessionDto
+  ) {
     const { teamId } = body;
+
+    await checkRequiredPermissions(request, ['UPDATE_TEAM'], teamId);
 
     const team = await prisma.team.findUnique({ where: { id: teamId } });
     if (!team) {
