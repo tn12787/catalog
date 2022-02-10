@@ -62,7 +62,7 @@ const FormField = <T,>({
   return hidden ? null : (
     <Stack key={name as string}>
       <FormControl id={name as string} isInvalid={!!get(errors, name) as any}>
-        {showLabel && <FormLabel>{label}</FormLabel>}
+        {showLabel && <FormLabel fontSize={'sm'}>{label}</FormLabel>}
         {CustomComponent ? (
           <Controller
             name={name as string}
