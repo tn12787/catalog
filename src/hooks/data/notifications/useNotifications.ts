@@ -16,8 +16,8 @@ const useNotifications = ({ pagination, read }: UseNotificationsOptions) => {
 
   return useQuery(
     ['notifications', currentTeam, queryArgs],
-    () => fetchNotifications({ ...queryArgs, teamMemberId: teams?.[currentTeam].id || '' }),
-    { enabled: !!currentTeam && !!teams?.[currentTeam].id }
+    () => fetchNotifications({ ...queryArgs, teamMemberId: teams?.[currentTeam]?.id || '' }),
+    { enabled: !!currentTeam && !!teams?.[currentTeam] }
   );
 };
 
