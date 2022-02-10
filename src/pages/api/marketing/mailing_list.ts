@@ -1,0 +1,13 @@
+import { Body, createHandler, Post, ValidationPipe } from '@storyofams/next-api-decorators';
+
+import { addMailingListEntry } from 'backend/email';
+import { CreateMailingListEntryDto } from 'backend/models/marketing/mailingList';
+
+class MailingListHandler {
+  @Post()
+  async addMailingListEntry(@Body(ValidationPipe) body: CreateMailingListEntryDto) {
+    return await addMailingListEntry(body);
+  }
+}
+
+export default createHandler(MailingListHandler);
