@@ -6,11 +6,14 @@ import TeamMembers from 'components/teams/members';
 import InvitationTable from 'components/teams/members/InvitationTable';
 import useAppColors from 'hooks/useAppColors';
 import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import { FeatureKey } from 'common/features/types';
+import useFeatures from 'hooks/features/useFeatures';
 
 const MembersCard = () => {
   const { bgPrimary } = useAppColors();
   const { team, remainingLicenseSeats, isLoading } = useCurrentTeam();
-  const isDisabled = !team?.subscription;
+  const { isFeatureEnabled } = useFeatures();
+  const isDisabled = !team?.subscription && isFeatureEnabled(FeatureKey.PAYMENTS);
 
   if (isLoading) return null;
   return (

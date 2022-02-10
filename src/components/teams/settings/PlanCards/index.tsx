@@ -14,11 +14,13 @@ import { FiExternalLink } from 'react-icons/fi';
 
 import Card from 'components/Card';
 import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import useFeatures from 'hooks/features/useFeatures';
+import { FeatureKey } from 'common/features/types';
 
 const PlanCards = () => {
   const { manageTeam, team, remainingLicenseSeats } = useCurrentTeam();
-
-  if (!team?.subscription) {
+  const { isFeatureEnabled } = useFeatures();
+  if (!team?.subscription || !isFeatureEnabled(FeatureKey.PAYMENTS)) {
     return null;
   }
 

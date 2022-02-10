@@ -16,6 +16,8 @@ import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { AuthDecoratedRequest } from 'types/common';
 import { stripe } from 'backend/apiUtils/stripe/server';
 import { transformSubscriptionToBasicData } from 'backend/apiUtils/transforms/subscriptions';
+import { FeatureKey } from 'common/features/types';
+import { isBackendFeatureEnabled } from 'common/features';
 
 @requiresAuth()
 class TeamHandler {
@@ -31,7 +33,7 @@ class TeamHandler {
       },
     });
 
-    if (team?.stripeSubscriptionId) {
+    if (team?.stripeSubscriptionId && isBackendFeatureEnabled(FeatureKey.PAYMENTS)) {
       const subscription = await stripe.subscriptions.retrieve(team?.stripeSubscriptionId);
       const mappedData = await transformSubscriptionToBasicData(subscription);
       return { ...team, subscription: mappedData };

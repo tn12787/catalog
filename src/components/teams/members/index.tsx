@@ -27,6 +27,8 @@ import { EnrichedTeam } from 'types/common';
 import InviteUserForm from 'components/teams/forms/InviteUserForm';
 import useAppColors from 'hooks/useAppColors';
 import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import useFeatures from 'hooks/features/useFeatures';
+import { FeatureKey } from 'common/features/types';
 
 type Props = {
   team?: EnrichedTeam;
@@ -39,6 +41,9 @@ const TeamMembers = ({ team, remainingSeats, isDisabled, loading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { bodySub } = useAppColors();
   const { manageTeam } = useCurrentTeam();
+  const { isFeatureEnabled } = useFeatures();
+
+  const needsMoreSeats = !remainingSeats && isFeatureEnabled(FeatureKey.PAYMENTS);
 
   return (
     <Stack spacing={4} position="relative">
@@ -66,7 +71,7 @@ const TeamMembers = ({ team, remainingSeats, isDisabled, loading }: Props) => {
           direction={{ base: 'column', md: 'row' }}
           size="sm"
         >
-          {!remainingSeats && (
+          {needsMoreSeats && (
             <HStack fontSize="xs">
               <Text color={bodySub}>No license seats left. </Text>
               <Button size="xs" onClick={manageTeam} colorScheme={'purple'} variant="link">
@@ -79,7 +84,7 @@ const TeamMembers = ({ team, remainingSeats, isDisabled, loading }: Props) => {
               w="100%"
               iconSpacing={1}
               onClick={onOpen}
-              isDisabled={isDisabled || !remainingSeats}
+              isDisabled={isDisabled || needsMoreSeats}
               leftIcon={<RiAddFill fontSize="1.25em" />}
             >
               New member

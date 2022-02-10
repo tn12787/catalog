@@ -4,11 +4,13 @@ import { BiRocket } from 'react-icons/bi';
 
 import Card from 'components/Card';
 import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import { FeatureKey } from 'common/features/types';
+import useFeatures from 'hooks/features/useFeatures';
 
 const UpgradeCards = () => {
   const { team, isLoading, checkout } = useCurrentTeam();
-
-  if (team?.subscription || isLoading) {
+  const { isFeatureEnabled } = useFeatures();
+  if (team?.subscription || isLoading || !isFeatureEnabled(FeatureKey.PAYMENTS)) {
     return null;
   }
 
