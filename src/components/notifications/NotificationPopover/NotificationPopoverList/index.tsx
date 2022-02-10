@@ -1,5 +1,5 @@
 import { Text, Stack } from '@chakra-ui/react';
-import { NotificationType, ReleaseTask } from '@prisma/client';
+import { NotificationType } from '@prisma/client';
 import React from 'react';
 
 import NotificationPopoverListItem from '../NotificationPopoverListItem';

@@ -1,5 +1,5 @@
 import { Button, IconButton } from '@chakra-ui/button';
-import { Flex, HStack, Stack, Text, Wrap } from '@chakra-ui/layout';
+import { Flex, HStack, Stack, Text } from '@chakra-ui/layout';
 import { Select } from '@chakra-ui/select';
 import { Skeleton } from '@chakra-ui/skeleton';
 import React from 'react';
