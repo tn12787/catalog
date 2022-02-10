@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
-import { Team } from '@prisma/client';
 import { Heading, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { FiEdit } from 'react-icons/fi';
-import { BiRocket } from 'react-icons/bi';
 import { Avatar } from '@chakra-ui/react';
 
 import EditTeamInfoForm from './EditTeamInfoForm';
 
 import Card from 'components/Card';
 import DataList from 'components/DataList';
+import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
 
-interface Props {
-  team?: Team;
-  loading?: boolean;
-}
-
-const TeamInformation = ({ team }: Props) => {
+const TeamInformation = () => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const { team } = useCurrentTeam();
 
   const config = [
     {
@@ -36,10 +32,6 @@ const TeamInformation = ({ team }: Props) => {
     {
       label: 'Team name',
       content: <Text fontWeight="semibold">{team?.name}</Text>,
-    },
-    {
-      label: 'Current Plan',
-      content: <Text fontWeight="semibold">{team?.plan}</Text>,
     },
   ];
 
@@ -60,9 +52,6 @@ const TeamInformation = ({ team }: Props) => {
         <>
           <DataList config={config} />
           <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4} variant="solid">
-            <Button colorScheme="purple" iconSpacing="1" leftIcon={<BiRocket />}>
-              Change Plan
-            </Button>
             <Button
               iconSpacing="1"
               onClick={() => {

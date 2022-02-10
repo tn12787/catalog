@@ -34,12 +34,6 @@ enum ReleaseTaskType {
   MARKETING
 }
 
-enum TeamPlan {
-  Artist
-  Indie
-  Major
-}
-
 enum TaskEventType {
   CREATE_TASK
   NEW_COMMENT
@@ -51,16 +45,17 @@ enum TaskEventType {
 }
 
 model Team {
-  id       String        @id @default(cuid())
-  name     String
-  imageUrl String?
-  plan     TeamPlan      @default(Artist)
-  provider CloudProvider
-  members  TeamMember[]
-  artists  Artist[]
-  contacts Contact[]
-  releases Release[]
-  invites  Invite[]
+  id                   String        @id @default(cuid())
+  name                 String
+  imageUrl             String?
+  provider             CloudProvider
+  members              TeamMember[]
+  artists              Artist[]
+  contacts             Contact[]
+  releases             Release[]
+  invites              Invite[]
+  stripeCustomerId     String        @unique
+  stripeSubscriptionId String?       @unique
 }
 
 model TeamMember {

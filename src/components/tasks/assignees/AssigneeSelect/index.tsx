@@ -11,18 +11,16 @@ import {
 import React from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { useCombobox } from 'downshift';
-import { useQuery } from 'react-query';
 import { BiChevronDown } from 'react-icons/bi';
 import { uniqBy } from 'lodash';
 
 import AssigneeSelectList from './AssigneeSelectList';
 import AssigneeItem from './AssigneeItem';
 
-import useExtendedSession from 'hooks/useExtendedSession';
-import { fetchTeam } from 'queries/teams';
 import useAppColors from 'hooks/useAppColors';
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { TeamMemberWithUser, TeamMemberWithUserAndRoles } from 'types/common';
+import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {
   value: TeamMemberWithUser[];
@@ -31,14 +29,9 @@ interface Props extends Pick<ControllerRenderProps, 'onChange'> {
 
 const AssigneeSelect: React.FC<Props> = React.forwardRef(
   ({ value, borderless = false, onChange }: Props, ref) => {
-    const { currentTeam } = useExtendedSession();
     const currentAssignees = value || [];
 
-    const { data: teamData, isLoading } = useQuery(
-      ['team', currentTeam as string],
-      () => fetchTeam(currentTeam as string),
-      { enabled: !!currentTeam }
-    );
+    const { team: teamData, isLoading } = useCurrentTeam();
 
     const [searchString, setSearchString] = React.useState('');
 
