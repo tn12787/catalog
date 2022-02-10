@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { Heading, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { FiEdit } from 'react-icons/fi';
-import { BiRocket } from 'react-icons/bi';
 import { Avatar } from '@chakra-ui/react';
-import Stripe from 'stripe';
 
 import EditTeamInfoForm from './EditTeamInfoForm';
 
