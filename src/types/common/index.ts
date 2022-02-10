@@ -155,3 +155,9 @@ export type PermissionType =
   | 'UPDATE_TEAM'
   | 'DELETE_TEAM'
   | 'DELETE_ALL_COMMENTS';
+
+export type MailingListData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
