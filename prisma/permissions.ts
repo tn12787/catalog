@@ -25,5 +25,10 @@ export const allPermissions: { name: PermissionType }[] = [
   { name: 'UPDATE_TEAM' },
   { name: 'DELETE_TEAM' },
 
+  { name: 'CREATE_CONTACTS' },
+  { name: 'VIEW_CONTACTS' },
+  { name: 'UPDATE_CONTACTS' },
+  { name: 'DELETE_CONTACTS' },
+
   { name: 'DELETE_ALL_COMMENTS' },
 ];

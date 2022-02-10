@@ -162,7 +162,11 @@ export type PermissionType =
   | 'VIEW_TEAM'
   | 'UPDATE_TEAM'
   | 'DELETE_TEAM'
-  | 'DELETE_ALL_COMMENTS';
+  | 'DELETE_ALL_COMMENTS'
+  | 'CREATE_CONTACTS'
+  | 'VIEW_CONTACTS'
+  | 'UPDATE_CONTACTS'
+  | 'DELETE_CONTACTS';
 
 export type MailingListData = {
   firstName: string;
