@@ -2,6 +2,7 @@ import { BiBell, BiCalendar, BiDisc } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
 import { RiLayoutMasonryLine } from 'react-icons/ri';
+import { FaRegAddressBook } from 'react-icons/fa';
 
 import { NavBarLink } from 'components/Nav/types';
 
@@ -42,6 +43,13 @@ export const appLinks: NavLinkConfig = {
         href: '/planner',
         text: 'Planner',
         activeRegex: /^\/planner/,
+      },
+
+      {
+        icon: FaRegAddressBook,
+        href: '/contacts',
+        text: 'Contacts',
+        activeRegex: /^\/contacts/,
       },
     ],
   },

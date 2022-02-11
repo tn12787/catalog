@@ -4,6 +4,7 @@ import {
   DefaultValuePipe,
   Get,
   HttpCode,
+  ParseNumberPipe,
   Post,
   Query,
   Req,
@@ -28,8 +29,8 @@ class ContactHandler {
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Contact>('name')) sortBy: keyof Contact,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,
-    @Query('pageSize', DefaultValuePipe(10)) pageSize: number,
-    @Query('page', DefaultValuePipe(1)) page: number
+    @Query('pageSize', DefaultValuePipe(10), ParseNumberPipe) pageSize: number,
+    @Query('page', DefaultValuePipe(1), ParseNumberPipe) page: number
   ) {
     await checkRequiredPermissions(req, ['VIEW_CONTACTS'], team);
 
@@ -46,6 +47,7 @@ class ContactHandler {
         skip: pageSize * (page - 1),
         take: pageSize,
         include: {
+          labels: true,
           tasks: {
             include: {
               assignees: { include: { user: true } },

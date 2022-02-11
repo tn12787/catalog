@@ -19,6 +19,8 @@ import {
   Artist,
   ReleaseTaskEvent,
   Invite,
+  ContactLabel,
+  Contact,
 } from '@prisma/client';
 import Stripe from 'stripe';
 
@@ -34,6 +36,10 @@ export type TeamMemberWithUser = TeamMember & { user: User };
 
 export type TeamMemberWithUserAndRoles = TeamMemberWithUser & {
   roles: Role[];
+};
+
+export type ContactWithLabels = Contact & {
+  labels?: ContactLabel[];
 };
 
 export type NotificationWithTask = Notification & {
@@ -81,12 +87,6 @@ export enum ReleaseType {
   SINGLE = 'Single',
   EP = 'EP',
   ALBUM = 'Album',
-}
-
-export interface Contact extends DataModel {
-  name: string;
-  email?: string;
-  phone?: string;
 }
 
 export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';

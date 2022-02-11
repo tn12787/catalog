@@ -64,11 +64,15 @@ const NoficationsPage = () => {
       <PageHead title="Notifications"></PageHead>
 
       <Stack spacing={4} width="90%" maxW="container.lg">
-        <Stack direction="row" align="center" justify="space-between">
-          <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-            All Notifications
-          </Heading>
+        <Stack py={2}>
+          <Stack pt={2} direction="row" align="center" justify="space-between">
+            <Heading size="xl" fontWeight="black" alignSelf="flex-start">
+              All Notifications
+            </Heading>
+          </Stack>
+          <Text>Here you can see all notifications for the current team.</Text>
         </Stack>
+
         <Card>
           <Stack>
             <HStack justify={'space-between'}>
