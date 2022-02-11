@@ -24,10 +24,6 @@ import {
 } from '@prisma/client';
 import Stripe from 'stripe';
 
-interface DataModel {
-  id: string;
-}
-
 export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date;
 }
