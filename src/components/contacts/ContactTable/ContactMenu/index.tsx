@@ -13,7 +13,6 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';

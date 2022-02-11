@@ -1,4 +1,4 @@
-import { Heading, Stack, useToast } from '@chakra-ui/react';
+import { Heading, Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import EditContactFormBody from './EditContactFormBody';
@@ -13,7 +13,6 @@ interface Props {
 }
 
 const EditContactForm = ({ onSubmitSuccess, contact }: Props) => {
-  const toast = useToast();
   const { currentTeam } = useExtendedSession();
 
   const { updateSingleContact, createSingleContact } = useContactMutations();
