@@ -19,7 +19,7 @@ import useAppColors from 'hooks/useAppColors';
 import { fetchSingleArtist } from 'queries/artists';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import Card from 'components/Card';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import ReleaseList from 'components/releases/ReleaseList';
 import useExtendedSession from 'hooks/useExtendedSession';
 

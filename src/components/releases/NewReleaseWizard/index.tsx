@@ -17,7 +17,7 @@ import ReviewData from './ReviewData';
 
 import useAppColors from 'hooks/useAppColors';
 import { useSteps } from 'hooks/useSteps';
-import WizardSteps from 'components/WizardSteps';
+import WizardSteps from 'components/forms/WizardSteps';
 import Card from 'components/Card';
 import { createSingleRelease } from 'queries/releases';
 import useExtendedSession from 'hooks/useExtendedSession';

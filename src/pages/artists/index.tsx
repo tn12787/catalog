@@ -18,7 +18,7 @@ import ArtistList from 'components/artists/ArtistList';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 
 const Artists = () => {
   const { bgPrimary } = useAppColors();

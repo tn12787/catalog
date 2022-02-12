@@ -6,7 +6,7 @@ import { Notification } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';

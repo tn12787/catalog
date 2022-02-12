@@ -11,7 +11,7 @@ import Summary from 'components/releases/specific/Summary';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import useAppColors from 'hooks/useAppColors';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import Mastering from 'components/releases/specific/Mastering';
 import MusicVideo from 'components/releases/specific/MusicVideo';
 

@@ -27,7 +27,7 @@ import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedire
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';
 
