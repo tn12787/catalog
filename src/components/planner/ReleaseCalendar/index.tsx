@@ -10,8 +10,8 @@ import ReleaseEventDrawer from '../ReleaseEventDrawer';
 
 import { ReleaseEvent } from 'types/common';
 import { updateEventInCalendar } from 'queries/events';
-import UndoToast from 'components/Calendar/UndoToast';
-import Calendar from 'components/Calendar';
+import UndoToast from 'components/planner/Calendar/UndoToast';
+import Calendar from 'components/planner/Calendar';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';

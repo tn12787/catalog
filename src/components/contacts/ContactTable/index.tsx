@@ -3,7 +3,7 @@ import { IdType } from 'react-table';
 
 import { columns } from './columns';
 
-import Table from 'components/Table';
+import Table from 'components/data/Table';
 import { ContactWithLabels } from 'types/common';
 
 interface Props {

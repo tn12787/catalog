@@ -3,7 +3,7 @@ import { Invite } from '@prisma/client';
 
 import { inviteColumns } from './columns';
 
-import Table from 'components/Table';
+import Table from 'components/data/Table';
 
 interface Props {
   invites: Invite[];

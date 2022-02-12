@@ -11,7 +11,7 @@ import React from 'react';
 import { BiMenu } from 'react-icons/bi';
 
 import { appLinks } from 'appLinks';
-import Nav from 'components/Nav';
+import Nav from 'components/pageItems/Nav';
 import useAppColors from 'hooks/useAppColors';
 
 const DashboardLayout: React.FC = ({ children }) => {

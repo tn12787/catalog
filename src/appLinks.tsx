@@ -4,7 +4,7 @@ import { FiMusic } from 'react-icons/fi';
 import { RiLayoutMasonryLine } from 'react-icons/ri';
 import { FaRegAddressBook } from 'react-icons/fa';
 
-import { NavBarLink } from 'components/Nav/types';
+import { NavBarLink } from 'components/pageItems/Nav/types';
 
 export interface NavLinkConfig {
   main: {

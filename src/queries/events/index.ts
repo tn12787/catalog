@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { EventType } from 'components/Calendar/types';
+import { EventType } from 'components/planner/Calendar/types';
 import { ReleaseEvent } from 'types/common';
 
 export const fetchReleaseEvents = async (teamId: string, assigneeId?: string) => {
