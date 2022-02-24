@@ -7,6 +7,8 @@ import { stripe } from './../stripe/server';
 import prisma from 'backend/prisma/client';
 import { PermissionType, ExtendedSession, AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
+import { isBackendFeatureEnabled } from 'common/features';
+import { FeatureKey } from 'common/features/types';
 
 type UserCreateArgs = {
   name: string;
@@ -17,21 +19,25 @@ type UserCreateArgs = {
 export const createDefaultTeamForUser = async ({ name, userId, email }: UserCreateArgs) => {
   const nameString = `${name}'s Team`;
 
-  const customer = await stripe.customers.create({ name: nameString, email });
+  try {
+    const customer = await stripe.customers.create({ name: nameString, email });
 
-  await prisma.team.create({
-    data: {
-      name: nameString,
-      provider: 'GSUITE',
-      members: {
-        create: {
-          user: { connect: { id: userId } },
-          roles: { connect: { name: 'Admin' } },
+    await prisma.team.create({
+      data: {
+        name: nameString,
+        provider: 'GSUITE',
+        members: {
+          create: {
+            user: { connect: { id: userId } },
+            roles: { connect: { name: 'Admin' } },
+          },
         },
+        stripeCustomerId: customer.id,
       },
-      stripeCustomerId: customer.id,
-    },
-  });
+    });
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const manageSubscriptionChange = async (customer: string, id?: string) => {

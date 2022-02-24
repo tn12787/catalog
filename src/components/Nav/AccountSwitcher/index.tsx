@@ -112,7 +112,7 @@ export const AccountSwitcher = ({ onChange }: Props) => {
                   />
                   <Text>{team.name}</Text>
                   {currentTeam !== team.id && (
-                    <UnreadCountBadge count={mapped[team.id].notifications.total} />
+                    <UnreadCountBadge count={mapped[team.id]?.notifications.total} />
                   )}
                 </HStack>
               </MenuItemOption>
