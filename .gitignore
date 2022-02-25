@@ -135,3 +135,7 @@ yarn-error.log*
 # local env files
 # vercel
 .vercel
+
+cypress.env.json
+cypress/screenshots
+cypress/videos
