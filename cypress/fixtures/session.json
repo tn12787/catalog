@@ -1,0 +1,88 @@
+{
+  "expires": "2023-03-27T14:58:55.997Z",
+  "token": {
+    "name": "Tom Norton",
+    "email": "tpjnorton@hotmail.co.uk",
+    "picture": "https://lh3.googleusercontent.com/a-/AOh14Ggk-26jgVGtatZ6-c2KsZYblAOZ4RMxNMvnr9pgHw=s96-c",
+    "sub": "cl016ufr1013209mgxh2rzbvs",
+    "iat": 1645801133,
+    "exp": 1648393133,
+    "teams": [
+      {
+        "id": "cl017n8u3000309md67qct86k",
+        "teamId": "cl017n8u3000209mduwlh0uke",
+        "team": {
+          "name": "Tom Norton's Team",
+          "id": "cl017n8u3000209mduwlh0uke"
+        },
+        "roles": [
+          {
+            "name": "Admin",
+            "permissions": [
+              {
+                "name": "CREATE_RELEASES"
+              },
+              {
+                "name": "UPDATE_RELEASES"
+              },
+              {
+                "name": "DELETE_RELEASES"
+              },
+              {
+                "name": "VIEW_RELEASES"
+              },
+              {
+                "name": "CREATE_ARTISTS"
+              },
+              {
+                "name": "UPDATE_ARTISTS"
+              },
+              {
+                "name": "DELETE_ARTISTS"
+              },
+              {
+                "name": "VIEW_ARTISTS"
+              },
+              {
+                "name": "CREATE_ROLES"
+              },
+              {
+                "name": "UPDATE_ROLES"
+              },
+              {
+                "name": "DELETE_ROLES"
+              },
+              {
+                "name": "VIEW_ROLES"
+              },
+              {
+                "name": "INVITE_USERS"
+              },
+              {
+                "name": "DELETE_USERS"
+              },
+              {
+                "name": "UPDATE_USERS"
+              },
+              {
+                "name": "VIEW_USERS"
+              },
+              {
+                "name": "VIEW_TEAM"
+              },
+              {
+                "name": "UPDATE_TEAM"
+              },
+              {
+                "name": "DELETE_TEAM"
+              },
+              {
+                "name": "DELETE_ALL_COMMENTS"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
