@@ -92,9 +92,8 @@
     "migrate": "prisma migrate dev",
     "migrate:production": "dotenv -e .env.production yarn migrate",
     "db:push": "prisma db push",
-    "test": "jest",
-    "test:e2e:open": "cypress open",
-    "test:e2e:run": "cypress run",
+    "cy": "cypress open",
+    "cy:run": "cypress run",
     "lint": "next lint",
     "prepare": "husky install"
   }
