@@ -13,6 +13,7 @@ import {
   ClientDistribution,
   ClientMastering,
   ClientMusicVideo,
+  ContactWithLabels,
   EventType,
   ReleaseEvent,
   ReleaseTaskEventWithUser,
@@ -24,6 +25,7 @@ import DueDateField from 'components/forms/QuickForm/DueDateField';
 import UrlField from 'components/forms/QuickForm/UrlField';
 import ImageField from 'components/forms/QuickForm/ImageField';
 import DistributorField from 'components/forms/QuickForm/DistributorField';
+import ContactsField from 'components/forms/QuickForm/ContactsField';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -138,6 +140,12 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
         <AssigneesField
           assignees={task?.assignees as TeamMemberWithUser[]}
           onChange={(assignees) => onSubmit({ assignees })}
+        />
+      </Skeleton>
+      <Skeleton isLoaded={!loading}>
+        <ContactsField
+          contacts={task?.contacts as ContactWithLabels[]}
+          onChange={(contacts) => onSubmit({ contacts })}
         />
       </Skeleton>
       <Skeleton isLoaded={!loading}>

@@ -49,7 +49,7 @@ export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: Rel
       ...pick(body, ['status', 'notes', 'dueDate']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees),
-      contacts: transformContactsToPrismaQuery(body.contacts, true),
+      contacts: transformContactsToPrismaQuery(body.contacts),
     },
     (v) => !isNil(v)
   );
