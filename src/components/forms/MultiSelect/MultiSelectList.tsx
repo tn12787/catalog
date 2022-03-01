@@ -7,7 +7,7 @@ interface Props extends ListProps {
   isOpen?: boolean;
 }
 
-const MultiSelectItem = React.forwardRef(({ isOpen, ...rest }: Props, ref) => {
+const MultiSelectList = React.forwardRef(({ isOpen, ...rest }: Props, ref) => {
   const { bgSecondary, border } = useAppColors();
   return isOpen ? (
     <List
@@ -29,6 +29,6 @@ const MultiSelectItem = React.forwardRef(({ isOpen, ...rest }: Props, ref) => {
   ) : null;
 });
 
-MultiSelectItem.displayName = 'MultiSelectItem';
+MultiSelectList.displayName = 'MultiSelectList';
 
-export default MultiSelectItem;
+export default MultiSelectList;
