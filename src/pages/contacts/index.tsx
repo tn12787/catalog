@@ -1,6 +1,9 @@
 import { HStack, Stack, Text } from '@chakra-ui/layout';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   FormControl,
   FormLabel,
@@ -8,11 +11,15 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Link,
   Skeleton,
   useDisclosure,
 } from '@chakra-ui/react';
 import { BsFillTagFill, BsSearch } from 'react-icons/bs';
 import { RiAddFill } from 'react-icons/ri';
+import router, { useRouter } from 'next/router';
+import { BiChevronRight } from 'react-icons/bi';
+import NextLink from 'next/link';
 
 import ContactTable from 'components/contacts/ContactTable';
 import useContacts from 'hooks/data/contacts/useContacts';
@@ -26,7 +33,7 @@ import { FilterOptions } from 'queries/types';
 import Card from 'components/Card';
 import { ContactWithLabels } from 'types/common';
 import ContactModal from 'components/contacts/ContactModal';
-import ManageLabelsModal from 'components/contacts/ManageLabelsModal';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 const NoficationsPage = () => {
   const [search, setSearch] = useState('');
@@ -35,16 +42,14 @@ const NoficationsPage = () => {
   const { pageSize, currentPage, setCurrentPage, setPageSize } = usePagination();
 
   const { isOpen: isNewOpen, onOpen: onNewOpen, onClose: onNewClose } = useDisclosure();
-  const {
-    isOpen: isManageLabelsOpen,
-    onOpen: onManageLabelsOpen,
-    onClose: onManageLabelsClose,
-  } = useDisclosure();
+  const router = useRouter();
 
   const queryArgs: FilterOptions<ContactWithLabels> = {
     pagination: { pageSize: pageSize, page: currentPage },
     search,
   };
+
+  const { teams, currentTeam } = useExtendedSession();
 
   const { data: contacts, isLoading } = useContacts(queryArgs);
 
@@ -64,6 +69,19 @@ const NoficationsPage = () => {
       <PageHead title="Contacts"></PageHead>
 
       <Stack spacing={4} width="90%" maxW="container.lg">
+        <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
+          <BreadcrumbItem>
+            <Link passHref href={`/teams/${currentTeam}/overview`}>
+              <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
+            </Link>
+          </BreadcrumbItem>
+
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink fontWeight="bold" href={router.pathname}>
+              Contacts
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">
           <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
             All Contacts
@@ -104,16 +122,19 @@ const NoficationsPage = () => {
                 direction={{ base: 'column', lg: 'row' }}
               >
                 <Skeleton isLoaded={!isLoading}>
-                  <Button
-                    size="sm"
-                    w="100%"
-                    iconSpacing={1}
-                    onClick={onManageLabelsOpen}
-                    variant="outline"
-                    leftIcon={<BsFillTagFill fontSize="1.25em" />}
-                  >
-                    Manage Labels
-                  </Button>
+                  <NextLink href="/contacts/labels" passHref>
+                    <Button
+                      as={Link}
+                      colorScheme="purple"
+                      size="sm"
+                      w="100%"
+                      iconSpacing={1}
+                      variant="link"
+                      leftIcon={<BsFillTagFill fontSize="1.25em" />}
+                    >
+                      Manage Labels
+                    </Button>
+                  </NextLink>
                 </Skeleton>
                 <Skeleton isLoaded={!isLoading}>
                   <Button
@@ -158,7 +179,6 @@ const NoficationsPage = () => {
         )}
       </Stack>
       <ContactModal isOpen={isNewOpen} onClose={onNewClose} />
-      <ManageLabelsModal isOpen={isManageLabelsOpen} onClose={onManageLabelsClose} />
     </Stack>
   );
 };

@@ -61,6 +61,6 @@ export const columns: Column<ContactWithLabels>[] = [
     accessor: (d) => d,
     Cell: ContactMenu,
     id: 'actions',
-    width: 25,
+    width: 30,
   },
 ];

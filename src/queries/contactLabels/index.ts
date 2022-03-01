@@ -4,11 +4,10 @@ import { ContactLabel } from '@prisma/client';
 import { CreateContactLabelVars, DeleteContactLabelVars, UpdateContactLabelVars } from './types';
 
 import { ContactLabelFilterOptions } from 'queries/contactLabels/types';
-import { PaginatedQueryResult } from 'queries/types';
 import { ContactLabelWithContacts } from 'types/common';
 
 export const fetchContactLabels = async ({ teamId, search }: ContactLabelFilterOptions) => {
-  const { data: response } = await axios.get<PaginatedQueryResult<ContactLabelWithContacts[]>>(
+  const { data: response } = await axios.get<ContactLabelWithContacts[]>(
     `/api/teams/${teamId}/contacts/labels`,
     {
       params: {

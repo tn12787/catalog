@@ -6,7 +6,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 
 type UseContactLabelOptions = Pick<ContactLabelFilterOptions, 'search'>;
 
-const useContacts = ({ search }: UseContactLabelOptions) => {
+const useContactLabels = ({ search }: UseContactLabelOptions) => {
   const { currentTeam, teams } = useExtendedSession();
 
   const queryArgs = {
@@ -20,4 +20,4 @@ const useContacts = ({ search }: UseContactLabelOptions) => {
   );
 };
 
-export default useContacts;
+export default useContactLabels;
