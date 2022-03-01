@@ -20,4 +20,9 @@ export const buildEditContactConfig = (): FormDatum<ContactWithLabels>[] => [
     label: 'Phone',
     type: 'tel',
   },
+  {
+    name: 'website',
+    label: 'Website',
+    type: 'url',
+  },
 ];

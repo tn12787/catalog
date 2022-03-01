@@ -9,7 +9,7 @@ export interface ContactFilterOptions
 
 export type UpdateContactVars = Pick<
   Contact & { labels?: ContactLabel[] },
-  'id' | 'name' | 'labels' | 'email' | 'phone' | 'teamId'
+  'id' | 'name' | 'labels' | 'email' | 'phone' | 'teamId' | 'website'
 >;
 
 export type CreateContactVars = Omit<UpdateContactVars, 'id'>;

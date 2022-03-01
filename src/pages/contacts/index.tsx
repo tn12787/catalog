@@ -8,14 +8,10 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
   Skeleton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { BsSearch } from 'react-icons/bs';
+import { BsFillTagFill, BsSearch } from 'react-icons/bs';
 import { RiAddFill } from 'react-icons/ri';
 
 import ContactTable from 'components/contacts/ContactTable';
@@ -29,7 +25,8 @@ import PaginationControl from 'components/PaginationControl';
 import { FilterOptions } from 'queries/types';
 import Card from 'components/Card';
 import { ContactWithLabels } from 'types/common';
-import EditContactForm from 'components/contacts/forms/EditContactForm';
+import NewContactModal from 'components/contacts/NewContactModal';
+import ManageLabelsModal from 'components/contacts/ManageLabelsModal';
 
 const NoficationsPage = () => {
   const [search, setSearch] = useState('');
@@ -37,7 +34,12 @@ const NoficationsPage = () => {
 
   const { pageSize, currentPage, setCurrentPage, setPageSize } = usePagination();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isNewOpen, onOpen: onNewOpen, onClose: onNewClose } = useDisclosure();
+  const {
+    isOpen: isManageLabelsOpen,
+    onOpen: onManageLabelsOpen,
+    onClose: onManageLabelsClose,
+  } = useDisclosure();
 
   const queryArgs: FilterOptions<ContactWithLabels> = {
     pagination: { pageSize: pageSize, page: currentPage },
@@ -97,17 +99,34 @@ const NoficationsPage = () => {
                 )}
               </HStack>
 
-              <Skeleton isLoaded={!isLoading}>
-                <Button
-                  size="sm"
-                  w="100%"
-                  iconSpacing={1}
-                  onClick={onOpen}
-                  leftIcon={<RiAddFill fontSize="1.25em" />}
-                >
-                  New contact
-                </Button>
-              </Skeleton>
+              <Stack
+                alignItems={{ base: 'stretch', lg: 'center' }}
+                direction={{ base: 'column', lg: 'row' }}
+              >
+                <Skeleton isLoaded={!isLoading}>
+                  <Button
+                    size="sm"
+                    w="100%"
+                    iconSpacing={1}
+                    onClick={onManageLabelsOpen}
+                    variant="outline"
+                    leftIcon={<BsFillTagFill fontSize="1.25em" />}
+                  >
+                    Manage Labels
+                  </Button>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading}>
+                  <Button
+                    size="sm"
+                    w="100%"
+                    iconSpacing={1}
+                    onClick={onNewOpen}
+                    leftIcon={<RiAddFill fontSize="1.25em" />}
+                  >
+                    New contact
+                  </Button>
+                </Skeleton>
+              </Stack>
             </Stack>
             <Stack>
               <ContactTable
@@ -119,8 +138,8 @@ const NoficationsPage = () => {
                 onSelectedRowsChange={onSelectionChange}
                 emptyContent={
                   <Stack py={8} alignItems="center" w="100%" alignSelf="center">
-                    <Text fontSize="2xl">🎉</Text>
-                    <Text color={bodySub}>{"Woo hoo! You're at inbox zero."}</Text>
+                    <Text fontSize="2xl">📇</Text>
+                    <Text color={bodySub}>{"You haven't added any contacts yet."}</Text>
                   </Stack>
                 }
               />
@@ -138,15 +157,8 @@ const NoficationsPage = () => {
           />
         )}
       </Stack>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay></ModalOverlay>
-        <ModalHeader>
-          <Heading>Add new contact</Heading>
-        </ModalHeader>
-        <ModalContent w="90%">
-          <EditContactForm onSubmitSuccess={() => onClose()} />
-        </ModalContent>
-      </Modal>
+      <NewContactModal isOpen={isNewOpen} onClose={onNewClose} />
+      <ManageLabelsModal isOpen={isManageLabelsOpen} onClose={onManageLabelsClose} />
     </Stack>
   );
 };

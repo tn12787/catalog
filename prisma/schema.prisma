@@ -170,17 +170,20 @@ model Release {
 }
 
 model Contact {
-  id     String         @id @default(cuid())
-  name   String
-  email  String?
-  phone  String?
-  team   Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId String
-  tasks  ReleaseTask[]
-  labels ContactLabel[]
+  id      String         @id @default(cuid())
+  name    String
+  email   String?
+  phone   String?
+  website String?
+  team    Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId  String
+  tasks   ReleaseTask[]
+  labels  ContactLabel[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+
+  @@unique([name, teamId])
 }
 
 model ContactLabel {
