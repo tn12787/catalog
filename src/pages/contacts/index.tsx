@@ -25,7 +25,7 @@ import PaginationControl from 'components/PaginationControl';
 import { FilterOptions } from 'queries/types';
 import Card from 'components/Card';
 import { ContactWithLabels } from 'types/common';
-import NewContactModal from 'components/contacts/NewContactModal';
+import ContactModal from 'components/contacts/ContactModal';
 import ManageLabelsModal from 'components/contacts/ManageLabelsModal';
 
 const NoficationsPage = () => {
@@ -157,7 +157,7 @@ const NoficationsPage = () => {
           />
         )}
       </Stack>
-      <NewContactModal isOpen={isNewOpen} onClose={onNewClose} />
+      <ContactModal isOpen={isNewOpen} onClose={onNewClose} />
       <ManageLabelsModal isOpen={isManageLabelsOpen} onClose={onManageLabelsClose} />
     </Stack>
   );

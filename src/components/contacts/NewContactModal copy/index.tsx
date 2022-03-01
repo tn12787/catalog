@@ -8,7 +8,7 @@ type Props = Omit<ModalProps, 'children'>;
 const NewContactModal = ({ onClose, ...rest }: Props) => {
   return (
     <Modal onClose={onClose} {...rest}>
-      <ModalOverlay />
+      <ModalOverlay></ModalOverlay>
 
       <ModalContent w="90%">
         <EditContactForm onSubmitSuccess={() => onClose()} />

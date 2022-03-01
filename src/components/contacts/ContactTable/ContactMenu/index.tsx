@@ -2,16 +2,11 @@ import {
   Button,
   ButtonGroup,
   Flex,
-  Heading,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
@@ -23,8 +18,8 @@ import useAppColors from 'hooks/useAppColors';
 import { ContactWithLabels } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';
-import EditContactForm from 'components/contacts/forms/EditContactForm';
 import useContactMutations from 'hooks/data/contacts/useContactMutations';
+import ContactModal from 'components/contacts/ContactModal';
 
 type Props = CellProps<ContactWithLabels>;
 
@@ -94,15 +89,7 @@ const ContactMenu = ({ value }: Props) => {
           </ButtonGroup>
         }
       />
-      <Modal isOpen={isEditOpen} onClose={onEditClose}>
-        <ModalOverlay></ModalOverlay>
-        <ModalHeader>
-          <Heading>Edit Contact</Heading>
-        </ModalHeader>
-        <ModalContent>
-          <EditContactForm contact={value} onSubmitSuccess={() => onEditClose()} />
-        </ModalContent>
-      </Modal>
+      <ContactModal contact={value} isOpen={isEditOpen} onClose={onEditClose} />
     </Flex>
   ) : (
     <></>
