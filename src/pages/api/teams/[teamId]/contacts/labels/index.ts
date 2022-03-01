@@ -38,6 +38,9 @@ class ContactLabelHandler {
       include: {
         contacts: { select: { id: true, name: true } },
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
     return labels;
   }

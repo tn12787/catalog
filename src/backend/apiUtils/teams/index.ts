@@ -3,6 +3,7 @@ import { NotFoundException } from '@storyofams/next-api-decorators';
 import { getSession } from 'next-auth/react';
 
 import { stripe } from './../stripe/server';
+import { defaultTeamLabels } from './defaultLabels';
 
 import prisma from 'backend/prisma/client';
 import { PermissionType, ExtendedSession, AuthDecoratedRequest } from 'types/common';
@@ -32,6 +33,7 @@ export const createDefaultTeamForUser = async ({ name, userId, email }: UserCrea
             roles: { connect: { name: 'Admin' } },
           },
         },
+        contactLabels: { create: defaultTeamLabels },
         stripeCustomerId: customer.id,
       },
     });
