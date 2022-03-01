@@ -51,9 +51,9 @@ const useContactLabelMutations = () => {
   });
 
   return {
-    createSingleContact: createMutation,
-    updateSingleContact: updateMutation,
-    deleteSingleContact: deleteMutation,
+    createSingleContactLabel: createMutation,
+    updateSingleContactLabel: updateMutation,
+    deleteSingleContactLabel: deleteMutation,
   };
 };
 

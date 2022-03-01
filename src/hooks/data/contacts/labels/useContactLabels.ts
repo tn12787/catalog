@@ -14,7 +14,7 @@ const useContactLabels = ({ search }: UseContactLabelOptions) => {
   };
 
   return useQuery(
-    ['contactMutations', currentTeam, queryArgs],
+    ['contactLabels', currentTeam, queryArgs],
     () => fetchContactLabels({ ...queryArgs, teamId: currentTeam }),
     { enabled: !!currentTeam && !!teams?.[currentTeam] }
   );

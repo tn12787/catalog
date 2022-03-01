@@ -52,7 +52,7 @@ class SpecificNotificationHandler {
 
     await checkRequiredPermissions(req, ['DELETE_CONTACTS'], teamId);
 
-    const deletedContactLabel = await prisma.contact.delete({
+    const deletedContactLabel = await prisma.contactLabel.delete({
       where: {
         id: labelId,
       },
