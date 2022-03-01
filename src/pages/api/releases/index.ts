@@ -62,6 +62,7 @@ class ReleaseListHandler {
           tasks: {
             include: {
               assignees: { include: { user: true } },
+              contacts: { include: { labels: true } },
               artworkData: true,
               distributionData: { include: { distributor: true } },
               masteringData: true,
