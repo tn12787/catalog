@@ -7,11 +7,12 @@ import { shouldBeDark } from 'utils/color';
 
 type Props = {
   label: ContactLabel;
-  editable?: string;
+  editable?: boolean;
   onRemoveClick?: (item: ContactLabel) => void;
 };
 
 const ContactLabelChip = ({ label, onRemoveClick, editable }: Props) => {
+  const textColor = shouldBeDark(label.color ?? 'lightGray') ? 'gray.900' : 'white';
   return (
     <HStack px={1} borderRadius="md" key={label.id} bg={label.color ?? 'lightGray'}>
       <Text
@@ -31,6 +32,7 @@ const ContactLabelChip = ({ label, onRemoveClick, editable }: Props) => {
           variant="ghost"
           aria-label="remove"
           icon={<MdClose />}
+          color={textColor}
           onClick={() => onRemoveClick?.(label)}
         />
       )}

@@ -1,5 +1,3 @@
-// TODO: Refactor this and AssigneeSelect to share some more stuff
-
 import React from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { useQuery } from 'react-query';

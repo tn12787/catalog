@@ -22,7 +22,6 @@ export class UpdateContactDto {
   @IsString()
   name: string;
 
-  @IsOptional()
   @ValidateNested({ each: true })
-  labels?: UpdateContactLabelDto[];
+  labels: UpdateContactLabelDto[];
 }

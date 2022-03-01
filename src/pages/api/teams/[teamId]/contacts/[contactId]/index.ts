@@ -35,12 +35,7 @@ class SpecificNotificationHandler {
       },
       data: {
         ...body,
-        labels: {
-          connectOrCreate: body.labels?.map(({ name, color }) => ({
-            where: { name_teamId: { name, teamId } },
-            create: { name, teamId, color },
-          })),
-        },
+        labels: { set: body.labels.map(({ id }) => ({ id })) },
       },
     });
     return updatedContact;

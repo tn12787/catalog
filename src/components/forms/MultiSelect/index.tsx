@@ -19,6 +19,7 @@ interface Props<T, L> extends Pick<ControllerRenderProps, 'onChange'> {
   getItem: (item: T) => L;
   borderless?: boolean;
   isLoading?: boolean;
+  searchPlaceholder?: string;
   renderListItem: (props: MultiSelectListItemProps<L>) => JSX.Element;
   renderSelectedItems: (props: SelectedItemListProps<T>) => JSX.Element;
   emptyContent?: string | JSX.Element;
@@ -30,6 +31,7 @@ const MultiSelect = <T extends { id: string }, L>({
   isLoading,
   filterFn = () => true,
   itemToString = (item) => item?.id ?? 'item',
+  searchPlaceholder = 'Search',
   borderless = false,
   renderSelectedItems,
   getItem,
@@ -83,7 +85,7 @@ const MultiSelect = <T extends { id: string }, L>({
           <Input
             {...getToggleButtonProps()}
             {...getInputProps()}
-            placeholder="Search for a user..."
+            placeholder={searchPlaceholder}
             borderWidth={borderless ? '0' : '1px'}
             borderColor={border}
             value={searchString}

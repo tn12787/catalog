@@ -1,3 +1,4 @@
+import ContactLabelSelect from 'components/contacts/labels/ContactLabelSelect';
 import { ContactWithLabels } from 'types/common';
 import { FormDatum } from 'types/forms';
 
@@ -34,5 +35,10 @@ export const buildEditContactConfig = (): FormDatum<ContactWithLabels>[] => [
     extraProps: {
       placeholder: 'https://example.com',
     },
+  },
+  {
+    name: 'labels',
+    label: 'Labels',
+    CustomComponent: ContactLabelSelect,
   },
 ];

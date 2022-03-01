@@ -8,4 +8,7 @@ export class UpdateContactLabelDto {
   @IsOptional()
   @IsString()
   color: string;
+
+  @IsString()
+  id: string;
 }
