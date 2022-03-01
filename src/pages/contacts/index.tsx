@@ -71,7 +71,7 @@ const NoficationsPage = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/teams/${currentTeam}/overview`}>
+            <Link passHref href={`/overview`}>
               <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
@@ -83,7 +83,7 @@ const NoficationsPage = () => {
           </BreadcrumbItem>
         </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">
-          <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
+          <Heading size="xl" fontWeight="black" alignSelf="flex-start">
             All Contacts
           </Heading>
         </Stack>
@@ -118,10 +118,11 @@ const NoficationsPage = () => {
               </HStack>
 
               <Stack
+                spacing={3}
                 alignItems={{ base: 'stretch', lg: 'center' }}
                 direction={{ base: 'column', lg: 'row' }}
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton isLoaded={!isLoading} display="flex">
                   <NextLink href="/contacts/labels" passHref>
                     <Button
                       as={Link}
@@ -158,10 +159,17 @@ const NoficationsPage = () => {
                 selectedRows={selectedRows}
                 onSelectedRowsChange={onSelectionChange}
                 emptyContent={
-                  <Stack py={8} alignItems="center" w="100%" alignSelf="center">
-                    <Text fontSize="2xl">📇</Text>
-                    <Text color={bodySub}>{"You haven't added any contacts yet."}</Text>
-                  </Stack>
+                  search ? (
+                    <Stack py={8} alignItems="center" w="100%" alignSelf="center">
+                      <Text fontSize="2xl">🔎</Text>
+                      <Text color={bodySub}>{'No items match your search.'}</Text>
+                    </Stack>
+                  ) : (
+                    <Stack py={8} alignItems="center" w="100%" alignSelf="center">
+                      <Text fontSize="2xl">📇</Text>
+                      <Text color={bodySub}>{"You haven't added any contacts yet."}</Text>
+                    </Stack>
+                  )
                 }
               />
             </Stack>

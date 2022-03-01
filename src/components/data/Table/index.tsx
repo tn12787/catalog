@@ -81,7 +81,7 @@ const Table = <T extends object>({
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Stack>
             ),
-            width: 15,
+            width: 20,
             flexGrow: 0,
           },
           ...columns,

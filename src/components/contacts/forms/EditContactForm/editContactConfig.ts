@@ -8,21 +8,31 @@ export const buildEditContactConfig = (): FormDatum<ContactWithLabels>[] => [
     type: 'text',
     extraProps: {
       required: true,
+      Placeholder: 'Example inc.',
     },
   },
   {
     name: 'email',
-    label: 'Email',
+    label: 'Email (optional)',
     type: 'email',
+    extraProps: {
+      placeholder: 'name@example.com',
+    },
   },
   {
     name: 'phone',
-    label: 'Phone',
+    label: 'Phone (optional)',
     type: 'tel',
+    extraProps: {
+      placeholder: '+1 (555) 555-5555',
+    },
   },
   {
     name: 'website',
-    label: 'Website',
+    label: 'Website (optional)',
     type: 'url',
+    extraProps: {
+      placeholder: 'https://example.com',
+    },
   },
 ];

@@ -3,7 +3,7 @@ import React from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 
-import { buildEditContactConfig } from './editUserConfig';
+import { buildEditContactConfig } from './editContactConfig';
 
 import FormContent from 'components/forms/FormContent';
 import { FormBodyProps } from 'types/forms';

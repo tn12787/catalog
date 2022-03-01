@@ -37,11 +37,13 @@ export const columns: Column<ContactLabelWithContacts>[] = [
     id: 'contacts',
     accessor: 'contacts',
     Cell: ContactCountCell,
+    disableSortBy: true,
   },
   {
     accessor: (d) => d,
     Cell: ContactLabelMenu,
     id: 'actions',
-    width: 30,
+    width: 25,
+    disableSortBy: true,
   },
 ];

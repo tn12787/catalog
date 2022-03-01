@@ -1,3 +1,4 @@
+import ColorField from 'components/forms/ColorField';
 import { ContactLabelWithContacts } from 'types/common';
 import { FormDatum } from 'types/forms';
 
@@ -13,6 +14,6 @@ export const buildEditContactLabelConfig = (): FormDatum<ContactLabelWithContact
   {
     name: 'color',
     label: 'Color',
-    type: 'color',
+    CustomComponent: ColorField,
   },
 ];

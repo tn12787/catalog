@@ -41,7 +41,7 @@ const SingleArtist = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/teams/${currentTeam}/overview`}>
+            <Link passHref href={`/overview`}>
               <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>

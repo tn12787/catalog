@@ -27,7 +27,6 @@ import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedire
 import PageHead from 'components/pageItems/PageHead';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import Card from 'components/Card';
-import ContactModal from 'components/contacts/ContactModal';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useContactLabels from 'hooks/data/contacts/labels/useContactLabels';
 import { FilterOptions } from 'queries/types';
@@ -55,7 +54,7 @@ const ContactLabelsPage = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/teams/${currentTeam}/overview`}>
+            <Link passHref href={`/overview`}>
               <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
