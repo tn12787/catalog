@@ -48,6 +48,7 @@ export type NotificationWithTask = Notification & {
 
 export type ReleaseTaskWithAssignees = ReleaseTask & {
   assignees: TeamMemberWithUser[];
+  contacts: ContactWithLabels[];
 };
 
 export type ReleaseTaskEventWithUser = ReleaseTaskEvent & {

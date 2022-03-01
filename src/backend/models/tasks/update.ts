@@ -17,4 +17,8 @@ export class UpdateBaseReleaseTaskDto {
   @IsOptional()
   @IsArray()
   assignees?: string[];
+
+  @IsOptional()
+  @IsArray()
+  contacts?: string[];
 }

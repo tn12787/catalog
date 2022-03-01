@@ -16,6 +16,7 @@ class SpecificReleaseEventsHandler {
         tasks: {
           include: {
             assignees: { include: { user: true } },
+            contacts: { include: { labels: true } },
             artworkData: true,
             distributionData: true,
             marketingData: true,
