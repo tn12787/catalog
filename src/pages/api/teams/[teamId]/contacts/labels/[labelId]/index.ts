@@ -29,7 +29,7 @@ class SpecificNotificationHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_CONTACTS'], teamId);
 
-    const updatedContact = await prisma.contactLabel.update({
+    const updatedContactLabel = await prisma.contactLabel.update({
       where: {
         id: labelId,
       },
@@ -37,7 +37,7 @@ class SpecificNotificationHandler {
         ...body,
       },
     });
-    return updatedContact;
+    return updatedContactLabel;
   }
 
   @Delete()
