@@ -8,8 +8,6 @@ import { defaultTeamLabels } from './defaultLabels';
 import prisma from 'backend/prisma/client';
 import { PermissionType, ExtendedSession, AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
-import { isBackendFeatureEnabled } from 'common/features';
-import { FeatureKey } from 'common/features/types';
 
 type UserCreateArgs = {
   name: string;
