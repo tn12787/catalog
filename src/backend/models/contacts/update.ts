@@ -7,7 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import { CreateContactLabelDto } from './labels/create';
+import { UpdateContactLabelDto } from './labels/update';
 
 export class UpdateContactDto {
   @IsOptional()
@@ -24,5 +24,5 @@ export class UpdateContactDto {
 
   @IsOptional()
   @ValidateNested({ each: true })
-  labels?: CreateContactLabelDto[];
+  labels?: UpdateContactLabelDto[];
 }
