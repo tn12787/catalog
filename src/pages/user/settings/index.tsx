@@ -2,7 +2,7 @@ import { Stack, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
 
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
 import { fetchMe } from 'queries/me';
 import UserInformation from 'components/users/UserInformation';

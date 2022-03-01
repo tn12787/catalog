@@ -5,7 +5,7 @@ import { getSession, signIn, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 
 const Login = () => {
   const router = useRouter();

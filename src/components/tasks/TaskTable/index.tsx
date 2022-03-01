@@ -2,7 +2,7 @@ import React from 'react';
 
 import { columns } from './columns';
 
-import Table from 'components/Table';
+import Table from 'components/data/Table';
 import { ReleaseEvent } from 'types/common';
 
 interface Props {

@@ -7,8 +7,8 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/common/index';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams/index';
+import { AuthDecoratedRequest } from 'types/common';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { CreatePortalSessionDto } from 'backend/models/payments/portal/create';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';

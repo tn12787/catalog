@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import Image from 'next/image';
 
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
 import FormContent from 'components/forms/FormContent';
 import { FormDatum } from 'types/forms';

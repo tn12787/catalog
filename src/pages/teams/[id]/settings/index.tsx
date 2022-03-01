@@ -5,7 +5,7 @@ import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import useAppColors from 'hooks/useAppColors';
 import TeamInformation from 'components/teams/settings/TeamInformation';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import PlanCards from 'components/teams/settings/PlanCards';
 import MembersCard from 'components/teams/settings/MembersCard';
 import UpgradeCards from 'components/teams/settings/UpgradeCards';

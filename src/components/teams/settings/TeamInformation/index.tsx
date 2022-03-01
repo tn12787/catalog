@@ -7,7 +7,7 @@ import { Avatar } from '@chakra-ui/react';
 import EditTeamInfoForm from './EditTeamInfoForm';
 
 import Card from 'components/Card';
-import DataList from 'components/DataList';
+import DataList from 'components/data/DataList';
 import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
 
 const TeamInformation = () => {

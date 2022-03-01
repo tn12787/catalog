@@ -2,7 +2,7 @@ import React from 'react';
 
 import { teamMembersColumns } from './columns';
 
-import Table from 'components/Table';
+import Table from 'components/data/Table';
 import { ClientRelease } from 'types/common';
 
 interface Props {

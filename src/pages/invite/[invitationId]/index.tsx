@@ -5,7 +5,7 @@ import { Flex, Spinner, Stack, useToast } from '@chakra-ui/react';
 
 import { acceptInvite } from 'queries/invitations';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import useExtendedSession from 'hooks/useExtendedSession';
 import InvalidInvitation from 'components/invitations/InvalidInvitation';
 import AcceptedInvitation from 'components/invitations/AcceptedInvitation';

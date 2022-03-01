@@ -1,154 +1,41 @@
-import { Input } from '@chakra-ui/input';
-import {
-  InputGroup,
-  Flex,
-  InputRightElement,
-  Text,
-  IconButton,
-  Stack,
-  Wrap,
-} from '@chakra-ui/react';
 import React from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
-import { useCombobox } from 'downshift';
-import { BiChevronDown } from 'react-icons/bi';
-import { uniqBy } from 'lodash';
+import { User } from '@prisma/client';
 
-import AssigneeSelectList from './AssigneeSelectList';
 import AssigneeItem from './AssigneeItem';
+import AssigneeSelectedItems from './AssigneeSelectedItems';
 
-import useAppColors from 'hooks/useAppColors';
-import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
-import { TeamMemberWithUser, TeamMemberWithUserAndRoles } from 'types/common';
+import { TeamMemberWithUserAndRoles } from 'types/common';
 import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import MultiSelect from 'components/forms/MultiSelect';
+import { MultiSelectListItemProps } from 'components/forms/MultiSelect/types';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {
-  value: TeamMemberWithUser[];
+  value: TeamMemberWithUserAndRoles[];
   borderless?: boolean;
 }
 
 const AssigneeSelect: React.FC<Props> = React.forwardRef(
-  ({ value, borderless = false, onChange }: Props, ref) => {
-    const currentAssignees = value || [];
-
+  ({ value, borderless = false, onChange }: Props) => {
     const { team: teamData, isLoading } = useCurrentTeam();
 
-    const [searchString, setSearchString] = React.useState('');
-
-    const allTeamMembers =
-      teamData?.members.filter((item) =>
-        item.user.name?.toLowerCase().includes(searchString.toLowerCase())
-      ) || [];
-
-    const { bgPrimary, primary, bodySub, border } = useAppColors();
-
-    const onItemChange = (item: TeamMemberWithUser) => {
-      const newAssigneesWithoutDuplicate = uniqBy(
-        [...currentAssignees, item],
-        (item) => item.id
-      ).filter(Boolean);
-
-      onChange(newAssigneesWithoutDuplicate);
-    };
-
-    const {
-      isOpen,
-      closeMenu,
-      getMenuProps,
-      getInputProps,
-      getComboboxProps,
-      getToggleButtonProps,
-      getItemProps,
-      highlightedIndex,
-      selectItem,
-    } = useCombobox({
-      items: allTeamMembers,
-      onInputValueChange: ({ inputValue }) => {
-        setSearchString(inputValue ?? '');
-      },
-      inputValue: searchString,
-      onSelectedItemChange: (changes) => {
-        onItemChange(changes.selectedItem as TeamMemberWithUser);
-        setSearchString('');
-      },
-
-      itemToString: (item) => item?.user.name ?? '',
-    });
+    const allTeamMembers = teamData?.members || [];
 
     return (
-      <Stack>
-        <Wrap>
-          {currentAssignees?.length
-            ? currentAssignees?.map((assignee) => {
-                return (
-                  <AssigneeBadge
-                    onRemoveClick={(removedUser) => {
-                      onChange(currentAssignees?.filter((item) => item?.id !== removedUser.id));
-                    }}
-                    editable
-                    key={assignee.id}
-                    teamMember={assignee}
-                  />
-                );
-              })
-            : null}
-        </Wrap>
-        <InputGroup borderRadius="md" w="full">
-          <Flex {...getComboboxProps()} position="relative" w="100%" direction="column">
-            <Input
-              {...getToggleButtonProps()}
-              {...getInputProps()}
-              placeholder="Search for a user..."
-              borderWidth={borderless ? '0' : '1px'}
-              borderColor={border}
-              value={searchString}
-              focusBorderColor={primary}
-            />
-            <InputRightElement>
-              <IconButton
-                fontSize="xl"
-                variant="ghost"
-                {...getToggleButtonProps()}
-                icon={<BiChevronDown />}
-              />
-            </InputRightElement>
-
-            <AssigneeSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
-              {allTeamMembers.length ? (
-                allTeamMembers.map((item: TeamMemberWithUserAndRoles, index: number) => (
-                  <AssigneeItem
-                    ref={ref}
-                    selected={currentAssignees?.some((assignee) => assignee.id === item.id)}
-                    {...getItemProps({ item: item, index })}
-                    _hover={{
-                      bgColor: bgPrimary,
-                    }}
-                    key={index}
-                    item={item.user}
-                    itemIndex={index}
-                    highlightedIndex={highlightedIndex}
-                    onClick={() => {
-                      selectItem(item);
-                      closeMenu();
-                    }}
-                  />
-                ))
-              ) : (
-                <Text
-                  p={3}
-                  fontSize="md"
-                  borderRadius="md"
-                  cursor="pointer"
-                  transition="background-color 220ms, color 220ms"
-                  color={bodySub}
-                >
-                  No users match your search.
-                </Text>
-              )}
-            </AssigneeSelectList>
-          </Flex>
-        </InputGroup>
-      </Stack>
+      <MultiSelect
+        isLoading={isLoading}
+        value={value}
+        onChange={onChange}
+        borderless={borderless}
+        itemToString={(item) => item?.user?.name || ''}
+        renderSelectedItems={AssigneeSelectedItems}
+        renderListItem={(props: MultiSelectListItemProps<User>) => <AssigneeItem {...props} />}
+        allItems={allTeamMembers}
+        filterFn={(item: TeamMemberWithUserAndRoles, search: string) =>
+          item.user.name?.toLowerCase().includes(search.toLowerCase()) ?? false
+        }
+        getItem={(item: TeamMemberWithUserAndRoles) => item.user}
+      />
     );
   }
 );

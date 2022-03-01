@@ -19,12 +19,10 @@ import {
   Artist,
   ReleaseTaskEvent,
   Invite,
+  ContactLabel,
+  Contact,
 } from '@prisma/client';
 import Stripe from 'stripe';
-
-interface DataModel {
-  id: string;
-}
 
 export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date;
@@ -34,6 +32,14 @@ export type TeamMemberWithUser = TeamMember & { user: User };
 
 export type TeamMemberWithUserAndRoles = TeamMemberWithUser & {
   roles: Role[];
+};
+
+export type ContactWithLabels = Contact & {
+  labels?: ContactLabel[];
+};
+
+export type ContactLabelWithContacts = ContactLabel & {
+  contacts?: Contact[];
 };
 
 export type NotificationWithTask = Notification & {
@@ -81,12 +87,6 @@ export enum ReleaseType {
   SINGLE = 'Single',
   EP = 'EP',
   ALBUM = 'Album',
-}
-
-export interface Contact extends DataModel {
-  name: string;
-  email?: string;
-  phone?: string;
 }
 
 export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
@@ -162,7 +162,11 @@ export type PermissionType =
   | 'VIEW_TEAM'
   | 'UPDATE_TEAM'
   | 'DELETE_TEAM'
-  | 'DELETE_ALL_COMMENTS';
+  | 'DELETE_ALL_COMMENTS'
+  | 'CREATE_CONTACTS'
+  | 'VIEW_CONTACTS'
+  | 'UPDATE_CONTACTS'
+  | 'DELETE_CONTACTS';
 
 export type MailingListData = {
   firstName: string;

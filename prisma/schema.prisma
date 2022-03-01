@@ -45,17 +45,18 @@ enum TaskEventType {
 }
 
 model Team {
-  id                   String        @id @default(cuid())
+  id                   String         @id @default(cuid())
   name                 String
   imageUrl             String?
   provider             CloudProvider
   members              TeamMember[]
   artists              Artist[]
   contacts             Contact[]
+  contactLabels        ContactLabel[]
   releases             Release[]
   invites              Invite[]
-  stripeCustomerId     String        @unique
-  stripeSubscriptionId String?       @unique
+  stripeCustomerId     String         @unique
+  stripeSubscriptionId String?        @unique
 }
 
 model TeamMember {
@@ -169,16 +170,31 @@ model Release {
 }
 
 model Contact {
-  id     String  @id @default(cuid())
-  name   String
-  email  String?
-  phone  String?
-  team   Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId String
+  id      String         @id @default(cuid())
+  name    String
+  email   String?
+  phone   String?
+  website String?
+  team    Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId  String
+  tasks   ReleaseTask[]
+  labels  ContactLabel[]
 
-  createdAt DateTime      @default(now())
-  updatedAt DateTime?     @updatedAt
-  tasks     ReleaseTask[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@unique([name, teamId])
+}
+
+model ContactLabel {
+  id       String    @id @default(cuid())
+  name     String
+  team     Team?     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId   String
+  color    String?
+  contacts Contact[]
+
+  @@unique([name, teamId])
 }
 
 model ReleaseTask {
@@ -191,8 +207,7 @@ model ReleaseTask {
   release          Release            @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId        String
   assignees        TeamMember[]
-  completedBy      Contact?           @relation(fields: [completedById], references: [id])
-  completedById    String?
+  contacts         Contact[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime?          @updatedAt
   artworkData      ArtworkData?
