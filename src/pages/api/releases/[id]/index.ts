@@ -43,6 +43,7 @@ class SingleReleaseHandler {
         tasks: {
           include: {
             assignees: { include: { user: true } },
+            contacts: { include: { labels: true } },
             artworkData: true,
             distributionData: { include: { distributor: true } },
             marketingData: { include: { links: true } },

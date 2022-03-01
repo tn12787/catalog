@@ -41,6 +41,7 @@ class SingleTaskHandler {
         masteringData: true,
         artworkData: true,
         notes: true,
+        contacts: true,
       },
     });
 

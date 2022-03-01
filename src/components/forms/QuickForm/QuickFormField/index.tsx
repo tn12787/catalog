@@ -17,13 +17,14 @@ import { FiEdit } from 'react-icons/fi';
 import { Distributor, TaskStatus } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
-import { TeamMemberWithUser } from 'types/common';
+import { ContactWithLabels, TeamMemberWithUser } from 'types/common';
 
 type FieldValues =
   | string
   | TaskStatus
   | string[]
   | TeamMemberWithUser[]
+  | ContactWithLabels[]
   | Date
   | Distributor
   | undefined;
@@ -31,7 +32,7 @@ type FieldValues =
 type Props<T extends FieldValues> = PopoverProps & {
   fieldName: string;
   value: T;
-  renderValue?: ({ value }: any) => JSX.Element;
+  renderValue?: ({ value }: { value: T }) => JSX.Element;
   onSubmit: (value: T) => void | Promise<void>;
   renderEditing: ({ value, onChange }: any) => JSX.Element;
 };

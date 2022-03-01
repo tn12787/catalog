@@ -19,7 +19,7 @@ const RoleBadgeList = ({ roles, inline }: Props) => {
         roles?.map((role) => <RoleBadge inline={inline} key={role.id} role={role} />)
       ) : (
         <Text fontSize="xs" color={bodySub}>
-          roles assigned
+          No roles assigned
         </Text>
       )}
     </Wrap>

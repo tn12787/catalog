@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import Card from 'components/Card';
 import StatusField from 'components/forms/QuickForm/StatusField';
-import { EnrichedReleaseTask, TeamMemberWithUser } from 'types/common';
+import { ContactWithLabels, EnrichedReleaseTask, TeamMemberWithUser } from 'types/common';
 import { updateTask } from 'queries/tasks';
 import AssigneesField from 'components/forms/QuickForm/AssigneesField';
 import { UpdateTaskVars } from 'queries/tasks/types';
@@ -13,6 +13,7 @@ import DueDateField from 'components/forms/QuickForm/DueDateField';
 import UrlField from 'components/forms/QuickForm/UrlField';
 import ImageField from 'components/forms/QuickForm/ImageField';
 import DistributorField from 'components/forms/QuickForm/DistributorField';
+import ContactsField from 'components/forms/QuickForm/ContactsField';
 
 type Props = { loading?: boolean; task: EnrichedReleaseTask | undefined };
 
@@ -72,6 +73,12 @@ const TaskInfo = ({ loading, task }: Props) => {
         <AssigneesField
           assignees={task?.assignees as TeamMemberWithUser[]}
           onChange={(assignees) => onSubmit({ assignees })}
+        />
+      </Skeleton>
+      <Skeleton isLoaded={!loading}>
+        <ContactsField
+          contacts={task?.contacts as ContactWithLabels[]}
+          onChange={(contacts) => onSubmit({ contacts })}
         />
       </Skeleton>
       <Skeleton isLoaded={!loading}>
