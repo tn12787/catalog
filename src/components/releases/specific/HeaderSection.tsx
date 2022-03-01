@@ -66,7 +66,7 @@ const HeaderSection = ({ releaseData }: Props) => {
       <Stack w={{ base: '90%', md: '100%' }}>
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/teams/${currentTeam}/overview`}>
+            <Link passHref href={`/overview`}>
               <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>

@@ -24,7 +24,7 @@ import { EventList } from 'components/releases/specific/Events/EventList';
 import { EventListItem } from 'components/releases/specific/Events/EventListItem';
 import Card from 'components/Card';
 import { hasRequiredPermissions } from 'utils/auth';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 
 const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
   {

@@ -12,7 +12,7 @@ import { AxiosError } from 'axios';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import { fetchSingleTask, fetchTaskActivity, postNewComment } from 'queries/tasks';
 import ActivityList from 'components/tasks/activity/ActivityList';
 import useExtendedSession from 'hooks/useExtendedSession';

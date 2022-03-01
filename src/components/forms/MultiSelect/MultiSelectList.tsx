@@ -7,7 +7,7 @@ interface Props extends ListProps {
   isOpen?: boolean;
 }
 
-const AssigneeSelectList = React.forwardRef(({ isOpen, ...rest }: Props, ref) => {
+const MultiSelectList = React.forwardRef(({ isOpen, ...rest }: Props, ref) => {
   const { bgSecondary, border } = useAppColors();
   return isOpen ? (
     <List
@@ -29,6 +29,6 @@ const AssigneeSelectList = React.forwardRef(({ isOpen, ...rest }: Props, ref) =>
   ) : null;
 });
 
-AssigneeSelectList.displayName = 'AssigneeSelectList';
+MultiSelectList.displayName = 'MultiSelectList';
 
-export default AssigneeSelectList;
+export default MultiSelectList;

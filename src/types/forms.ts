@@ -11,7 +11,7 @@ export interface FormDatum<T, K = any> {
   defaultValue?: K;
   hidden?: boolean;
   isLoading?: boolean;
-  CustomComponent?: React.FC<ControllerRenderProps>;
+  CustomComponent?: React.FC<ControllerRenderProps> & { ref?: any };
 }
 
 export interface FormBodyProps<T> {

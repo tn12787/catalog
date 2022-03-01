@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { User } from '@prisma/client';
 
 import FormField from 'components/forms/FormContent/FormField';
-import DataList from 'components/DataList';
+import DataList from 'components/data/DataList';
 import { updateSingleUser } from 'queries/me';
 
 interface Props {

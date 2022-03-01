@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import PageHead from 'components/PageHead';
+import PageHead from 'components/pageItems/PageHead';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { fetchReleaseEvents } from 'queries/events';
 import useExtendedSession from 'hooks/useExtendedSession';

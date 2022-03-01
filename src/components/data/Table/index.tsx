@@ -1,6 +1,6 @@
-import { Text, Box } from '@chakra-ui/react';
+import { Text, Box, Stack } from '@chakra-ui/react';
 import { Thead, Tr, Th, Tbody, Td, Table as ChakraTable } from '@chakra-ui/table';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   Cell,
   Column,
@@ -77,11 +77,11 @@ const Table = <T extends object>({
             ),
 
             Cell: ({ row }: Cell<T>) => (
-              <div>
+              <Stack justifyContent="center">
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-              </div>
+              </Stack>
             ),
-            width: 4,
+            width: 20,
             flexGrow: 0,
           },
           ...columns,

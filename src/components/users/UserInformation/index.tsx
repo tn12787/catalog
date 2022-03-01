@@ -7,7 +7,7 @@ import { FiEdit } from 'react-icons/fi';
 import EditUserInfoForm from './EditUserInfoForm';
 
 import Card from 'components/Card';
-import DataList from 'components/DataList';
+import DataList from 'components/data/DataList';
 
 interface Props {
   user?: User;
