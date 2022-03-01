@@ -1,4 +1,4 @@
-import { Flex, HStack, ListItem, ListItemProps, Text } from '@chakra-ui/layout';
+import { Flex, HStack, ListItem, ListItemProps } from '@chakra-ui/layout';
 import React from 'react';
 import { ContactLabel } from '@prisma/client';
 import { BiCheck } from 'react-icons/bi';

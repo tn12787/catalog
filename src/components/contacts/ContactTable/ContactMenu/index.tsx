@@ -40,7 +40,6 @@ const ContactMenu = ({ value }: Props) => {
     deleteSingleContact: { mutateAsync, isLoading },
   } = useContactMutations();
 
-  // TODO: make this remove contact, not team memeber
   const onDelete = async () => {
     try {
       await mutateAsync({ teamId: currentTeam, id: value.id });
