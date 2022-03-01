@@ -1,5 +1,3 @@
-import { Placeholder } from './../../../../releases/specific/Events/Placeholder';
-
 import ColorField from 'components/forms/ColorField';
 import { ContactLabelWithContacts } from 'types/common';
 import { FormDatum } from 'types/forms';
