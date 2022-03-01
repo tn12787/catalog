@@ -14,6 +14,6 @@ export type UpdateCommentVars = ExistingCommentVars & { text: string };
 export type DeleteCommentVars = ExistingCommentVars;
 
 export type UpdateTaskVars = Partial<
-  Pick<ReleaseTaskWithAssignees, 'assignees' | 'dueDate' | 'notes' | 'status'> &
+  Pick<ReleaseTaskWithAssignees, 'assignees' | 'contacts' | 'dueDate' | 'notes' | 'status'> &
     Pick<ReleaseTaskWithAssignees, 'id'> & { url?: string; distributor?: string }
 >;

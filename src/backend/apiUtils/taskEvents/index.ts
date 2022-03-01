@@ -32,6 +32,7 @@ export const createUpdateTaskEvents = async ({
     where: { releaseId_type: { releaseId, type } },
     include: {
       assignees: { include: { user: true } },
+      contacts: { include: { labels: true } },
       release: { select: { teamId: true } },
     },
   });

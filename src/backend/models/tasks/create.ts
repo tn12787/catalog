@@ -21,4 +21,8 @@ export class CreateBaseReleaseTaskDto {
   @IsOptional()
   @IsArray()
   assignees?: string[];
+
+  @IsOptional()
+  @IsArray()
+  contacts?: string[];
 }

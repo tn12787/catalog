@@ -3,6 +3,8 @@ import { NotFoundException } from '@storyofams/next-api-decorators';
 import { pick } from 'lodash';
 import { ReleaseTaskType } from '@prisma/client';
 
+import { transformContactsToPrismaQuery } from '../transforms/contacts';
+
 import { CreateReleaseTaskDto, UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
@@ -31,6 +33,7 @@ export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto) => {
       ...pick(body, ['status', 'notes', 'dueDate', 'type']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees, true),
+      contacts: transformContactsToPrismaQuery(body.contacts, true),
     },
     (v) => !isNil(v)
   );
@@ -46,6 +49,7 @@ export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: Rel
       ...pick(body, ['status', 'notes', 'dueDate']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees),
+      contacts: transformContactsToPrismaQuery(body.contacts, true),
     },
     (v) => !isNil(v)
   );
