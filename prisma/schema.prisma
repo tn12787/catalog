@@ -189,7 +189,7 @@ model Contact {
 model ContactLabel {
   id       String    @id @default(cuid())
   name     String
-  Team     Team?     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team     Team?     @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId   String
   color    String?
   contacts Contact[]

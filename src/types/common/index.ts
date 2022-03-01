@@ -38,6 +38,10 @@ export type ContactWithLabels = Contact & {
   labels?: ContactLabel[];
 };
 
+export type ContactLabelWithContacts = ContactLabel & {
+  contacts?: Contact[];
+};
+
 export type NotificationWithTask = Notification & {
   task: ReleaseTask & { release: Release };
 };

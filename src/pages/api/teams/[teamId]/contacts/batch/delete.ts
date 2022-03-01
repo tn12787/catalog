@@ -6,7 +6,7 @@ import {
   Post,
 } from '@storyofams/next-api-decorators';
 
-import { checkRequiredPermissions } from 'backend/apiUtils/teams/index';
+import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { BatchDeleteContactDto } from 'backend/models/contacts/batch/delete';
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';

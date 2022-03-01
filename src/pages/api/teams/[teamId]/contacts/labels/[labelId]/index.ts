@@ -7,40 +7,34 @@ import {
   Delete,
 } from '@storyofams/next-api-decorators';
 
+import { UpdateContactLabelDto } from 'backend/models/contacts/labels/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/teams';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
-import { UpdateContactDto } from 'backend/models/contacts/update';
 
 @requiresAuth()
 class SpecificNotificationHandler {
   @Patch()
   async updateSingleContact(
     @Req() req: AuthDecoratedRequest,
-    @Body() body: UpdateContactDto,
+    @Body() body: UpdateContactLabelDto,
     @PathParam('teamId') teamId: string,
-    @PathParam('contactId') contactId: string
+    @PathParam('labelId') labelId: string
   ) {
-    if (!contactId) {
+    if (!labelId) {
       throw new NotFoundException();
     }
 
     await checkRequiredPermissions(req, ['UPDATE_CONTACTS'], teamId);
 
-    const updatedContact = await prisma.contact.update({
+    const updatedContact = await prisma.contactLabel.update({
       where: {
-        id: contactId,
+        id: labelId,
       },
       data: {
         ...body,
-        labels: {
-          connectOrCreate: body.labels?.map(({ name, color }) => ({
-            where: { name_teamId: { name, teamId } },
-            create: { name, teamId, color },
-          })),
-        },
       },
     });
     return updatedContact;
@@ -50,20 +44,20 @@ class SpecificNotificationHandler {
   async deleteSingleContact(
     @Req() req: AuthDecoratedRequest,
     @PathParam('teamId') teamId: string,
-    @PathParam('contactId') contactId: string
+    @PathParam('labelId') labelId: string
   ) {
-    if (!contactId) {
+    if (!labelId) {
       throw new NotFoundException();
     }
 
     await checkRequiredPermissions(req, ['DELETE_CONTACTS'], teamId);
 
-    const deletedContact = await prisma.contact.delete({
+    const deletedContactLabel = await prisma.contact.delete({
       where: {
-        id: contactId,
+        id: labelId,
       },
     });
-    return deletedContact;
+    return deletedContactLabel;
   }
 }
 

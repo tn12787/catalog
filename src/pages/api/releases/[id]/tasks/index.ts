@@ -1,6 +1,6 @@
 import { Body, createHandler, Post, Req, ValidationPipe } from '@storyofams/next-api-decorators';
 
-import { getResourceTeamMembership } from 'backend/apiUtils/teams/index';
+import { getResourceTeamMembership } from 'backend/apiUtils/teams';
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
