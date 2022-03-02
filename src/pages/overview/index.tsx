@@ -17,13 +17,13 @@ import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
-  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
   const { workspace: workspaceData, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const { data, isLoading } = useQuery(
-    ['releaseEvents', currentWorkspace, workspaces?.[currentWorkspace]?.id],
-    () => fetchReleaseEvents(currentWorkspace, workspaces?.[currentWorkspace]?.id)
+    ['releaseEvents', currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id],
+    () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id)
   );
 
   const { data: upcomingReleases } = useQuery(

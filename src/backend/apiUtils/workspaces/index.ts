@@ -54,7 +54,7 @@ export const getResourceWorkspaceMembership = async (
 ) => {
   const session = (await getSession({ req })) as ExtendedSession;
 
-  return session?.token.workspaces.find(
+  return session?.token.workspaceMemberships.find(
     (userWorkspace) => userWorkspace.workspaceId === workspaceId
   );
 };
@@ -63,7 +63,7 @@ export const ensureUserHasWorkspaceMembershipSync = (
   session: ExtendedSession,
   workspaceMemberId?: string
 ) => {
-  const workspaceMembership = session?.token.workspaces.find(
+  const workspaceMembership = session?.token.workspaceMemberships.find(
     (userWorkspace) => userWorkspace.id === workspaceMemberId
   );
 

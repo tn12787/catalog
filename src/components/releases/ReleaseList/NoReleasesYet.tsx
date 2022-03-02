@@ -8,10 +8,10 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 
 const NoReleasesYet = () => {
-  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const canCreateRelease = hasRequiredPermissions(
     ['CREATE_RELEASES'],
-    workspaces?.[currentWorkspace]
+    workspaceMemberships?.[currentWorkspace]
   );
 
   return (

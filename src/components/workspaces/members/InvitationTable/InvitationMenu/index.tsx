@@ -25,11 +25,11 @@ import { rescindInvitation } from 'queries/invitations';
 type Props = CellProps<WorkspaceMemberWithUserAndRoles>;
 
 const InvitationMenu = ({ value }: Props) => {
-  const { workspaces, currentWorkspace } = useExtendedSession();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
   const canEdit = [
-    hasRequiredPermissions(['UPDATE_TEAM'], workspaces?.[currentWorkspace]),
-    workspaces?.[currentWorkspace].id !== value.id,
+    hasRequiredPermissions(['UPDATE_TEAM'], workspaceMemberships?.[currentWorkspace]),
+    workspaceMemberships?.[currentWorkspace].id !== value.id,
   ].every(Boolean);
 
   const { primary } = useAppColors();

@@ -16,11 +16,11 @@ interface Props {
 }
 
 const Nav = ({ links, onItemSelected }: Props) => {
-  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
   const canManageWorkspace = hasRequiredPermissions(
     ['UPDATE_TEAM'],
-    workspaces?.[currentWorkspace]
+    workspaceMemberships?.[currentWorkspace]
   );
   const { bgSecondary, bodySub } = useAppColors();
 

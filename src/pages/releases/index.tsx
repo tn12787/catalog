@@ -71,7 +71,7 @@ const Releases = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<SortBySelectOption<ClientRelease>>(sortOptions[0]);
 
-  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
   const { bgPrimary, primary, bgSecondary } = useAppColors();
 
@@ -98,7 +98,7 @@ const Releases = () => {
 
   const canCreateRelease = hasRequiredPermissions(
     ['CREATE_RELEASES'],
-    workspaces?.[currentWorkspace]
+    workspaceMemberships?.[currentWorkspace]
   );
 
   const shouldHideControls = (response?.results?.length === 0 && !debouncedSearch) || isLoading;

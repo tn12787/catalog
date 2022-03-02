@@ -23,7 +23,7 @@ interface Props {
 
 const ReleaseCalendar = ({ events, loading }: Props) => {
   const queryClient = useQueryClient();
-  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const router = useRouter();
 
   const { isOpen: isEventOpen, onClose: onEventClose, onOpen: onEventOpen } = useDisclosure();
@@ -78,7 +78,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
 
   const canEditReleases = hasRequiredPermissions(
     ['UPDATE_RELEASES'],
-    workspaces?.[currentWorkspace]
+    workspaceMemberships?.[currentWorkspace]
   );
   const toast = useToast();
   const dialogRef = useRef(null);

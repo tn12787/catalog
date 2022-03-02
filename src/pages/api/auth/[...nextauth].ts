@@ -63,7 +63,7 @@ export default NextAuth({
           },
         });
         session.accessToken = token.accessToken;
-        return { ...session, token: { ...token, workspaces: userWorkspaces }, user };
+        return { ...session, token: { ...token, workspaceMemberships: userWorkspaces }, user };
       } catch (e) {
         return session;
       }

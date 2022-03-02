@@ -58,10 +58,10 @@ const fields = (releaseData: ClientRelease): SummaryField[] => [
 const Summary = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const canUpdateRelease = hasRequiredPermissions(
     ['UPDATE_RELEASES'],
-    workspaces?.[currentWorkspace]
+    workspaceMemberships?.[currentWorkspace]
   );
 
   return (

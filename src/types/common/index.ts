@@ -135,7 +135,7 @@ export interface ExtendedToken {
   email: string;
   name: string;
   picture: string;
-  workspaces: EnrichedWorkspaceMember[];
+  workspaceMemberships: EnrichedWorkspaceMember[];
   sub: string;
 }
 

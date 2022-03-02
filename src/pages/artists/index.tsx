@@ -22,14 +22,14 @@ import PageHead from 'components/pageItems/PageHead';
 
 const Artists = () => {
   const { bgPrimary } = useAppColors();
-  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const { data: artists, isLoading } = useQuery(['artists', currentWorkspace], () =>
     fetchArtists(currentWorkspace)
   );
 
   const canCreateArtists = hasRequiredPermissions(
     ['CREATE_ARTISTS'],
-    workspaces?.[currentWorkspace]
+    workspaceMemberships?.[currentWorkspace]
   );
 
   return (
@@ -39,7 +39,9 @@ const Artists = () => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/workspaces/${currentWorkspace ?? 'noworkspace'}/overview`}>
-              <BreadcrumbLink>{workspaces?.[currentWorkspace]?.workspace.name}</BreadcrumbLink>
+              <BreadcrumbLink>
+                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
+              </BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 

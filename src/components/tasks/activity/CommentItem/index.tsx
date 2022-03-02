@@ -47,13 +47,14 @@ const CommentItem = ({ event, updates }: Props) => {
   const [isEditing, setEditing] = useState(false);
 
   const { newComment } = event.extraData as Prisma.JsonObject;
-  const { workspaces, currentWorkspace } = useExtendedSession();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
-  const isAuthor = event.user?.id === workspaces?.[currentWorkspace].id;
+  const isAuthor = event.user?.id === workspaceMemberships?.[currentWorkspace].id;
 
   const canDeleteComment =
-    isAuthor || hasRequiredPermissions(['DELETE_ALL_COMMENTS'], workspaces?.[currentWorkspace]);
+    isAuthor ||
+    hasRequiredPermissions(['DELETE_ALL_COMMENTS'], workspaceMemberships?.[currentWorkspace]);
   const canEditComment = isAuthor;
   const toast = useToast();
 

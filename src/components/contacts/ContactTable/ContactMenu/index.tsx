@@ -24,11 +24,11 @@ import ContactModal from 'components/contacts/ContactModal';
 type Props = CellProps<ContactWithLabels>;
 
 const ContactMenu = ({ value }: Props) => {
-  const { workspaces, currentWorkspace } = useExtendedSession();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
   const canEdit = [
-    hasRequiredPermissions(['UPDATE_CONTACTS'], workspaces?.[currentWorkspace]),
-    workspaces?.[currentWorkspace].id !== value.id,
+    hasRequiredPermissions(['UPDATE_CONTACTS'], workspaceMemberships?.[currentWorkspace]),
+    workspaceMemberships?.[currentWorkspace].id !== value.id,
   ].every(Boolean);
 
   const { primary } = useAppColors();

@@ -31,35 +31,35 @@ const useExtendedSession = () => {
   );
 
   const workspaceMap = useMemo(() => {
-    const workspaces = token?.workspaces;
+    const workspaceMemberships = token?.workspaceMemberships;
 
-    return workspaces?.reduce((acc, workspace) => {
+    return workspaceMemberships?.reduce((acc, workspace) => {
       acc[workspace.workspaceId] = workspace;
       return acc;
     }, {} as { [key: string]: EnrichedWorkspaceMember });
-  }, [token?.workspaces]);
+  }, [token?.workspaceMemberships]);
 
   const workspaceList = useMemo(() => {
-    return token?.workspaces;
-  }, [token?.workspaces]);
+    return token?.workspaceMemberships;
+  }, [token?.workspaceMemberships]);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const workspaces = token?.workspaces;
+    const workspaceMemberships = token?.workspaceMemberships;
     const storedWorkspace = localStorage.getItem('workspace');
-    if (Array.isArray(workspaces) && storedWorkspace) {
-      if (!token?.workspaces.find((workspace) => workspace.id === storedWorkspace)) {
+    if (Array.isArray(workspaceMemberships) && storedWorkspace) {
+      if (!token?.workspaceMemberships.find((workspace) => workspace.id === storedWorkspace)) {
         localStorage.removeItem('activeWorkspace');
       }
     }
 
-    if (workspaces) {
+    if (workspaceMemberships) {
       setCurrentWorkspace(
-        localStorage.getItem('activeWorkspace') || token?.workspaces?.[0]?.workspaceId
+        localStorage.getItem('activeWorkspace') || token?.workspaceMemberships?.[0]?.workspaceId
       );
     }
-  }, [token?.workspaces, setCurrentWorkspace]);
+  }, [token?.workspaceMemberships, setCurrentWorkspace]);
 
   const onChangeWorkspace = useCallback(
     (val: string) => {
@@ -75,7 +75,7 @@ const useExtendedSession = () => {
 
   return {
     token,
-    workspaces: workspaceMap,
+    workspaceMemberships: workspaceMap,
     workspaceList,
     currentWorkspace,
     onChangeWorkspace: onChangeWorkspace,

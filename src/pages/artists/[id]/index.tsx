@@ -27,7 +27,7 @@ const SingleArtist = () => {
   const router = useRouter();
   const artistId = router.query['id'] as string;
   const { bgPrimary } = useAppColors();
-  const { workspaces, currentWorkspace } = useExtendedSession();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
   const { data: response, isLoading } = useQuery(
     ['artists', artistId],
@@ -42,7 +42,9 @@ const SingleArtist = () => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/overview`}>
-              <BreadcrumbLink>{workspaces?.[currentWorkspace]?.workspace.name}</BreadcrumbLink>
+              <BreadcrumbLink>
+                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
+              </BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 

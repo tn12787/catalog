@@ -6,7 +6,7 @@ import { clearAllNotifications, markAllAsRead } from 'queries/notifications';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 const useUpdateAllNotifications = () => {
-  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();
@@ -43,15 +43,15 @@ const useUpdateAllNotifications = () => {
 
   const updateAll = useCallback(
     async (action: 'read' | 'delete') => {
-      if (!workspaces?.[currentWorkspace]?.id) {
+      if (!workspaceMemberships?.[currentWorkspace]?.id) {
         return;
       }
 
       const mutate = action === 'read' ? readAll : clearAll;
 
-      return mutate(workspaces?.[currentWorkspace]?.id);
+      return mutate(workspaceMemberships?.[currentWorkspace]?.id);
     },
-    [workspaces, currentWorkspace, readAll, clearAll]
+    [workspaceMemberships, currentWorkspace, readAll, clearAll]
   );
 
   return {
