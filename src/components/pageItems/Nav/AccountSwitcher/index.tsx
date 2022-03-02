@@ -50,7 +50,7 @@ export const AccountSwitcher = ({ onChange }: Props) => {
 
   const { withoutCurrent, mapped } = useAllWorkspaceNotifications();
 
-  const userWorkspaces = userData?.workspaces || token?.workspaces;
+  const userWorkspaces = userData?.workspaces || token?.workspaceMemberships;
   const activeWorkspace = useMemo(() => {
     return userWorkspaces?.find((item) => item.workspaceId === currentWorkspace);
   }, [currentWorkspace, userWorkspaces]);
