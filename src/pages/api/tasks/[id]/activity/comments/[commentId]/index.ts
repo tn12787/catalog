@@ -15,9 +15,9 @@ import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import {
   checkRequiredPermissions,
-  getAllUserPermissionsForTeam,
-  getResourceTeamMembership,
-} from 'backend/apiUtils/teams';
+  getAllUserPermissionsForWorkspace,
+  getResourceWorkspaceMembership,
+} from 'backend/apiUtils/workspaces';
 import { UpdateCommentDto } from 'backend/models/tasks/activity/comments/update';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
@@ -35,11 +35,11 @@ class SpecificCommentHandler {
     const task = await prisma.releaseTask.findUnique({
       where: { id: taskId },
       select: {
-        release: { select: { teamId: true } },
+        release: { select: { workspaceId: true } },
       },
     });
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.teamId);
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.workspaceId);
 
     //check if comment exists
     const comment = await prisma.releaseTaskEvent.findUnique({
@@ -53,7 +53,7 @@ class SpecificCommentHandler {
       throw new NotFoundException('Comment not found');
     }
 
-    const activeTeamMember = await getResourceTeamMembership(req, task?.release?.teamId);
+    const activeTeamMember = await getResourceWorkspaceMembership(req, task?.release?.workspaceId);
     if (!activeTeamMember) throw new ForbiddenException();
 
     // check if user is the author of the comment
@@ -87,11 +87,11 @@ class SpecificCommentHandler {
     const task = await prisma.releaseTask.findUnique({
       where: { id: taskId },
       select: {
-        release: { select: { teamId: true } },
+        release: { select: { workspaceId: true } },
       },
     });
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.teamId);
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.workspaceId);
 
     //check if comment exists
     const comment = await prisma.releaseTaskEvent.findUnique({
@@ -105,11 +105,14 @@ class SpecificCommentHandler {
       throw new NotFoundException('Comment not found');
     }
 
-    const activeTeamMember = await getResourceTeamMembership(req, task?.release?.teamId);
+    const activeTeamMember = await getResourceWorkspaceMembership(req, task?.release?.workspaceId);
     if (!activeTeamMember) throw new ForbiddenException();
 
     // To delete a comment, the user must either be the author of the comment, or have the DELETE_ALL_COMMENTS permission
-    const userPermissions = await getAllUserPermissionsForTeam(req, task?.release?.teamId);
+    const userPermissions = await getAllUserPermissionsForWorkspace(
+      req,
+      task?.release?.workspaceId
+    );
     const canDelete =
       comment.user.id === activeTeamMember.id || userPermissions.includes('DELETE_ALL_COMMENTS');
 

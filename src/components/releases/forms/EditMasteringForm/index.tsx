@@ -18,7 +18,7 @@ interface Props {
 const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const queryClient = useQueryClient();
 
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
 
   const { mutateAsync: createMastering, isLoading: createLoading } = useMutation(
     createSingleMastering,

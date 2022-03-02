@@ -19,7 +19,7 @@ interface Props {
 const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
   const toast = useToast();
 
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
 
   const queryClient = useQueryClient();
 

@@ -12,7 +12,10 @@ import {
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions, getResourceTeamMembership } from 'backend/apiUtils/teams';
+import {
+  checkRequiredPermissions,
+  getResourceWorkspaceMembership,
+} from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
@@ -45,7 +48,7 @@ class SingleTaskHandler {
       },
     });
 
-    await checkRequiredPermissions(req, ['VIEW_RELEASES'], task?.release?.teamId);
+    await checkRequiredPermissions(req, ['VIEW_RELEASES'], task?.release?.workspaceId);
 
     return task;
   }
@@ -84,7 +87,7 @@ class SingleTaskHandler {
       ...buildUpdateReleaseTaskArgs(body, releaseTask.type),
     };
 
-    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
+    const activeTeamMember = await getResourceWorkspaceMembership(req, releaseTeam?.workspaceId);
     if (!activeTeamMember) throw new ForbiddenException();
 
     const eventsToCreate = await createUpdateTaskEvents({

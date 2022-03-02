@@ -6,7 +6,7 @@ import { clearAllNotifications, markAllAsRead } from 'queries/notifications';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 const useUpdateAllNotifications = () => {
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();

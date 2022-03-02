@@ -4,9 +4,9 @@ import { Team, TeamMember, User } from '@prisma/client';
 import { UpdateUserVars } from './types';
 
 export const fetchMe = async () => {
-  const { data: response } = await axios.get<User & { teams: (TeamMember & { team: Team })[] }>(
-    `/api/me`
-  );
+  const { data: response } = await axios.get<
+    User & { teams: (TeamMember & { workspace: Team })[] }
+  >(`/api/me`);
   return response;
 };
 

@@ -18,7 +18,7 @@ interface Props {
 const EditMusicVideoForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const queryClient = useQueryClient();
 
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
 
   const { mutateAsync: createMusicVideo, isLoading: createLoading } = useMutation(
     createSingleMusicVideo,

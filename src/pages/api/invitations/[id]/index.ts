@@ -4,7 +4,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { AuthDecoratedRequest } from 'types/common';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 
 @requiresAuth()
 class TeamHandler {
@@ -20,7 +20,7 @@ class TeamHandler {
       throw new NotFoundException();
     }
 
-    await checkRequiredPermissions(req, ['UPDATE_TEAM'], existingInvite.teamId);
+    await checkRequiredPermissions(req, ['UPDATE_TEAM'], existingInvite.workspaceId);
 
     await prisma.invite.delete({
       where: { id },

@@ -6,7 +6,7 @@ import { ReleaseTaskType } from '@prisma/client';
 import { transformContactsToPrismaQuery } from '../transforms/contacts';
 
 import { CreateReleaseTaskDto, UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import { AuthDecoratedRequest } from 'types/common';
 import prisma from 'backend/prisma/client';
@@ -17,12 +17,12 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
   const releaseTeam = await prisma.release.findUnique({
     where: { id },
     select: {
-      teamId: true,
+      workspaceId: true,
       targetDate: true,
     },
   });
 
-  await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+  await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.workspaceId);
 
   return releaseTeam;
 };

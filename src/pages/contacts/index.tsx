@@ -49,7 +49,7 @@ const NoficationsPage = () => {
     search,
   };
 
-  const { teams, currentTeam } = useExtendedSession();
+  const { workspaces: teams, currentWorkspace: currentTeam } = useExtendedSession();
 
   const { data: contacts, isLoading } = useContacts(queryArgs);
 
@@ -72,7 +72,7 @@ const NoficationsPage = () => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/overview`}>
-              <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
+              <BreadcrumbLink>{teams?.[currentTeam]?.workspace.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 

@@ -4,12 +4,12 @@ import { Wrap } from '@chakra-ui/react';
 import AssigneeBadge from '../AssigneeBadge';
 
 import { SelectedItemListProps } from 'components/forms/MultiSelect/types';
-import { TeamMemberWithUserAndRoles } from 'types/common';
+import { WorkspaceMemberWithUserAndRoles } from 'types/common';
 
 const AssigneeSelectedItems = ({
   items,
   onChange,
-}: SelectedItemListProps<TeamMemberWithUserAndRoles>) => {
+}: SelectedItemListProps<WorkspaceMemberWithUserAndRoles>) => {
   return (
     <Wrap>
       {items?.length

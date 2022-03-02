@@ -18,7 +18,7 @@ const withReleaseData = <T extends ComponentWithReleaseData>(Component: Layoutab
   const Wrapper = (props: Omit<T, 'releaseData'>) => {
     const router = useRouter();
     const releaseId = router.query['id'] as string;
-    const { currentTeam } = useExtendedSession();
+    const { currentWorkspace: currentTeam } = useExtendedSession();
     const { data: response, isLoading } = useQuery(
       ['releases', currentTeam, releaseId],
       () => fetchSingleRelease(releaseId),

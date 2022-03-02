@@ -2,10 +2,10 @@ import axios from 'axios';
 
 import { DeleteTeamMemberVars, UpdateTeamMemberVars, UpdateTeamVars } from './types';
 
-import { EnrichedTeam } from 'types/common';
+import { EnrichedWorkspace } from 'types/common';
 
 export const fetchTeam = async (id: string) => {
-  const { data: response } = await axios.get<EnrichedTeam>(`/api/teams/${id}`);
+  const { data: response } = await axios.get<EnrichedWorkspace>(`/api/teams/${id}`);
 
   return response;
 };
@@ -21,17 +21,25 @@ export const updateSingleTeam = async ({ id, ...data }: UpdateTeamVars) => {
 };
 
 export const updateTeamMemberRoles = async ({
-  teamId,
-  teamMemberId,
+  workspaceId,
+  workspaceMemberId,
   roles,
 }: UpdateTeamMemberVars) => {
-  const { data: response } = await axios.patch(`/api/teams/${teamId}/members/${teamMemberId}`, {
-    roles,
-  });
+  const { data: response } = await axios.patch(
+    `/api/teams/${workspaceId}/members/${workspaceMemberId}`,
+    {
+      roles,
+    }
+  );
   return response;
 };
 
-export const deleteTeamMember = async ({ teamId, teamMemberId }: DeleteTeamMemberVars) => {
-  const { data: response } = await axios.delete(`/api/teams/${teamId}/members/${teamMemberId}`);
+export const deleteTeamMember = async ({
+  workspaceId,
+  workspaceMemberId,
+}: DeleteTeamMemberVars) => {
+  const { data: response } = await axios.delete(
+    `/api/teams/${workspaceId}/members/${workspaceMemberId}`
+  );
   return response;
 };

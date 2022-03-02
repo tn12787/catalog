@@ -4,13 +4,13 @@ import React from 'react';
 import { MdClose } from 'react-icons/md';
 
 import useAppColors from 'hooks/useAppColors';
-import { TeamMemberWithUser } from 'types/common';
+import { WorkspaceMember } from 'types/common';
 
 interface Props {
   editable?: boolean;
-  onClick?: (item: TeamMemberWithUser) => void;
-  onRemoveClick?: (item: TeamMemberWithUser) => void;
-  teamMember: TeamMemberWithUser;
+  onClick?: (item: WorkspaceMember) => void;
+  onRemoveClick?: (item: WorkspaceMember) => void;
+  teamMember: WorkspaceMember;
   inline?: boolean;
 }
 

@@ -4,7 +4,7 @@ import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 
 @requiresAuth()
 class SingleTaskHandler {
@@ -15,11 +15,11 @@ class SingleTaskHandler {
     const task = await prisma.releaseTask.findUnique({
       where: { id: taskId },
       select: {
-        release: { select: { teamId: true } },
+        release: { select: { workspaceId: true } },
       },
     });
 
-    await checkRequiredPermissions(req, ['VIEW_RELEASES'], task?.release?.teamId);
+    await checkRequiredPermissions(req, ['VIEW_RELEASES'], task?.release?.workspaceId);
 
     const activity = await prisma.releaseTaskEvent.findMany({
       where: {

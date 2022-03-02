@@ -12,7 +12,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateInvitationDto } from 'backend/models/invitations/create';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
 import { sendDynamicEmail } from 'backend/email';
 
@@ -29,11 +29,11 @@ type InvitationEmailData = {
 class TeamHandler {
   @Post()
   async createInvite(
-    @PathParam('teamId') id: string,
+    @PathParam('workspaceId') id: string,
     @Request() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateInvitationDto
   ) {
-    const team = await prisma.team.findUnique({
+    const team = await prisma.workspace.findUnique({
       where: { id },
       include: { members: { include: { user: { select: { email: true } } } } },
     });
@@ -49,7 +49,7 @@ class TeamHandler {
       data: {
         email: body.email,
         role: { connect: { id: body.role } },
-        team: {
+        workspace: {
           connect: {
             id,
           },

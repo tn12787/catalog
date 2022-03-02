@@ -6,7 +6,7 @@ import { createContactLabel, deleteContactLabel, updateContactLabel } from 'quer
 import useExtendedSession from 'hooks/useExtendedSession';
 
 const useContactLabelMutations = () => {
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();

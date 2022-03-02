@@ -11,7 +11,7 @@ type UseReadNotificationsOptions = {
 };
 
 const useBatchUpdateNotifications = ({ ids, read }: UseReadNotificationsOptions) => {
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();

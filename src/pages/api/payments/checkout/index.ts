@@ -12,7 +12,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
 import { CreateCheckoutSessionDto } from 'backend/models/payments/checkout/create';
 import prisma from 'backend/prisma/client';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 
 @requiresAuth()
 class CheckoutHandler {
@@ -21,11 +21,11 @@ class CheckoutHandler {
     @Request() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateCheckoutSessionDto
   ) {
-    const { priceId, quantity = 1, metadata = {}, teamId } = body;
+    const { priceId, quantity = 1, metadata = {}, workspaceId } = body;
 
-    await checkRequiredPermissions(req, ['UPDATE_TEAM'], teamId);
+    await checkRequiredPermissions(req, ['UPDATE_TEAM'], workspaceId);
 
-    const team = await prisma.team.findUnique({ where: { id: teamId } });
+    const team = await prisma.workspace.findUnique({ where: { id: workspaceId } });
     if (!team) {
       throw new NotFoundException();
     }
@@ -54,8 +54,8 @@ class CheckoutHandler {
         metadata,
       },
 
-      success_url: `${process.env.NEXTAUTH_URL}/teams/${teamId}/settings`,
-      cancel_url: `${process.env.NEXTAUTH_URL}/teams/${teamId}/settings`,
+      success_url: `${process.env.NEXTAUTH_URL}/teams/${workspaceId}/settings`,
+      cancel_url: `${process.env.NEXTAUTH_URL}/teams/${workspaceId}/settings`,
     });
 
     return { sessionId: session.id };

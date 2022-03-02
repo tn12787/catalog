@@ -6,7 +6,7 @@ import { createContact, deleteContact, updateContact } from 'queries/contacts';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 const useContactMutations = () => {
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();

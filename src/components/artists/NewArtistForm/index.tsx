@@ -35,7 +35,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
     },
   });
 
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
 
   const { data: artists } = useQuery(['artists', currentTeam], () => fetchArtists(currentTeam));
   const queryClient = useQueryClient();
@@ -55,7 +55,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
     try {
       const result = await createArtist({
         ...data,
-        team: currentTeam,
+        workspace: currentTeam,
       } as CreateSingleArtistVars);
       toast({
         status: 'success',

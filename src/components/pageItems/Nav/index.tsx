@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Nav = ({ links, onItemSelected }: Props) => {
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
 
   const canManageTeam = hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]);
   const { bgSecondary, bodySub } = useAppColors();

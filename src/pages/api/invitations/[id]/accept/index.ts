@@ -23,11 +23,11 @@ class TeamHandler {
 
     // create team member and delete invite
     const [newMembership] = await prisma.$transaction([
-      prisma.teamMember.create({
+      prisma.workspaceMember.create({
         data: {
-          team: {
+          workspace: {
             connect: {
-              id: invite.teamId,
+              id: invite.workspaceId,
             },
           },
           user: {

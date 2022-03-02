@@ -10,7 +10,7 @@ export interface NavLinkConfig {
   main: {
     links: NavBarLink[];
   };
-  settings: (currentTeam: string) => { links: NavBarLink[]; name: string };
+  settings: (currentWorkspace: string) => { links: NavBarLink[]; name: string };
   bottom: {
     links: NavBarLink[];
   };

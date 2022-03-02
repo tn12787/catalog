@@ -17,5 +17,5 @@ export class UpdateArtistDto {
   legalName: string;
 
   @IsNotEmpty()
-  team: string;
+  workspace: string;
 }

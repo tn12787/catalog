@@ -31,7 +31,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
 
   const queryClient = useQueryClient();
 
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
 
   const { mutateAsync: createArtwork, isLoading: createLoading } = useMutation(
     createSingleArtwork,

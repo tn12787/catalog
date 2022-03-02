@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import React from 'react';
 import { TaskStatus } from '@prisma/client';
 
-import { ReleaseEvent, TeamMemberWithUser } from 'types/common';
+import { ReleaseEvent, WorkspaceMember } from 'types/common';
 import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
@@ -21,7 +21,7 @@ const ReleaseLink = ({ value }: { value: ReleaseEvent }) => {
   );
 };
 
-export const AssigneeList = ({ value: users }: { value: TeamMemberWithUser[] }) => {
+export const AssigneeList = ({ value: users }: { value: WorkspaceMember[] }) => {
   return <AssigneeBadgeList assignees={users} />;
 };
 

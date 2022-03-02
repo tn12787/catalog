@@ -33,7 +33,7 @@ export const createUpdateTaskEvents = async ({
     include: {
       assignees: { include: { user: true } },
       contacts: { include: { labels: true } },
-      release: { select: { teamId: true } },
+      release: { select: { workspaceId: true } },
     },
   });
 

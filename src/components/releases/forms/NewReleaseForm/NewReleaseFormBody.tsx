@@ -20,7 +20,7 @@ const NewReleaseFormBody = ({
   existingRelease,
   loading,
 }: ReleaseWizardComponentProps<BasicInfoFormData>) => {
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace: currentTeam } = useExtendedSession();
 
   const { data: artists } = useQuery(['artists', currentTeam], () => fetchArtists(currentTeam));
 

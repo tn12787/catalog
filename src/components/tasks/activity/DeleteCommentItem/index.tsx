@@ -7,9 +7,9 @@ import { BiX } from 'react-icons/bi';
 import ActivityIcon from '../ActivityIcon';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
-import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types/common';
+import { ReleaseTaskEventWithUser, WorkspaceMember } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
-import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 interface Props {
   event: ReleaseTaskEventWithUser;
@@ -18,7 +18,7 @@ interface Props {
 const DeleteCommentItem = ({ event }: Props) => {
   const { bodySub } = useAppColors();
 
-  const { team: teamData } = useCurrentTeam();
+  const { workspace: teamData } = useCurrentWorkspace();
 
   const teamMembers = teamData?.members ?? [];
   const { user } = event.extraData as Prisma.JsonObject;
@@ -28,9 +28,7 @@ const DeleteCommentItem = ({ event }: Props) => {
       <ActivityIcon icon={BiX} />
       <AssigneeBadge inline teamMember={event.user} />
       <Text>deleted a comment from </Text>
-      <AssigneeBadge
-        teamMember={teamMembers.find((item) => item.id === user) as TeamMemberWithUser}
-      />
+      <AssigneeBadge teamMember={teamMembers.find((item) => item.id === user) as WorkspaceMember} />
       <Text>{formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}</Text>
     </HStack>
   );

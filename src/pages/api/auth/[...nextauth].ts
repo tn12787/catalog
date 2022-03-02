@@ -2,7 +2,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
-import { createDefaultTeamForUser } from 'backend/apiUtils/teams';
+import { createDefaultWorkspaceForUser } from 'backend/apiUtils/workspaces';
 import prisma from 'backend/prisma/client';
 
 export default NextAuth({
@@ -31,12 +31,12 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, isNewUser }) {
       try {
-        const numberOfUserTeams = await prisma.teamMember.count({
+        const numberOfUserTeams = await prisma.workspaceMember.count({
           where: { userId: token.sub as string },
         });
 
         if (isNewUser || !numberOfUserTeams) {
-          await createDefaultTeamForUser({
+          await createDefaultWorkspaceForUser({
             name: token.name as string,
             userId: token.sub as string,
             email: token.email as string,
@@ -49,12 +49,12 @@ export default NextAuth({
     },
     async session({ session, token, user }) {
       try {
-        const userTeams = await prisma.teamMember.findMany({
+        const userTeams = await prisma.workspaceMember.findMany({
           where: { userId: token.sub as string },
           select: {
             id: true,
-            teamId: true,
-            team: {
+            workspaceId: true,
+            workspace: {
               select: { name: true, id: true },
             },
             roles: {

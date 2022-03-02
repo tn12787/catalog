@@ -4,79 +4,81 @@ import { useCallback, useEffect, useMemo } from 'react';
 import create from 'zustand';
 import router from 'next/router';
 
-import { EnrichedTeamMember, ExtendedToken } from 'types/common';
+import { EnrichedWorkspaceMember, ExtendedToken } from 'types/common';
 
-interface UseTeamPreferenceState {
-  currentTeam: string;
-  setCurrentTeam: (team: string) => void;
+interface UseWorkspacePreferenceState {
+  currentWorkspace: string;
+  setCurrentWorkspace: (workspace: string) => void;
 }
 
-const useTeamPreference = create<UseTeamPreferenceState>((set) => ({
-  currentTeam: '',
-  setCurrentTeam: (val: string) => set((state) => ({ ...state, currentTeam: val })),
+const useWorkspacePreference = create<UseWorkspacePreferenceState>((set) => ({
+  currentWorkspace: '',
+  setCurrentWorkspace: (val: string) => set((state) => ({ ...state, currentWorkspace: val })),
 }));
 
 const useExtendedSession = () => {
   const { data: session, status } = useSession();
   const token = session?.token as ExtendedToken | undefined;
 
-  const { currentTeam, setCurrentTeam } = useTeamPreference(
+  const { currentWorkspace, setCurrentWorkspace } = useWorkspacePreference(
     useCallback(
       (state) => ({
-        currentTeam: state.currentTeam,
-        setCurrentTeam: state.setCurrentTeam,
+        currentWorkspace: state.currentWorkspace,
+        setCurrentWorkspace: state.setCurrentWorkspace,
       }),
       []
     )
   );
 
-  const teamMap = useMemo(() => {
-    const teams = token?.teams;
+  const workspaceMap = useMemo(() => {
+    const teams = token?.workspaces;
 
     return teams?.reduce((acc, team) => {
-      acc[team.teamId] = team;
+      acc[team.workspaceId] = team;
       return acc;
-    }, {} as { [key: string]: EnrichedTeamMember });
-  }, [token?.teams]);
+    }, {} as { [key: string]: EnrichedWorkspaceMember });
+  }, [token?.workspaces]);
 
-  const teamList = useMemo(() => {
-    return token?.teams;
-  }, [token?.teams]);
+  const workspaceList = useMemo(() => {
+    return token?.workspaces;
+  }, [token?.workspaces]);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const teams = token?.teams;
-    const storedTeam = localStorage.getItem('team');
+    const teams = token?.workspaces;
+    const storedTeam = localStorage.getItem('workspace');
     if (Array.isArray(teams) && storedTeam) {
-      if (!token?.teams.find((team) => team.id === storedTeam)) {
+      if (!token?.workspaces.find((team) => team.id === storedTeam)) {
         localStorage.removeItem('activeTeam');
       }
     }
 
     if (teams) {
-      setCurrentTeam(localStorage.getItem('activeTeam') || token?.teams?.[0]?.teamId);
+      setCurrentWorkspace(
+        localStorage.getItem('activeTeam') || token?.workspaces?.[0]?.workspaceId
+      );
     }
-  }, [token?.teams, setCurrentTeam]);
+  }, [token?.workspaces, setCurrentWorkspace]);
 
-  const onChangeTeam = useCallback(
+  const onChangeWorkspace = useCallback(
     (val: string) => {
       if (typeof window !== 'undefined') {
         localStorage.setItem('activeTeam', val as string);
       }
       queryClient.clear();
-      setCurrentTeam(val as string);
+      setCurrentWorkspace(val as string);
       router.replace('/overview', '/overview', { shallow: false });
     },
-    [setCurrentTeam, queryClient]
+    [setCurrentWorkspace, queryClient]
   );
 
   return {
     token,
-    teams: teamMap,
-    teamList: teamList,
-    currentTeam,
-    onChangeTeam,
+    workspaces: workspaceMap,
+    teamList: workspaceList,
+    currentWorkspace: currentWorkspace,
+    onChangeWorkspace: onChangeWorkspace,
     status,
   };
 };

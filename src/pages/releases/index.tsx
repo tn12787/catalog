@@ -71,7 +71,7 @@ const Releases = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<SortBySelectOption<ClientRelease>>(sortOptions[0]);
 
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
 
   const { bgPrimary, primary, bgSecondary } = useAppColors();
 
@@ -85,7 +85,7 @@ const Releases = () => {
       key: sortBy.value.key,
       order: sortBy.value.order,
     },
-    team: currentTeam ?? '',
+    workspace: currentTeam ?? '',
     pageSize,
     page: currentPage,
   };
@@ -170,7 +170,7 @@ const Releases = () => {
               name: 'Loading',
               type: ReleaseType.ALBUM,
               artistId: 'blank_id',
-              teamId: 'loading',
+              workspaceId: 'loading',
               createdAt: new Date(),
               updatedAt: new Date(),
             }}

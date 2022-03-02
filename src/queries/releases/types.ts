@@ -5,7 +5,7 @@ import { ClientRelease } from 'types/common';
 import { FilterOptions } from 'queries/types';
 
 export interface ReleaseFilterOptions extends FilterOptions<ClientRelease> {
-  team: string;
+  workspace: string;
 }
 
 export interface SingleReleaseVars extends Pick<ClientRelease, 'name' | 'id' | 'type'> {

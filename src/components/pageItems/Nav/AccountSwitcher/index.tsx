@@ -36,7 +36,12 @@ type Props = {
 
 export const AccountSwitcher = ({ onChange }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { token, currentTeam, onChangeTeam, status } = useExtendedSession();
+  const {
+    token,
+    currentWorkspace: currentTeam,
+    onChangeWorkspace: onChangeTeam,
+    status,
+  } = useExtendedSession();
   const router = useRouter();
   const [userData] = useUser();
   const { bodySub, border } = useAppColors();
@@ -50,18 +55,18 @@ export const AccountSwitcher = ({ onChange }: Props) => {
 
   const { withoutCurrent, mapped } = useAllTeamNotifications();
 
-  const userTeams = userData?.teams || token?.teams;
+  const userTeams = userData?.teams || token?.workspaces;
   const activeTeam = useMemo(() => {
-    return userTeams?.find((item) => item.teamId === currentTeam);
+    return userTeams?.find((item) => item.workspaceId === currentTeam);
   }, [currentTeam, userTeams]);
 
   return (
     <Menu>
       <Skeleton rounded="lg" isLoaded={!sessionLoading}>
         <AccountSwitcherButton
-          teamName={(activeTeam?.team.name as string) ?? 'loadingTeam'}
+          teamName={(activeTeam?.workspace.name as string) ?? 'loadingTeam'}
           userName={(userData?.name || (token?.name as string)) ?? 'loadingUser'}
-          photoUrl={activeTeam?.team.imageUrl as string}
+          photoUrl={activeTeam?.workspace.imageUrl as string}
           unreadNotificationCount={
             withoutCurrent?.reduce((acc, item) => acc + item.notifications.total, 0) ?? 0
           }

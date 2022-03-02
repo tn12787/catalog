@@ -6,7 +6,7 @@ import {
   Post,
 } from '@storyofams/next-api-decorators';
 
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { BatchDeleteContactDto } from 'backend/models/contacts/batch/delete';
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -18,13 +18,13 @@ class DeleteBatchContactHandler {
   @Post()
   async bulkUpdate(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('teamId') teamId: string,
+    @PathParam('workspaceId') workspaceId: string,
     @Body() body: BatchDeleteContactDto
   ) {
     const ids = body.ids;
     if (!body.ids) throw new BadRequestException('No ids provided');
 
-    await checkRequiredPermissions(req, ['DELETE_CONTACTS'], teamId);
+    await checkRequiredPermissions(req, ['DELETE_CONTACTS'], workspaceId);
 
     const allContacts = await prisma.contact.findMany({
       where: {
@@ -33,7 +33,7 @@ class DeleteBatchContactHandler {
     });
 
     // silently ignore contacts that don't belong to the team
-    const contactsToDelete = allContacts.filter((contact) => contact.teamId === teamId);
+    const contactsToDelete = allContacts.filter((contact) => contact.workspaceId === workspaceId);
 
     const deleted = await prisma.contact.deleteMany({
       where: { id: { in: contactsToDelete.map((contact) => contact.id) } },

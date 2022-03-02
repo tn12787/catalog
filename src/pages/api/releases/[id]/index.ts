@@ -17,7 +17,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 
 @requiresAuth()
 class SingleReleaseHandler {
@@ -28,11 +28,11 @@ class SingleReleaseHandler {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {
-        teamId: true,
+        workspaceId: true,
       },
     });
 
-    await checkRequiredPermissions(req, ['VIEW_RELEASES'], releaseTeam?.teamId);
+    await checkRequiredPermissions(req, ['VIEW_RELEASES'], releaseTeam?.workspaceId);
 
     const release = await prisma.release.findUnique({
       where: {
@@ -70,12 +70,12 @@ class SingleReleaseHandler {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {
-        teamId: true,
+        workspaceId: true,
         tasks: { select: { dueDate: true } },
       },
     });
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.workspaceId);
 
     if (!releaseTeam) throw new NotFoundException();
 
@@ -110,11 +110,11 @@ class SingleReleaseHandler {
     const releaseTeam = await prisma.release.findUnique({
       where: { id },
       select: {
-        teamId: true,
+        workspaceId: true,
       },
     });
 
-    await checkRequiredPermissions(req, ['DELETE_RELEASES'], releaseTeam?.teamId);
+    await checkRequiredPermissions(req, ['DELETE_RELEASES'], releaseTeam?.workspaceId);
 
     const result = await prisma.release.delete({
       where: {

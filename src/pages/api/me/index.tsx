@@ -18,7 +18,7 @@ class MeHandler {
       include: {
         teams: {
           include: {
-            team: true,
+            workspace: true,
             roles: {
               select: {
                 name: true,

@@ -7,7 +7,7 @@ import { fetchNotifications } from 'queries/notifications';
 type UseNotificationsOptions = Pick<NotificationFilterOptions, 'pagination' | 'read'>;
 
 const useNotifications = ({ pagination, read }: UseNotificationsOptions) => {
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
 
   const queryArgs = {
     pagination,
@@ -16,7 +16,7 @@ const useNotifications = ({ pagination, read }: UseNotificationsOptions) => {
 
   return useQuery(
     ['notifications', currentTeam, queryArgs],
-    () => fetchNotifications({ ...queryArgs, teamMemberId: teams?.[currentTeam]?.id || '' }),
+    () => fetchNotifications({ ...queryArgs, workspaceMemberId: teams?.[currentTeam]?.id || '' }),
     { enabled: !!currentTeam && !!teams?.[currentTeam] }
   );
 };

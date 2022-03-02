@@ -18,7 +18,7 @@ const AcceptInvitationPage = () => {
   const toast = useToast();
   const { primary } = useAppColors();
 
-  const { onChangeTeam } = useExtendedSession();
+  const { onChangeWorkspace: onChangeTeam } = useExtendedSession();
 
   const attemptInviteAcceptance = useCallback(
     async (id: string) => {
@@ -27,7 +27,7 @@ const AcceptInvitationPage = () => {
       try {
         const data = await acceptInvitation(id);
         toast({ title: 'Invitation accepted!', status: 'success' });
-        onChangeTeam(data.teamId);
+        onChangeTeam(data.workspaceId);
       } catch (e) {
         console.error(e);
       }

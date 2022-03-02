@@ -6,12 +6,12 @@ import { CreateContactLabelVars, DeleteContactLabelVars, UpdateContactLabelVars 
 import { ContactLabelFilterOptions } from 'queries/contactLabels/types';
 import { ContactLabelWithContacts } from 'types/common';
 
-export const fetchContactLabels = async ({ teamId, search }: ContactLabelFilterOptions) => {
+export const fetchContactLabels = async ({ workspaceId, search }: ContactLabelFilterOptions) => {
   const { data: response } = await axios.get<ContactLabelWithContacts[]>(
-    `/api/teams/${teamId}/contacts/labels`,
+    `/api/teams/${workspaceId}/contacts/labels`,
     {
       params: {
-        teamId,
+        workspaceId,
         search,
       },
     }
@@ -21,28 +21,30 @@ export const fetchContactLabels = async ({ teamId, search }: ContactLabelFilterO
 };
 
 export const createContactLabel = async ({
-  teamId,
+  workspaceId,
   ...rest
 }: CreateContactLabelVars): Promise<ContactLabel> => {
-  const { data: response } = await axios.post(`/api/teams/${teamId}/contacts/labels`, { ...rest });
+  const { data: response } = await axios.post(`/api/teams/${workspaceId}/contacts/labels`, {
+    ...rest,
+  });
   return response;
 };
 
 export const updateContactLabel = async ({
-  teamId,
+  workspaceId,
   id,
   ...rest
 }: UpdateContactLabelVars): Promise<ContactLabel> => {
-  const { data: response } = await axios.patch(`/api/teams/${teamId}/contacts/labels/${id}`, {
+  const { data: response } = await axios.patch(`/api/teams/${workspaceId}/contacts/labels/${id}`, {
     ...rest,
   });
   return response;
 };
 
 export const deleteContactLabel = async ({
-  teamId,
+  workspaceId,
   id,
 }: DeleteContactLabelVars): Promise<ContactLabel> => {
-  const { data: response } = await axios.delete(`/api/teams/${teamId}/contacts/labels/${id}`);
+  const { data: response } = await axios.delete(`/api/teams/${workspaceId}/contacts/labels/${id}`);
   return response;
 };

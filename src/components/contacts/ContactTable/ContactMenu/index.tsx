@@ -24,7 +24,7 @@ import ContactModal from 'components/contacts/ContactModal';
 type Props = CellProps<ContactWithLabels>;
 
 const ContactMenu = ({ value }: Props) => {
-  const { teams, currentTeam } = useExtendedSession();
+  const { workspaces: teams, currentWorkspace: currentTeam } = useExtendedSession();
 
   const canEdit = [
     hasRequiredPermissions(['UPDATE_CONTACTS'], teams?.[currentTeam]),
@@ -42,7 +42,7 @@ const ContactMenu = ({ value }: Props) => {
 
   const onDelete = async () => {
     try {
-      await mutateAsync({ teamId: currentTeam, id: value.id });
+      await mutateAsync({ workspaceId: currentTeam, id: value.id });
       onDeleteClose();
     } catch (error: any) {}
   };

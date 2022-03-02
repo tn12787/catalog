@@ -10,7 +10,7 @@ import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
 import EditMusicVideoForm from 'components/releases/forms/EditMusicVideoForm';
-import { ClientRelease, EventType, TeamMemberWithUser } from 'types/common';
+import { ClientRelease, EventType, WorkspaceMember } from 'types/common';
 import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
@@ -27,7 +27,7 @@ const buildFields = (musicVideoInfo: ClientRelease['musicVideo'] | undefined): S
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={musicVideoInfo?.assignees as TeamMemberWithUser[]} />,
+      content: <AssigneeBadgeList assignees={musicVideoInfo?.assignees as WorkspaceMember[]} />,
     },
     {
       name: 'Status',

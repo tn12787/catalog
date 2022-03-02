@@ -23,7 +23,7 @@ interface Props {
 
 const ReleaseCalendar = ({ events, loading }: Props) => {
   const queryClient = useQueryClient();
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
   const router = useRouter();
 
   const { isOpen: isEventOpen, onClose: onEventClose, onOpen: onEventOpen } = useDisclosure();

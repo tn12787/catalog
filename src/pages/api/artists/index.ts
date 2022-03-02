@@ -15,11 +15,11 @@ import prisma from 'backend/prisma/client';
 @requiresAuth()
 class ArtistHandler {
   @Get()
-  async artists(@Query('team') teamId: string) {
+  async artists(@Query('workspace') workspaceId: string) {
     const artists = await prisma.artist.findMany({
       where: {
-        team: {
-          id: teamId,
+        workspace: {
+          id: workspaceId,
         },
       },
       orderBy: {
@@ -43,7 +43,7 @@ class ArtistHandler {
         legalName: body.legalName,
         instagramUrl: body.instagramUrl,
         spotifyUrl: body.spotifyUrl,
-        team: {
+        workspace: {
           connect: { id: body.team },
         },
       },

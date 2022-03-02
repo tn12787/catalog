@@ -25,7 +25,7 @@ import useContactLabelMutations from 'hooks/data/contacts/labels/useContactLabel
 type Props = CellProps<ContactWithLabels>;
 
 const ContactLabelMenu = ({ value }: Props) => {
-  const { teams, currentTeam } = useExtendedSession();
+  const { workspaces: teams, currentWorkspace: currentTeam } = useExtendedSession();
 
   const canEdit = [
     hasRequiredPermissions(['UPDATE_CONTACTS'], teams?.[currentTeam]),
@@ -43,7 +43,7 @@ const ContactLabelMenu = ({ value }: Props) => {
 
   const onDelete = async () => {
     try {
-      await mutateAsync({ teamId: currentTeam, id: value.id, name: value.name });
+      await mutateAsync({ workspaceId: currentTeam, id: value.id, name: value.name });
       onDeleteClose();
     } catch (error: any) {}
   };

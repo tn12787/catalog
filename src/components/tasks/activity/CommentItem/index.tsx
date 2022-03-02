@@ -47,7 +47,7 @@ const CommentItem = ({ event, updates }: Props) => {
   const [isEditing, setEditing] = useState(false);
 
   const { newComment } = event.extraData as Prisma.JsonObject;
-  const { teams, currentTeam } = useExtendedSession();
+  const { workspaces: teams, currentWorkspace: currentTeam } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const isAuthor = event.user?.id === teams?.[currentTeam].id;

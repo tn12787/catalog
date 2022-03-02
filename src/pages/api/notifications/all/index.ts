@@ -2,7 +2,7 @@ import { createHandler, Req, Patch, Body, Delete } from '@storyofams/next-api-de
 
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
 import { AuthDecoratedRequest } from 'types/common';
-import { ensureUserHasTeamMembership } from 'backend/apiUtils/teams';
+import { ensureUserHasWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateNotificationDto } from 'backend/models/notifications/update';
@@ -14,13 +14,13 @@ class AllNotificationsHandler {
     @Req() req: AuthDecoratedRequest,
     @Body() body: UpdateNotificationDto
   ) {
-    const teamMemberId = body.teamMemberId;
+    const workspaceMemberId = body.workspaceMemberId;
     // ensure user is updating one of their own notifications
-    await ensureUserHasTeamMembership(req, teamMemberId);
+    await ensureUserHasWorkspaceMembership(req, workspaceMemberId);
 
     const updatedNotification = await prisma.notification.updateMany({
       where: {
-        teamMemberId,
+        workspaceMemberId,
       },
       data: {
         ...body,
@@ -33,14 +33,14 @@ class AllNotificationsHandler {
   @Delete()
   async deleteAllNotifications(
     @Req() req: AuthDecoratedRequest,
-    @RequiredQuery('teamMemberId') teamMemberId: string
+    @RequiredQuery('workspaceMemberId') workspaceMemberId: string
   ) {
     // ensure user is updating one of their own notifications
-    await ensureUserHasTeamMembership(req, teamMemberId);
+    await ensureUserHasWorkspaceMembership(req, workspaceMemberId);
 
     const updatedNotification = await prisma.notification.deleteMany({
       where: {
-        teamMemberId,
+        workspaceMemberId,
       },
     });
 

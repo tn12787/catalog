@@ -12,7 +12,10 @@ import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions, getResourceTeamMembership } from 'backend/apiUtils/teams';
+import {
+  checkRequiredPermissions,
+  getResourceWorkspaceMembership,
+} from 'backend/apiUtils/workspaces';
 import { CreateCommentDto } from 'backend/models/tasks/activity/comments/create';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 
@@ -29,13 +32,13 @@ class CommentHandler {
     const task = await prisma.releaseTask.findUnique({
       where: { id: taskId },
       select: {
-        release: { select: { teamId: true } },
+        release: { select: { workspaceId: true } },
       },
     });
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.teamId);
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.workspaceId);
 
-    const activeTeamMember = await getResourceTeamMembership(req, task?.release?.teamId);
+    const activeTeamMember = await getResourceWorkspaceMembership(req, task?.release?.workspaceId);
     if (!activeTeamMember) throw new ForbiddenException();
 
     const result = await prisma.releaseTaskEvent.create({

@@ -15,7 +15,7 @@ import { Contact } from '@prisma/client';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateContactDto } from 'backend/models/contacts/create';
@@ -25,7 +25,7 @@ class ContactHandler {
   @Get()
   async list(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('teamId') team: string,
+    @PathParam('workspaceId') workspace: string,
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Contact>('name')) sortBy: keyof Contact,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,
@@ -37,7 +37,7 @@ class ContactHandler {
     const commonArgs = {
       where: {
         name: { contains: search, mode: 'insensitive' } as any,
-        team: { id: team },
+        workspace: { id: team },
       },
     };
 
@@ -78,10 +78,10 @@ class ContactHandler {
   @HttpCode(201)
   async createContact(
     @Body(ValidationPipe) body: CreateContactDto,
-    @PathParam('teamId') teamId: string,
+    @PathParam('workspaceId') workspaceId: string,
     @Req() req: AuthDecoratedRequest
   ) {
-    await checkRequiredPermissions(req, ['CREATE_CONTACTS'], teamId);
+    await checkRequiredPermissions(req, ['CREATE_CONTACTS'], workspaceId);
 
     const result = await prisma.contact.create({
       data: {
@@ -90,11 +90,11 @@ class ContactHandler {
         phone: body.phone,
         labels: {
           connectOrCreate: body.labels?.map(({ name, color }) => ({
-            where: { name_teamId: { name, teamId } },
-            create: { name, teamId, color },
+            where: { name_workspaceId: { name, workspaceId } },
+            create: { name, workspaceId, color },
           })),
         },
-        team: { connect: { id: teamId } },
+        workspace: { connect: { id: workspaceId } },
       },
     });
 

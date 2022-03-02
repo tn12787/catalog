@@ -10,7 +10,7 @@ import { SummaryField } from '../Summary';
 import EditArtworkForm from '../../forms/EditArtworkForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { ClientRelease, EventType, TeamMemberWithUser } from 'types/common';
+import { ClientRelease, EventType, WorkspaceMember } from 'types/common';
 import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 
@@ -27,7 +27,7 @@ const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): Summary
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={artworkTask?.assignees as TeamMemberWithUser[]} />,
+      content: <AssigneeBadgeList assignees={artworkTask?.assignees as WorkspaceMember[]} />,
     },
     {
       name: 'Status',

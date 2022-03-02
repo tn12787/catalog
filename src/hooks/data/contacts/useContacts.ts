@@ -7,7 +7,7 @@ import { fetchContacts } from 'queries/contacts';
 type UseContactOptions = Pick<ContactFilterOptions, 'pagination' | 'search'>;
 
 const useContacts = ({ pagination, search }: UseContactOptions) => {
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
 
   const queryArgs = {
     pagination,
@@ -16,7 +16,7 @@ const useContacts = ({ pagination, search }: UseContactOptions) => {
 
   return useQuery(
     ['contacts', currentTeam, queryArgs],
-    () => fetchContacts({ ...queryArgs, teamId: currentTeam }),
+    () => fetchContacts({ ...queryArgs, workspaceId: currentTeam }),
     { enabled: !!currentTeam && !!teams?.[currentTeam] }
   );
 };

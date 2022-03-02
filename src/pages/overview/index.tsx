@@ -13,13 +13,13 @@ import MyTasks from 'components/overview/MyTasks';
 import Card from 'components/Card';
 import { fetchReleases } from 'queries/releases';
 import OverdueTasks from 'components/overview/OverdueTasks';
-import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
 
-  const { team: teamData, isLoading: isTeamLoading } = useCurrentTeam();
+  const { workspace: teamData, isLoading: isTeamLoading } = useCurrentWorkspace();
 
   const { data, isLoading } = useQuery(
     ['releaseEvents', currentTeam, teams?.[currentTeam]?.id],
@@ -28,7 +28,7 @@ const OverviewPage = () => {
 
   const { data: upcomingReleases } = useQuery(
     ['releases', currentTeam],
-    () => fetchReleases({ team: currentTeam, dates: { after: new Date() } }),
+    () => fetchReleases({ workspace: currentTeam, dates: { after: new Date() } }),
     { enabled: !!currentTeam }
   );
 

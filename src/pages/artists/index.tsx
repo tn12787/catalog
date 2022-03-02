@@ -22,7 +22,7 @@ import PageHead from 'components/pageItems/PageHead';
 
 const Artists = () => {
   const { bgPrimary } = useAppColors();
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
   const { data: artists, isLoading } = useQuery(['artists', currentTeam], () =>
     fetchArtists(currentTeam)
   );
@@ -36,7 +36,7 @@ const Artists = () => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/teams/${currentTeam ?? 'noteam'}/overview`}>
-              <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
+              <BreadcrumbLink>{teams?.[currentTeam]?.workspace.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 

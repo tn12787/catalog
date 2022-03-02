@@ -16,7 +16,7 @@ class RemindersHandler {
       },
     };
 
-    const teamMembersToNotify = await prisma.teamMember.findMany({
+    const teamMembersToNotify = await prisma.workspaceMember.findMany({
       where: {
         tasksAssigned: {
           some: tasksAreOutstanding,
@@ -43,7 +43,7 @@ class RemindersHandler {
           .filter((item) => item.dueDate ?? new Date() < new Date())
           .map((task) => ({
             type: NotificationType.TASK_OVERDUE,
-            teamMemberId: id,
+            workspaceMemberId: id,
             taskId: task.id,
             extraData: {},
           }));

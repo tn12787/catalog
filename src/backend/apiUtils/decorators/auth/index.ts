@@ -63,22 +63,4 @@ export const requiresServiceAccount = createMiddlewareDecorator(
   }
 );
 
-const requiresTeamMembership = createMiddlewareDecorator(
-  async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
-    const { session } = req as AuthDecoratedRequest;
-
-    const team = req.method === 'GET' ? req.query.team : req.body.team;
-
-    if (!team) {
-      throw new NotFoundException();
-    }
-
-    if (!session.token.teams.find((userTeam) => userTeam.teamId === team)) {
-      throw new NotFoundException();
-    }
-
-    next();
-  }
-);
-
-export { requiresAuth, requiresTeamMembership };
+export { requiresAuth };

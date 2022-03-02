@@ -12,7 +12,7 @@ import {
 import { CreateContactLabelDto } from 'backend/models/contacts/labels/create';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 
@@ -21,7 +21,7 @@ class ContactLabelHandler {
   @Get()
   async list(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('teamId') team: string,
+    @PathParam('workspaceId') workspace: string,
     @Query('search') search: string
   ) {
     await checkRequiredPermissions(req, ['VIEW_CONTACTS'], team);
@@ -29,7 +29,7 @@ class ContactLabelHandler {
     const commonArgs = {
       where: {
         name: { contains: search, mode: 'insensitive' } as any,
-        team: { id: team },
+        workspace: { id: team },
       },
     };
 
@@ -49,16 +49,16 @@ class ContactLabelHandler {
   @HttpCode(201)
   async createContactLabel(
     @Body(ValidationPipe) body: CreateContactLabelDto,
-    @PathParam('teamId') teamId: string,
+    @PathParam('workspaceId') workspaceId: string,
     @Req() req: AuthDecoratedRequest
   ) {
-    await checkRequiredPermissions(req, ['CREATE_CONTACTS'], teamId);
+    await checkRequiredPermissions(req, ['CREATE_CONTACTS'], workspaceId);
 
     const result = await prisma.contactLabel.create({
       data: {
         name: body.name,
         color: body.color,
-        team: { connect: { id: teamId } },
+        workspace: { connect: { id: workspaceId } },
       },
     });
 

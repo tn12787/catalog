@@ -50,7 +50,7 @@ const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
 
 const Planner = () => {
   const { bgPrimary, primary } = useAppColors();
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
   const { data, isLoading } = useQuery(
     ['releaseEvents', currentTeam],
     () => fetchReleaseEvents(currentTeam),
