@@ -17,7 +17,7 @@ import {
   EventType,
   ReleaseEvent,
   ReleaseTaskEventWithUser,
-  WorkspaceMember,
+  WorkspaceMemberWithUser,
 } from 'types/common';
 import TaskNotes from 'components/tasks/TaskNotes';
 import useExtendedSession from 'hooks/useExtendedSession';
@@ -138,7 +138,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <AssigneesField
-          assignees={task?.assignees as WorkspaceMember[]}
+          assignees={task?.assignees as WorkspaceMemberWithUser[]}
           onChange={(assignees) => onSubmit({ assignees })}
         />
       </Skeleton>

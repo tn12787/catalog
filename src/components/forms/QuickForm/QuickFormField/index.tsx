@@ -17,13 +17,13 @@ import { FiEdit } from 'react-icons/fi';
 import { Distributor, TaskStatus } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
-import { ContactWithLabels, WorkspaceMember } from 'types/common';
+import { ContactWithLabels, WorkspaceMemberWithUser } from 'types/common';
 
 type FieldValues =
   | string
   | TaskStatus
   | string[]
-  | WorkspaceMember[]
+  | WorkspaceMemberWithUser[]
   | ContactWithLabels[]
   | Date
   | Distributor

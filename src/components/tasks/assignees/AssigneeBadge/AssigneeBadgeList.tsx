@@ -4,10 +4,10 @@ import React from 'react';
 import AssigneeBadge from '.';
 
 import useAppColors from 'hooks/useAppColors';
-import { WorkspaceMember } from 'types/common';
+import { WorkspaceMemberWithUser } from 'types/common';
 
 interface Props {
-  assignees: WorkspaceMember[];
+  assignees: WorkspaceMemberWithUser[];
   inline?: boolean;
 }
 
