@@ -23,7 +23,7 @@ const UpdateStatusItem = ({ event }: Props) => {
   return (
     <Wrap as={HStack} align={'center'} display="flex" fontSize="sm" color={bodySub}>
       <ActivityIcon icon={BiCheck} />
-      <AssigneeBadge inline teamMember={event.user} />
+      <AssigneeBadge inline workspaceMember={event.user} />
       <Text>updated the status from</Text>
       <TaskStatusBadge status={oldStatus as TaskStatus} />
       <Text>to</Text>

@@ -1,10 +1,10 @@
 import { uniq } from 'lodash';
 
-import { EnrichedTeamMember, PermissionType } from 'types/common';
+import { EnrichedWorkspaceMember, PermissionType } from 'types/common';
 
 export const hasRequiredPermissions = (
   requiredPermissions: PermissionType[],
-  user?: EnrichedTeamMember
+  user?: EnrichedWorkspaceMember
 ): boolean => {
   const roles = user?.roles;
 

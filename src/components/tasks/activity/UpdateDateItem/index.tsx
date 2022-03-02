@@ -23,7 +23,7 @@ const UpdateDateItem = ({ event }: Props) => {
     <Wrap as={HStack} alignItems={'center'} fontSize="sm" color={bodySub}>
       <ActivityIcon icon={BiCalendar} />
 
-      <AssigneeBadge inline teamMember={event.user} />
+      <AssigneeBadge inline workspaceMember={event.user} />
       <Text>updated the due date from</Text>
       <Text fontSize="sm">{format(parseISO(oldDueDate as string), 'PPP')}</Text>
       <Text>to</Text>

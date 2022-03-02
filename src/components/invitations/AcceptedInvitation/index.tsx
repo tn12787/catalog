@@ -9,7 +9,7 @@ const AcceptedInvitation = () => {
       <Heading size="xl" color="green.400">
         Invite accepted
       </Heading>
-      <Text>{"Welcome to your new team. You'll be redirected in a moment."}</Text>
+      <Text>{"Welcome to your new workspace. You'll be redirected in a moment."}</Text>
     </Stack>
   );
 };

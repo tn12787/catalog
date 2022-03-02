@@ -25,7 +25,7 @@ const NotificationPopoverList = ({ notifications, loading }: Props) => {
             type: NotificationType.TASK_OVERDUE,
             read: true,
             extraData: {},
-            teamMemberId: 'loading_user',
+            workspaceMemberId: 'loading_user',
             taskId: 'loading_task',
             task: { id: 'test', name: 'Loading...', notes: '', status: 'COMPLETE' } as any,
           }}

@@ -5,21 +5,21 @@ import { User } from '@prisma/client';
 import AssigneeItem from './AssigneeItem';
 import AssigneeSelectedItems from './AssigneeSelectedItems';
 
-import { TeamMemberWithUserAndRoles } from 'types/common';
-import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import { WorkspaceMemberWithUserAndRoles } from 'types/common';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import MultiSelect from 'components/forms/MultiSelect';
 import { MultiSelectListItemProps } from 'components/forms/MultiSelect/types';
 
 interface Props extends Pick<ControllerRenderProps, 'onChange'> {
-  value: TeamMemberWithUserAndRoles[];
+  value: WorkspaceMemberWithUserAndRoles[];
   borderless?: boolean;
 }
 
 const AssigneeSelect: React.FC<Props> = React.forwardRef(
   ({ value, borderless = false, onChange }: Props) => {
-    const { team: teamData, isLoading } = useCurrentTeam();
+    const { workspace: workspaceData, isLoading } = useCurrentWorkspace();
 
-    const allTeamMembers = teamData?.members || [];
+    const allWorkspaceMembers = workspaceData?.members || [];
 
     return (
       <MultiSelect
@@ -30,11 +30,11 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
         itemToString={(item) => item?.user?.name || ''}
         renderSelectedItems={AssigneeSelectedItems}
         renderListItem={(props: MultiSelectListItemProps<User>) => <AssigneeItem {...props} />}
-        allItems={allTeamMembers}
-        filterFn={(item: TeamMemberWithUserAndRoles, search: string) =>
+        allItems={allWorkspaceMembers}
+        filterFn={(item: WorkspaceMemberWithUserAndRoles, search: string) =>
           item.user.name?.toLowerCase().includes(search.toLowerCase()) ?? false
         }
-        getItem={(item: TeamMemberWithUserAndRoles) => item.user}
+        getItem={(item: WorkspaceMemberWithUserAndRoles) => item.user}
       />
     );
   }

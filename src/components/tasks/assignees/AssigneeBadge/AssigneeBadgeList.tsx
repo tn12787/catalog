@@ -4,10 +4,10 @@ import React from 'react';
 import AssigneeBadge from '.';
 
 import useAppColors from 'hooks/useAppColors';
-import { TeamMemberWithUser } from 'types/common';
+import { WorkspaceMemberWithUser } from 'types/common';
 
 interface Props {
-  assignees: TeamMemberWithUser[];
+  assignees: WorkspaceMemberWithUser[];
   inline?: boolean;
 }
 
@@ -17,7 +17,7 @@ const AssigneeBadgeList = ({ assignees, inline }: Props) => {
     <Wrap>
       {assignees?.length ? (
         assignees?.map((assignee) => (
-          <AssigneeBadge inline={inline} key={assignee.id} teamMember={assignee} />
+          <AssigneeBadge inline={inline} key={assignee.id} workspaceMember={assignee} />
         ))
       ) : (
         <Text fontSize="xs" color={bodySub}>

@@ -17,7 +17,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 
 @requiresAuth()
 class SingleReleaseHandler {
@@ -25,14 +25,14 @@ class SingleReleaseHandler {
   async singleRelease(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
     if (!id) throw new NotFoundException();
 
-    const releaseTeam = await prisma.release.findUnique({
+    const releaseWorkspace = await prisma.release.findUnique({
       where: { id },
       select: {
-        teamId: true,
+        workspaceId: true,
       },
     });
 
-    await checkRequiredPermissions(req, ['VIEW_RELEASES'], releaseTeam?.teamId);
+    await checkRequiredPermissions(req, ['VIEW_RELEASES'], releaseWorkspace?.workspaceId);
 
     const release = await prisma.release.findUnique({
       where: {
@@ -67,22 +67,22 @@ class SingleReleaseHandler {
   ) {
     if (!id) throw new NotFoundException();
 
-    const releaseTeam = await prisma.release.findUnique({
+    const releaseWorkspace = await prisma.release.findUnique({
       where: { id },
       select: {
-        teamId: true,
+        workspaceId: true,
         tasks: { select: { dueDate: true } },
       },
     });
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.teamId);
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseWorkspace?.workspaceId);
 
-    if (!releaseTeam) throw new NotFoundException();
+    if (!releaseWorkspace) throw new NotFoundException();
 
     // check if there are any tasks with a due date after the new target date
     if (body.targetDate) {
       if (
-        releaseTeam?.tasks.some(({ dueDate }) => {
+        releaseWorkspace?.tasks.some(({ dueDate }) => {
           if (!dueDate) return false;
           return new Date(body.targetDate) < new Date(dueDate);
         })
@@ -107,14 +107,14 @@ class SingleReleaseHandler {
 
   @Delete()
   async deleteRelease(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
-    const releaseTeam = await prisma.release.findUnique({
+    const releaseWorkspace = await prisma.release.findUnique({
       where: { id },
       select: {
-        teamId: true,
+        workspaceId: true,
       },
     });
 
-    await checkRequiredPermissions(req, ['DELETE_RELEASES'], releaseTeam?.teamId);
+    await checkRequiredPermissions(req, ['DELETE_RELEASES'], releaseWorkspace?.workspaceId);
 
     const result = await prisma.release.delete({
       where: {

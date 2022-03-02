@@ -34,9 +34,12 @@ const HeaderSection = ({ releaseData }: Props) => {
 
   const { bgPrimary } = useAppColors();
 
-  const { teams, currentTeam } = useExtendedSession();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
-  const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
+  const canDeleteRelease = hasRequiredPermissions(
+    ['DELETE_RELEASES'],
+    workspaceMemberships?.[currentWorkspace]
+  );
 
   const artworkUrl = releaseData.artwork?.url;
 
@@ -67,7 +70,9 @@ const HeaderSection = ({ releaseData }: Props) => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/overview`}>
-              <BreadcrumbLink>{teams?.[currentTeam]?.team.name}</BreadcrumbLink>
+              <BreadcrumbLink>
+                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
+              </BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 

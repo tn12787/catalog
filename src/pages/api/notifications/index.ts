@@ -14,9 +14,9 @@ import {
 
 import { AuthDecoratedRequest } from 'types/common';
 import {
-  ensureUserHasTeamMembership,
-  ensureUserHasTeamMembershipSync,
-} from 'backend/apiUtils/teams';
+  ensureUserHasWorkspaceMembership,
+  ensureUserHasWorkspaceMembershipSync,
+} from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
@@ -27,18 +27,18 @@ class NotificationHandler {
   @Get()
   async list(
     @Req() req: AuthDecoratedRequest,
-    @RequiredQuery('teamMemberId') teamMemberId: string,
+    @RequiredQuery('workspaceMemberId') workspaceMemberId: string,
     @Query('pageSize', DefaultValuePipe(10), ParseNumberPipe) pageSize: number,
     @Query('page', DefaultValuePipe(1), ParseNumberPipe) page: number,
     @Query('read', ParseBooleanPipe({ nullable: true })) read: boolean
   ) {
-    // ensure user getting notifications belongs to the team for which they're asking
-    await ensureUserHasTeamMembership(req, teamMemberId);
+    // ensure user getting notifications belongs to the workspace for which they're asking
+    await ensureUserHasWorkspaceMembership(req, workspaceMemberId);
 
     const commonArgs = {
       where: pickBy(
         {
-          teamMemberId,
+          workspaceMemberId,
           read,
         },
         (v) => v !== undefined
@@ -64,7 +64,7 @@ class NotificationHandler {
 
   @Patch()
   async bulkUpdate(@Req() req: AuthDecoratedRequest, @Body() body: BatchUpdateNotificationDto) {
-    // ensure user getting notifications belongs to the team for which they're asking
+    // ensure user getting notifications belongs to the workspace for which they're asking
 
     const ids = body.ids;
 
@@ -77,7 +77,7 @@ class NotificationHandler {
     });
 
     allNotifications.forEach((item) =>
-      ensureUserHasTeamMembershipSync(req.session, item.teamMemberId)
+      ensureUserHasWorkspaceMembershipSync(req.session, item.workspaceMemberId)
     );
 
     const newNotifs = await prisma.notification.updateMany({

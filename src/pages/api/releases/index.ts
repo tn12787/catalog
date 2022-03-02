@@ -18,7 +18,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 import { AuthDecoratedRequest } from 'types/common';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
@@ -27,7 +27,7 @@ import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
 class ReleaseListHandler {
   @Get()
   async releases(
-    @RequiredQuery('team') team: string,
+    @RequiredQuery('workspace') workspace: string,
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Release>('targetDate')) sortBy: keyof Release,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,
@@ -48,7 +48,7 @@ class ReleaseListHandler {
       where: {
         targetDate: { ...dateArgs },
         name: { contains: search, mode: 'insensitive' } as any,
-        team: { id: team },
+        workspace: { id: workspace },
       },
     };
 
@@ -92,9 +92,9 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateReleaseDto,
     @Request() req: AuthDecoratedRequest
   ) {
-    const team = await prisma.team.findUnique({ where: { id: body.team } });
+    const workspace = await prisma.workspace.findUnique({ where: { id: body.workspace } });
 
-    await checkRequiredPermissions(req, ['CREATE_RELEASES'], team?.id);
+    await checkRequiredPermissions(req, ['CREATE_RELEASES'], workspace?.id);
 
     const optionalArgs = [
       body.artwork &&
@@ -119,8 +119,8 @@ class ReleaseListHandler {
         name: body.name,
         type: body.type as ReleaseType,
         targetDate: body.targetDate,
-        team: {
-          connect: { id: body.team },
+        workspace: {
+          connect: { id: body.workspace },
         },
         tasks: { create: optionalArgs },
       },

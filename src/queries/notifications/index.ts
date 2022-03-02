@@ -8,7 +8,7 @@ import { PaginatedQueryResult } from 'queries/types';
 import { NotificationWithTask } from 'types/common';
 
 export const fetchNotifications = async ({
-  teamMemberId,
+  workspaceMemberId,
   read,
   pagination,
 }: NotificationFilterOptions) => {
@@ -16,7 +16,7 @@ export const fetchNotifications = async ({
     '/api/notifications',
     {
       params: {
-        teamMemberId,
+        workspaceMemberId,
         read,
         pageSize: pagination?.pageSize,
         page: pagination?.page,
@@ -46,19 +46,19 @@ export const batchUpdateNotifications = async (
   return response;
 };
 
-export const markAllAsRead = async (teamMemberId: string) => {
+export const markAllAsRead = async (workspaceMemberId: string) => {
   const { data: response } = await axios.patch('/api/notifications/all', {
-    teamMemberId,
+    workspaceMemberId,
     read: true,
   });
 
   return response;
 };
 
-export const clearAllNotifications = async (teamMemberId: string): Promise<Notification> => {
+export const clearAllNotifications = async (workspaceMemberId: string): Promise<Notification> => {
   const { data: response } = await axios.delete(`/api/notifications/all`, {
     params: {
-      teamMemberId,
+      workspaceMemberId,
     },
   });
   return response;

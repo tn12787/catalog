@@ -15,7 +15,7 @@ import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases
 import { AuthDecoratedRequest, EnrichedRelease } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import prisma from 'backend/prisma/client';
 import { UpdateArtistDto } from 'backend/models/artists/update';
 
@@ -72,11 +72,11 @@ class ArtistHandler {
     const artist = await prisma.artist.findUnique({
       where: { id },
       select: {
-        teamId: true,
+        workspaceId: true,
       },
     });
 
-    await checkRequiredPermissions(req, ['DELETE_ARTISTS'], artist?.teamId);
+    await checkRequiredPermissions(req, ['DELETE_ARTISTS'], artist?.workspaceId);
 
     const result = await prisma.artist.delete({
       where: {

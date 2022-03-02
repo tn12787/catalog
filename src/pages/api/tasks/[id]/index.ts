@@ -12,7 +12,10 @@ import {
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { checkRequiredPermissions, getResourceTeamMembership } from 'backend/apiUtils/teams';
+import {
+  checkRequiredPermissions,
+  getResourceWorkspaceMembership,
+} from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
@@ -45,7 +48,7 @@ class SingleTaskHandler {
       },
     });
 
-    await checkRequiredPermissions(req, ['VIEW_RELEASES'], task?.release?.teamId);
+    await checkRequiredPermissions(req, ['VIEW_RELEASES'], task?.release?.workspaceId);
 
     return task;
   }
@@ -78,20 +81,23 @@ class SingleTaskHandler {
       throw new BadRequestException();
     }
 
-    const releaseTeam = await checkTaskUpdatePermissions(req, releaseTask.releaseId);
+    const releaseWorkspace = await checkTaskUpdatePermissions(req, releaseTask.releaseId);
 
     const updateArgs = {
       ...buildUpdateReleaseTaskArgs(body, releaseTask.type),
     };
 
-    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
-    if (!activeTeamMember) throw new ForbiddenException();
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(
+      req,
+      releaseWorkspace?.workspaceId
+    );
+    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const eventsToCreate = await createUpdateTaskEvents({
       body,
       releaseId: releaseTask.releaseId,
       type: releaseTask.type,
-      userId: activeTeamMember?.id as string,
+      userId: activeWorkspaceMember?.id as string,
     });
 
     await prisma.releaseTask.update({

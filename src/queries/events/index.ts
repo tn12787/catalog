@@ -3,9 +3,9 @@ import axios from 'axios';
 import { EventType } from 'components/planner/Calendar/types';
 import { ReleaseEvent } from 'types/common';
 
-export const fetchReleaseEvents = async (teamId: string, assigneeId?: string) => {
+export const fetchReleaseEvents = async (workspaceId: string, assigneeId?: string) => {
   const { data: response } = await axios.get<ReleaseEvent[]>(`/api/releases/events`, {
-    params: { team: teamId, assignee: assigneeId },
+    params: { workspace: workspaceId, assignee: assigneeId },
   });
 
   return response;

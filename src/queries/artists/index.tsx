@@ -5,9 +5,9 @@ import { CreateSingleArtistVars, SingleArtistVars } from './types';
 
 import { ClientRelease } from 'types/common';
 
-export const fetchArtists = async (teamId: string): Promise<Artist[]> => {
+export const fetchArtists = async (workspaceId: string): Promise<Artist[]> => {
   const { data } = await axios.get(`/api/artists`, {
-    params: { team: teamId },
+    params: { workspace: workspaceId },
   });
   return data;
 };

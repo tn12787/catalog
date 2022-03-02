@@ -5,7 +5,7 @@ import { fetchMe } from 'queries/me';
 
 const useUser = () => {
   const destroySession = () => {
-    localStorage.removeItem('activeTeam');
+    localStorage.removeItem('activeWorkspace');
     signOut({ callbackUrl: '/login' });
   };
 

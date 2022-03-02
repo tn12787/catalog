@@ -44,27 +44,27 @@ enum TaskEventType {
   UPDATE_DATE
 }
 
-model Team {
-  id                   String         @id @default(cuid())
+model Workspace {
+  id                   String            @id @default(cuid())
   name                 String
   imageUrl             String?
   provider             CloudProvider
-  members              TeamMember[]
+  members              WorkspaceMember[]
   artists              Artist[]
   contacts             Contact[]
   contactLabels        ContactLabel[]
   releases             Release[]
   invites              Invite[]
-  stripeCustomerId     String         @unique
-  stripeSubscriptionId String?        @unique
+  stripeCustomerId     String            @unique
+  stripeSubscriptionId String?           @unique
 }
 
-model TeamMember {
+model WorkspaceMember {
   id            String             @id @default(cuid())
   user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  team          Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  workspace     Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   userId        String
-  teamId        String
+  workspaceId   String
   roles         Role[]
   tasksAssigned ReleaseTask[]
   actionsTaken  ReleaseTaskEvent[]
@@ -73,31 +73,31 @@ model TeamMember {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@unique([userId, teamId])
+  @@unique([userId, workspaceId])
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String            @id @default(cuid())
   name          String?
-  email         String?      @unique
+  email         String?           @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  teams         TeamMember[]
+  workspaces    WorkspaceMember[]
 }
 
 model Invite {
-  id        String    @id @default(cuid())
-  email     String
-  team      Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId    String
-  role      Role      @relation(fields: [roleId], references: [id], onDelete: SetNull)
-  roleId    String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id          String    @id @default(cuid())
+  email       String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  role        Role      @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  roleId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
 
-  @@unique([email, teamId])
+  @@unique([email, workspaceId])
 }
 
 model Session {
@@ -144,57 +144,57 @@ model Artist {
   legalName    String?
   spotifyUrl   String?
   instagramUrl String?
-  team         Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId       String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId  String
   releases     Release[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime? @updatedAt
 
-  @@unique([name, teamId])
+  @@unique([name, workspaceId])
 }
 
 model Release {
-  id         String      @id @default(cuid())
-  name       String
-  artist     Artist      @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  artistId   String
-  type       ReleaseType
-  targetDate DateTime
-  team       Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId     String
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime?   @updatedAt
+  id          String      @id @default(cuid())
+  name        String
+  artist      Artist      @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artistId    String
+  type        ReleaseType
+  targetDate  DateTime
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime?   @updatedAt
 
   tasks ReleaseTask[]
-  @@unique([name, artistId, teamId])
+  @@unique([name, artistId, workspaceId])
 }
 
 model Contact {
-  id      String         @id @default(cuid())
-  name    String
-  email   String?
-  phone   String?
-  website String?
-  team    Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId  String
-  tasks   ReleaseTask[]
-  labels  ContactLabel[]
+  id          String         @id @default(cuid())
+  name        String
+  email       String?
+  phone       String?
+  website     String?
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  tasks       ReleaseTask[]
+  labels      ContactLabel[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@unique([name, teamId])
+  @@unique([name, workspaceId])
 }
 
 model ContactLabel {
-  id       String    @id @default(cuid())
-  name     String
-  team     Team?     @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId   String
-  color    String?
-  contacts Contact[]
+  id          String     @id @default(cuid())
+  name        String
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  color       String?
+  contacts    Contact[]
 
-  @@unique([name, teamId])
+  @@unique([name, workspaceId])
 }
 
 model ReleaseTask {
@@ -206,7 +206,7 @@ model ReleaseTask {
   type             ReleaseTaskType
   release          Release            @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   releaseId        String
-  assignees        TeamMember[]
+  assignees        WorkspaceMember[]
   contacts         Contact[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime?          @updatedAt
@@ -268,14 +268,14 @@ model MasteringData {
 }
 
 model ReleaseTaskEvent {
-  id        String        @id @default(cuid())
+  id        String          @id @default(cuid())
   type      TaskEventType
-  task      ReleaseTask   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task      ReleaseTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String
-  user      TeamMember    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user      WorkspaceMember @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String
   extraData Json
-  timestamp DateTime      @default(now())
+  timestamp DateTime        @default(now())
 }
 
 model Distributor {
@@ -300,13 +300,13 @@ model MarketingLink {
 }
 
 model Role {
-  id          String       @id @default(cuid())
-  name        String       @unique
+  id          String            @id @default(cuid())
+  name        String            @unique
   description String?
   permissions Permission[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime?    @updatedAt
-  users       TeamMember[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime?         @updatedAt
+  users       WorkspaceMember[]
   Invite      Invite[]
 }
 
@@ -325,15 +325,15 @@ enum NotificationType {
 }
 
 model Notification {
-  id           String           @id @default(cuid())
-  type         NotificationType
-  teamMember   TeamMember       @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
-  teamMemberId String
-  read         Boolean          @default(false)
-  task         ReleaseTask?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId       String
-  extraData    Json
-  createdAt    DateTime         @default(now())
+  id                String           @id @default(cuid())
+  type              NotificationType
+  workspaceMember   WorkspaceMember  @relation(fields: [workspaceMemberId], references: [id], onDelete: Cascade)
+  workspaceMemberId String
+  read              Boolean          @default(false)
+  task              ReleaseTask?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId            String
+  extraData         Json
+  createdAt         DateTime         @default(now())
 
-  @@unique([teamMemberId, taskId, type])
+  @@unique([workspaceMemberId, taskId, type])
 }

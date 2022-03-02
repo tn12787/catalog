@@ -6,7 +6,7 @@ import { createContact, deleteContact, updateContact } from 'queries/contacts';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 const useContactMutations = () => {
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();
@@ -17,9 +17,9 @@ const useContactMutations = () => {
         status: 'success',
         title: message,
       });
-      queryClient.invalidateQueries(['contacts', currentTeam]);
+      queryClient.invalidateQueries(['contacts', currentWorkspace]);
     },
-    [queryClient, currentTeam, toast]
+    [queryClient, currentWorkspace, toast]
   );
 
   const onError = useCallback(

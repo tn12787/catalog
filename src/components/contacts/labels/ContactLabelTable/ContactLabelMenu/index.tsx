@@ -25,11 +25,11 @@ import useContactLabelMutations from 'hooks/data/contacts/labels/useContactLabel
 type Props = CellProps<ContactWithLabels>;
 
 const ContactLabelMenu = ({ value }: Props) => {
-  const { teams, currentTeam } = useExtendedSession();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
   const canEdit = [
-    hasRequiredPermissions(['UPDATE_CONTACTS'], teams?.[currentTeam]),
-    teams?.[currentTeam].id !== value.id,
+    hasRequiredPermissions(['UPDATE_CONTACTS'], workspaceMemberships?.[currentWorkspace]),
+    workspaceMemberships?.[currentWorkspace].id !== value.id,
   ].every(Boolean);
 
   const { primary } = useAppColors();
@@ -43,7 +43,7 @@ const ContactLabelMenu = ({ value }: Props) => {
 
   const onDelete = async () => {
     try {
-      await mutateAsync({ teamId: currentTeam, id: value.id, name: value.name });
+      await mutateAsync({ workspaceId: currentWorkspace, id: value.id, name: value.name });
       onDeleteClose();
     } catch (error: any) {}
   };

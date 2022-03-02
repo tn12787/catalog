@@ -3,8 +3,8 @@ import type { NextApiRequest } from 'next';
 import {
   Role,
   Permission,
-  Team,
-  TeamMember,
+  Workspace,
+  WorkspaceMember,
   User,
   ReleaseTask,
   ArtworkData,
@@ -28,9 +28,9 @@ export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date;
 }
 
-export type TeamMemberWithUser = TeamMember & { user: User };
+export type WorkspaceMemberWithUser = WorkspaceMember & { user: User };
 
-export type TeamMemberWithUserAndRoles = TeamMemberWithUser & {
+export type WorkspaceMemberWithUserAndRoles = WorkspaceMemberWithUser & {
   roles: Role[];
 };
 
@@ -47,12 +47,12 @@ export type NotificationWithTask = Notification & {
 };
 
 export type ReleaseTaskWithAssignees = ReleaseTask & {
-  assignees: TeamMemberWithUser[];
+  assignees: WorkspaceMember[];
   contacts: ContactWithLabels[];
 };
 
 export type ReleaseTaskEventWithUser = ReleaseTaskEvent & {
-  user: TeamMemberWithUser;
+  user: WorkspaceMemberWithUser;
 };
 
 export interface EnrichedRelease extends Release {
@@ -118,16 +118,16 @@ export enum EventType {
   RELEASE = 'release',
 }
 
-export type EnrichedTeamMember = TeamMember & {
-  team: Team;
+export type EnrichedWorkspaceMember = WorkspaceMember & {
+  workspace: Workspace;
   roles: Role & { permissions: Permission[] }[];
 };
 
 export type ExtendedSession = Session & { token: ExtendedToken };
 
-export type EnrichedTeam = Team & {
+export type EnrichedWorkspace = Workspace & {
   invites: Invite[];
-  members: TeamMemberWithUserAndRoles[];
+  members: WorkspaceMemberWithUserAndRoles[];
   subscription?: MappedSubscription;
 };
 
@@ -135,7 +135,7 @@ export interface ExtendedToken {
   email: string;
   name: string;
   picture: string;
-  teams: EnrichedTeamMember[];
+  workspaceMemberships: EnrichedWorkspaceMember[];
   sub: string;
 }
 

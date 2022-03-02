@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 type CreatePortalLinkVars = {
-  teamId: string;
+  workspaceId: string;
 };
 
 type CreateCheckoutVars = CreatePortalLinkVars & {

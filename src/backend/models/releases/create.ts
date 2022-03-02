@@ -29,5 +29,5 @@ export class CreateReleaseDto {
   targetDate: Date;
 
   @IsNotEmpty()
-  team: string;
+  workspace: string;
 }

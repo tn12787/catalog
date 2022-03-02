@@ -4,79 +4,81 @@ import { useCallback, useEffect, useMemo } from 'react';
 import create from 'zustand';
 import router from 'next/router';
 
-import { EnrichedTeamMember, ExtendedToken } from 'types/common';
+import { EnrichedWorkspaceMember, ExtendedToken } from 'types/common';
 
-interface UseTeamPreferenceState {
-  currentTeam: string;
-  setCurrentTeam: (team: string) => void;
+interface UseWorkspacePreferenceState {
+  currentWorkspace: string;
+  setCurrentWorkspace: (workspace: string) => void;
 }
 
-const useTeamPreference = create<UseTeamPreferenceState>((set) => ({
-  currentTeam: '',
-  setCurrentTeam: (val: string) => set((state) => ({ ...state, currentTeam: val })),
+const useWorkspacePreference = create<UseWorkspacePreferenceState>((set) => ({
+  currentWorkspace: '',
+  setCurrentWorkspace: (val: string) => set((state) => ({ ...state, currentWorkspace: val })),
 }));
 
 const useExtendedSession = () => {
   const { data: session, status } = useSession();
   const token = session?.token as ExtendedToken | undefined;
 
-  const { currentTeam, setCurrentTeam } = useTeamPreference(
+  const { currentWorkspace, setCurrentWorkspace } = useWorkspacePreference(
     useCallback(
       (state) => ({
-        currentTeam: state.currentTeam,
-        setCurrentTeam: state.setCurrentTeam,
+        currentWorkspace: state.currentWorkspace,
+        setCurrentWorkspace: state.setCurrentWorkspace,
       }),
       []
     )
   );
 
-  const teamMap = useMemo(() => {
-    const teams = token?.teams;
+  const workspaceMap = useMemo(() => {
+    const workspaceMemberships = token?.workspaceMemberships;
 
-    return teams?.reduce((acc, team) => {
-      acc[team.teamId] = team;
+    return workspaceMemberships?.reduce((acc, workspace) => {
+      acc[workspace.workspaceId] = workspace;
       return acc;
-    }, {} as { [key: string]: EnrichedTeamMember });
-  }, [token?.teams]);
+    }, {} as { [key: string]: EnrichedWorkspaceMember });
+  }, [token?.workspaceMemberships]);
 
-  const teamList = useMemo(() => {
-    return token?.teams;
-  }, [token?.teams]);
+  const workspaceList = useMemo(() => {
+    return token?.workspaceMemberships;
+  }, [token?.workspaceMemberships]);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const teams = token?.teams;
-    const storedTeam = localStorage.getItem('team');
-    if (Array.isArray(teams) && storedTeam) {
-      if (!token?.teams.find((team) => team.id === storedTeam)) {
-        localStorage.removeItem('activeTeam');
+    const workspaceMemberships = token?.workspaceMemberships;
+    const storedWorkspace = localStorage.getItem('workspace');
+    if (Array.isArray(workspaceMemberships) && storedWorkspace) {
+      if (!token?.workspaceMemberships.find((workspace) => workspace.id === storedWorkspace)) {
+        localStorage.removeItem('activeWorkspace');
       }
     }
 
-    if (teams) {
-      setCurrentTeam(localStorage.getItem('activeTeam') || token?.teams?.[0]?.teamId);
+    if (workspaceMemberships) {
+      setCurrentWorkspace(
+        localStorage.getItem('activeWorkspace') || token?.workspaceMemberships?.[0]?.workspaceId
+      );
     }
-  }, [token?.teams, setCurrentTeam]);
+  }, [token?.workspaceMemberships, setCurrentWorkspace]);
 
-  const onChangeTeam = useCallback(
+  const onChangeWorkspace = useCallback(
     (val: string) => {
       if (typeof window !== 'undefined') {
-        localStorage.setItem('activeTeam', val as string);
+        localStorage.setItem('activeWorkspace', val as string);
       }
       queryClient.clear();
-      setCurrentTeam(val as string);
+      setCurrentWorkspace(val as string);
       router.replace('/overview', '/overview', { shallow: false });
     },
-    [setCurrentTeam, queryClient]
+    [setCurrentWorkspace, queryClient]
   );
 
   return {
     token,
-    teams: teamMap,
-    teamList: teamList,
-    currentTeam,
-    onChangeTeam,
+    workspaceMemberships: workspaceMap,
+    workspaceList,
+    currentWorkspace,
+    onChangeWorkspace: onChangeWorkspace,
     status,
   };
 };

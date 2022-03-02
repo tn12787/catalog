@@ -16,9 +16,9 @@ class MeHandler {
     const user = await prisma.user.findUnique({
       where: { email: session?.token?.email as string },
       include: {
-        teams: {
+        workspaces: {
           include: {
-            team: true,
+            workspace: true,
             roles: {
               select: {
                 name: true,
