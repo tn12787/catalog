@@ -21,7 +21,7 @@ const AssigneeSelectedItems = ({
                 }}
                 editable
                 key={assignee.id}
-                teamMember={assignee}
+                workspaceMember={assignee}
               />
             );
           })

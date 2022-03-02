@@ -81,20 +81,23 @@ class SingleTaskHandler {
       throw new BadRequestException();
     }
 
-    const releaseTeam = await checkTaskUpdatePermissions(req, releaseTask.releaseId);
+    const releaseWorkspace = await checkTaskUpdatePermissions(req, releaseTask.releaseId);
 
     const updateArgs = {
       ...buildUpdateReleaseTaskArgs(body, releaseTask.type),
     };
 
-    const activeTeamMember = await getResourceWorkspaceMembership(req, releaseTeam?.workspaceId);
-    if (!activeTeamMember) throw new ForbiddenException();
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(
+      req,
+      releaseWorkspace?.workspaceId
+    );
+    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const eventsToCreate = await createUpdateTaskEvents({
       body,
       releaseId: releaseTask.releaseId,
       type: releaseTask.type,
-      userId: activeTeamMember?.id as string,
+      userId: activeWorkspaceMember?.id as string,
     });
 
     await prisma.releaseTask.update({

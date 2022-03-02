@@ -18,13 +18,13 @@ interface Props {
 const EditMusicVideoForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const queryClient = useQueryClient();
 
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
   const { mutateAsync: createMusicVideo, isLoading: createLoading } = useMutation(
     createSingleMusicVideo,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, releaseData.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, releaseData.id]);
       },
     }
   );
@@ -33,7 +33,7 @@ const EditMusicVideoForm = ({ releaseData, onSubmitSuccess }: Props) => {
     updateSingleMusicVideo,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, releaseData.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, releaseData.id]);
       },
     }
   );

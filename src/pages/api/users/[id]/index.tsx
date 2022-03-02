@@ -6,7 +6,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateUserDto } from 'backend/models/users/update';
 
 @requiresAuth()
-class TeamHandler {
+class WorkspaceHandler {
   @Put()
   async updateUser(@PathParam('id') id: string, @Body(ValidationPipe) body: UpdateUserDto) {
     const user = await prisma.user.update({
@@ -20,4 +20,4 @@ class TeamHandler {
   }
 }
 
-export default createHandler(TeamHandler);
+export default createHandler(WorkspaceHandler);

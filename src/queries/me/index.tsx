@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { Team, TeamMember, User } from '@prisma/client';
+import { Workspace, WorkspaceMember, User } from '@prisma/client';
 
 import { UpdateUserVars } from './types';
 
 export const fetchMe = async () => {
   const { data: response } = await axios.get<
-    User & { teams: (TeamMember & { workspace: Team })[] }
+    User & { workspaces: (WorkspaceMember & { workspace: Workspace })[] }
   >(`/api/me`);
   return response;
 };

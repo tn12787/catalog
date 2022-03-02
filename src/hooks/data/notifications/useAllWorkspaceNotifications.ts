@@ -5,30 +5,30 @@ import { useMemo } from 'react';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { fetchNotifications } from 'queries/notifications';
 
-const useAllTeamNotifications = () => {
-  const { teamList, currentWorkspace: currentTeam } = useExtendedSession();
+const useAllWorkspaceNotifications = () => {
+  const { workspaceList, currentWorkspace } = useExtendedSession();
 
   const queryArgs = { read: false };
 
   const allNotifications = useQueries(
-    (teamList ?? []).map((team) => ({
-      queryKey: ['notifications', team.id, queryArgs],
-      queryFn: () => fetchNotifications({ ...queryArgs, workspaceMemberId: team.id }),
+    (workspaceList ?? []).map((workspace) => ({
+      queryKey: ['notifications', workspace.id, queryArgs],
+      queryFn: () => fetchNotifications({ ...queryArgs, workspaceMemberId: workspace.id }),
     }))
   );
 
   const zippedData = useMemo(
     () =>
-      zipWith(teamList ?? [], allNotifications ?? [], (a, b) => ({
+      zipWith(workspaceList ?? [], allNotifications ?? [], (a, b) => ({
         workspace: a,
         notifications: b.data ?? { results: [], total: 0 },
       })),
-    [teamList, allNotifications]
+    [workspaceList, allNotifications]
   );
 
   const withoutCurrent = useMemo(
-    () => zippedData.filter((item) => item?.workspace.workspaceId !== currentTeam),
-    [zippedData, currentTeam]
+    () => zippedData.filter((item) => item?.workspace.workspaceId !== currentWorkspace),
+    [zippedData, currentWorkspace]
   );
 
   const mapped = useMemo(
@@ -47,4 +47,4 @@ const useAllTeamNotifications = () => {
   };
 };
 
-export default useAllTeamNotifications;
+export default useAllWorkspaceNotifications;

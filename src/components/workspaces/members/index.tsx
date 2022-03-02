@@ -21,7 +21,7 @@ import React from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { RiAddFill } from 'react-icons/ri';
 
-import TeamMembersTable from './TeamMembersTable';
+import WorkspaceMembersTable from './WorkspaceMembersTable';
 
 import { EnrichedWorkspace } from 'types/common';
 import InviteUserForm from 'components/workspaces/forms/InviteUserForm';
@@ -31,16 +31,16 @@ import useFeatures from 'hooks/features/useFeatures';
 import { FeatureKey } from 'common/features/types';
 
 type Props = {
-  team?: EnrichedWorkspace;
+  workspace?: EnrichedWorkspace;
   remainingSeats: number;
   isDisabled?: boolean;
   loading?: boolean;
 };
 
-const TeamMembers = ({ team, remainingSeats, isDisabled, loading }: Props) => {
+const WorkspaceMembers = ({ workspace, remainingSeats, isDisabled, loading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { bodySub } = useAppColors();
-  const { manageWorkspace: manageTeam } = useCurrentWorkspace();
+  const { manageWorkspace } = useCurrentWorkspace();
   const { isFeatureEnabled } = useFeatures();
 
   const needsMoreSeats = !remainingSeats && isFeatureEnabled(FeatureKey.PAYMENTS);
@@ -74,7 +74,7 @@ const TeamMembers = ({ team, remainingSeats, isDisabled, loading }: Props) => {
           {needsMoreSeats && (
             <HStack fontSize="xs">
               <Text color={bodySub}>No license seats left. </Text>
-              <Button size="xs" onClick={manageTeam} colorScheme={'purple'} variant="link">
+              <Button size="xs" onClick={manageWorkspace} colorScheme={'purple'} variant="link">
                 Get more
               </Button>
             </HStack>
@@ -92,7 +92,10 @@ const TeamMembers = ({ team, remainingSeats, isDisabled, loading }: Props) => {
           </Skeleton>
         </ButtonGroup>
       </Stack>
-      <TeamMembersTable teamMembers={team?.members ?? []} loading={loading}></TeamMembersTable>
+      <WorkspaceMembersTable
+        workspaceMembers={workspace?.members ?? []}
+        loading={loading}
+      ></WorkspaceMembersTable>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalHeader>
@@ -106,4 +109,4 @@ const TeamMembers = ({ team, remainingSeats, isDisabled, loading }: Props) => {
   );
 };
 
-export default TeamMembers;
+export default WorkspaceMembers;

@@ -6,7 +6,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
-class TeamHandler {
+class InviteAcceptanceHandler {
   @Post()
   async acceptInvite(@PathParam('id') id: string, @Request() req: AuthDecoratedRequest) {
     if (!id) throw new NotFoundException();
@@ -21,7 +21,7 @@ class TeamHandler {
       throw new NotFoundException();
     }
 
-    // create team member and delete invite
+    // create workspace member and delete invite
     const [newMembership] = await prisma.$transaction([
       prisma.workspaceMember.create({
         data: {
@@ -49,4 +49,4 @@ class TeamHandler {
   }
 }
 
-export default createHandler(TeamHandler);
+export default createHandler(InviteAcceptanceHandler);

@@ -44,7 +44,7 @@ class ArtistHandler {
         instagramUrl: body.instagramUrl,
         spotifyUrl: body.spotifyUrl,
         workspace: {
-          connect: { id: body.team },
+          connect: { id: body.workspace },
         },
       },
     });

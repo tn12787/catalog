@@ -14,7 +14,7 @@ interface Props {
 }
 
 const EditContactForm = ({ onSubmitSuccess, contact }: Props) => {
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
   const { updateSingleContact, createSingleContact } = useContactMutations();
 
@@ -22,7 +22,7 @@ const EditContactForm = ({ onSubmitSuccess, contact }: Props) => {
     const mutator = contact ? updateSingleContact.mutateAsync : createSingleContact.mutateAsync;
     const { id, email, name, phone, website, labels } = pickBy(data, Boolean) as ContactWithLabels;
     try {
-      await mutator({ id, email, name, phone, website, labels, workspaceId: currentTeam });
+      await mutator({ id, email, name, phone, website, labels, workspaceId: currentWorkspace });
       onSubmitSuccess?.();
     } catch (e: any) {
       console.log(e);

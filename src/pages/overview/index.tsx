@@ -17,19 +17,19 @@ import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
-  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
+  const { currentWorkspace, workspaces } = useExtendedSession();
 
-  const { workspace: teamData, isLoading: isTeamLoading } = useCurrentWorkspace();
+  const { workspace: workspaceData, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const { data, isLoading } = useQuery(
-    ['releaseEvents', currentTeam, teams?.[currentTeam]?.id],
-    () => fetchReleaseEvents(currentTeam, teams?.[currentTeam]?.id)
+    ['releaseEvents', currentWorkspace, workspaces?.[currentWorkspace]?.id],
+    () => fetchReleaseEvents(currentWorkspace, workspaces?.[currentWorkspace]?.id)
   );
 
   const { data: upcomingReleases } = useQuery(
-    ['releases', currentTeam],
-    () => fetchReleases({ workspace: currentTeam, dates: { after: new Date() } }),
-    { enabled: !!currentTeam }
+    ['releases', currentWorkspace],
+    () => fetchReleases({ workspace: currentWorkspace, dates: { after: new Date() } }),
+    { enabled: !!currentWorkspace }
   );
 
   return (
@@ -40,7 +40,7 @@ const OverviewPage = () => {
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isLoading}>
             <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-              {isTeamLoading ? 'Loading team name' : teamData?.name}
+              {isWorkspaceLoading ? 'Loading workspace name' : workspaceData?.name}
             </Heading>
           </Skeleton>
         </Stack>

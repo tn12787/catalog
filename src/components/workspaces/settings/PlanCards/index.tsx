@@ -18,13 +18,9 @@ import useFeatures from 'hooks/features/useFeatures';
 import { FeatureKey } from 'common/features/types';
 
 const PlanCards = () => {
-  const {
-    manageWorkspace: manageTeam,
-    workspace: team,
-    remainingLicenseSeats,
-  } = useCurrentWorkspace();
+  const { manageWorkspace, workspace, remainingLicenseSeats } = useCurrentWorkspace();
   const { isFeatureEnabled } = useFeatures();
-  if (!team?.subscription || !isFeatureEnabled(FeatureKey.PAYMENTS)) {
+  if (!workspace?.subscription || !isFeatureEnabled(FeatureKey.PAYMENTS)) {
     return null;
   }
 
@@ -33,51 +29,51 @@ const PlanCards = () => {
       <Card w="100%">
         <Stat>
           <HStack spacing={3}>
-            <StatLabel>Team plan </StatLabel>
+            <StatLabel>Workspace plan </StatLabel>
             <Button
               rightIcon={<FiExternalLink></FiExternalLink>}
               size="xs"
-              onClick={manageTeam}
+              onClick={manageWorkspace}
               colorScheme={'purple'}
               variant="link"
             >
-              {team.subscription.cancelTime ? 'Renew' : 'Manage'}
+              {workspace.subscription.cancelTime ? 'Renew' : 'Manage'}
             </Button>
           </HStack>
           <StatNumber>
-            {team.subscription.product.name}{' '}
-            {team.subscription.cancelTime ? (
+            {workspace.subscription.product.name}{' '}
+            {workspace.subscription.cancelTime ? (
               <Badge size="sm">Cancelled</Badge>
             ) : (
-              team.subscription.trialEnd &&
-              new Date(team.subscription.trialEnd) > new Date() && (
+              workspace.subscription.trialEnd &&
+              new Date(workspace.subscription.trialEnd) > new Date() && (
                 <Badge colorScheme={'blue'} size="sm">
                   Trial
                 </Badge>
               )
             )}
           </StatNumber>
-          <StatHelpText>Billed {team.subscription.interval}ly</StatHelpText>
+          <StatHelpText>Billed {workspace.subscription.interval}ly</StatHelpText>
         </Stat>
       </Card>
       <Card w="100%">
         <Stat>
           <HStack spacing={3}>
             <StatLabel>License seats</StatLabel>
-            <Button size="xs" onClick={manageTeam} colorScheme={'purple'} variant="link">
+            <Button size="xs" onClick={manageWorkspace} colorScheme={'purple'} variant="link">
               Get more
             </Button>
           </HStack>
-          <StatNumber>{team.subscription.totalSeats}</StatNumber>
+          <StatNumber>{workspace.subscription.totalSeats}</StatNumber>
           <StatHelpText>{remainingLicenseSeats} seats remaining</StatHelpText>
         </Stat>
       </Card>
-      {team.subscription.cancelTime ? (
+      {workspace.subscription.cancelTime ? (
         <Card w="100%">
           <Stat>
             <StatLabel>Current plan ends on</StatLabel>
             <StatNumber>
-              {format(new Date(team.subscription.currentPeriodEnd ?? Date.now()), 'PPP')}
+              {format(new Date(workspace.subscription.currentPeriodEnd ?? Date.now()), 'PPP')}
             </StatNumber>
           </Stat>
         </Card>
@@ -86,7 +82,7 @@ const PlanCards = () => {
           <Stat>
             <StatLabel>Next Billing Date</StatLabel>
             <StatNumber>
-              {format(new Date(team.subscription.currentPeriodEnd ?? Date.now()), 'PPP')}
+              {format(new Date(workspace.subscription.currentPeriodEnd ?? Date.now()), 'PPP')}
             </StatNumber>
           </Stat>
         </Card>

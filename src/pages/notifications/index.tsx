@@ -70,7 +70,7 @@ const NoficationsPage = () => {
               All Notifications
             </Heading>
           </Stack>
-          <Text>Here you can see all notifications for the current team.</Text>
+          <Text>Here you can see all notifications for the current workspace.</Text>
         </Stack>
 
         <Card>

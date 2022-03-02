@@ -54,22 +54,24 @@ export const getResourceWorkspaceMembership = async (
 ) => {
   const session = (await getSession({ req })) as ExtendedSession;
 
-  return session?.token.workspaces.find((userTeam) => userTeam.workspaceId === workspaceId);
+  return session?.token.workspaces.find(
+    (userWorkspace) => userWorkspace.workspaceId === workspaceId
+  );
 };
 
 export const ensureUserHasWorkspaceMembershipSync = (
   session: ExtendedSession,
   workspaceMemberId?: string
 ) => {
-  const teamMembership = session?.token.workspaces.find(
-    (userTeam) => userTeam.id === workspaceMemberId
+  const workspaceMembership = session?.token.workspaces.find(
+    (userWorkspace) => userWorkspace.id === workspaceMemberId
   );
 
-  if (!teamMembership || !workspaceMemberId) {
+  if (!workspaceMembership || !workspaceMemberId) {
     throw new NotFoundException();
   }
 
-  return teamMembership;
+  return workspaceMembership;
 };
 
 export const ensureUserHasWorkspaceMembership = async (

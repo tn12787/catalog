@@ -7,14 +7,14 @@ import { updateNotification } from 'queries/notifications';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 const useMarkNotificationAsRead = () => {
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();
 
   const { mutateAsync, isLoading } = useMutation(updateNotification, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['notifications', currentTeam]);
+      queryClient.invalidateQueries(['notifications', currentWorkspace]);
     },
     onError: () => {
       toast({

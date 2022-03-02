@@ -25,11 +25,11 @@ import { rescindInvitation } from 'queries/invitations';
 type Props = CellProps<WorkspaceMemberWithUserAndRoles>;
 
 const InvitationMenu = ({ value }: Props) => {
-  const { workspaces: teams, currentWorkspace: currentTeam } = useExtendedSession();
+  const { workspaces, currentWorkspace } = useExtendedSession();
 
   const canEdit = [
-    hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]),
-    teams?.[currentTeam].id !== value.id,
+    hasRequiredPermissions(['UPDATE_TEAM'], workspaces?.[currentWorkspace]),
+    workspaces?.[currentWorkspace].id !== value.id,
   ].every(Boolean);
 
   const { primary } = useAppColors();
@@ -40,7 +40,7 @@ const InvitationMenu = ({ value }: Props) => {
 
   const { mutateAsync: removeInivte, isLoading } = useMutation(rescindInvitation, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['workspace', currentTeam]);
+      queryClient.invalidateQueries(['workspace', currentWorkspace]);
     },
   });
 

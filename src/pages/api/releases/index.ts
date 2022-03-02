@@ -48,7 +48,7 @@ class ReleaseListHandler {
       where: {
         targetDate: { ...dateArgs },
         name: { contains: search, mode: 'insensitive' } as any,
-        workspace: { id: team },
+        workspace: { id: workspace },
       },
     };
 
@@ -92,9 +92,9 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateReleaseDto,
     @Request() req: AuthDecoratedRequest
   ) {
-    const team = await prisma.workspace.findUnique({ where: { id: body.team } });
+    const workspace = await prisma.workspace.findUnique({ where: { id: body.workspace } });
 
-    await checkRequiredPermissions(req, ['CREATE_RELEASES'], team?.id);
+    await checkRequiredPermissions(req, ['CREATE_RELEASES'], workspace?.id);
 
     const optionalArgs = [
       body.artwork &&
@@ -120,7 +120,7 @@ class ReleaseListHandler {
         type: body.type as ReleaseType,
         targetDate: body.targetDate,
         workspace: {
-          connect: { id: body.team },
+          connect: { id: body.workspace },
         },
         tasks: { create: optionalArgs },
       },

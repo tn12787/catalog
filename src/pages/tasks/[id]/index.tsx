@@ -27,7 +27,7 @@ const SingleTaskPage = () => {
   const router = useRouter();
   const taskId = router.query['id'] as string;
   const { bgPrimary } = useAppColors();
-  const { workspaces: teams, currentWorkspace: currentTeam } = useExtendedSession();
+  const { workspaces, currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -82,8 +82,8 @@ const SingleTaskPage = () => {
         <Skeleton isLoaded={!taskLoading}>
           <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
             <BreadcrumbItem>
-              <Link passHref href={`/teams/${currentTeam ?? 'noTeam'}/overview`}>
-                <BreadcrumbLink>{teams?.[currentTeam]?.workspace.name}</BreadcrumbLink>
+              <Link passHref href={`/workspaces/${currentWorkspace ?? 'noWorkspace'}/overview`}>
+                <BreadcrumbLink>{workspaces?.[currentWorkspace]?.workspace.name}</BreadcrumbLink>
               </Link>
             </BreadcrumbItem>
 

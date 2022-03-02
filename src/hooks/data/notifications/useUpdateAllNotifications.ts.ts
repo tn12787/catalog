@@ -6,14 +6,14 @@ import { clearAllNotifications, markAllAsRead } from 'queries/notifications';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 const useUpdateAllNotifications = () => {
-  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
+  const { currentWorkspace, workspaces } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();
 
   const handlers = {
     onSuccess: () => {
-      queryClient.invalidateQueries(['notifications', currentTeam]);
+      queryClient.invalidateQueries(['notifications', currentWorkspace]);
       toast({
         title: 'Notifications updated',
         status: 'success',
@@ -43,15 +43,15 @@ const useUpdateAllNotifications = () => {
 
   const updateAll = useCallback(
     async (action: 'read' | 'delete') => {
-      if (!teams?.[currentTeam]?.id) {
+      if (!workspaces?.[currentWorkspace]?.id) {
         return;
       }
 
       const mutate = action === 'read' ? readAll : clearAll;
 
-      return mutate(teams?.[currentTeam]?.id);
+      return mutate(workspaces?.[currentWorkspace]?.id);
     },
-    [teams, currentTeam, readAll, clearAll]
+    [workspaces, currentWorkspace, readAll, clearAll]
   );
 
   return {

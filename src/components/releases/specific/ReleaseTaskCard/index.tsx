@@ -36,8 +36,8 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
   fields,
   taskType,
 }: Props<T>) => {
-  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
-  const canEdit = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
+  const { currentWorkspace, workspaces } = useExtendedSession();
+  const canEdit = hasRequiredPermissions(['UPDATE_RELEASES'], workspaces?.[currentWorkspace]);
   const { bodySub } = useAppColors();
   return (
     <Card flex={1}>

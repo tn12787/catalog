@@ -31,13 +31,13 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
 
   const queryClient = useQueryClient();
 
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
   const { mutateAsync: createArtwork, isLoading: createLoading } = useMutation(
     createSingleArtwork,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, releaseData.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, releaseData.id]);
       },
     }
   );
@@ -46,7 +46,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
     updateSingleArtwork,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, releaseData.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, releaseData.id]);
       },
     }
   );

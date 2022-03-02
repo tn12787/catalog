@@ -38,12 +38,15 @@ class CommentHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.workspaceId);
 
-    const activeTeamMember = await getResourceWorkspaceMembership(req, task?.release?.workspaceId);
-    if (!activeTeamMember) throw new ForbiddenException();
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(
+      req,
+      task?.release?.workspaceId
+    );
+    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const result = await prisma.releaseTaskEvent.create({
       data: {
-        user: { connect: { id: activeTeamMember.id } },
+        user: { connect: { id: activeWorkspaceMember.id } },
         task: { connect: { id: taskId } },
         type: TaskEventType.NEW_COMMENT,
         extraData: {

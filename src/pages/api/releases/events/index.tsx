@@ -12,13 +12,13 @@ class ReleaseListHandler {
     const where = assignee
       ? {
           AND: [
-            { workspace: { id: team } },
+            { workspace: { id: workspace } },
             {
               tasks: { some: { assignees: { some: { id: assignee } } } },
             },
           ],
         }
-      : { workspace: { id: team } };
+      : { workspace: { id: workspace } };
 
     const releases = await prisma.release.findMany({
       where,
@@ -27,6 +27,7 @@ class ReleaseListHandler {
         tasks: {
           include: {
             assignees: { include: { user: true } },
+            contacts: { include: { labels: true } },
             artworkData: true,
             distributionData: true,
             musicVideoData: true,

@@ -32,7 +32,7 @@ class NotificationHandler {
     @Query('page', DefaultValuePipe(1), ParseNumberPipe) page: number,
     @Query('read', ParseBooleanPipe({ nullable: true })) read: boolean
   ) {
-    // ensure user getting notifications belongs to the team for which they're asking
+    // ensure user getting notifications belongs to the workspace for which they're asking
     await ensureUserHasWorkspaceMembership(req, workspaceMemberId);
 
     const commonArgs = {
@@ -64,7 +64,7 @@ class NotificationHandler {
 
   @Patch()
   async bulkUpdate(@Req() req: AuthDecoratedRequest, @Body() body: BatchUpdateNotificationDto) {
-    // ensure user getting notifications belongs to the team for which they're asking
+    // ensure user getting notifications belongs to the workspace for which they're asking
 
     const ids = body.ids;
 

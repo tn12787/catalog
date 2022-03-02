@@ -8,7 +8,7 @@ import { ContactLabelWithContacts } from 'types/common';
 
 export const fetchContactLabels = async ({ workspaceId, search }: ContactLabelFilterOptions) => {
   const { data: response } = await axios.get<ContactLabelWithContacts[]>(
-    `/api/teams/${workspaceId}/contacts/labels`,
+    `/api/workspaces/${workspaceId}/contacts/labels`,
     {
       params: {
         workspaceId,
@@ -24,7 +24,7 @@ export const createContactLabel = async ({
   workspaceId,
   ...rest
 }: CreateContactLabelVars): Promise<ContactLabel> => {
-  const { data: response } = await axios.post(`/api/teams/${workspaceId}/contacts/labels`, {
+  const { data: response } = await axios.post(`/api/workspaces/${workspaceId}/contacts/labels`, {
     ...rest,
   });
   return response;
@@ -35,9 +35,12 @@ export const updateContactLabel = async ({
   id,
   ...rest
 }: UpdateContactLabelVars): Promise<ContactLabel> => {
-  const { data: response } = await axios.patch(`/api/teams/${workspaceId}/contacts/labels/${id}`, {
-    ...rest,
-  });
+  const { data: response } = await axios.patch(
+    `/api/workspaces/${workspaceId}/contacts/labels/${id}`,
+    {
+      ...rest,
+    }
+  );
   return response;
 };
 
@@ -45,6 +48,8 @@ export const deleteContactLabel = async ({
   workspaceId,
   id,
 }: DeleteContactLabelVars): Promise<ContactLabel> => {
-  const { data: response } = await axios.delete(`/api/teams/${workspaceId}/contacts/labels/${id}`);
+  const { data: response } = await axios.delete(
+    `/api/workspaces/${workspaceId}/contacts/labels/${id}`
+  );
   return response;
 };

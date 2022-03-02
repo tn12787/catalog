@@ -35,9 +35,11 @@ const NewArtistForm = ({ existingArtist }: Props) => {
     },
   });
 
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
-  const { data: artists } = useQuery(['artists', currentTeam], () => fetchArtists(currentTeam));
+  const { data: artists } = useQuery(['artists', currentWorkspace], () =>
+    fetchArtists(currentWorkspace)
+  );
   const queryClient = useQueryClient();
   const { mutateAsync: createArtist, isLoading: createLoading } = useMutation(createSingleArtist, {
     onSuccess: () => {
@@ -55,7 +57,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
     try {
       const result = await createArtist({
         ...data,
-        workspace: currentTeam,
+        workspace: currentWorkspace,
       } as CreateSingleArtistVars);
       toast({
         status: 'success',

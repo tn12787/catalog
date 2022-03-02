@@ -25,16 +25,16 @@ class PortalHandler {
 
     await checkRequiredPermissions(request, ['UPDATE_TEAM'], workspaceId);
 
-    const team = await prisma.workspace.findUnique({ where: { id: workspaceId } });
-    if (!team) {
+    const workspace = await prisma.workspace.findUnique({ where: { id: workspaceId } });
+    if (!workspace) {
       throw new NotFoundException();
     }
 
-    const customer = await stripe.customers.retrieve(team.stripeCustomerId);
+    const customer = await stripe.customers.retrieve(workspace.stripeCustomerId);
 
     const { url } = await stripe.billingPortal.sessions.create({
       customer: customer.id,
-      return_url: `${process.env.NEXTAUTH_URL}/teams/${workspaceId}/settings`,
+      return_url: `${process.env.NEXTAUTH_URL}/workspaces/${workspaceId}/settings`,
     });
 
     return { url };

@@ -22,7 +22,7 @@ const WorkspaceInformation = () => {
         <Avatar
           size="lg"
           borderRadius="md"
-          alt="team_image"
+          alt="workspace_image"
           name={workspace?.name}
           src={workspace?.imageUrl ?? ''}
           fontWeight="semibold"
@@ -30,7 +30,7 @@ const WorkspaceInformation = () => {
       ),
     },
     {
-      label: 'Team name',
+      label: 'Workspace name',
       content: <Text fontWeight="semibold">{workspace?.name}</Text>,
     },
   ];
@@ -38,7 +38,7 @@ const WorkspaceInformation = () => {
   return (
     <Card px={0} spacing={6}>
       <Heading px={4} as="h4" size="md">
-        Team info
+        Workspace info
       </Heading>
       {isEditing ? (
         <EditWorkspaceInfoForm
@@ -59,7 +59,7 @@ const WorkspaceInformation = () => {
               }}
               leftIcon={<FiEdit />}
             >
-              Edit Team Info
+              Edit Workspace Info
             </Button>
           </Stack>
         </>

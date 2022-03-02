@@ -17,9 +17,9 @@ interface Props extends Pick<ControllerRenderProps, 'onChange'> {
 
 const AssigneeSelect: React.FC<Props> = React.forwardRef(
   ({ value, borderless = false, onChange }: Props) => {
-    const { workspace: teamData, isLoading } = useCurrentWorkspace();
+    const { workspace: workspaceData, isLoading } = useCurrentWorkspace();
 
-    const allTeamMembers = teamData?.members || [];
+    const allWorkspaceMembers = workspaceData?.members || [];
 
     return (
       <MultiSelect
@@ -30,7 +30,7 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
         itemToString={(item) => item?.user?.name || ''}
         renderSelectedItems={AssigneeSelectedItems}
         renderListItem={(props: MultiSelectListItemProps<User>) => <AssigneeItem {...props} />}
-        allItems={allTeamMembers}
+        allItems={allWorkspaceMembers}
         filterFn={(item: WorkspaceMemberWithUserAndRoles, search: string) =>
           item.user.name?.toLowerCase().includes(search.toLowerCase()) ?? false
         }

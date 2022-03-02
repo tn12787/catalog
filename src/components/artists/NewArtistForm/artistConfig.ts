@@ -8,16 +8,19 @@ export const newArtistConfig = (): FormDatum<FormArtist>[] => [
     label: 'Name',
     type: 'text',
     registerArgs: { required: 'Please enter a name for your release.' },
+    extraProps: {
+      placeholder: 'Artist name, e.g. "Tame Impala"',
+    },
   },
   {
     name: 'legalName',
     label: 'Legal Name',
     type: 'text',
     registerArgs: {
-      required: 'Please enter an artist.',
+      required: "Please enter the artist's legal name.",
     },
     extraProps: {
-      placeholder: 'Select an artist...',
+      placeholder: 'Legal name, e.g. "Kevin Parker"',
     },
   },
   {

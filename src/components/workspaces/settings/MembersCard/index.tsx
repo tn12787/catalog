@@ -2,7 +2,7 @@ import { Flex, Heading, Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import Card from 'components/Card';
-import TeamMembers from 'components/workspaces/members';
+import WorkspaceMembers from 'components/workspaces/members';
 import InvitationTable from 'components/workspaces/members/InvitationTable';
 import useAppColors from 'hooks/useAppColors';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
@@ -11,9 +11,9 @@ import useFeatures from 'hooks/features/useFeatures';
 
 const MembersCard = () => {
   const { bgPrimary } = useAppColors();
-  const { workspace: team, remainingLicenseSeats, isLoading } = useCurrentWorkspace();
+  const { workspace: workspace, remainingLicenseSeats, isLoading } = useCurrentWorkspace();
   const { isFeatureEnabled } = useFeatures();
-  const isDisabled = !team?.subscription && isFeatureEnabled(FeatureKey.PAYMENTS);
+  const isDisabled = !workspace?.subscription && isFeatureEnabled(FeatureKey.PAYMENTS);
 
   if (isLoading) return null;
   return (
@@ -45,19 +45,19 @@ const MembersCard = () => {
       <Heading fontSize="2xl" as="h4" fontWeight="semibold">
         Members
       </Heading>
-      {team?.invites?.length && (
+      {workspace?.invites?.length && (
         <Stack spacing={3}>
           <Heading fontSize="lg" as="h4" fontWeight="semibold">
             Pending invitations
           </Heading>
-          <InvitationTable invites={team?.invites ?? []} />
+          <InvitationTable invites={workspace?.invites ?? []} />
         </Stack>
       )}
       <Stack spacing={3}>
         <Heading fontSize="lg" as="h4" fontWeight="semibold">
           All members
         </Heading>
-        <TeamMembers team={team} remainingSeats={remainingLicenseSeats} />
+        <WorkspaceMembers workspace={workspace} remainingSeats={remainingLicenseSeats} />
       </Stack>
     </Card>
   );

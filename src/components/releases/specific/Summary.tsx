@@ -58,8 +58,11 @@ const fields = (releaseData: ClientRelease): SummaryField[] => [
 const Summary = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
-  const canUpdateRelease = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
+  const { currentWorkspace, workspaces } = useExtendedSession();
+  const canUpdateRelease = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    workspaces?.[currentWorkspace]
+  );
 
   return (
     <Card alignItems={['center', 'center', 'stretch']}>

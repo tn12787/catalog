@@ -31,10 +31,10 @@ const useExtendedSession = () => {
   );
 
   const workspaceMap = useMemo(() => {
-    const teams = token?.workspaces;
+    const workspaces = token?.workspaces;
 
-    return teams?.reduce((acc, team) => {
-      acc[team.workspaceId] = team;
+    return workspaces?.reduce((acc, workspace) => {
+      acc[workspace.workspaceId] = workspace;
       return acc;
     }, {} as { [key: string]: EnrichedWorkspaceMember });
   }, [token?.workspaces]);
@@ -46,17 +46,17 @@ const useExtendedSession = () => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const teams = token?.workspaces;
-    const storedTeam = localStorage.getItem('workspace');
-    if (Array.isArray(teams) && storedTeam) {
-      if (!token?.workspaces.find((team) => team.id === storedTeam)) {
-        localStorage.removeItem('activeTeam');
+    const workspaces = token?.workspaces;
+    const storedWorkspace = localStorage.getItem('workspace');
+    if (Array.isArray(workspaces) && storedWorkspace) {
+      if (!token?.workspaces.find((workspace) => workspace.id === storedWorkspace)) {
+        localStorage.removeItem('activeWorkspace');
       }
     }
 
-    if (teams) {
+    if (workspaces) {
       setCurrentWorkspace(
-        localStorage.getItem('activeTeam') || token?.workspaces?.[0]?.workspaceId
+        localStorage.getItem('activeWorkspace') || token?.workspaces?.[0]?.workspaceId
       );
     }
   }, [token?.workspaces, setCurrentWorkspace]);
@@ -64,7 +64,7 @@ const useExtendedSession = () => {
   const onChangeWorkspace = useCallback(
     (val: string) => {
       if (typeof window !== 'undefined') {
-        localStorage.setItem('activeTeam', val as string);
+        localStorage.setItem('activeWorkspace', val as string);
       }
       queryClient.clear();
       setCurrentWorkspace(val as string);
@@ -76,8 +76,8 @@ const useExtendedSession = () => {
   return {
     token,
     workspaces: workspaceMap,
-    teamList: workspaceList,
-    currentWorkspace: currentWorkspace,
+    workspaceList,
+    currentWorkspace,
     onChangeWorkspace: onChangeWorkspace,
     status,
   };

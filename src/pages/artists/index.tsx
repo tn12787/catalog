@@ -22,12 +22,15 @@ import PageHead from 'components/pageItems/PageHead';
 
 const Artists = () => {
   const { bgPrimary } = useAppColors();
-  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
-  const { data: artists, isLoading } = useQuery(['artists', currentTeam], () =>
-    fetchArtists(currentTeam)
+  const { currentWorkspace, workspaces } = useExtendedSession();
+  const { data: artists, isLoading } = useQuery(['artists', currentWorkspace], () =>
+    fetchArtists(currentWorkspace)
   );
 
-  const canCreateArtists = hasRequiredPermissions(['CREATE_ARTISTS'], teams?.[currentTeam]);
+  const canCreateArtists = hasRequiredPermissions(
+    ['CREATE_ARTISTS'],
+    workspaces?.[currentWorkspace]
+  );
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
@@ -35,8 +38,8 @@ const Artists = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/teams/${currentTeam ?? 'noteam'}/overview`}>
-              <BreadcrumbLink>{teams?.[currentTeam]?.workspace.name}</BreadcrumbLink>
+            <Link passHref href={`/workspaces/${currentWorkspace ?? 'noworkspace'}/overview`}>
+              <BreadcrumbLink>{workspaces?.[currentWorkspace]?.workspace.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 

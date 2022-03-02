@@ -9,7 +9,7 @@ import { ContactWithLabels } from 'types/common';
 
 export const fetchContacts = async ({ workspaceId, pagination, search }: ContactFilterOptions) => {
   const { data: response } = await axios.get<PaginatedQueryResult<ContactWithLabels>>(
-    `/api/teams/${workspaceId}/contacts`,
+    `/api/workspaces/${workspaceId}/contacts`,
     {
       params: {
         workspaceId,
@@ -27,7 +27,9 @@ export const createContact = async ({
   workspaceId,
   ...rest
 }: CreateContactVars): Promise<Contact> => {
-  const { data: response } = await axios.post(`/api/teams/${workspaceId}/contacts`, { ...rest });
+  const { data: response } = await axios.post(`/api/workspaces/${workspaceId}/contacts`, {
+    ...rest,
+  });
   return response;
 };
 
@@ -36,13 +38,13 @@ export const updateContact = async ({
   id,
   ...rest
 }: UpdateContactVars): Promise<Contact> => {
-  const { data: response } = await axios.patch(`/api/teams/${workspaceId}/contacts/${id}`, {
+  const { data: response } = await axios.patch(`/api/workspaces/${workspaceId}/contacts/${id}`, {
     ...rest,
   });
   return response;
 };
 
 export const deleteContact = async ({ workspaceId, id }: DeleteContactVars): Promise<Contact> => {
-  const { data: response } = await axios.delete(`/api/teams/${workspaceId}/contacts/${id}`);
+  const { data: response } = await axios.delete(`/api/workspaces/${workspaceId}/contacts/${id}`);
   return response;
 };

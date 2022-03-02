@@ -32,7 +32,7 @@ class DeleteBatchContactHandler {
       },
     });
 
-    // silently ignore contacts that don't belong to the team
+    // silently ignore contacts that don't belong to the workspace
     const contactsToDelete = allContacts.filter((contact) => contact.workspaceId === workspaceId);
 
     const deleted = await prisma.contact.deleteMany({

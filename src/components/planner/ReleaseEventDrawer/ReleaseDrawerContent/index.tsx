@@ -40,7 +40,7 @@ type RollbackContext = {
 const ReleaseDrawerContent = ({ event, loading }: Props) => {
   const task = event?.data;
   const queryClient = useQueryClient();
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
   const toast = useToast();
 
   const { mutateAsync: submitUpdate } = useMutation(updateTask, {
@@ -66,7 +66,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
 
     onSuccess: () => {
       queryClient.invalidateQueries(['tasks', task?.id]);
-      queryClient.invalidateQueries(['releaseEvents', currentTeam]);
+      queryClient.invalidateQueries(['releaseEvents', currentWorkspace]);
     },
   });
 

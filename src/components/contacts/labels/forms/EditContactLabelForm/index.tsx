@@ -14,7 +14,7 @@ interface Props {
 }
 
 const EditContactLabelForm = ({ onSubmitSuccess, label }: Props) => {
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
   const { updateSingleContactLabel, createSingleContactLabel } = useContactLabelMutations();
 
@@ -24,7 +24,7 @@ const EditContactLabelForm = ({ onSubmitSuccess, label }: Props) => {
       : createSingleContactLabel.mutateAsync;
     const { id, name, color } = pickBy(data, Boolean) as ContactLabelWithContacts;
     try {
-      await mutator({ id, name, color, workspaceId: currentTeam });
+      await mutator({ id, name, color, workspaceId: currentWorkspace });
       onSubmitSuccess?.();
     } catch (e: any) {
       console.log(e);

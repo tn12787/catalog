@@ -10,15 +10,15 @@ import PlanCards from 'components/workspaces/settings/PlanCards';
 import MembersCard from 'components/workspaces/settings/MembersCard';
 import UpgradeCards from 'components/workspaces/settings/UpgradeCards';
 
-const TeamOverview = () => {
+const WorkspaceOverview = () => {
   const { bgPrimary } = useAppColors();
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
-      <PageHead title="Team Settings" />
+      <PageHead title="Workspace Settings" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-          Manage Team
+          Manage Workspace
         </Heading>
         <WorkspaceInformation />
         <PlanCards />
@@ -29,8 +29,8 @@ const TeamOverview = () => {
   );
 };
 
-TeamOverview.getLayout = () => DashboardLayout;
+WorkspaceOverview.getLayout = () => DashboardLayout;
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
 
-export default TeamOverview;
+export default WorkspaceOverview;

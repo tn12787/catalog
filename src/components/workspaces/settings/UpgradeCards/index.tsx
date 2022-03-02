@@ -8,9 +8,9 @@ import { FeatureKey } from 'common/features/types';
 import useFeatures from 'hooks/features/useFeatures';
 
 const UpgradeCards = () => {
-  const { workspace: team, isLoading, checkout } = useCurrentWorkspace();
+  const { workspace: workspace, isLoading, checkout } = useCurrentWorkspace();
   const { isFeatureEnabled } = useFeatures();
-  if (team?.subscription || isLoading || !isFeatureEnabled(FeatureKey.PAYMENTS)) {
+  if (workspace?.subscription || isLoading || !isFeatureEnabled(FeatureKey.PAYMENTS)) {
     return null;
   }
 
@@ -20,7 +20,7 @@ const UpgradeCards = () => {
         {"You're on the free plan"}
       </Heading>
       <Text color="white">
-        Upgrade now to manage multiple artists, contacts, team members, roles, tasks and more.
+        Upgrade now to manage multiple artists, contacts, workspace members, roles, tasks and more.
         Starts at $6 / month.
       </Text>
       <Button leftIcon={<BiRocket />} colorScheme="green" onClick={() => checkout()}>

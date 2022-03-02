@@ -25,17 +25,17 @@ import useAppColors from 'hooks/useAppColors';
 import { WorkspaceMemberWithUserAndRoles } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';
-import { deleteTeamMember } from 'queries/teams';
+import { deleteWorkspaceMember } from 'queries/workspaces';
 import ManageUserForm from 'components/workspaces/forms/ManageUserForm';
 
 type Props = CellProps<WorkspaceMemberWithUserAndRoles>;
 
-const TeamMemberMenu = ({ value }: Props) => {
-  const { workspaces: teams, currentWorkspace: currentTeam } = useExtendedSession();
+const WorkspaceMemberMenu = ({ value }: Props) => {
+  const { workspaces, currentWorkspace } = useExtendedSession();
 
   const canEdit = [
-    hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]),
-    teams?.[currentTeam].id !== value.id,
+    hasRequiredPermissions(['UPDATE_TEAM'], workspaces?.[currentWorkspace]),
+    workspaces?.[currentWorkspace].id !== value.id,
   ].every(Boolean);
 
   const { primary } = useAppColors();
@@ -45,18 +45,18 @@ const TeamMemberMenu = ({ value }: Props) => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const { mutateAsync: removeTeamMember, isLoading } = useMutation(deleteTeamMember, {
+  const { mutateAsync: removeWorkspaceMember, isLoading } = useMutation(deleteWorkspaceMember, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['workspace', currentTeam]);
+      queryClient.invalidateQueries(['workspace', currentWorkspace]);
     },
   });
 
   const onDelete = async () => {
     try {
-      await removeTeamMember({ workspaceId: currentTeam, workspaceMemberId: value.id });
+      await removeWorkspaceMember({ workspaceId: currentWorkspace, workspaceMemberId: value.id });
       toast({
         status: 'success',
-        title: 'Team member removed',
+        title: 'Workspace member removed',
       });
       onDeleteClose();
     } catch (error: any) {
@@ -86,7 +86,7 @@ const TeamMemberMenu = ({ value }: Props) => {
         <MenuList>
           <MenuItem onClick={onEditOpen}>Manage roles</MenuItem>
           <MenuItem color="red.500" onClick={onDeleteOpen}>
-            Remove from team
+            Remove from workspace
           </MenuItem>
         </MenuList>
       </Menu>
@@ -96,7 +96,7 @@ const TeamMemberMenu = ({ value }: Props) => {
         loading={isLoading}
         isOpen={isDeleteOpen}
         onClose={onDeleteClose}
-        title={`Remove ${value.user.name} from team?`}
+        title={`Remove ${value.user.name} from workspace?`}
         message="Don't worry, you can always invite them back later."
         buttons={
           <ButtonGroup size={'sm'}>
@@ -115,7 +115,7 @@ const TeamMemberMenu = ({ value }: Props) => {
           <Heading>Invite user</Heading>
         </ModalHeader>
         <ModalContent>
-          <ManageUserForm teamMember={value} onSubmitSuccess={() => onEditClose()} />
+          <ManageUserForm workspaceMember={value} onSubmitSuccess={() => onEditClose()} />
         </ModalContent>
       </Modal>
     </Flex>
@@ -124,4 +124,4 @@ const TeamMemberMenu = ({ value }: Props) => {
   );
 };
 
-export default TeamMemberMenu;
+export default WorkspaceMemberMenu;

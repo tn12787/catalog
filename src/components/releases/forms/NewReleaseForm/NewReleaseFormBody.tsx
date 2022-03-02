@@ -20,9 +20,11 @@ const NewReleaseFormBody = ({
   existingRelease,
   loading,
 }: ReleaseWizardComponentProps<BasicInfoFormData>) => {
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
-  const { data: artists } = useQuery(['artists', currentTeam], () => fetchArtists(currentTeam));
+  const { data: artists } = useQuery(['artists', currentWorkspace], () =>
+    fetchArtists(currentWorkspace)
+  );
 
   const properDateFormat = useMemo(() => {
     const existingDate =

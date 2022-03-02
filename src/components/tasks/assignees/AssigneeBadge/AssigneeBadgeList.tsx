@@ -17,7 +17,7 @@ const AssigneeBadgeList = ({ assignees, inline }: Props) => {
     <Wrap>
       {assignees?.length ? (
         assignees?.map((assignee) => (
-          <AssigneeBadge inline={inline} key={assignee.id} teamMember={assignee} />
+          <AssigneeBadge inline={inline} key={assignee.id} workspaceMember={assignee} />
         ))
       ) : (
         <Text fontSize="xs" color={bodySub}>

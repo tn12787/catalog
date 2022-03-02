@@ -71,7 +71,7 @@ const Releases = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<SortBySelectOption<ClientRelease>>(sortOptions[0]);
 
-  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
+  const { currentWorkspace, workspaces } = useExtendedSession();
 
   const { bgPrimary, primary, bgSecondary } = useAppColors();
 
@@ -85,7 +85,7 @@ const Releases = () => {
       key: sortBy.value.key,
       order: sortBy.value.order,
     },
-    workspace: currentTeam ?? '',
+    workspace: currentWorkspace ?? '',
     pageSize,
     page: currentPage,
   };
@@ -93,10 +93,13 @@ const Releases = () => {
   const { data: response, isLoading } = useQuery(
     ['releases', queryArgs],
     () => fetchReleases(queryArgs),
-    { enabled: !!currentTeam }
+    { enabled: !!currentWorkspace }
   );
 
-  const canCreateRelease = hasRequiredPermissions(['CREATE_RELEASES'], teams?.[currentTeam]);
+  const canCreateRelease = hasRequiredPermissions(
+    ['CREATE_RELEASES'],
+    workspaces?.[currentWorkspace]
+  );
 
   const shouldHideControls = (response?.results?.length === 0 && !debouncedSearch) || isLoading;
 

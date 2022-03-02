@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { useCallback, useMemo } from 'react';
 
-import { fetchTeam } from 'queries/teams';
+import { fetchWorkspace } from 'queries/workspaces';
 import { createCheckout, createPortalLink } from 'queries/payments';
 import getStripe from 'backend/apiUtils/stripe/client';
 
@@ -10,7 +10,7 @@ const defaultPrice = 'price_1KNFjFHNIzcgCVUerPbXkONu';
 const useWorkspace = (workspaceId: string) => {
   const { data: workspace, isLoading } = useQuery(
     ['workspace', workspaceId],
-    () => fetchTeam(workspaceId),
+    () => fetchWorkspace(workspaceId),
     {
       enabled: !!workspaceId,
     }

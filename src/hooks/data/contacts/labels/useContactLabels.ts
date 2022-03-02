@@ -7,16 +7,16 @@ import useExtendedSession from 'hooks/useExtendedSession';
 type UseContactLabelOptions = Pick<ContactLabelFilterOptions, 'search'>;
 
 const useContactLabels = ({ search }: UseContactLabelOptions) => {
-  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
+  const { currentWorkspace, workspaces } = useExtendedSession();
 
   const queryArgs = {
     search,
   };
 
   return useQuery(
-    ['contactLabels', currentTeam, queryArgs],
-    () => fetchContactLabels({ ...queryArgs, workspaceId: currentTeam }),
-    { enabled: !!currentTeam && !!teams?.[currentTeam] }
+    ['contactLabels', currentWorkspace, queryArgs],
+    () => fetchContactLabels({ ...queryArgs, workspaceId: currentWorkspace }),
+    { enabled: !!currentWorkspace && !!workspaces?.[currentWorkspace] }
   );
 };
 

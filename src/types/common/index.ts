@@ -28,9 +28,9 @@ export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date;
 }
 
-export type WorkspaceMember = WorkspaceMember & { user: User };
+export type WorkspaceMemberWithUser = WorkspaceMember & { user: User };
 
-export type WorkspaceMemberWithUserAndRoles = WorkspaceMember & {
+export type WorkspaceMemberWithUserAndRoles = WorkspaceMemberWithUser & {
   roles: Role[];
 };
 
@@ -52,7 +52,7 @@ export type ReleaseTaskWithAssignees = ReleaseTask & {
 };
 
 export type ReleaseTaskEventWithUser = ReleaseTaskEvent & {
-  user: WorkspaceMember;
+  user: WorkspaceMemberWithUser;
 };
 
 export interface EnrichedRelease extends Release {

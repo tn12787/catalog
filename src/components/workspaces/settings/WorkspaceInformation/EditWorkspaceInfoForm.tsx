@@ -7,7 +7,7 @@ import { Workspace } from '@prisma/client';
 
 import FormField from 'components/forms/FormContent/FormField';
 import DataList from 'components/data/DataList';
-import { updateSingleTeam } from 'queries/teams';
+import { updateSingleWorkspace } from 'queries/workspaces';
 import ImageSelect from 'components/forms/QuickForm/ImageField/ImageSelect';
 
 interface Props {
@@ -49,7 +49,7 @@ const EditWorkspaceInfoForm = ({ onSubmit, onCancel, workspaceData: workspaceDat
               boxSize={{ base: '75px', md: '75px' }}
               borderRadius="md"
               src={currentImage}
-              alt="team image"
+              alt="workspace image"
             />
           )}
           <ImageSelect
@@ -79,7 +79,7 @@ const EditWorkspaceInfoForm = ({ onSubmit, onCancel, workspaceData: workspaceDat
 
   const queryClient = useQueryClient();
 
-  const { mutateAsync: updateTeam, isLoading } = useMutation(updateSingleTeam, {
+  const { mutateAsync: updateWorkspace, isLoading } = useMutation(updateSingleWorkspace, {
     onSuccess: () => {
       queryClient.invalidateQueries(['workspace', workspaceData?.id]);
       queryClient.invalidateQueries(['me']);
@@ -88,7 +88,7 @@ const EditWorkspaceInfoForm = ({ onSubmit, onCancel, workspaceData: workspaceDat
 
   const onSave = async (data: EditWorkspaceInfoFormData) => {
     try {
-      await updateTeam({ id: workspaceData?.id as string, ...data });
+      await updateWorkspace({ id: workspaceData?.id as string, ...data });
 
       onSubmit();
     } catch (error) {

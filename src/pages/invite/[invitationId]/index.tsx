@@ -18,7 +18,7 @@ const AcceptInvitationPage = () => {
   const toast = useToast();
   const { primary } = useAppColors();
 
-  const { onChangeWorkspace: onChangeTeam } = useExtendedSession();
+  const { onChangeWorkspace: onChangeWorkspace } = useExtendedSession();
 
   const attemptInviteAcceptance = useCallback(
     async (id: string) => {
@@ -27,12 +27,12 @@ const AcceptInvitationPage = () => {
       try {
         const data = await acceptInvitation(id);
         toast({ title: 'Invitation accepted!', status: 'success' });
-        onChangeTeam(data.workspaceId);
+        onChangeWorkspace(data.workspaceId);
       } catch (e) {
         console.error(e);
       }
     },
-    [onChangeTeam, router, toast, acceptInvitation]
+    [onChangeWorkspace, router, toast, acceptInvitation]
   );
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const AcceptInvitationPage = () => {
 
   return (
     <Flex direction="column" align="center" justify="center" flex={1} minH="100vh">
-      <PageHead title="Invitation to Team" />
+      <PageHead title="Invitation to Workspace" />
       <Stack w={'80%'} maxW="400px" spacing={'40px'} alignItems="center">
         {isLoading || !hasStartedCheck ? (
           <Spinner color={primary} thickness="4px" size={'xl'} speed="0.8s" />

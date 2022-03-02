@@ -32,12 +32,12 @@ class ContactHandler {
     @Query('pageSize', DefaultValuePipe(10), ParseNumberPipe) pageSize: number,
     @Query('page', DefaultValuePipe(1), ParseNumberPipe) page: number
   ) {
-    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], team);
+    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspace);
 
     const commonArgs = {
       where: {
         name: { contains: search, mode: 'insensitive' } as any,
-        workspace: { id: team },
+        workspace: { id: workspace },
       },
     };
 

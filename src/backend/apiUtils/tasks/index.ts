@@ -14,7 +14,7 @@ import prisma from 'backend/prisma/client';
 export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: string) => {
   if (!id) throw new NotFoundException();
 
-  const releaseTeam = await prisma.release.findUnique({
+  const releaseWorkspace = await prisma.release.findUnique({
     where: { id },
     select: {
       workspaceId: true,
@@ -22,9 +22,9 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
     },
   });
 
-  await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseTeam?.workspaceId);
+  await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseWorkspace?.workspaceId);
 
-  return releaseTeam;
+  return releaseWorkspace;
 };
 
 export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto) => {

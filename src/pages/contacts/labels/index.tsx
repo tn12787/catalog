@@ -43,7 +43,7 @@ const ContactLabelsPage = () => {
     search,
   };
 
-  const { workspaces: teams, currentWorkspace: currentTeam } = useExtendedSession();
+  const { workspaces, currentWorkspace } = useExtendedSession();
 
   const { data: labels, isLoading } = useContactLabels(queryArgs);
 
@@ -55,7 +55,7 @@ const ContactLabelsPage = () => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/overview`}>
-              <BreadcrumbLink>{teams?.[currentTeam]?.workspace.name}</BreadcrumbLink>
+              <BreadcrumbLink>{workspaces?.[currentWorkspace]?.workspace.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 

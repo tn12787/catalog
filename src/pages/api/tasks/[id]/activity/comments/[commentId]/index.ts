@@ -53,17 +53,20 @@ class SpecificCommentHandler {
       throw new NotFoundException('Comment not found');
     }
 
-    const activeTeamMember = await getResourceWorkspaceMembership(req, task?.release?.workspaceId);
-    if (!activeTeamMember) throw new ForbiddenException();
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(
+      req,
+      task?.release?.workspaceId
+    );
+    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     // check if user is the author of the comment
-    if (comment.user.id !== activeTeamMember.id) {
+    if (comment.user.id !== activeWorkspaceMember.id) {
       throw new ForbiddenException('You are not the author of this comment');
     }
 
     const result = await prisma.releaseTaskEvent.create({
       data: {
-        user: { connect: { id: activeTeamMember.id } },
+        user: { connect: { id: activeWorkspaceMember.id } },
         task: { connect: { id: taskId } },
         type: TaskEventType.UPDATE_COMMENT,
         extraData: {
@@ -105,8 +108,11 @@ class SpecificCommentHandler {
       throw new NotFoundException('Comment not found');
     }
 
-    const activeTeamMember = await getResourceWorkspaceMembership(req, task?.release?.workspaceId);
-    if (!activeTeamMember) throw new ForbiddenException();
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(
+      req,
+      task?.release?.workspaceId
+    );
+    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     // To delete a comment, the user must either be the author of the comment, or have the DELETE_ALL_COMMENTS permission
     const userPermissions = await getAllUserPermissionsForWorkspace(
@@ -114,7 +120,8 @@ class SpecificCommentHandler {
       task?.release?.workspaceId
     );
     const canDelete =
-      comment.user.id === activeTeamMember.id || userPermissions.includes('DELETE_ALL_COMMENTS');
+      comment.user.id === activeWorkspaceMember.id ||
+      userPermissions.includes('DELETE_ALL_COMMENTS');
 
     if (!canDelete) {
       throw new ForbiddenException('You are not the author of this comment');
@@ -138,7 +145,7 @@ class SpecificCommentHandler {
       }),
       prisma.releaseTaskEvent.create({
         data: {
-          user: { connect: { id: activeTeamMember.id } },
+          user: { connect: { id: activeWorkspaceMember.id } },
           task: { connect: { id: taskId } },
           type: TaskEventType.DELETE_COMMENT,
           extraData: {

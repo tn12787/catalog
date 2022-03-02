@@ -20,27 +20,27 @@ const inviteUserTemplateId = `d-324235f107c041f58e03d8fd8a66e104`;
 
 type InvitationEmailData = {
   invitedBy: string;
-  teamName: string;
+  workspaceName: string;
   domain: string;
   inviteId: string;
 };
 
 @requiresAuth()
-class TeamHandler {
+class InviteHandler {
   @Post()
   async createInvite(
     @PathParam('workspaceId') id: string,
     @Request() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateInvitationDto
   ) {
-    const team = await prisma.workspace.findUnique({
+    const workspace = await prisma.workspace.findUnique({
       where: { id },
       include: { members: { include: { user: { select: { email: true } } } } },
     });
-    if (!team) throw new NotFoundException('No team found');
+    if (!workspace) throw new NotFoundException('No workspace found');
 
-    if (team.members.some((item) => item.user.email === body.email)) {
-      throw new ConflictException('User is already a member of this team');
+    if (workspace.members.some((item) => item.user.email === body.email)) {
+      throw new ConflictException('User is already a member of this workspace');
     }
 
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], id);
@@ -62,14 +62,14 @@ class TeamHandler {
       templateId: inviteUserTemplateId,
       dynamicTemplateData: {
         invitedBy: req.session.token?.name as string,
-        teamName: team.name,
+        workspaceName: workspace.name,
         domain: process.env.NEXTAUTH_URL as string,
         inviteId: invite.id,
       },
     });
 
-    return team;
+    return workspace;
   }
 }
 
-export default createHandler(TeamHandler);
+export default createHandler(InviteHandler);

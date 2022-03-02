@@ -24,12 +24,12 @@ class ContactLabelHandler {
     @PathParam('workspaceId') workspace: string,
     @Query('search') search: string
   ) {
-    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], team);
+    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspace);
 
     const commonArgs = {
       where: {
         name: { contains: search, mode: 'insensitive' } as any,
-        workspace: { id: team },
+        workspace: { id: workspace },
       },
     };
 

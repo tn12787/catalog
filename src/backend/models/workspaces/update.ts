@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsUrl } from 'class-validator';
 
-export class UpdateTeamDto {
+export class UpdateWorkspaceDto {
   @IsNotEmpty()
   name: string;
 

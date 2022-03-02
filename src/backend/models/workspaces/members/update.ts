@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateTeamMemberDto {
+export class UpdateWorkspaceMemberDto {
   @IsNotEmpty()
   @IsString({ each: true })
   roles: string[];

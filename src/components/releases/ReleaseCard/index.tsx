@@ -33,8 +33,11 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
   const { border, bgSecondary } = useAppColors();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { currentWorkspace: currentTeam, workspaces: teams } = useExtendedSession();
-  const canDeleteRelease = hasRequiredPermissions(['DELETE_RELEASES'], teams?.[currentTeam]);
+  const { currentWorkspace, workspaces } = useExtendedSession();
+  const canDeleteRelease = hasRequiredPermissions(
+    ['DELETE_RELEASES'],
+    workspaces?.[currentWorkspace]
+  );
 
   const artworkTask = releaseData.artwork;
 

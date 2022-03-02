@@ -18,13 +18,13 @@ interface Props {
 const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const queryClient = useQueryClient();
 
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
   const { mutateAsync: createMastering, isLoading: createLoading } = useMutation(
     createSingleMastering,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, releaseData.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, releaseData.id]);
       },
     }
   );
@@ -33,7 +33,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
     updateSingleMastering,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, releaseData.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, releaseData.id]);
       },
     }
   );

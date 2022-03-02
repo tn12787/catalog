@@ -25,12 +25,12 @@ class CheckoutHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], workspaceId);
 
-    const team = await prisma.workspace.findUnique({ where: { id: workspaceId } });
-    if (!team) {
+    const workspace = await prisma.workspace.findUnique({ where: { id: workspaceId } });
+    if (!workspace) {
       throw new NotFoundException();
     }
 
-    const customer = await stripe.customers.retrieve(team.stripeCustomerId);
+    const customer = await stripe.customers.retrieve(workspace.stripeCustomerId);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -54,8 +54,8 @@ class CheckoutHandler {
         metadata,
       },
 
-      success_url: `${process.env.NEXTAUTH_URL}/teams/${workspaceId}/settings`,
-      cancel_url: `${process.env.NEXTAUTH_URL}/teams/${workspaceId}/settings`,
+      success_url: `${process.env.NEXTAUTH_URL}/workspace/${workspaceId}/settings`,
+      cancel_url: `${process.env.NEXTAUTH_URL}/workspace/${workspaceId}/settings`,
     });
 
     return { sessionId: session.id };

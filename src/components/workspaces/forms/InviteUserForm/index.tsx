@@ -15,13 +15,13 @@ interface Props {
 const InviteUserForm = ({ onSubmitSuccess }: Props) => {
   const queryClient = useQueryClient();
 
-  const { currentWorkspace: currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
   const { mutateAsync: sendInvitation, isLoading: createLoading } = useMutation(
     sendUserInvitation,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['workspace', currentTeam]);
+        queryClient.invalidateQueries(['workspace', currentWorkspace]);
       },
     }
   );
@@ -33,7 +33,7 @@ const InviteUserForm = ({ onSubmitSuccess }: Props) => {
       await sendInvitation({
         email: data.email,
         role: data.role,
-        id: currentTeam,
+        id: currentWorkspace,
       });
 
       toast({

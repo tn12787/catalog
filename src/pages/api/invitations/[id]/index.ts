@@ -7,7 +7,7 @@ import { AuthDecoratedRequest } from 'types/common';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 
 @requiresAuth()
-class TeamHandler {
+class InviteRescindHandler {
   @Delete()
   async rescindInvite(@PathParam('id') id: string, @Request() req: AuthDecoratedRequest) {
     if (!id) throw new NotFoundException();
@@ -30,4 +30,4 @@ class TeamHandler {
   }
 }
 
-export default createHandler(TeamHandler);
+export default createHandler(InviteRescindHandler);
