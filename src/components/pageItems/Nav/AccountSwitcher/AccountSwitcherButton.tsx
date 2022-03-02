@@ -5,14 +5,14 @@ import { HiSelector } from 'react-icons/hi';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props extends FlexProps {
-  teamName: string;
+  workspaceName: string;
   userName: string;
   photoUrl: string;
   unreadNotificationCount: number;
 }
 
 export const AccountSwitcherButton = ({
-  teamName,
+  workspaceName,
   userName,
   photoUrl,
   unreadNotificationCount,
@@ -41,12 +41,12 @@ export const AccountSwitcherButton = ({
           objectFit="cover"
           src={photoUrl}
           referrerPolicy="no-referrer"
-          alt="Team Image"
-          name={teamName}
+          alt="Workspace Image"
+          name={workspaceName}
         />
         <Stack overflow="hidden" textAlign="start" spacing={0}>
           <Text isTruncated fontWeight="semibold">
-            {teamName}
+            {workspaceName}
           </Text>
           <Box fontSize="xs" color="gray.400">
             {userName}

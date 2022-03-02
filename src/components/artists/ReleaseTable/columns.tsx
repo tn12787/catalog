@@ -12,7 +12,7 @@ interface UserCard {
   id: string;
 }
 
-export const teamMembersColumns: Column<ClientRelease>[] = [
+export const releaseColumns: Column<ClientRelease>[] = [
   {
     Header: 'Artwork',
     accessor: (d) => ({ artwork: d.artwork?.url }),

@@ -48,7 +48,7 @@ const ArtistList = ({ search, artists, loading }: Props) => {
             legalName: 'Legal Name',
             spotifyUrl: '',
             instagramUrl: '',
-            teamId: '',
+            workspaceId: '',
             createdAt: new Date(),
             updatedAt: new Date(),
             _count: { releases: 4 },

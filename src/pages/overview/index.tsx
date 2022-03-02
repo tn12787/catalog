@@ -13,23 +13,23 @@ import MyTasks from 'components/overview/MyTasks';
 import Card from 'components/Card';
 import { fetchReleases } from 'queries/releases';
 import OverdueTasks from 'components/overview/OverdueTasks';
-import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
-  const { team: teamData, isLoading: isTeamLoading } = useCurrentTeam();
+  const { workspace: workspaceData, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const { data, isLoading } = useQuery(
-    ['releaseEvents', currentTeam, teams?.[currentTeam]?.id],
-    () => fetchReleaseEvents(currentTeam, teams?.[currentTeam]?.id)
+    ['releaseEvents', currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id],
+    () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id)
   );
 
   const { data: upcomingReleases } = useQuery(
-    ['releases', currentTeam],
-    () => fetchReleases({ team: currentTeam, dates: { after: new Date() } }),
-    { enabled: !!currentTeam }
+    ['releases', currentWorkspace],
+    () => fetchReleases({ workspace: currentWorkspace, dates: { after: new Date() } }),
+    { enabled: !!currentWorkspace }
   );
 
   return (
@@ -40,7 +40,7 @@ const OverviewPage = () => {
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isLoading}>
             <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-              {isTeamLoading ? 'Loading team name' : teamData?.name}
+              {isWorkspaceLoading ? 'Loading workspace name' : workspaceData?.name}
             </Heading>
           </Skeleton>
         </Stack>

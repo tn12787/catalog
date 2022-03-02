@@ -16,7 +16,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
-import { ReleaseTaskEventWithUser } from 'types/common';
+import { ReleaseTaskEventWithUser, WorkspaceMemberWithUser } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
 import { hasRequiredPermissions } from 'utils/auth';
@@ -47,13 +47,14 @@ const CommentItem = ({ event, updates }: Props) => {
   const [isEditing, setEditing] = useState(false);
 
   const { newComment } = event.extraData as Prisma.JsonObject;
-  const { teams, currentTeam } = useExtendedSession();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
-  const isAuthor = event.user?.id === teams?.[currentTeam].id;
+  const isAuthor = event.user?.id === workspaceMemberships?.[currentWorkspace].id;
 
   const canDeleteComment =
-    isAuthor || hasRequiredPermissions(['DELETE_ALL_COMMENTS'], teams?.[currentTeam]);
+    isAuthor ||
+    hasRequiredPermissions(['DELETE_ALL_COMMENTS'], workspaceMemberships?.[currentWorkspace]);
   const canEditComment = isAuthor;
   const toast = useToast();
 
@@ -103,7 +104,7 @@ const CommentItem = ({ event, updates }: Props) => {
       <Card spacing={3}>
         <HStack justifyContent={'space-between'}>
           <HStack alignItems={'center'} fontSize="sm" lineHeight={'normal'} color={bodySub}>
-            <AssigneeBadge inline teamMember={event.user} />
+            <AssigneeBadge inline workspaceMember={event.user as WorkspaceMemberWithUser} />
             <Text>commented</Text>
             <Text>{formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}</Text>
             {updates.length && (

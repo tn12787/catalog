@@ -19,7 +19,7 @@ const ContactSelect: React.FC<Props> = React.forwardRef(
   ({ value, borderless = false, onChange }: Props) => {
     const { data: contacts, isLoading } = useContacts({ pagination: { page: 1, pageSize: 1000 } });
 
-    const allTeamMembers = contacts?.results || [];
+    const allContacts = contacts?.results || [];
 
     return (
       <MultiSelect
@@ -30,7 +30,7 @@ const ContactSelect: React.FC<Props> = React.forwardRef(
         itemToString={(item) => item?.name || ''}
         renderSelectedItems={ContactSelectedItems}
         renderListItem={(props: MultiSelectListItemProps<Contact>) => <ContactItem {...props} />}
-        allItems={allTeamMembers}
+        allItems={allContacts}
         filterFn={(item: ContactWithLabels, search: string) =>
           item.name?.toLowerCase().includes(search.toLowerCase()) ?? false
         }

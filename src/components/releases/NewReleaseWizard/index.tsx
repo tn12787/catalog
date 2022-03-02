@@ -56,13 +56,13 @@ const NewReleaseWizard = () => {
   const { index, currentStep, next, previous } = useSteps<ReleaseWizardStep>(steps);
 
   const [allState, setAllState] = useState<CombinedFormState>({});
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
   const { mutateAsync: createRelease, isLoading: createLoading } = useMutation(
     createSingleRelease,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam]);
+        queryClient.invalidateQueries(['releases', currentWorkspace]);
       },
     }
   );
@@ -82,7 +82,7 @@ const NewReleaseWizard = () => {
           ...data.distribution,
           assignees: data.distribution?.assignees?.map(({ id }) => id) ?? [],
         },
-        team: currentTeam,
+        workspace: currentWorkspace,
       } as CreateSingleReleaseVars);
       toast({
         status: 'success',

@@ -6,7 +6,7 @@ import { SingleReleaseVars, CreateSingleReleaseVars, ReleaseFilterOptions } from
 import { ClientRelease } from 'types/common';
 
 export const fetchReleases = async ({
-  team,
+  workspace,
   search,
   pagination,
   sorting,
@@ -14,7 +14,7 @@ export const fetchReleases = async ({
 }: ReleaseFilterOptions) => {
   const response = await axios.get<PaginatedQueryResult<ClientRelease>>(`/api/releases`, {
     params: {
-      team,
+      workspace,
       search,
       sortBy: sorting?.key,
       sortOrder: sorting?.order,

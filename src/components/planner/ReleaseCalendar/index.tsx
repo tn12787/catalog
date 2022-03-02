@@ -23,7 +23,7 @@ interface Props {
 
 const ReleaseCalendar = ({ events, loading }: Props) => {
   const queryClient = useQueryClient();
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const router = useRouter();
 
   const { isOpen: isEventOpen, onClose: onEventClose, onOpen: onEventOpen } = useDisclosure();
@@ -52,8 +52,8 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
 
   const { mutateAsync: updateReleaseEvent } = useMutation(updateEventInCalendar, {
     onMutate: async ({ event, targetDate }) => {
-      // await queryClient.cancelQueries(['releaseEvents', currentTeam]);
-      const events = queryClient.getQueryData(['releaseEvents', currentTeam]);
+      // await queryClient.cancelQueries(['releaseEvents', currentWorkspace]);
+      const events = queryClient.getQueryData(['releaseEvents', currentWorkspace]);
 
       const data = cloneDeep(events) as ReleaseEvent[];
       data?.forEach((item) => {
@@ -62,21 +62,24 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
         }
       });
 
-      queryClient.setQueryData(['releaseEvents', currentTeam], data);
+      queryClient.setQueryData(['releaseEvents', currentWorkspace], data);
 
       return { events };
     },
 
     onError: (_, __, context: any) => {
-      queryClient.setQueryData(['releaseEvents', currentTeam], context?.events);
+      queryClient.setQueryData(['releaseEvents', currentWorkspace], context?.events);
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries(['releaseEvents', currentTeam]);
+      queryClient.invalidateQueries(['releaseEvents', currentWorkspace]);
     },
   });
 
-  const canEditReleases = hasRequiredPermissions(['UPDATE_RELEASES'], teams?.[currentTeam]);
+  const canEditReleases = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    workspaceMemberships?.[currentWorkspace]
+  );
   const toast = useToast();
   const dialogRef = useRef(null);
 

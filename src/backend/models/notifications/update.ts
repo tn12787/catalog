@@ -7,5 +7,5 @@ export class UpdateNotificationDto {
 
   @IsNotEmpty()
   @IsString()
-  teamMemberId: string;
+  workspaceMemberId: string;
 }

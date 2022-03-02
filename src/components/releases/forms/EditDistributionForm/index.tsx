@@ -18,13 +18,13 @@ interface Props {
 const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const queryClient = useQueryClient();
 
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
   const { mutateAsync: createDistribution, isLoading: createLoading } = useMutation(
     createSingleDistribution,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, releaseData.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, releaseData.id]);
       },
     }
   );
@@ -33,7 +33,7 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
     updateSingleDistribution,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, releaseData.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, releaseData.id]);
       },
     }
   );

@@ -24,11 +24,11 @@ import ContactModal from 'components/contacts/ContactModal';
 type Props = CellProps<ContactWithLabels>;
 
 const ContactMenu = ({ value }: Props) => {
-  const { teams, currentTeam } = useExtendedSession();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
   const canEdit = [
-    hasRequiredPermissions(['UPDATE_CONTACTS'], teams?.[currentTeam]),
-    teams?.[currentTeam].id !== value.id,
+    hasRequiredPermissions(['UPDATE_CONTACTS'], workspaceMemberships?.[currentWorkspace]),
+    workspaceMemberships?.[currentWorkspace].id !== value.id,
   ].every(Boolean);
 
   const { primary } = useAppColors();
@@ -42,7 +42,7 @@ const ContactMenu = ({ value }: Props) => {
 
   const onDelete = async () => {
     try {
-      await mutateAsync({ teamId: currentTeam, id: value.id });
+      await mutateAsync({ workspaceId: currentWorkspace, id: value.id });
       onDeleteClose();
     } catch (error: any) {}
   };

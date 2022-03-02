@@ -4,16 +4,16 @@ import { Stack, Text } from '@chakra-ui/react';
 import QuickFormField from '../QuickFormField';
 
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
-import { TeamMemberWithUser } from 'types/common';
+import { WorkspaceMemberWithUser } from 'types/common';
 import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 
 type Props = {
-  assignees: TeamMemberWithUser[];
-  onChange: (value: TeamMemberWithUser[]) => void | Promise<void>;
+  assignees: WorkspaceMemberWithUser[];
+  onChange: (value: WorkspaceMemberWithUser[]) => void | Promise<void>;
 };
 
 const AssigneesField = ({ assignees, onChange }: Props) => {
-  const mapAssignees = (assignees: TeamMemberWithUser[]) =>
+  const mapAssignees = (assignees: WorkspaceMemberWithUser[]) =>
     assignees.map((assignee) => assignee.id);
 
   return (

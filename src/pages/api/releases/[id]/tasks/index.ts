@@ -1,6 +1,6 @@
 import { Body, createHandler, Post, Req, ValidationPipe } from '@storyofams/next-api-decorators';
 
-import { getResourceTeamMembership } from 'backend/apiUtils/teams';
+import { getResourceWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -18,9 +18,12 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateReleaseTaskDto,
     @PathParam('id') id: string
   ) {
-    const releaseTeam = await checkTaskUpdatePermissions(req, id);
-    const activeTeamMember = await getResourceTeamMembership(req, releaseTeam?.teamId);
-    if (!activeTeamMember) throw new ForbiddenException();
+    const releaseWorkspace = await checkTaskUpdatePermissions(req, id);
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(
+      req,
+      releaseWorkspace?.workspaceId
+    );
+    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const baseArgs = buildCreateReleaseTaskArgs(body);
 
@@ -33,7 +36,7 @@ class ReleaseListHandler {
         events: {
           create: [
             buildCreateTaskEvent({
-              userId: activeTeamMember.id,
+              userId: activeWorkspaceMember.id,
             }),
           ],
         },

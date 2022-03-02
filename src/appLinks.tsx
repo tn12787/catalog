@@ -10,7 +10,7 @@ export interface NavLinkConfig {
   main: {
     links: NavBarLink[];
   };
-  settings: (currentTeam: string) => { links: NavBarLink[]; name: string };
+  settings: (currentWorkspace: string) => { links: NavBarLink[]; name: string };
   bottom: {
     links: NavBarLink[];
   };
@@ -53,14 +53,14 @@ export const appLinks: NavLinkConfig = {
       },
     ],
   },
-  settings: (currentTeam) => ({
+  settings: (currentWorkspace) => ({
     name: 'Admin',
     links: [
       {
         icon: BsGear,
-        href: `/teams/${currentTeam}/settings`,
-        text: 'Manage Team',
-        activeRegex: /^\/teams\/.+\/settings/,
+        href: `/workspaces/${currentWorkspace}/settings`,
+        text: 'Manage Workspace',
+        activeRegex: /^\/workspaces\/.+\/settings/,
       },
     ],
   }),

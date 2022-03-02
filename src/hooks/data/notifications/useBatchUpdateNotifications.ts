@@ -11,14 +11,14 @@ type UseReadNotificationsOptions = {
 };
 
 const useBatchUpdateNotifications = ({ ids, read }: UseReadNotificationsOptions) => {
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();
 
   const { mutateAsync, isLoading } = useMutation(batchUpdateNotifications, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['notifications', currentTeam]);
+      queryClient.invalidateQueries(['notifications', currentWorkspace]);
       toast({
         title: 'Notifications updated',
         status: 'success',

@@ -19,7 +19,7 @@ interface Props {
 const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
   const toast = useToast();
 
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
 
   const queryClient = useQueryClient();
 
@@ -27,7 +27,7 @@ const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
     updateBasicReleaseInfo,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentTeam, existingRelease?.id]);
+        queryClient.invalidateQueries(['releases', currentWorkspace, existingRelease?.id]);
       },
     }
   );

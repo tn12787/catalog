@@ -27,7 +27,7 @@ import { AccountSwitcherButton } from './AccountSwitcherButton';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useUser from 'hooks/useUser';
 import useAppColors from 'hooks/useAppColors';
-import useAllTeamNotifications from 'hooks/data/notifications/useAllTeamNotifications';
+import useAllWorkspaceNotifications from 'hooks/data/notifications/useAllWorkspaceNotifications';
 import UnreadCountBadge from 'components/notifications/UnreadCountBadge';
 
 type Props = {
@@ -36,7 +36,7 @@ type Props = {
 
 export const AccountSwitcher = ({ onChange }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { token, currentTeam, onChangeTeam, status } = useExtendedSession();
+  const { token, currentWorkspace, onChangeWorkspace, status } = useExtendedSession();
   const router = useRouter();
   const [userData] = useUser();
   const { bodySub, border } = useAppColors();
@@ -44,24 +44,24 @@ export const AccountSwitcher = ({ onChange }: Props) => {
   const sessionLoading = status === 'loading';
 
   const onLogout = async () => {
-    localStorage.removeItem('activeTeam');
+    localStorage.removeItem('activeWorkspace');
     signOut({ callbackUrl: '/login' });
   };
 
-  const { withoutCurrent, mapped } = useAllTeamNotifications();
+  const { withoutCurrent, mapped } = useAllWorkspaceNotifications();
 
-  const userTeams = userData?.teams || token?.teams;
-  const activeTeam = useMemo(() => {
-    return userTeams?.find((item) => item.teamId === currentTeam);
-  }, [currentTeam, userTeams]);
+  const userWorkspaces = userData?.workspaces || token?.workspaceMemberships;
+  const activeWorkspace = useMemo(() => {
+    return userWorkspaces?.find((item) => item.workspaceId === currentWorkspace);
+  }, [currentWorkspace, userWorkspaces]);
 
   return (
     <Menu>
       <Skeleton rounded="lg" isLoaded={!sessionLoading}>
         <AccountSwitcherButton
-          teamName={(activeTeam?.team.name as string) ?? 'loadingTeam'}
+          workspaceName={(activeWorkspace?.workspace.name as string) ?? 'loadingWorkspace'}
           userName={(userData?.name || (token?.name as string)) ?? 'loadingUser'}
-          photoUrl={activeTeam?.team.imageUrl as string}
+          photoUrl={activeWorkspace?.workspace.imageUrl as string}
           unreadNotificationCount={
             withoutCurrent?.reduce((acc, item) => acc + item.notifications.total, 0) ?? 0
           }
@@ -85,18 +85,18 @@ export const AccountSwitcher = ({ onChange }: Props) => {
           </HStack>
           <MenuOptionGroup
             type="radio"
-            title="Teams"
-            defaultValue={currentTeam as string}
-            value={currentTeam as string}
+            title="Workspaces"
+            defaultValue={currentWorkspace as string}
+            value={currentWorkspace as string}
             onChange={(val) => {
-              onChangeTeam(val as string);
+              onChangeWorkspace(val as string);
               onChange();
             }}
           >
-            {userTeams?.map(({ team }, index) => (
+            {userWorkspaces?.map(({ workspace }, index) => (
               <MenuItemOption
                 key={index.toString()}
-                value={team.id}
+                value={workspace.id}
                 fontWeight="semibold"
                 type="radio"
               >
@@ -105,14 +105,14 @@ export const AccountSwitcher = ({ onChange }: Props) => {
                     size="sm"
                     borderRadius="md"
                     objectFit="cover"
-                    src={team.imageUrl ?? ''}
+                    src={workspace.imageUrl ?? ''}
                     referrerPolicy="no-referrer"
-                    alt="Team Image"
-                    name={team.name}
+                    alt="Workspace Image"
+                    name={workspace.name}
                   />
-                  <Text>{team.name}</Text>
-                  {currentTeam !== team.id && (
-                    <UnreadCountBadge count={mapped[team.id]?.notifications.total} />
+                  <Text>{workspace.name}</Text>
+                  {currentWorkspace !== workspace.id && (
+                    <UnreadCountBadge count={mapped[workspace.id]?.notifications.total} />
                   )}
                 </HStack>
               </MenuItemOption>

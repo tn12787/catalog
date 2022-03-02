@@ -14,5 +14,5 @@ export class CreateArtistDto {
   legalName: string;
 
   @IsNotEmpty()
-  team: string;
+  workspace: string;
 }

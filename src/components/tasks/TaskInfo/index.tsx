@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import Card from 'components/Card';
 import StatusField from 'components/forms/QuickForm/StatusField';
-import { ContactWithLabels, EnrichedReleaseTask, TeamMemberWithUser } from 'types/common';
+import { ContactWithLabels, EnrichedReleaseTask, WorkspaceMemberWithUser } from 'types/common';
 import { updateTask } from 'queries/tasks';
 import AssigneesField from 'components/forms/QuickForm/AssigneesField';
 import { UpdateTaskVars } from 'queries/tasks/types';
@@ -71,7 +71,7 @@ const TaskInfo = ({ loading, task }: Props) => {
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <AssigneesField
-          assignees={task?.assignees as TeamMemberWithUser[]}
+          assignees={task?.assignees as WorkspaceMemberWithUser[]}
           onChange={(assignees) => onSubmit({ assignees })}
         />
       </Skeleton>

@@ -33,8 +33,8 @@ async function seed() {
     where: { name: viewerData.name },
   });
 
-  const teamMemberData = {
-    name: 'Team Member',
+  const workspaceMemberData = {
+    name: 'Team Member', // TODO: Rename this to 'Workspace Member'
     description: 'Can update releases, create release tasks, update artist info, etc.',
     permissions: {
       connect: [
@@ -47,12 +47,12 @@ async function seed() {
     },
   };
 
-  // Team Member Role
+  // Workspace Member Role
   await prisma.role.upsert({
-    create: teamMemberData,
-    update: teamMemberData,
+    create: workspaceMemberData,
+    update: workspaceMemberData,
     where: {
-      name: teamMemberData.name,
+      name: workspaceMemberData.name,
     },
   });
 

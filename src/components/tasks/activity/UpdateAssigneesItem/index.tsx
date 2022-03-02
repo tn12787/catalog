@@ -6,10 +6,10 @@ import { FiUsers } from 'react-icons/fi';
 import ActivityIcon from '../ActivityIcon';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
-import { ReleaseTaskEventWithUser, TeamMemberWithUser } from 'types/common';
+import { ReleaseTaskEventWithUser, WorkspaceMemberWithUser } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
-import useCurrentTeam from 'hooks/data/team/useCurrentTeam';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 interface Props {
   event: ReleaseTaskEventWithUser;
@@ -18,17 +18,17 @@ interface Props {
 const UpdateAssigneesItem = ({ event }: Props) => {
   const { bodySub } = useAppColors();
 
-  const { team: teamData } = useCurrentTeam();
+  const { workspace: workspaceData } = useCurrentWorkspace();
 
   const data = event.extraData as { oldAssignees: string[]; newAssignees: string[] };
   const newlyAssigned = data.newAssignees.filter((x) => !data.oldAssignees.includes(x));
   const unassigned = data.oldAssignees.filter((x) => !data.newAssignees.includes(x));
-  const teamMembers = teamData?.members ?? [];
+  const workspaceMembers = workspaceData?.members ?? [];
 
   return (
     <Wrap as={HStack} align={'center'} fontSize="sm" color={bodySub}>
       <ActivityIcon icon={FiUsers} />
-      <AssigneeBadge inline teamMember={event.user} />
+      <AssigneeBadge inline workspaceMember={event.user as WorkspaceMemberWithUser} />
       {newlyAssigned.length > 0 && (
         <>
           <Text>assigned</Text>
@@ -36,8 +36,8 @@ const UpdateAssigneesItem = ({ event }: Props) => {
             inline
             assignees={
               newlyAssigned
-                .map((item) => teamMembers.find((x) => x.id === item))
-                .filter(Boolean) as TeamMemberWithUser[]
+                .map((item) => workspaceMembers.find((x) => x.id === item))
+                .filter(Boolean) as WorkspaceMemberWithUser[]
             }
           />
           {unassigned.length > 0 && <Text>and</Text>}
@@ -49,8 +49,8 @@ const UpdateAssigneesItem = ({ event }: Props) => {
           <AssigneeBadgeList
             assignees={
               unassigned
-                .map((item) => teamMembers.find((x) => x.id === item))
-                .filter(Boolean) as TeamMemberWithUser[]
+                .map((item) => workspaceMembers.find((x) => x.id === item))
+                .filter(Boolean) as WorkspaceMemberWithUser[]
             }
           />
         </>

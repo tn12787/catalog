@@ -17,7 +17,7 @@ import {
   EventType,
   ReleaseEvent,
   ReleaseTaskEventWithUser,
-  TeamMemberWithUser,
+  WorkspaceMemberWithUser,
 } from 'types/common';
 import TaskNotes from 'components/tasks/TaskNotes';
 import useExtendedSession from 'hooks/useExtendedSession';
@@ -40,7 +40,7 @@ type RollbackContext = {
 const ReleaseDrawerContent = ({ event, loading }: Props) => {
   const task = event?.data;
   const queryClient = useQueryClient();
-  const { currentTeam } = useExtendedSession();
+  const { currentWorkspace } = useExtendedSession();
   const toast = useToast();
 
   const { mutateAsync: submitUpdate } = useMutation(updateTask, {
@@ -66,7 +66,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
 
     onSuccess: () => {
       queryClient.invalidateQueries(['tasks', task?.id]);
-      queryClient.invalidateQueries(['releaseEvents', currentTeam]);
+      queryClient.invalidateQueries(['releaseEvents', currentWorkspace]);
     },
   });
 
@@ -138,7 +138,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <AssigneesField
-          assignees={task?.assignees as TeamMemberWithUser[]}
+          assignees={task?.assignees as WorkspaceMemberWithUser[]}
           onChange={(assignees) => onSubmit({ assignees })}
         />
       </Skeleton>

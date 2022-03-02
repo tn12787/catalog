@@ -9,7 +9,7 @@ import { TaskStatus } from '@prisma/client';
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 
-import { ClientRelease, EventType, TeamMemberWithUser } from 'types/common';
+import { ClientRelease, EventType, WorkspaceMemberWithUser } from 'types/common';
 import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
@@ -27,7 +27,9 @@ const buildFields = (masteringInfo: ClientRelease['mastering'] | undefined): Sum
   return [
     {
       name: 'Assignees',
-      content: <AssigneeBadgeList assignees={masteringInfo?.assignees as TeamMemberWithUser[]} />,
+      content: (
+        <AssigneeBadgeList assignees={masteringInfo?.assignees as WorkspaceMemberWithUser[]} />
+      ),
     },
     {
       name: 'Status',

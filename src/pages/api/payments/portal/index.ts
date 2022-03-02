@@ -8,7 +8,7 @@ import {
 } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/common';
-import { checkRequiredPermissions } from 'backend/apiUtils/teams';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { CreatePortalSessionDto } from 'backend/models/payments/portal/create';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
@@ -21,20 +21,20 @@ class PortalHandler {
     @Req() request: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreatePortalSessionDto
   ) {
-    const { teamId } = body;
+    const { workspaceId } = body;
 
-    await checkRequiredPermissions(request, ['UPDATE_TEAM'], teamId);
+    await checkRequiredPermissions(request, ['UPDATE_TEAM'], workspaceId);
 
-    const team = await prisma.team.findUnique({ where: { id: teamId } });
-    if (!team) {
+    const workspace = await prisma.workspace.findUnique({ where: { id: workspaceId } });
+    if (!workspace) {
       throw new NotFoundException();
     }
 
-    const customer = await stripe.customers.retrieve(team.stripeCustomerId);
+    const customer = await stripe.customers.retrieve(workspace.stripeCustomerId);
 
     const { url } = await stripe.billingPortal.sessions.create({
       customer: customer.id,
-      return_url: `${process.env.NEXTAUTH_URL}/teams/${teamId}/settings`,
+      return_url: `${process.env.NEXTAUTH_URL}/workspaces/${workspaceId}/settings`,
     });
 
     return { url };

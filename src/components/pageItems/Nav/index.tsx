@@ -16,12 +16,15 @@ interface Props {
 }
 
 const Nav = ({ links, onItemSelected }: Props) => {
-  const { currentTeam, teams } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
-  const canManageTeam = hasRequiredPermissions(['UPDATE_TEAM'], teams?.[currentTeam]);
+  const canManageWorkspace = hasRequiredPermissions(
+    ['UPDATE_TEAM'],
+    workspaceMemberships?.[currentWorkspace]
+  );
   const { bgSecondary, bodySub } = useAppColors();
 
-  const settingsLinks = links.settings(currentTeam);
+  const settingsLinks = links.settings(currentWorkspace);
 
   return (
     <Stack
@@ -42,7 +45,7 @@ const Nav = ({ links, onItemSelected }: Props) => {
             <NavLink onClick={() => onItemSelected?.(link.href)} {...link} key={index.toString()} />
           ))}
         </Stack>
-        {canManageTeam && (
+        {canManageWorkspace && (
           <Stack>
             <Text px={2} fontSize={'xs'} textTransform={'capitalize'} color={bodySub}>
               {settingsLinks.name}

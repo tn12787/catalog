@@ -8,7 +8,7 @@ import {
 
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { AuthDecoratedRequest } from 'types/common';
-import { ensureUserHasTeamMembership } from 'backend/apiUtils/teams';
+import { ensureUserHasWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateNotificationDto } from 'backend/models/notifications/update';
@@ -31,7 +31,7 @@ class SpecificNotificationHandler {
     }
 
     // ensure user is updating one of their own notifications
-    await ensureUserHasTeamMembership(req, notification.teamMemberId);
+    await ensureUserHasWorkspaceMembership(req, notification.workspaceMemberId);
 
     const updatedNotification = await prisma.notification.update({
       where: {

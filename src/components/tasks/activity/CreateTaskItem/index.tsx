@@ -19,7 +19,7 @@ const CreateTaskItem = ({ event }: Props) => {
   return (
     <HStack alignItems={'center'} fontSize="sm" color={bodySub}>
       <ActivityIcon icon={BiListCheck} />
-      <AssigneeBadge inline teamMember={event.user} />
+      <AssigneeBadge inline workspaceMember={event.user} />
       <Text>created this task</Text>
       <Text>{formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}</Text>
     </HStack>

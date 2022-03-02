@@ -1,0 +1,46 @@
+import {
+  createHandler,
+  Req,
+  Body,
+  BadRequestException,
+  Post,
+} from '@storyofams/next-api-decorators';
+
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
+import { BatchDeleteContactDto } from 'backend/models/contacts/batch/delete';
+import { AuthDecoratedRequest } from 'types/common';
+import { requiresAuth } from 'backend/apiUtils/decorators/auth';
+import prisma from 'backend/prisma/client';
+import { PathParam } from 'backend/apiUtils/decorators/routing';
+
+@requiresAuth()
+class DeleteBatchContactHandler {
+  @Post()
+  async bulkUpdate(
+    @Req() req: AuthDecoratedRequest,
+    @PathParam('workspaceId') workspaceId: string,
+    @Body() body: BatchDeleteContactDto
+  ) {
+    const ids = body.ids;
+    if (!body.ids) throw new BadRequestException('No ids provided');
+
+    await checkRequiredPermissions(req, ['DELETE_CONTACTS'], workspaceId);
+
+    const allContacts = await prisma.contact.findMany({
+      where: {
+        id: { in: ids },
+      },
+    });
+
+    // silently ignore contacts that don't belong to the workspace
+    const contactsToDelete = allContacts.filter((contact) => contact.workspaceId === workspaceId);
+
+    const deleted = await prisma.contact.deleteMany({
+      where: { id: { in: contactsToDelete.map((contact) => contact.id) } },
+    });
+
+    return deleted;
+  }
+}
+
+export default createHandler(DeleteBatchContactHandler);

@@ -4,17 +4,17 @@ import React from 'react';
 import { MdClose } from 'react-icons/md';
 
 import useAppColors from 'hooks/useAppColors';
-import { TeamMemberWithUser } from 'types/common';
+import { WorkspaceMemberWithUser } from 'types/common';
 
 interface Props {
   editable?: boolean;
-  onClick?: (item: TeamMemberWithUser) => void;
-  onRemoveClick?: (item: TeamMemberWithUser) => void;
-  teamMember: TeamMemberWithUser;
+  onClick?: (item: WorkspaceMemberWithUser) => void;
+  onRemoveClick?: (item: WorkspaceMemberWithUser) => void;
+  workspaceMember: WorkspaceMemberWithUser;
   inline?: boolean;
 }
 
-const AssigneeBadge = ({ teamMember, editable, onClick, onRemoveClick, inline }: Props) => {
+const AssigneeBadge = ({ workspaceMember, editable, onClick, onRemoveClick, inline }: Props) => {
   const { bgPrimary, bodyText } = useAppColors();
   return (
     <HStack
@@ -22,11 +22,11 @@ const AssigneeBadge = ({ teamMember, editable, onClick, onRemoveClick, inline }:
       px={inline ? 0 : 2}
       borderRadius="full"
       bg={inline ? 'transparent' : bgPrimary}
-      onClick={() => onClick?.(teamMember)}
+      onClick={() => onClick?.(workspaceMember)}
     >
-      <Avatar size="2xs" src={teamMember?.user.image || ''} />
+      <Avatar size="2xs" src={workspaceMember?.user.image || ''} />
       <Text color={bodyText} isTruncated fontSize="xs" fontWeight="semibold">
-        {teamMember?.user.name ?? 'User'}
+        {workspaceMember?.user.name ?? 'User'}
       </Text>
       {editable && (
         <IconButton
@@ -38,7 +38,7 @@ const AssigneeBadge = ({ teamMember, editable, onClick, onRemoveClick, inline }:
           variant="ghost"
           aria-label="remove"
           icon={<MdClose />}
-          onClick={() => onRemoveClick?.(teamMember)}
+          onClick={() => onRemoveClick?.(workspaceMember)}
         />
       )}
     </HStack>
