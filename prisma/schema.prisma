@@ -57,8 +57,6 @@ model Workspace {
   invites              Invite[]
   stripeCustomerId     String            @unique
   stripeSubscriptionId String?           @unique
-
-  @@map("Team")
 }
 
 model WorkspaceMember {
@@ -76,7 +74,6 @@ model WorkspaceMember {
   updatedAt DateTime? @updatedAt
 
   @@unique([userId, workspaceId])
-  @@map("TeamMember")
 }
 
 model User {
