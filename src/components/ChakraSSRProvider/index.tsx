@@ -4,7 +4,7 @@ import { cookieStorageManager, localStorageManager } from '@chakra-ui/color-mode
 import { ChakraProvider } from '@chakra-ui/provider';
 import { GetServerSideProps } from 'next';
 
-import { appTheme } from 'customTheme';
+import { appTheme } from '../../customTheme';
 
 const ChakraSSRProvider = ({ cookies, children }: any) => {
   const colorModeManager =
