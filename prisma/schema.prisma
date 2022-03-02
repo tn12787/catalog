@@ -66,7 +66,7 @@ model WorkspaceMember {
   user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   workspace     Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   userId        String
-  workspaceId   String             @map("teamId")
+  workspaceId   String
   roles         Role[]
   tasksAssigned ReleaseTask[]
   actionsTaken  ReleaseTaskEvent[]
@@ -94,7 +94,7 @@ model Invite {
   id          String    @id @default(cuid())
   email       String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String    @map("teamId")
+  workspaceId String
   role        Role      @relation(fields: [roleId], references: [id], onDelete: SetNull)
   roleId      String
   createdAt   DateTime  @default(now())
@@ -148,7 +148,7 @@ model Artist {
   spotifyUrl   String?
   instagramUrl String?
   workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId  String    @map("teamId")
+  workspaceId  String
   releases     Release[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime? @updatedAt
@@ -164,7 +164,7 @@ model Release {
   type        ReleaseType
   targetDate  DateTime
   workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String      @map("teamId")
+  workspaceId String
   createdAt   DateTime    @default(now())
   updatedAt   DateTime?   @updatedAt
 
@@ -179,7 +179,7 @@ model Contact {
   phone       String?
   website     String?
   workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String         @map("teamId")
+  workspaceId String
   tasks       ReleaseTask[]
   labels      ContactLabel[]
 
@@ -193,7 +193,7 @@ model ContactLabel {
   id          String     @id @default(cuid())
   name        String
   workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String     @map("teamId")
+  workspaceId String
   color       String?
   contacts    Contact[]
 
@@ -331,7 +331,7 @@ model Notification {
   id                String           @id @default(cuid())
   type              NotificationType
   workspaceMember   WorkspaceMember  @relation(fields: [workspaceMemberId], references: [id], onDelete: Cascade)
-  workspaceMemberId String           @map("teamMemberId")
+  workspaceMemberId String
   read              Boolean          @default(false)
   task              ReleaseTask?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId            String
