@@ -21,12 +21,12 @@ const OverviewPage = () => {
 
   const { workspace: workspaceData, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading: areReleaseEventsLoading } = useQuery(
     ['releaseEvents', currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id],
     () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id)
   );
 
-  const { data: upcomingReleases } = useQuery(
+  const { data: upcomingReleases, isLoading: areUpcomingReleasesLoading } = useQuery(
     ['releases', currentWorkspace],
     () => fetchReleases({ workspace: currentWorkspace, dates: { after: new Date() } }),
     { enabled: !!currentWorkspace }
@@ -38,7 +38,7 @@ const OverviewPage = () => {
 
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
-          <Skeleton isLoaded={!isLoading}>
+          <Skeleton isLoaded={!isWorkspaceLoading}>
             <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
               {isWorkspaceLoading ? 'Loading workspace name' : workspaceData?.name}
             </Heading>
@@ -48,19 +48,23 @@ const OverviewPage = () => {
           <Card w="100%">
             <Stat>
               <StatLabel>Upcoming Releases</StatLabel>
-              <StatNumber>{upcomingReleases?.total}</StatNumber>
+              <Skeleton isLoaded={!areUpcomingReleasesLoading}>
+                <StatNumber>{upcomingReleases?.total}</StatNumber>
+              </Skeleton>
             </Stat>
           </Card>
           <Card w="100%">
             <Stat>
               <StatLabel>Plan</StatLabel>
-              <StatNumber>{upcomingReleases?.total}</StatNumber>
+              <Skeleton isLoaded={!isWorkspaceLoading}>
+                <StatNumber>{upcomingReleases?.total}</StatNumber>
+              </Skeleton>
             </Stat>
           </Card>
         </Stack>
 
-        <OverdueTasks data={data ?? []} loading={isLoading} />
-        <MyTasks data={data ?? []} loading={isLoading} />
+        <OverdueTasks data={data ?? []} loading={areReleaseEventsLoading} />
+        <MyTasks data={data ?? []} loading={areReleaseEventsLoading} />
       </Stack>
     </Stack>
   );

@@ -128,7 +128,7 @@ class SpecificCommentHandler {
     }
 
     // remove original comment and updates
-    const [_, newEvent] = await prisma.$transaction([
+    const [, newEvent] = await prisma.$transaction([
       prisma.releaseTaskEvent.deleteMany({
         where: {
           OR: [

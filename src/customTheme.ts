@@ -1,6 +1,6 @@
 import { extendTheme, theme } from '@chakra-ui/react';
 
-import { customColors } from 'colors';
+import { customColors } from './colors';
 
 const fontStack =
   'InterVariable, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
