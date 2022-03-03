@@ -79,6 +79,7 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
                   align={{ base: 'flex-start', sm: 'center' }}
                   direction={{ base: 'column', sm: 'row' }}
                   justify={['space-between']}
+                  key={name}
                 >
                   <Text fontSize="md" fontWeight="bold">
                     {name}

@@ -140,9 +140,9 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
   };
 
   const onModalClose = () => {
-    const { event: _, ...rest } = router.query;
+    const { event: _, ...query } = router.query;
 
-    router.push({ pathname: '/planner', query: { ...rest } }, undefined, {
+    router.push({ pathname: '/planner', query: { ...query } }, undefined, {
       shallow: true,
     });
   };
