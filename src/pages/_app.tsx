@@ -8,9 +8,11 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { SessionProvider } from 'next-auth/react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { RetryValue } from 'react-query/types/core/retryer';
 
 import ChakraSSRProvider, { getServerSideProps } from 'components/ChakraSSRProvider';
 import SomethingWentWrong from 'components/SomethingWentWrong';
+import { shouldRetryQuery } from 'utils/queries';
 
 import 'focus-visible/dist/focus-visible';
 import '../index.css';
@@ -27,7 +29,16 @@ interface Props extends Omit<AppProps, 'Component'> {
 }
 
 const MyApp = ({ Component, pageProps }: Props) => {
-  const [queryClient] = React.useState(() => new QueryClient());
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: shouldRetryQuery as RetryValue<unknown>,
+          },
+        },
+      })
+  );
   const Layout = Component.getLayout ? Component.getLayout() : Box;
 
   return (

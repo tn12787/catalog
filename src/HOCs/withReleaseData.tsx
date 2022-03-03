@@ -9,7 +9,6 @@ import { ClientRelease } from 'types/common';
 import { fetchSingleRelease } from 'queries/releases';
 import NotFound from 'components/releases/specific/NotFound';
 import useExtendedSession from 'hooks/useExtendedSession';
-import { shouldRetryQuery } from 'utils/queries';
 
 interface ComponentWithReleaseData {
   releaseData: ClientRelease;
@@ -23,7 +22,7 @@ const withReleaseData = <T extends ComponentWithReleaseData>(Component: Layoutab
     const { data: response, isLoading } = useQuery(
       ['releases', currentWorkspace, releaseId],
       () => fetchSingleRelease(releaseId),
-      { enabled: !!releaseId && !!currentWorkspace, retry: shouldRetryQuery }
+      { enabled: !!releaseId && !!currentWorkspace }
     );
 
     if (isLoading) {

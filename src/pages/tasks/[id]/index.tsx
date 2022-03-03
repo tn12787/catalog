@@ -21,7 +21,6 @@ import { buildPlannerLink } from 'utils/planner';
 import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
 import { taskHeadingByType } from 'utils/tasks';
-import { shouldRetryQuery } from 'utils/queries';
 
 const SingleTaskPage = () => {
   const router = useRouter();
@@ -34,13 +33,13 @@ const SingleTaskPage = () => {
   const { data: taskResponse, isLoading: taskLoading } = useQuery(
     ['tasks', taskId],
     () => fetchSingleTask(taskId),
-    { enabled: !!taskId, retry: shouldRetryQuery }
+    { enabled: !!taskId }
   );
 
   const { data: activityResponse, isLoading: activityLoading } = useQuery(
     ['taskActivity', taskId],
     () => fetchTaskActivity(taskId),
-    { enabled: !!taskId, retry: shouldRetryQuery }
+    { enabled: !!taskId }
   );
 
   const { mutateAsync: postComment, isLoading: commentLoading } = useMutation(postNewComment, {
