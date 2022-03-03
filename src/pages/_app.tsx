@@ -2,13 +2,15 @@ import { Box } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider, QueryErrorResetBoundary } from 'react-query';
 import { Hydrate } from 'react-query/hydration';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { SessionProvider } from 'next-auth/react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import ChakraSSRProvider, { getServerSideProps } from 'components/ChakraSSRProvider';
+import SomethingWentWrong from 'components/SomethingWentWrong';
 
 import 'focus-visible/dist/focus-visible';
 import '../index.css';
@@ -36,7 +38,13 @@ const MyApp = ({ Component, pageProps }: Props) => {
             <Hydrate state={pageProps.dehydratedState}>
               <ChakraSSRProvider>
                 <Layout>
-                  <Component {...pageProps} />
+                  <QueryErrorResetBoundary>
+                    {({ reset }) => (
+                      <ErrorBoundary onReset={reset} FallbackComponent={SomethingWentWrong}>
+                        <Component {...pageProps} />
+                      </ErrorBoundary>
+                    )}
+                  </QueryErrorResetBoundary>
                 </Layout>
               </ChakraSSRProvider>
             </Hydrate>
