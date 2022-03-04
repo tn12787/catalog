@@ -5,11 +5,10 @@ import { Release } from '@prisma/client';
 import { fetchSingleTask } from 'queries/tasks';
 import { EnrichedReleaseTask } from 'types/common';
 
-const useTask = (
-  taskId?: string,
-  options?: UseQueryOptions<EnrichedReleaseTask & { release: Release }, AxiosError>
-) => {
-  return useQuery<EnrichedReleaseTask & { release: Release }, AxiosError>(
+type TaskResult = EnrichedReleaseTask & { release: Release };
+
+const useTask = (taskId?: string, options?: UseQueryOptions<TaskResult, AxiosError>) => {
+  return useQuery<TaskResult, AxiosError>(
     ['tasks', taskId],
     () => fetchSingleTask(taskId as string),
     {
