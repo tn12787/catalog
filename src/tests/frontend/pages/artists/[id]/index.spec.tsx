@@ -36,7 +36,7 @@ describe('Single Artist Page', () => {
     expect(getByText(/No releases yet/)).toBeVisible();
   });
 
-  it("Shows the artist's release stats with no releases yet", async () => {
+  it("Shows the artist's releases with an upcoming release", async () => {
     const testReleaseName = 'Boio';
     const { getByText, queryByText } = render({
       releases: [testClientRelease({ name: testReleaseName })],
