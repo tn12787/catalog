@@ -2,6 +2,7 @@ import SingleArtistPage from 'pages/artists/[id]';
 import { renderWithProviders } from 'tests/utils/render';
 import { ArtistResponse } from 'types/common';
 import { testArtist } from '__mocks__/data/artists';
+import { testClientRelease } from '__mocks__/data/releases';
 
 const testArtistId = 'test-artist-id';
 
@@ -31,5 +32,17 @@ describe('Single Artist Page', () => {
     expect(getByText(/Lifetime Releases/)).toBeVisible();
     expect(getByText(/Upcoming/)).toBeVisible();
     expect(getByText(/YTD/)).toBeVisible();
+
+    expect(getByText(/No releases yet/)).toBeVisible();
+  });
+
+  it("Shows the artist's release stats with no releases yet", async () => {
+    const testReleaseName = 'Boio';
+    const { getByText, queryByText } = render({
+      releases: [testClientRelease({ name: testReleaseName })],
+    });
+    expect(getByText(testReleaseName)).toBeVisible();
+
+    expect(queryByText(/No releases yet/)).toBeNull();
   });
 });
