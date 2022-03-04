@@ -12,7 +12,6 @@ import {
   StatNumber,
 } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
-import { Artist } from '@prisma/client';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
@@ -21,16 +20,16 @@ import PageHead from 'components/pageItems/PageHead';
 import ReleaseList from 'components/releases/ReleaseList';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { getSingleServerSideArtist } from 'ssr/artists/getSingleServerSideArtist';
-import { ClientRelease } from 'types/common';
+import { ArtistResponse } from 'types/common';
 import useSingleArtist from 'hooks/data/artists/useSingleArtist';
 
 type Props = {
-  artist: Artist & { releases: ClientRelease[] };
+  artist: ArtistResponse;
 };
 
 const SingleArtist = ({ artist }: Props) => {
   const router = useRouter();
-  const artistId = router.query['id'] as string;
+  const artistId = router.query?.['id'] as string;
   const { bgPrimary } = useAppColors();
   const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 

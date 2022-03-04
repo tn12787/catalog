@@ -1,12 +1,9 @@
 import { AxiosError } from 'axios';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { Artist } from '@prisma/client';
 
 import { fetchSingleArtist } from 'queries/artists';
 import useExtendedSession from 'hooks/useExtendedSession';
-import { ClientRelease } from 'types/common';
-
-type ArtistResponse = Artist & { releases: ClientRelease[] };
+import { ArtistResponse } from 'types/common';
 
 const useSingleArtist = (
   artistId?: string,

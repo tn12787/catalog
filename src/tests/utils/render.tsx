@@ -3,6 +3,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { RetryValue } from 'react-query/types/core/retryer';
+import { SessionProvider } from 'next-auth/react';
 
 import ChakraSSRProvider from 'components/ChakraSSRProvider';
 import { shouldRetryQuery } from 'utils/queries';
@@ -17,10 +18,12 @@ export const renderWithProviders = (content: React.ReactNode) => {
   });
 
   return render(
-    <DndProvider backend={HTML5Backend}>
-      <QueryClientProvider client={queryClient}>
-        <ChakraSSRProvider>{content}</ChakraSSRProvider>
-      </QueryClientProvider>
-    </DndProvider>
+    <SessionProvider>
+      <DndProvider backend={HTML5Backend}>
+        <QueryClientProvider client={queryClient}>
+          <ChakraSSRProvider>{content}</ChakraSSRProvider>
+        </QueryClientProvider>
+      </DndProvider>
+    </SessionProvider>
   );
 };
