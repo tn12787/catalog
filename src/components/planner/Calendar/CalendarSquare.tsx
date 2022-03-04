@@ -100,7 +100,7 @@ const CalendarSquare = <T extends BaseEvent>({
       <Text
         display="flex"
         justifyContent="center"
-        alignSelf="center"
+        alignSelf="flex-end"
         alignItems="center"
         borderRadius="full"
         cursor={'pointer'}

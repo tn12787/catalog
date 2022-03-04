@@ -14,7 +14,7 @@ import PageHead from 'components/pageItems/PageHead';
 import Mastering from 'components/releases/specific/Mastering';
 import MusicVideo from 'components/releases/specific/MusicVideo';
 import { getSingleServerSideRelease } from 'ssr/releases/getSingleServerSideRelease';
-import useSingleRelease from 'hooks/data/releases';
+import useSingleRelease from 'hooks/data/releases/useSingleRelease';
 
 interface Props {
   release: ClientRelease;

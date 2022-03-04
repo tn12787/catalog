@@ -13,7 +13,9 @@ export const fetchArtists = async (workspaceId: string): Promise<Artist[]> => {
 };
 
 export const fetchSingleArtist = async (id: string) => {
-  return await axios.get<Artist & { releases: ClientRelease[] }>(`/api/artists/${id}`);
+  const { data } = await axios.get<Artist & { releases: ClientRelease[] }>(`/api/artists/${id}`);
+
+  return data;
 };
 
 export const createSingleArtist = async ({
