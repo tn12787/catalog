@@ -1,11 +1,10 @@
 import React from 'react';
-import { useQuery } from 'react-query';
 import { Stack } from '@chakra-ui/layout';
 
 import { basicInfoDataConfig, renderReviewData } from './data';
 
 import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
-import { fetchSingleArtist } from 'queries/artists';
+import useSingleArtist from 'hooks/data/artists/useSingleArtist';
 
 interface Props {
   data: BasicInfoFormData;
@@ -13,13 +12,11 @@ interface Props {
 
 const BasicInfoReview = ({ data }: Props) => {
   const { artist } = data;
-  const { data: response } = useQuery(['artists', artist], () => fetchSingleArtist(artist), {
-    enabled: !!artist,
-  });
+  const { data: response } = useSingleArtist(artist);
 
   const dataToRender = {
     ...data,
-    artist: response?.data?.name as string,
+    artist: response?.name as string,
   };
 
   return <Stack>{renderReviewData('Basics', basicInfoDataConfig, dataToRender)}</Stack>;
