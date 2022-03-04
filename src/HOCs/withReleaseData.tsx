@@ -7,7 +7,7 @@ import { LayoutablePage } from './types';
 
 import { ClientRelease } from 'types/common';
 import { fetchSingleRelease } from 'queries/releases';
-import NotFound from 'components/releases/specific/NotFound';
+import ReleaseNotFound from 'components/releases/specific/ReleaseNotFound';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface ComponentWithReleaseData {
@@ -32,7 +32,7 @@ const withReleaseData = <T extends ComponentWithReleaseData>(Component: Layoutab
         </Stack>
       );
     } else if (response?.status === 404 || !response?.data) {
-      return <NotFound />;
+      return <ReleaseNotFound />;
     } else {
       const overallProps = { ...props, releaseData: response.data } as T;
       return <Component {...overallProps} />;

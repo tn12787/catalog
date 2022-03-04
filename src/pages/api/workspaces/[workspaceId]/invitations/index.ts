@@ -14,7 +14,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateInvitationDto } from 'backend/models/invitations/create';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
-import { sendDynamicEmail } from 'backend/email';
+import { sendDynamicEmail } from 'backend/apiUtils/email';
 
 const inviteUserTemplateId = `d-324235f107c041f58e03d8fd8a66e104`;
 

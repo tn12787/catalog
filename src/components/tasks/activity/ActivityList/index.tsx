@@ -1,4 +1,4 @@
-import { Stack } from '@chakra-ui/react';
+import { HStack, Skeleton, SkeletonCircle, Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import ActivityListItem from '../ActivityListItem';
@@ -10,12 +10,23 @@ interface Props {
   loading?: boolean;
 }
 
-const ActivityList = ({ events }: Props) => {
+const ActivityList = ({ events, loading }: Props) => {
   return (
     <Stack spacing={8}>
-      {events.map((event) => (
-        <ActivityListItem event={event} allEvents={events} key={event.id} />
-      ))}
+      {loading ? (
+        <>
+          <HStack>
+            <SkeletonCircle></SkeletonCircle>
+            <Skeleton isLoaded={!loading}>adgdgadgadgd</Skeleton>
+          </HStack>
+          <HStack>
+            <SkeletonCircle></SkeletonCircle>
+            <Skeleton isLoaded={!loading}>adhahadhahdahdadhadhadh</Skeleton>
+          </HStack>
+        </>
+      ) : (
+        events.map((event) => <ActivityListItem event={event} allEvents={events} key={event.id} />)
+      )}
     </Stack>
   );
 };

@@ -1,7 +1,7 @@
 import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
-const NotFound = () => {
+const ReleaseNotFound = () => {
   const router = useRouter();
   return (
     <Stack flex={1} align="center" justify="center" spacing={7} direction="column">
@@ -16,4 +16,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default ReleaseNotFound;

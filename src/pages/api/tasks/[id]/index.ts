@@ -21,36 +21,13 @@ import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import { checkTaskUpdatePermissions, buildUpdateReleaseTaskArgs } from 'backend/apiUtils/tasks';
 import { UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
+import { getTaskByIdIsomorphic } from 'backend/isomorphic/tasks';
 
 @requiresAuth()
 class SingleTaskHandler {
   @Get()
   async taskEvent(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
-    if (!id) throw new NotFoundException();
-
-    const task = await prisma.releaseTask.findUnique({
-      where: { id },
-      select: {
-        release: true,
-        type: true,
-        assignees: { include: { user: true } },
-        dueDate: true,
-        id: true,
-        status: true,
-        updatedAt: true,
-        musicVideoData: true,
-        distributionData: { include: { distributor: true } },
-        marketingData: { include: { links: true } },
-        masteringData: true,
-        artworkData: true,
-        notes: true,
-        contacts: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['VIEW_RELEASES'], task?.release?.workspaceId);
-
-    return task;
+    return await getTaskByIdIsomorphic(req, id);
   }
 
   @Patch()

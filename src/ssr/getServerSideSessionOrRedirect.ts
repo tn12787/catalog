@@ -1,7 +1,12 @@
 import { GetServerSideProps } from 'next';
+import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 
-export const getServerSideSessionOrRedirect: GetServerSideProps = async (context) => {
+type ServerSideSessionReturn = { session: Session };
+
+export const getServerSideSessionOrRedirect: GetServerSideProps<ServerSideSessionReturn> = async (
+  context
+) => {
   const session = await getSession(context);
 
   if (!session) {
