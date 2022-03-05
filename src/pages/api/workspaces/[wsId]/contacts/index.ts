@@ -25,7 +25,7 @@ class ContactHandler {
   @Get()
   async list(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('workspaceId') workspace: string,
+    @PathParam('wsId') workspace: string,
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Contact>('name')) sortBy: keyof Contact,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,
@@ -78,7 +78,7 @@ class ContactHandler {
   @HttpCode(201)
   async createContact(
     @Body(ValidationPipe) body: CreateContactDto,
-    @PathParam('workspaceId') workspaceId: string,
+    @PathParam('wsId') workspaceId: string,
     @Req() req: AuthDecoratedRequest
   ) {
     await checkRequiredPermissions(req, ['CREATE_CONTACTS'], workspaceId);

@@ -20,11 +20,11 @@ import {
 import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
-class WorkspaceHandler {
+class WorkspaceMemberHandler {
   @Patch()
   async updateWorkspace(
     @Request() req: AuthDecoratedRequest,
-    @PathParam('workspaceId') workspaceId: string,
+    @PathParam('wsId') workspaceId: string,
     @PathParam('workspaceMemberId') workspaceMemberId: string,
     @Body(ValidationPipe) body: UpdateWorkspaceMemberDto
   ) {
@@ -42,7 +42,7 @@ class WorkspaceHandler {
   @Delete()
   async removeWorkspaceMember(
     @Request() req: AuthDecoratedRequest,
-    @PathParam('workspaceId') workspaceId: string,
+    @PathParam('wsId') workspaceId: string,
     @PathParam('workspaceMemberId') workspaceMemberId: string
   ) {
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], workspaceId);
@@ -61,4 +61,4 @@ class WorkspaceHandler {
   }
 }
 
-export default createHandler(WorkspaceHandler);
+export default createHandler(WorkspaceMemberHandler);

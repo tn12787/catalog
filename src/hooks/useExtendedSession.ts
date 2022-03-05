@@ -20,15 +20,16 @@ const useExtendedSession = () => {
   const { data: session, status } = useSession();
   const token = session?.token as ExtendedToken | undefined;
 
-  const { currentWorkspace, setCurrentWorkspace } = useWorkspacePreference(
-    useCallback(
-      (state) => ({
-        currentWorkspace: state.currentWorkspace,
-        setCurrentWorkspace: state.setCurrentWorkspace,
-      }),
-      []
-    )
-  );
+  const { currentWorkspace: currentWorkspaceMembership, setCurrentWorkspace } =
+    useWorkspacePreference(
+      useCallback(
+        (state) => ({
+          currentWorkspace: state.currentWorkspace,
+          setCurrentWorkspace: state.setCurrentWorkspace,
+        }),
+        []
+      )
+    );
 
   const workspaceMap = useMemo(() => {
     const workspaceMemberships = token?.workspaceMemberships;
@@ -77,7 +78,7 @@ const useExtendedSession = () => {
     token,
     workspaceMemberships: workspaceMap,
     workspaceList,
-    currentWorkspace,
+    currentWorkspace: currentWorkspaceMembership,
     onChangeWorkspace: onChangeWorkspace,
     status,
   };

@@ -7,58 +7,57 @@ import {
   Delete,
 } from '@storyofams/next-api-decorators';
 
+import { UpdateContactLabelDto } from 'backend/models/contacts/labels/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
-import { UpdateContactDto } from 'backend/models/contacts/update';
 
 @requiresAuth()
 class SpecificNotificationHandler {
   @Patch()
   async updateSingleContact(
     @Req() req: AuthDecoratedRequest,
-    @Body() body: UpdateContactDto,
-    @PathParam('workspaceId') workspaceId: string,
-    @PathParam('contactId') contactId: string
+    @Body() body: UpdateContactLabelDto,
+    @PathParam('wsId') workspaceId: string,
+    @PathParam('labelId') labelId: string
   ) {
-    if (!contactId) {
+    if (!labelId) {
       throw new NotFoundException();
     }
 
     await checkRequiredPermissions(req, ['UPDATE_CONTACTS'], workspaceId);
 
-    const updatedContact = await prisma.contact.update({
+    const updatedContactLabel = await prisma.contactLabel.update({
       where: {
-        id: contactId,
+        id: labelId,
       },
       data: {
         ...body,
-        labels: { set: body.labels.map(({ id }) => ({ id })) },
       },
     });
-    return updatedContact;
+    return updatedContactLabel;
   }
 
   @Delete()
   async deleteSingleContact(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('workspaceId') workspaceId: string,
-    @PathParam('contactId') contactId: string
+    @PathParam('wsId') workspaceId: string,
+    @PathParam('labelId') labelId: string
   ) {
-    if (!contactId) {
+    if (!labelId) {
       throw new NotFoundException();
     }
 
     await checkRequiredPermissions(req, ['DELETE_CONTACTS'], workspaceId);
 
-    const deletedContact = await prisma.contact.delete({
+    const deletedContactLabel = await prisma.contactLabel.delete({
       where: {
-        id: contactId,
+        id: labelId,
       },
     });
-    return deletedContact;
+    return deletedContactLabel;
   }
 }
 

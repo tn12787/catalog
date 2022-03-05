@@ -107,7 +107,6 @@ export const checkRequiredPermissions = async (
   resourceWorkspace?: string
 ) => {
   const permissonsForWorkspace = await getAllUserPermissionsForWorkspace(req, resourceWorkspace);
-
   if (
     !permissonsForWorkspace.some((permission) => permissions.includes(permission as PermissionType))
   ) {
