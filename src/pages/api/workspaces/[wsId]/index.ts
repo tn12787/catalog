@@ -2,7 +2,6 @@ import {
   Body,
   createHandler,
   Get,
-  Patch,
   Put,
   Req,
   Request,
