@@ -2,18 +2,16 @@ import { Stack, Heading, Text, HStack, Divider, Link as ChakraLink } from '@chak
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, useToast } from '@chakra-ui/react';
 import { BiCalendar, BiChevronRight } from 'react-icons/bi';
-import { ReleaseTask, ReleaseTaskType } from '@prisma/client';
+import { Release, ReleaseTask, ReleaseTaskType } from '@prisma/client';
 import Link from 'next/link';
-import { AxiosError } from 'axios';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
-import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import PageHead from 'components/pageItems/PageHead';
-import { fetchSingleTask, fetchTaskActivity, postNewComment } from 'queries/tasks';
+import { postNewComment } from 'queries/tasks';
 import ActivityList from 'components/tasks/activity/ActivityList';
 import useExtendedSession from 'hooks/useExtendedSession';
 import NewCommentBox from 'components/comments/NewCommentBox';
@@ -22,8 +20,16 @@ import { buildPlannerLink } from 'utils/planner';
 import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
 import { taskHeadingByType } from 'utils/tasks';
+import useTaskActivity from 'hooks/data/tasks/useTaskActivity';
+import useTask from 'hooks/data/tasks/useTask';
+import { EnrichedReleaseTask } from 'types/common';
+import { getSingleServerSideTask } from 'ssr/tasks/getSingleServerSideTask';
 
-const SingleTaskPage = () => {
+type SingleTaskPageProps = {
+  task: EnrichedReleaseTask & { release: Release };
+};
+
+const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
   const router = useRouter();
   const taskId = router.query['id'] as string;
   const { bgPrimary } = useAppColors();
@@ -31,23 +37,8 @@ const SingleTaskPage = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const redirectTo404OnError = (data: AxiosError) => {
-    if (data?.response?.status === 404) {
-      router.replace('/404');
-    }
-  };
-
-  const { data: taskResponse, isLoading: taskLoading } = useQuery(
-    ['tasks', taskId],
-    () => fetchSingleTask(taskId),
-    { enabled: !!taskId, onError: redirectTo404OnError }
-  );
-
-  const { data: activityResponse, isLoading: activityLoading } = useQuery(
-    ['taskActivity', taskId],
-    () => fetchTaskActivity(taskId),
-    { enabled: !!taskId, onError: redirectTo404OnError }
-  );
+  const { data: taskData, isLoading: taskLoading } = useTask(taskId, { initialData: task });
+  const { data: taskActivity, isLoading: activityLoading } = useTaskActivity(taskId);
 
   const { mutateAsync: postComment, isLoading: commentLoading } = useMutation(postNewComment, {
     onSuccess: () => {
@@ -72,10 +63,7 @@ const SingleTaskPage = () => {
         title={
           taskLoading
             ? 'Task Details'
-            : taskHeadingByType(
-                taskResponse?.data?.type as ReleaseTaskType,
-                taskResponse?.data?.release.name
-              )
+            : taskHeadingByType(taskData?.type as ReleaseTaskType, taskData?.release.name)
         }
       />
       <Stack spacing={4} width="90%" maxW="container.lg">
@@ -96,33 +84,28 @@ const SingleTaskPage = () => {
             </BreadcrumbItem>
 
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/releases/${taskResponse?.data.release.id}`}>
-                {taskResponse?.data?.release.name}
+              <BreadcrumbLink href={`/releases/${taskData?.release.id}`}>
+                {taskData?.release.name}
               </BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink fontWeight="bold" href={router.pathname}>
-                {taskHeadingByType(taskResponse?.data?.type as ReleaseTaskType)}
+                {taskHeadingByType(taskData?.type as ReleaseTaskType)}
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
         </Skeleton>
         <Stack direction="row" align="center" justify="space-between">
-          <Skeleton isLoaded={!taskLoading && !activityLoading}>
+          <Skeleton isLoaded={!taskLoading}>
             <Heading as="h1" size="xl" alignSelf="flex-start">
-              {taskHeadingByType(
-                taskResponse?.data?.type as ReleaseTaskType,
-                taskResponse?.data?.release.name
-              ) ?? 'Loading Artists'}
+              {taskHeadingByType(taskData?.type as ReleaseTaskType, taskData?.release.name) ??
+                'Loading Artists'}
             </Heading>
           </Skeleton>
           <Link
             passHref
-            href={buildPlannerLink(
-              taskResponse?.data.id as string,
-              taskResponse?.data?.dueDate?.toString() ?? ''
-            )}
+            href={buildPlannerLink(taskData?.id as string, taskData?.dueDate?.toString() ?? '')}
           >
             <ChakraLink as={HStack}>
               <Icon as={BiCalendar} />
@@ -140,15 +123,15 @@ const SingleTaskPage = () => {
         >
           <Stack spacing={5} w="100%">
             <Skeleton isLoaded={!taskLoading}>
-              <TaskNotes task={taskResponse?.data as ReleaseTask} />
+              <TaskNotes task={taskData as ReleaseTask} />
             </Skeleton>
             <Heading as="h3" size="md">
               Activity
             </Heading>
-            <ActivityList loading={activityLoading} events={activityResponse?.data ?? []} />
+            <ActivityList loading={activityLoading} events={taskActivity?.data ?? []} />
             <NewCommentBox onSubmit={onSubmit} loading={commentLoading} />
           </Stack>
-          <TaskInfo loading={taskLoading} task={taskResponse?.data} />
+          <TaskInfo loading={taskLoading} task={taskData} />
         </Stack>
         <Divider />
       </Stack>
@@ -156,7 +139,7 @@ const SingleTaskPage = () => {
   );
 };
 
-export const getServerSideProps = getServerSideSessionOrRedirect;
+export const getServerSideProps = getSingleServerSideTask;
 
 SingleTaskPage.getLayout = () => DashboardLayout;
 

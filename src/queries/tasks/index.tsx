@@ -6,7 +6,9 @@ import { DeleteCommentVars, NewCommentVars, UpdateCommentVars, UpdateTaskVars } 
 import { EnrichedReleaseTask, ReleaseTaskEventWithUser } from 'types/common';
 
 export const fetchSingleTask = async (id: string) => {
-  return await axios.get<EnrichedReleaseTask & { release: Release }>(`/api/tasks/${id}`);
+  const response = await axios.get<EnrichedReleaseTask & { release: Release }>(`/api/tasks/${id}`);
+
+  return response.data;
 };
 
 export const fetchTaskActivity = async (id: string) => {

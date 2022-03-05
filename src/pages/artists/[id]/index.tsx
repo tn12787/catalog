@@ -3,7 +3,6 @@ import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import React from 'react';
-import { useQuery } from 'react-query';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,28 +15,29 @@ import { BiChevronRight } from 'react-icons/bi';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
-import { fetchSingleArtist } from 'queries/artists';
-import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import Card from 'components/Card';
 import PageHead from 'components/pageItems/PageHead';
 import ReleaseList from 'components/releases/ReleaseList';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { getSingleServerSideArtist } from 'ssr/artists/getSingleServerSideArtist';
+import { ArtistResponse } from 'types/common';
+import useSingleArtist from 'hooks/data/artists/useSingleArtist';
 
-const SingleArtist = () => {
+type Props = {
+  artist: ArtistResponse;
+};
+
+const SingleArtist = ({ artist }: Props) => {
   const router = useRouter();
-  const artistId = router.query['id'] as string;
+  const artistId = router.query?.['id'] as string;
   const { bgPrimary } = useAppColors();
   const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
-  const { data: response, isLoading } = useQuery(
-    ['artists', artistId],
-    () => fetchSingleArtist(artistId),
-    { enabled: !!artistId }
-  );
+  const { data: artistData, isLoading } = useSingleArtist(artistId, { initialData: artist });
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
-      <PageHead title={response?.data?.name ?? 'Artist Overview'} />
+      <PageHead title={artistData?.name ?? 'Artist Overview'} />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
@@ -56,14 +56,14 @@ const SingleArtist = () => {
 
           <BreadcrumbItem isCurrentPage>
             <BreadcrumbLink fontWeight="bold" href={router.pathname}>
-              {response?.data?.name}
+              {artistData?.name}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isLoading}>
             <Heading as="h1" size="2xl" fontWeight="black" alignSelf="flex-start">
-              {response?.data.name}
+              {artistData?.name}
             </Heading>
           </Skeleton>
         </Stack>
@@ -71,8 +71,8 @@ const SingleArtist = () => {
         <Stack spacing="20px">
           <Card>
             <Heading size="sm">Basic Info</Heading>
-            <Text>{response?.data?.legalName}</Text>
-            <ChakraLink href={response?.data.spotifyUrl as string} isExternal>
+            <Text>{artistData?.legalName}</Text>
+            <ChakraLink href={artistData?.spotifyUrl as string} isExternal>
               Spotify
             </ChakraLink>
           </Card>
@@ -84,9 +84,8 @@ const SingleArtist = () => {
                   <StatLabel>Lifetime Releases</StatLabel>
                   <StatNumber>
                     {
-                      response?.data.releases?.filter(
-                        (item) => new Date(item.targetDate) < new Date()
-                      ).length
+                      artistData?.releases?.filter((item) => new Date(item.targetDate) < new Date())
+                        .length
                     }
                   </StatNumber>
                 </Stat>
@@ -96,7 +95,7 @@ const SingleArtist = () => {
                   <StatLabel>Year-to-date (YTD)</StatLabel>
                   <StatNumber>
                     {
-                      response?.data.releases?.filter(
+                      artistData?.releases?.filter(
                         (item) =>
                           new Date(item.targetDate) < new Date() &&
                           new Date(item.targetDate).getFullYear() === new Date().getFullYear()
@@ -110,9 +109,8 @@ const SingleArtist = () => {
                   <StatLabel>Upcoming</StatLabel>
                   <StatNumber>
                     {
-                      response?.data.releases?.filter(
-                        (item) => new Date(item.targetDate) > new Date()
-                      ).length
+                      artistData?.releases?.filter((item) => new Date(item.targetDate) > new Date())
+                        .length
                     }
                   </StatNumber>
                 </Stat>
@@ -122,9 +120,9 @@ const SingleArtist = () => {
             <ReleaseList
               search=""
               releases={
-                response?.data?.releases?.map((item) => ({
+                artistData?.releases?.map((item) => ({
                   ...item,
-                  artist: { name: response.data.name },
+                  artist: { name: artistData?.name },
                 })) ?? []
               }
             />
@@ -135,7 +133,7 @@ const SingleArtist = () => {
   );
 };
 
-export const getServerSideProps = getServerSideSessionOrRedirect;
+export const getServerSideProps = getSingleServerSideArtist;
 
 SingleArtist.getLayout = () => DashboardLayout;
 

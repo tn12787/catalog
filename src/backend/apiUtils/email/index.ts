@@ -1,7 +1,8 @@
 import sendgrid from '@sendgrid/mail';
 import client from '@sendgrid/client';
 
-import { CreateMailingListEntryDto } from './../models/marketing/mailingList';
+import { CreateMailingListEntryDto } from '../../models/marketing/mailingList';
+
 import { EmailData } from './types';
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY as string);

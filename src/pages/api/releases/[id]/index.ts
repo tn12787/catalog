@@ -12,51 +12,18 @@ import {
 import { ReleaseType } from '@prisma/client';
 
 import { AuthDecoratedRequest } from 'types/common';
-import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
+import { getReleaseByIdIsomorphic } from 'backend/isomorphic/releases';
 
 @requiresAuth()
 class SingleReleaseHandler {
   @Get()
   async singleRelease(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
-    if (!id) throw new NotFoundException();
-
-    const releaseWorkspace = await prisma.release.findUnique({
-      where: { id },
-      select: {
-        workspaceId: true,
-      },
-    });
-
-    await checkRequiredPermissions(req, ['VIEW_RELEASES'], releaseWorkspace?.workspaceId);
-
-    const release = await prisma.release.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        artist: true,
-        tasks: {
-          include: {
-            assignees: { include: { user: true } },
-            contacts: { include: { labels: true } },
-            artworkData: true,
-            distributionData: { include: { distributor: true } },
-            marketingData: { include: { links: true } },
-            musicVideoData: true,
-            masteringData: true,
-          },
-        },
-      },
-    });
-
-    if (!release) throw new NotFoundException();
-
-    return transformReleaseToApiShape(release);
+    return await getReleaseByIdIsomorphic(req, id);
   }
 
   @Put()

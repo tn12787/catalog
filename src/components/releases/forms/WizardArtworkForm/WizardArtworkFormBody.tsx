@@ -41,8 +41,6 @@ const WizardArtworkFormBody = ({
 
   const watchedAlbumArt = watch('artworkData');
 
-  console.log(watchedAlbumArt);
-
   const onSubmitFn = async (data: EditArtworkFormData) => {
     const { artworkData, ...rest } = data;
     setUploading(true);

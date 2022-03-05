@@ -1,6 +1,6 @@
 import { Body, createHandler, Post, ValidationPipe } from '@storyofams/next-api-decorators';
 
-import { addMailingListEntry } from 'backend/email';
+import { addMailingListEntry } from 'backend/apiUtils/email';
 import { CreateMailingListEntryDto } from 'backend/models/marketing/mailingList';
 
 class MailingListHandler {

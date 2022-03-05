@@ -11,40 +11,37 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
-import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
-import { AuthDecoratedRequest, EnrichedRelease } from 'types/common';
+import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import prisma from 'backend/prisma/client';
 import { UpdateArtistDto } from 'backend/models/artists/update';
+import { getArtistByIdIsomorphic } from 'backend/isomorphic/artists';
 
 @requiresAuth()
 class ArtistHandler {
   @Get()
-  async singleArtist(@Query('id') id: string) {
-    if (!id) throw new NotFoundException();
-
-    const artist = await prisma.artist.findUnique({
-      where: {
-        id,
-      },
-      include: { releases: { include: { tasks: { include: { artworkData: true } } } } },
-    });
-
-    if (!artist) throw new NotFoundException();
-
-    return {
-      ...artist,
-      releases: artist.releases.map((release) =>
-        transformReleaseToApiShape(release as EnrichedRelease)
-      ),
-    };
+  async singleArtist(@Req() req: AuthDecoratedRequest, @Query('id') id: string) {
+    return await getArtistByIdIsomorphic(req, id);
   }
 
   @Put()
-  async updateArtist(@Body(ValidationPipe) body: UpdateArtistDto, @PathParam('id') id: string) {
+  async updateArtist(
+    @Req() req: AuthDecoratedRequest,
+    @Body(ValidationPipe) body: UpdateArtistDto,
+    @PathParam('id') id: string
+  ) {
     if (!id) throw new NotFoundException();
+
+    const artist = await prisma.artist.findUnique({
+      where: { id },
+      select: {
+        workspaceId: true,
+      },
+    });
+
+    await checkRequiredPermissions(req, ['UPDATE_ARTISTS'], artist?.workspaceId);
 
     const optionalArgs = pickBy(
       {

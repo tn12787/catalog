@@ -3,7 +3,7 @@ import { Artist } from '@prisma/client';
 
 import { CreateSingleArtistVars, SingleArtistVars } from './types';
 
-import { ClientRelease } from 'types/common';
+import { ArtistResponse } from 'types/common';
 
 export const fetchArtists = async (workspaceId: string): Promise<Artist[]> => {
   const { data } = await axios.get(`/api/artists`, {
@@ -13,7 +13,9 @@ export const fetchArtists = async (workspaceId: string): Promise<Artist[]> => {
 };
 
 export const fetchSingleArtist = async (id: string) => {
-  return await axios.get<Artist & { releases: ClientRelease[] }>(`/api/artists/${id}`);
+  const { data } = await axios.get<ArtistResponse>(`/api/artists/${id}`);
+
+  return data;
 };
 
 export const createSingleArtist = async ({
