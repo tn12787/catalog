@@ -29,7 +29,8 @@ export const fetchReleases = async ({
 };
 
 export const fetchSingleRelease = async (id: string) => {
-  return await axios.get<ClientRelease>(`/api/releases/${id}`);
+  const { data: response } = await axios.get<ClientRelease>(`/api/releases/${id}`);
+  return response;
 };
 
 export const updateBasicReleaseInfo = async ({
