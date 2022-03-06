@@ -22,7 +22,7 @@ import { isBackendFeatureEnabled } from 'common/features';
 @requiresAuth()
 class WorkspaceHandler {
   @Get()
-  async workspace(@Req() req: AuthDecoratedRequest, @PathParam('workspaceId') id: string) {
+  async retrieveWorkspace(@Req() req: AuthDecoratedRequest, @PathParam('wsId') id: string) {
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], id);
 
     const workspace = await prisma.workspace.findUnique({
@@ -44,7 +44,7 @@ class WorkspaceHandler {
 
   @Put()
   async updateWorkspace(
-    @PathParam('workspaceId') id: string,
+    @PathParam('wsId') id: string,
     @Request() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateWorkspaceDto
   ) {

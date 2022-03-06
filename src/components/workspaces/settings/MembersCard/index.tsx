@@ -15,7 +15,7 @@ const MembersCard = () => {
   const { isFeatureEnabled } = useFeatures();
   const isDisabled = !workspace?.subscription && isFeatureEnabled(FeatureKey.PAYMENTS);
 
-  if (isLoading) return null;
+  if (isLoading || !workspace) return null;
   return (
     <Card position="relative" spacing={6}>
       {isDisabled && (
