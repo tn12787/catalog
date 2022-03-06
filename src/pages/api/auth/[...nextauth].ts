@@ -8,6 +8,7 @@ import prisma from 'backend/prisma/client';
 export default NextAuth({
   pages: {
     signIn: '/login',
+    newUser: '/welcome',
   },
   providers: [
     GoogleProvider({
