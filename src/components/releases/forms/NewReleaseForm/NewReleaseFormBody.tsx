@@ -3,7 +3,6 @@ import React, { useEffect, useMemo } from 'react';
 import { FiArrowRight, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { useQuery } from 'react-query';
 import { ReleaseType } from '@prisma/client';
 
 import { ReleaseWizardComponentProps } from '../../NewReleaseWizard/types';
@@ -12,19 +11,14 @@ import { basicInfoConfig } from './releaseConfig';
 import { BasicInfoFormData } from './types';
 
 import FormContent from 'components/forms/FormContent';
-import useExtendedSession from 'hooks/useExtendedSession';
-import { fetchArtists } from 'queries/artists';
+import useArtists from 'hooks/data/artists/useArtists';
 
 const NewReleaseFormBody = ({
   onSubmit,
   existingRelease,
   loading,
 }: ReleaseWizardComponentProps<BasicInfoFormData>) => {
-  const { currentWorkspace } = useExtendedSession();
-
-  const { data: artists } = useQuery(['artists', currentWorkspace], () =>
-    fetchArtists(currentWorkspace)
-  );
+  const { data: artists } = useArtists();
 
   const properDateFormat = useMemo(() => {
     const existingDate =

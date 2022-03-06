@@ -14,6 +14,7 @@ import Card from 'components/Card';
 import { fetchReleases } from 'queries/releases';
 import OverdueTasks from 'components/overview/OverdueTasks';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import useReleases from 'hooks/data/releases/useReleases';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
@@ -25,12 +26,9 @@ const OverviewPage = () => {
     ['releaseEvents', currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id],
     () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id)
   );
-
-  const { data: upcomingReleases, isLoading: areUpcomingReleasesLoading } = useQuery(
-    ['releases', currentWorkspace],
-    () => fetchReleases({ workspace: currentWorkspace, dates: { after: new Date() } }),
-    { enabled: !!currentWorkspace }
-  );
+  const { data: upcomingReleases, isLoading: areUpcomingReleasesLoading } = useReleases({
+    dates: { after: new Date(new Date().toDateString()) },
+  });
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">

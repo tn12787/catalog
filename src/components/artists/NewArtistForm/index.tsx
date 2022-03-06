@@ -3,17 +3,18 @@ import { FiArrowRight } from 'react-icons/fi';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { newArtistConfig } from './artistConfig';
 import { FormArtist } from './types';
 
 import Card from 'components/Card';
 import FormContent from 'components/forms/FormContent';
-import { createSingleArtist, fetchArtists, updateSingleArtist } from 'queries/artists';
+import { createSingleArtist, updateSingleArtist } from 'queries/artists';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { CreateSingleArtistVars, SingleArtistVars } from 'queries/artists/types';
+import useArtists from 'hooks/data/artists/useArtists';
 
 interface Props {
   existingArtist?: FormArtist;
@@ -37,9 +38,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
 
   const { currentWorkspace } = useExtendedSession();
 
-  const { data: artists } = useQuery(['artists', currentWorkspace], () =>
-    fetchArtists(currentWorkspace)
-  );
+  const { data: artists } = useArtists();
   const queryClient = useQueryClient();
   const { mutateAsync: createArtist, isLoading: createLoading } = useMutation(createSingleArtist, {
     onSuccess: () => {

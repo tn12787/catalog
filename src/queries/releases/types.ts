@@ -4,9 +4,7 @@ import { CreateDistributionVars } from '../distribution/types';
 import { ClientRelease } from 'types/common';
 import { FilterOptions } from 'queries/types';
 
-export interface ReleaseFilterOptions extends FilterOptions<ClientRelease> {
-  workspace: string;
-}
+export interface ReleaseFilterOptions extends FilterOptions<ClientRelease> {}
 
 export interface SingleReleaseVars extends Pick<ClientRelease, 'name' | 'id' | 'type'> {
   artist: string;

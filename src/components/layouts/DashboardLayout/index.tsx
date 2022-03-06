@@ -14,6 +14,7 @@ import { appLinks } from '../../../appLinks';
 
 import Nav from 'components/pageItems/Nav';
 import useAppColors from 'hooks/useAppColors';
+import OnboardingButton from 'components/onboarding/OnboardingButton';
 
 const DashboardLayout: React.FC = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,6 +24,7 @@ const DashboardLayout: React.FC = ({ children }) => {
       <Box display={{ base: 'none', md: 'flex' }}>
         <Nav links={appLinks} />
       </Box>
+      <OnboardingButton />
       <Box display={{ base: 'block', md: 'none' }}>
         <IconButton
           aria-label="open menu"
