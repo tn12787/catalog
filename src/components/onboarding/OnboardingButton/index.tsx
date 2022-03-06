@@ -7,7 +7,7 @@ import useOnboardingItems from 'hooks/onboarding/useOnboardingItems';
 
 const OnboardingButton = () => {
   const { incomplete } = useOnboardingItems();
-  return !incomplete ? null : ( // TODO: remove this false
+  return !incomplete ? null : (
     <OnboardingPopover>
       <Button position="fixed" colorScheme={'purple'} bottom={'50px'} right={'50px'}>
         Getting Started
