@@ -18,7 +18,7 @@ class CreateBatchContactHandler {
   @Post()
   async bulkUpdate(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('workspaceId') workspaceId: string,
+    @PathParam('wsId') workspaceId: string,
     @Body() body: BatchCreateContactDto
   ) {
     if (!body.data) throw new BadRequestException('No data provided');

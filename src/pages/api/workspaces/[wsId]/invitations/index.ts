@@ -29,7 +29,7 @@ type InvitationEmailData = {
 class InviteHandler {
   @Post()
   async createInvite(
-    @PathParam('workspaceId') id: string,
+    @PathParam('wsId') id: string,
     @Request() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateInvitationDto
   ) {

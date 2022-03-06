@@ -7,57 +7,58 @@ import {
   Delete,
 } from '@storyofams/next-api-decorators';
 
-import { UpdateContactLabelDto } from 'backend/models/contacts/labels/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
+import { UpdateContactDto } from 'backend/models/contacts/update';
 
 @requiresAuth()
 class SpecificNotificationHandler {
   @Patch()
   async updateSingleContact(
     @Req() req: AuthDecoratedRequest,
-    @Body() body: UpdateContactLabelDto,
-    @PathParam('workspaceId') workspaceId: string,
-    @PathParam('labelId') labelId: string
+    @Body() body: UpdateContactDto,
+    @PathParam('wsId') workspaceId: string,
+    @PathParam('contactId') contactId: string
   ) {
-    if (!labelId) {
+    if (!contactId) {
       throw new NotFoundException();
     }
 
     await checkRequiredPermissions(req, ['UPDATE_CONTACTS'], workspaceId);
 
-    const updatedContactLabel = await prisma.contactLabel.update({
+    const updatedContact = await prisma.contact.update({
       where: {
-        id: labelId,
+        id: contactId,
       },
       data: {
         ...body,
+        labels: { set: body.labels.map(({ id }) => ({ id })) },
       },
     });
-    return updatedContactLabel;
+    return updatedContact;
   }
 
   @Delete()
   async deleteSingleContact(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('workspaceId') workspaceId: string,
-    @PathParam('labelId') labelId: string
+    @PathParam('wsId') workspaceId: string,
+    @PathParam('contactId') contactId: string
   ) {
-    if (!labelId) {
+    if (!contactId) {
       throw new NotFoundException();
     }
 
     await checkRequiredPermissions(req, ['DELETE_CONTACTS'], workspaceId);
 
-    const deletedContactLabel = await prisma.contactLabel.delete({
+    const deletedContact = await prisma.contact.delete({
       where: {
-        id: labelId,
+        id: contactId,
       },
     });
-    return deletedContactLabel;
+    return deletedContact;
   }
 }
 

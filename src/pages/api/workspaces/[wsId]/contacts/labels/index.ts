@@ -21,7 +21,7 @@ class ContactLabelHandler {
   @Get()
   async list(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('workspaceId') workspace: string,
+    @PathParam('wsId') workspace: string,
     @Query('search') search: string
   ) {
     await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspace);
@@ -49,7 +49,7 @@ class ContactLabelHandler {
   @HttpCode(201)
   async createContactLabel(
     @Body(ValidationPipe) body: CreateContactLabelDto,
-    @PathParam('workspaceId') workspaceId: string,
+    @PathParam('wsId') workspaceId: string,
     @Req() req: AuthDecoratedRequest
   ) {
     await checkRequiredPermissions(req, ['CREATE_CONTACTS'], workspaceId);

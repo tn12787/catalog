@@ -18,7 +18,7 @@ class DeleteBatchContactHandler {
   @Post()
   async bulkUpdate(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('workspaceId') workspaceId: string,
+    @PathParam('wsId') workspaceId: string,
     @Body() body: BatchDeleteContactDto
   ) {
     const ids = body.ids;
