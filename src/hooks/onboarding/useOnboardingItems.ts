@@ -38,8 +38,8 @@ const useOnboardingItems = (): UseOnboardingItemsReturn => {
   }, [artists, workspace, releases, contacts]);
 
   const anyOnboardingLeft = useMemo(() => {
-    return onboardingItems.some((item) => !item.isComplete);
-  }, [onboardingItems]);
+    return isAnythingLoading ? false : onboardingItems.some((item) => !item.isComplete);
+  }, [onboardingItems, isAnythingLoading]);
 
   return {
     items: onboardingItems,
