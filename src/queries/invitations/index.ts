@@ -1,5 +1,10 @@
-import { User, WorkspaceMember, Invite } from '@prisma/client';
+import { User, WorkspaceMember, Invite, Workspace } from '@prisma/client';
 import axios from 'axios';
+
+export const fetchUserInvitations = async (): Promise<(Invite & { workspace: Workspace })[]> => {
+  const { data: response } = await axios.get(`/api/invitations`);
+  return response;
+};
 
 export const sendUserInvitation = async ({
   id,

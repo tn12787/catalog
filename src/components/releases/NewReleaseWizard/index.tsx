@@ -62,7 +62,7 @@ const NewReleaseWizard = () => {
     createSingleRelease,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['releases', currentWorkspace]);
+        queryClient.invalidateQueries(['releases']);
       },
     }
   );

@@ -8,10 +8,8 @@ import {
   Link,
   Stack,
 } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
 import { BiChevronRight } from 'react-icons/bi';
 
-import { fetchArtists } from 'queries/artists';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import ArtistList from 'components/artists/ArtistList';
@@ -19,13 +17,12 @@ import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import PageHead from 'components/pageItems/PageHead';
+import useArtists from 'hooks/data/artists/useArtists';
 
 const Artists = () => {
   const { bgPrimary } = useAppColors();
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
-  const { data: artists, isLoading } = useQuery(['artists', currentWorkspace], () =>
-    fetchArtists(currentWorkspace)
-  );
+  const { data: artists, isLoading } = useArtists();
 
   const canCreateArtists = hasRequiredPermissions(
     ['CREATE_ARTISTS'],

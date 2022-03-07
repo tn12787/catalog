@@ -2,13 +2,12 @@ import { Stack, Button, Image } from '@chakra-ui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
-import { useMutation, useQueryClient } from 'react-query';
 import { Workspace } from '@prisma/client';
 
 import FormField from 'components/forms/FormContent/FormField';
 import DataList from 'components/data/DataList';
-import { updateSingleWorkspace } from 'queries/workspaces';
 import ImageSelect from 'components/forms/QuickForm/ImageField/ImageSelect';
+import useWorkspaceMutations from 'hooks/data/workspaces/useWorkspaceMutations';
 
 interface Props {
   onSubmit: () => void;
@@ -77,14 +76,9 @@ const EditWorkspaceInfoForm = ({ onSubmit, onCancel, workspaceData: workspaceDat
     },
   ];
 
-  const queryClient = useQueryClient();
-
-  const { mutateAsync: updateWorkspace, isLoading } = useMutation(updateSingleWorkspace, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['workspace', workspaceData?.id]);
-      queryClient.invalidateQueries(['me']);
-    },
-  });
+  const {
+    updateSingleWorkspace: { mutateAsync: updateWorkspace, isLoading },
+  } = useWorkspaceMutations();
 
   const onSave = async (data: EditWorkspaceInfoFormData) => {
     try {

@@ -9,12 +9,10 @@ const useUser = () => {
     signOut({ callbackUrl: '/login' });
   };
 
-  const { data: response, isLoading } = useQuery('me', fetchMe, {
+  return useQuery('me', fetchMe, {
     retry: false,
     onError: destroySession,
   });
-
-  return [response, isLoading] as const;
 };
 
 export default useUser;

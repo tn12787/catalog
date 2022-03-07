@@ -1,6 +1,11 @@
-import { IsNotEmpty } from 'class-validator';
+import { UserOnboardingSegment } from '@prisma/client';
+import { IsEnum, IsOptional } from 'class-validator';
 
 export class UpdateUserDto {
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
+
+  @IsOptional()
+  @IsEnum(UserOnboardingSegment)
+  segment: UserOnboardingSegment;
 }

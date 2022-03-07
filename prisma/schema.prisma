@@ -44,6 +44,16 @@ enum TaskEventType {
   UPDATE_DATE
 }
 
+enum UserOnboardingSegment {
+  INDIVIDUAL_ARTIST
+  ARTIST_MANAGER
+  LABEL_MANAGER
+  LABEL_EMPLOYEE
+  MARKETING_COORDINATOR
+  PUBLICIST
+  SOCIAL_MEDIA_MANAGER
+}
+
 model Workspace {
   id                   String            @id @default(cuid())
   name                 String
@@ -57,6 +67,9 @@ model Workspace {
   invites              Invite[]
   stripeCustomerId     String            @unique
   stripeSubscriptionId String?           @unique
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 model WorkspaceMember {
@@ -77,14 +90,15 @@ model WorkspaceMember {
 }
 
 model User {
-  id            String            @id @default(cuid())
+  id            String                 @id @default(cuid())
   name          String?
-  email         String?           @unique
-  emailVerified DateTime?
+  email         String?                @unique
+  emailVerified Boolean?
   image         String?
   accounts      Account[]
   sessions      Session[]
   workspaces    WorkspaceMember[]
+  segment       UserOnboardingSegment?
 }
 
 model Invite {

@@ -1,15 +1,9 @@
-import { Box, Circle, useColorModeValue, Text, HStack, Flex } from '@chakra-ui/react';
-import * as React from 'react';
+import { useColorModeValue, Box, Text, Circle, Flex, HStack } from '@chakra-ui/react';
+import React from 'react';
 
-interface StepProps {
-  label?: string;
-  isLastChild?: boolean;
-  currentStep: number;
-  index: number;
-  onClick?: () => void;
-}
+import { StepProps } from './types';
 
-export const Step = ({ currentStep, label, index, isLastChild }: StepProps) => {
+const NumberedStep = ({ currentStep, index, isLastChild, label }: Omit<StepProps, 'variant'>) => {
   const inCompletedColor = useColorModeValue('gray.600', 'gray.300');
   const defaultColor = useColorModeValue('white', 'gray.900');
   const completedBg = useColorModeValue('purple.500', 'purple.300');
@@ -19,9 +13,8 @@ export const Step = ({ currentStep, label, index, isLastChild }: StepProps) => {
   const isCurrent = currentStep === index;
 
   const isCurrentOrCompleted = isCompleted || isCurrent;
-
   return (
-    <HStack flex={'1 1 auto'} flexGrow={isLastChild ? 0 : 1}>
+    <HStack role={'progressbar'} flex={'1 1 auto'} flexGrow={isLastChild ? 0 : 1}>
       <HStack flexBasis="auto" flexGrow={0} as="li">
         <Circle
           aria-hidden
@@ -54,3 +47,5 @@ export const Step = ({ currentStep, label, index, isLastChild }: StepProps) => {
     </HStack>
   );
 };
+
+export default NumberedStep;
