@@ -11,7 +11,7 @@ export const fetchWorkspace = async (id: string) => {
 };
 
 export const updateSingleWorkspace = async ({ id, ...data }: UpdateWorkspaceVars) => {
-  if (!id) throw new Error('No workspaces id');
+  if (!id) throw new Error('No workspace id provided to update');
 
   const { data: response } = await axios.put(`/api/workspaces/${id}`, {
     ...data,

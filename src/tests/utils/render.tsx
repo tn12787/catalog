@@ -7,6 +7,7 @@ import { SessionProvider } from 'next-auth/react';
 
 import ChakraSSRProvider from 'components/ChakraSSRProvider';
 import { shouldRetryQuery } from 'utils/queries';
+import { mockSession } from '__mocks__/data/auth';
 
 export const renderWithProviders = (content: React.ReactNode) => {
   const queryClient = new QueryClient({
@@ -18,7 +19,7 @@ export const renderWithProviders = (content: React.ReactNode) => {
   });
 
   return render(
-    <SessionProvider>
+    <SessionProvider session={mockSession({})}>
       <DndProvider backend={HTML5Backend}>
         <QueryClientProvider client={queryClient}>
           <ChakraSSRProvider>{content}</ChakraSSRProvider>

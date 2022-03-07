@@ -1,4 +1,4 @@
-import { fireEvent, getByLabelText, getByText, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 
 import WelcomePage from 'pages/welcome';
 import { renderWithProviders } from 'tests/utils/render';
@@ -12,30 +12,59 @@ jest.mock('next/router', () => ({ useRouter: jest.fn(() => ({ push: { id: jest.f
 
 describe('Welcome Page', () => {
   it('Shows a the welcome page', () => {
-    const { getByText, getAllByRole } = render();
+    const { getByText } = render();
     expect(getByText(/Welcome/)).toBeVisible();
-    expect(getAllByRole('progressbar')).toHaveLength(2);
   });
 
-  it('If we were invited, there should be an invite page', async () => {
+  it('Should let us walk through the onboarding process', async () => {
     server.use(testGetInvitationHandler([testInvitation({})]));
+    const { getByLabelText, getByText, getByPlaceholderText, getAllByRole } = render();
 
-    const { getAllByRole } = render();
+    // should be 3 bars, including the invite page
     await waitFor(() => expect(getAllByRole('progressbar')).toHaveLength(3));
-  });
 
-  it('If should let us walk through the onboarding process', async () => {
-    server.use(testGetInvitationHandler([testInvitation({})]));
-    const { getByLabelText, getByText } = render();
+    const NextButtonRegex = /^Next$/;
 
     // can't move past first step without selecting a segment
-    expect(getByText(/Next/)).toBeDisabled();
+    expect(getByText(NextButtonRegex)).toBeDisabled();
 
     // select a segment and move forwards
     fireEvent.click(getByLabelText(/manage several artists/));
-    expect(getByText(/Next/)).not.toBeDisabled();
-    fireEvent.click(getByText(/Next/));
+    // wait for user to have loaded
+    await waitFor(() => expect(getByText(NextButtonRegex)).not.toBeDisabled());
+    fireEvent.click(getByText(NextButtonRegex));
 
-    await waitFor(() => expect(getByText(/very own workspace/)).toBeVisible());
+    await waitFor(() => expect(getByText(/Your very own workspace/)).toBeVisible());
+
+    expect(getByText(NextButtonRegex)).toBeDisabled();
+    fireEvent.input(getByPlaceholderText(/Your new workspace name/), { target: { value: 'test' } });
+    await waitFor(() => expect(getByText(NextButtonRegex)).not.toBeDisabled());
+
+    fireEvent.click(getByText(NextButtonRegex));
+  });
+
+  it('Without invites, there should only have 2 steps walk through', async () => {
+    server.use(testGetInvitationHandler([]));
+    const { getByLabelText, getByText, queryByText, getAllByRole } = render();
+
+    // should be only 2 bars, as we don't have any invites
+    await waitFor(() => expect(getAllByRole('progressbar')).toHaveLength(2));
+
+    const NextButtonRegex = /^Next$/;
+    const LetsGoRegex = /^Let's go!$/;
+
+    // can't move past first step without selecting a segment
+    expect(getByText(NextButtonRegex)).toBeDisabled();
+
+    // select a segment and move forwards
+    fireEvent.click(getByLabelText(/manage several artists/));
+    // wait for user to have loaded
+    await waitFor(() => expect(getByText(NextButtonRegex)).not.toBeDisabled());
+    fireEvent.click(getByText(NextButtonRegex));
+
+    await waitFor(() => expect(getByText(/Your very own workspace/)).toBeVisible());
+
+    expect(queryByText(NextButtonRegex)).toBeNull();
+    expect(getByText(LetsGoRegex)).not.toBeNull();
   });
 });

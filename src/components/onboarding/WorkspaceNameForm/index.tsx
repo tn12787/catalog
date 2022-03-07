@@ -30,13 +30,15 @@ const WorkspaceNameForm = ({ onSubmit, isLastStep }: Props) => {
     }
   };
 
-  const { register, handleSubmit, reset } = useForm<Pick<Workspace, 'name'>>({
+  const { register, handleSubmit, reset, watch } = useForm<Pick<Workspace, 'name'>>({
     defaultValues: { name: workspace?.name },
   });
 
   useEffect(() => {
-    reset({ name: workspace?.name });
+    if (workspace) reset({ name: workspace?.name });
   }, [workspace, reset]);
+
+  const inputName = watch('name');
 
   return (
     <Stack spacing={6} as="form" onSubmit={handleSubmit(onSave)}>
@@ -59,6 +61,7 @@ const WorkspaceNameForm = ({ onSubmit, isLastStep }: Props) => {
         alignSelf={'flex-start'}
         rightIcon={<FaArrowRight />}
         colorScheme={'purple'}
+        isDisabled={!inputName || !workspace}
       >
         {isLastStep ? "Let's go!" : 'Next'}
       </Button>

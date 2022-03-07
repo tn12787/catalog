@@ -107,7 +107,7 @@ const UserSegmentForm = ({ onSubmit, isLastStep }: Props) => {
       </FormControl>
       <Button
         type="submit"
-        isDisabled={!radioValue || (radioValue === 'professional' && !selectedSegment)}
+        isDisabled={!radioValue || (radioValue === 'professional' && !selectedSegment) || !user}
         isLoading={updateSingleWorkspace.isLoading}
         variant="solid"
         alignSelf={'flex-start'}

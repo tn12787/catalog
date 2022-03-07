@@ -4,7 +4,6 @@ import useExtendedSession from 'hooks/useExtendedSession';
 
 const useCurrentWorkspace = () => {
   const { currentWorkspace } = useExtendedSession();
-
   return useWorkspace(currentWorkspace);
 };
 
