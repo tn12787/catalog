@@ -54,7 +54,7 @@ const OnboardingPopover: React.FC = ({ children }) => {
                     Getting Started 🚀
                   </Text>
                   <Text maxW="300px" fontSize="sm">
-                    Complete the steps below to get familiar with Launchday and get started!
+                    Complete the steps below to get this workspace up & running.
                   </Text>
                 </Stack>
                 <Stack>

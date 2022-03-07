@@ -1,64 +1,41 @@
 import React from 'react';
-import {
-  Button,
-  Flex,
-  Heading,
-  Text,
-  Stack,
-  Input,
-  Box,
-  FormControl,
-  FormLabel,
-} from '@chakra-ui/react';
-import { FaArrowRight } from 'react-icons/fa';
+import { Flex, Stack, Box } from '@chakra-ui/react';
 import Image from 'next/image';
-import { useForm } from 'react-hook-form';
-import { Workspace } from '@prisma/client';
+import { Invite } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import logo from 'images/logo.svg';
 import onboarding from 'images/onboarding.svg';
 import WizardSteps from 'components/forms/WizardSteps';
 import { useSteps } from 'hooks/useSteps';
 import { OnboardingWizardStep } from 'components/onboarding/types';
-import useWorkspaceMutations from 'hooks/data/workspaces/useWorkspaceMutations';
+import WorkspaceNameForm from 'components/onboarding/WorkspaceNameForm';
+import InvitationForm from 'components/onboarding/InvitationForm';
+import useInvitations from 'hooks/data/invitations/useInvitations';
 
-const buildSteps = (): OnboardingWizardStep[] => [
-  {
-    name: 'Welcome',
-    key: 'workspace',
-    content: () => <></>,
-  },
-  {
-    name: 'Invitation',
-    isSkippable: false,
-    canGoBack: true,
-    key: 'invitation',
-    content: () => <></>,
-  },
-];
+const buildSteps = (invites: Invite[]): OnboardingWizardStep[] =>
+  [
+    {
+      name: 'Welcome',
+      key: 'workspace',
+      content: WorkspaceNameForm,
+    },
+    invites.length > 0 && {
+      name: 'Invitation',
+      key: 'invitation',
+      content: InvitationForm,
+    },
+  ].filter(Boolean) as OnboardingWizardStep[];
 
 const WelcomePage = () => {
   const { bgPrimary } = useAppColors();
-  const { workspace } = useCurrentWorkspace();
-  const steps = buildSteps();
-  const { index, next } = useSteps<OnboardingWizardStep>(steps);
+  const { data: invitations } = useInvitations();
+  const steps = buildSteps(invitations ?? []);
+  const { index, next, currentStep } = useSteps<OnboardingWizardStep>(steps);
 
-  const { updateSingleWorkspace } = useWorkspaceMutations();
-
-  const onSave = async (data: Pick<Workspace, 'name'>) => {
-    try {
-      await updateSingleWorkspace.mutateAsync({ id: workspace?.id as string, ...data });
-      next();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const { register, handleSubmit } = useForm<Pick<Workspace, 'name'>>();
+  const CurrentStepComponent = currentStep.content;
 
   return (
     <Flex bg={bgPrimary} direction="column" align="center" justify="center" flex={1} minH="100vh">
@@ -80,33 +57,8 @@ const WelcomePage = () => {
           <Box w={20}>
             <Image src={logo} alt="Brand logo"></Image>
           </Box>
-
           <WizardSteps variant="bars" steps={steps} currentStep={index}></WizardSteps>
-          <Stack spacing={6} as="form" onSubmit={handleSubmit(onSave)}>
-            <Heading fontWeight="semibold" fontSize="5xl">
-              Welcome to Launchday!
-            </Heading>
-            <Text>{"First, let's name your new workspace."}</Text>
-            <FormControl>
-              <FormLabel htmlFor="name">Workspace name</FormLabel>
-              <Input
-                placeholder={'Your new workspace name'}
-                maxW="400px"
-                defaultValue={workspace?.name}
-                {...register('name', { required: 'Please enter a name for your workspace' })}
-              ></Input>
-            </FormControl>
-            <Button
-              type="submit"
-              isLoading={updateSingleWorkspace.isLoading}
-              variant="solid"
-              alignSelf={'flex-start'}
-              rightIcon={<FaArrowRight />}
-              colorScheme={'purple'}
-            >
-              Next
-            </Button>
-          </Stack>
+          <CurrentStepComponent onSubmit={next} isLastStep={index === steps.length - 1} />
         </Stack>
         <Stack
           maxHeight={{ base: '100px', lg: '100vh' }}

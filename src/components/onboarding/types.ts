@@ -1,9 +1,14 @@
+import { FormBodyProps } from 'types/forms';
+
+export interface OnboardingWizardComponentProps<T> extends FormBodyProps<T> {
+  isLastStep: boolean;
+}
+
 export interface OnboardingWizardStep {
   name: string;
-  isSkippable?: boolean;
-  canGoBack?: boolean;
   key: OnboardingWizardKey;
-  content: React.FC<any>;
+  content: React.FC<OnboardingWizardComponentProps<any>>;
+  hidden?: boolean;
 }
 
 export type OnboardingWizardKey = 'workspace' | 'invitation';
