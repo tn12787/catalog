@@ -120,9 +120,11 @@ export enum EventType {
   RELEASE = 'release',
 }
 
+export type RoleWithPermission = Role & { permissions: Permission[] };
+
 export type EnrichedWorkspaceMember = WorkspaceMember & {
   workspace: Workspace;
-  roles: Role & { permissions: Permission[] }[];
+  roles: RoleWithPermission[];
 };
 
 export type ExtendedSession = Session & { token: ExtendedToken };

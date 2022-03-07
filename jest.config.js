@@ -32,7 +32,13 @@ const customJestConfig = {
     '!**/node_modules/**',
     '!src/tests/**',
     '!src/**/types.ts',
+    '!src/**/*.d.ts',
   ],
+  coverageThreshold: {
+    global: {
+      statements: 10,
+    },
+  },
 };
 
 module.exports = createJestConfig(customJestConfig);

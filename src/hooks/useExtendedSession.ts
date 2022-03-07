@@ -19,7 +19,6 @@ const useWorkspacePreference = create<UseWorkspacePreferenceState>((set) => ({
 const useExtendedSession = () => {
   const { data: session, status } = useSession();
   const token = session?.token as ExtendedToken | undefined;
-
   const { currentWorkspace: currentWorkspaceMembership, setCurrentWorkspace } =
     useWorkspacePreference(
       useCallback(

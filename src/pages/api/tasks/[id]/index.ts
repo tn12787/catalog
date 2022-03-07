@@ -12,10 +12,7 @@ import {
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import {
-  checkRequiredPermissions,
-  getResourceWorkspaceMembership,
-} from 'backend/apiUtils/workspaces';
+import { getResourceWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';

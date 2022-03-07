@@ -14,7 +14,7 @@ const NotFound = () => {
     <Flex bg={bgPrimary} direction="column" align="center" justify="center" flex={1} minH="100vh">
       <PageHead title="Home" />
       <Stack w={'80%'} maxW="350px" spacing={6} alignItems="center">
-        <Image src={notFound} alt="No artists yet" />
+        <Image src={notFound} alt="Not Found" />
         <Heading fontWeight="semibold" fontSize="8xl">
           404
         </Heading>

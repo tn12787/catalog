@@ -55,7 +55,10 @@ const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
 
   const onSave = async (data: EditUserFormData) => {
     try {
-      await updateMe({ id: userData?.id as string, ...data });
+      await updateMe({
+        id: userData?.id as string,
+        ...data,
+      });
 
       onSubmit();
     } catch (error) {

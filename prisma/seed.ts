@@ -41,6 +41,7 @@ async function seed() {
         { name: 'VIEW_RELEASES' },
         { name: 'VIEW_ARTISTS' },
         { name: 'VIEW_TEAM' },
+        { name: 'VIEW_CONTACTS' },
         { name: 'UPDATE_RELEASES' },
         { name: 'UPDATE_ARTISTS' },
       ],

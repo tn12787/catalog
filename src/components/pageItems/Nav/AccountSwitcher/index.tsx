@@ -38,7 +38,7 @@ export const AccountSwitcher = ({ onChange }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { token, currentWorkspace, onChangeWorkspace, status } = useExtendedSession();
   const router = useRouter();
-  const [userData] = useUser();
+  const { data: userData } = useUser();
   const { bodySub, border } = useAppColors();
 
   const sessionLoading = status === 'loading';
