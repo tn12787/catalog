@@ -8,7 +8,7 @@ import { PaginatedQueryResult } from 'queries/types';
 import { ReleaseFilterOptions } from 'queries/releases/types';
 
 const useReleases = (
-  queryArgs: ReleaseFilterOptions,
+  queryArgs: Omit<ReleaseFilterOptions, 'workspace'>,
   options?: UseQueryOptions<PaginatedQueryResult<ClientRelease>, AxiosError>
 ) => {
   const { currentWorkspace } = useExtendedSession();
