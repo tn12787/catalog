@@ -9,6 +9,7 @@ import {
   Input,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import GoogleButton from 'react-google-button';
@@ -31,14 +32,20 @@ interface Props {
 const LoginPage = ({ csrfToken }: Props) => {
   const router = useRouter();
   const { bodySub } = useAppColors();
-
+  const toast = useToast();
   const { status } = useSession();
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.replace('/overview', undefined, { shallow: false });
+      toast({
+        position: 'top',
+        duration: 3000,
+        status: 'success',
+        title: 'Authenticated successfully',
+      });
+      router.push('/overview', undefined, { shallow: false });
     }
-  }, [status, router]);
+  }, [status, toast, router]);
 
   const signInWithGoogle = async () => {
     await signIn('google', { callbackUrl: router.query.callbackUrl as string });
