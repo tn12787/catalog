@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Divider,
   Flex,
@@ -12,12 +13,14 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import GoogleButton from 'react-google-button';
 import { getCsrfToken, getSession, signIn, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
 
+import logo from 'images/logo.svg';
 import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
 
@@ -69,40 +72,47 @@ const LoginPage = ({ csrfToken }: Props) => {
     <Flex direction="column" align="center" justify="center" flex={1} minH="100vh">
       <PageHead title="Sign in" />
       <Stack w={'80%'} maxW="400px" spacing={'40px'} alignItems="center">
+        <Box w={20}>
+          <Image src={logo} alt="Brand logo"></Image>
+        </Box>
         <Heading fontWeight="semibold" fontSize="3xl">
           Log in to Launchday
         </Heading>
-        <GoogleButton onClick={signInWithGoogle} />
-        <Stack
-          w="100%"
-          direction={'row'}
-          justifyContent="center"
-          alignItems={{ base: 'center', md: 'center' }}
-        >
-          <Divider orientation="horizontal"></Divider>
-          <Text fontSize="sm" color={bodySub}>
-            OR
-          </Text>
-          <Divider></Divider>
-        </Stack>
-        <Stack spacing={6} w="100%" as={'form'} onSubmit={handleSubmit(signInWithEmail)}>
-          <Text fontWeight={'semibold'} fontSize="lg">
-            Sign in with a magic link
-          </Text>
-          <FormControl name="email" isInvalid={!!errors.email}>
-            <FormLabel fontSize={'sm'} htmlFor="email">
-              Email address
-            </FormLabel>
-            <Input
-              type="email"
-              {...register('email', { required: 'Please enter your email address.' })}
-              placeholder={'name@example.com'}
-            ></Input>
-            <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
-          </FormControl>
-          <Button type="submit" variant="outline">
-            Sign in
+        <Stack w="100%">
+          <Button leftIcon={<FcGoogle></FcGoogle>} onClick={signInWithGoogle} variant="outline">
+            Sign in with Google
           </Button>
+          <Stack
+            w="100%"
+            direction={'row'}
+            justifyContent="center"
+            alignItems={{ base: 'center', md: 'center' }}
+          >
+            <Divider orientation="horizontal"></Divider>
+            <Text fontSize="sm" color={bodySub}>
+              OR
+            </Text>
+            <Divider></Divider>
+          </Stack>
+          <Stack spacing={4} w="100%" as={'form'} onSubmit={handleSubmit(signInWithEmail)}>
+            <Text fontWeight={'semibold'} fontSize="lg">
+              Sign in with a magic link
+            </Text>
+            <FormControl name="email" isInvalid={!!errors.email}>
+              <FormLabel fontSize={'sm'} htmlFor="email">
+                Email address
+              </FormLabel>
+              <Input
+                type="email"
+                {...register('email', { required: 'Please enter your email address.' })}
+                placeholder={'name@example.com'}
+              ></Input>
+              <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+            </FormControl>
+            <Button type="submit" variant="outline">
+              Sign in
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
     </Flex>

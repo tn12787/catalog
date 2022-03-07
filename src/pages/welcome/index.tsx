@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Stack, Box, Spinner } from '@chakra-ui/react';
 import Image from 'next/image';
-import { Invite, User } from '@prisma/client';
+import { Invite } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
