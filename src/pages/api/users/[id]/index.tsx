@@ -13,6 +13,7 @@ class UserHandler {
       where: { id },
       data: {
         name: body.name,
+        segment: body.segment,
       },
     });
 

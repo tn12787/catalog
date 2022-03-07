@@ -52,8 +52,6 @@ enum UserOnboardingSegment {
   MARKETING_COORDINATOR
   PUBLICIST
   SOCIAL_MEDIA_MANAGER
-  UPDATE_STATUS
-  UPDATE_DATE
 }
 
 model Workspace {
