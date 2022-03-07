@@ -25,6 +25,10 @@ const useOnboardingItems = (): UseOnboardingItemsReturn => {
     isCurrentWorkspaceLoading,
     areReleasesLoading,
     areContactsLoading,
+    !artists,
+    !workspace,
+    !releases,
+    !contacts,
   ].some(Boolean);
 
   const onboardingItems = useMemo(() => {

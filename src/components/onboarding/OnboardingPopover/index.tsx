@@ -29,7 +29,7 @@ const OnboardingPopover: React.FC = ({ children }) => {
     return acc + (item.isComplete ? 1 : 0);
   }, 0);
 
-  return (
+  return isLoading ? null : (
     <Popover
       placement={popoverPlacement as PlacementWithLogical}
       defaultIsOpen={true}

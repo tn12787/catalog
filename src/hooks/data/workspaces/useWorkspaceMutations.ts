@@ -17,7 +17,7 @@ const useWorkspaceMutations = () => {
         status: 'success',
         title: message,
       });
-      queryClient.invalidateQueries(['contacts', currentWorkspace]);
+      queryClient.invalidateQueries(['workspace', currentWorkspace]);
     },
     [queryClient, currentWorkspace, toast]
   );
