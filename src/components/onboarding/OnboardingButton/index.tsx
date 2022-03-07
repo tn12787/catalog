@@ -5,9 +5,11 @@ import OnboardingPopover from '../OnboardingPopover';
 
 import useOnboardingItems from 'hooks/onboarding/useOnboardingItems';
 import UnreadCountBadge from 'components/notifications/UnreadCountBadge';
+import useAppColors from 'hooks/useAppColors';
 
 const OnboardingButton = () => {
   const { incomplete, items } = useOnboardingItems();
+  const { primary } = useAppColors();
   return !incomplete ? null : (
     <OnboardingPopover>
       <Box position="fixed" bottom={'50px'} right={'50px'}>
@@ -19,14 +21,15 @@ const OnboardingButton = () => {
           icon={<Text>🚀</Text>}
           border="1px solid"
           boxShadow={'xl'}
-        ></IconButton>
+          borderColor={primary}
+        />
         <UnreadCountBadge
           position="absolute"
           top={0}
           right={0}
           colorScheme={'purple'}
           count={items.filter((item) => !item.isComplete).length}
-        ></UnreadCountBadge>
+        />
       </Box>
     </OnboardingPopover>
   );
