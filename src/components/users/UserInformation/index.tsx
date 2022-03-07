@@ -3,6 +3,7 @@ import { User } from '@prisma/client';
 import { Heading, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { FiEdit } from 'react-icons/fi';
+import { Avatar } from '@chakra-ui/react';
 
 import EditUserInfoForm from './EditUserInfoForm';
 
@@ -21,6 +22,18 @@ const UserInformation = ({ user }: Props) => {
     {
       label: 'Name',
       content: <Text fontWeight="semibold">{user?.name}</Text>,
+    },
+    {
+      label: 'Profile image',
+      content: (
+        <Avatar
+          size="lg"
+          borderRadius="md"
+          alt="user image"
+          src={user?.image ?? ''}
+          fontWeight="semibold"
+        ></Avatar>
+      ),
     },
   ];
 
