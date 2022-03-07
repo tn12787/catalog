@@ -1,5 +1,5 @@
 import { Stack, Heading, FormControl, FormLabel, Input, Button, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { Workspace } from '@prisma/client';
 import { useForm } from 'react-hook-form';
@@ -30,19 +30,25 @@ const WorkspaceNameForm = ({ onSubmit, isLastStep }: Props) => {
     }
   };
 
-  const { register, handleSubmit } = useForm<Pick<Workspace, 'name'>>();
+  const { register, handleSubmit, reset } = useForm<Pick<Workspace, 'name'>>({
+    defaultValues: { name: workspace?.name },
+  });
+
+  useEffect(() => {
+    reset({ name: workspace?.name });
+  }, [workspace, reset]);
+
   return (
     <Stack spacing={6} as="form" onSubmit={handleSubmit(onSave)}>
-      <Heading fontWeight="semibold" fontSize="5xl">
-        Welcome to Launchday!
+      <Heading fontWeight="semibold" fontSize="4xl">
+        Your very own workspace
       </Heading>
-      <Text>{'Enter a name your new workspace.'}</Text>
+      <Text>{"We've created a workspace for you. What would you like to call it?"}</Text>
       <FormControl>
         <FormLabel htmlFor="name">Workspace name</FormLabel>
         <Input
           placeholder={'Your new workspace name'}
           maxW="400px"
-          defaultValue={workspace?.name}
           {...register('name', { required: 'Please enter a name for your workspace' })}
         ></Input>
       </FormControl>

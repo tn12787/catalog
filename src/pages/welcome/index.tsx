@@ -14,9 +14,15 @@ import { OnboardingWizardStep } from 'components/onboarding/types';
 import WorkspaceNameForm from 'components/onboarding/WorkspaceNameForm';
 import InvitationForm from 'components/onboarding/InvitationForm';
 import useInvitations from 'hooks/data/invitations/useInvitations';
+import UserSegmentForm from 'components/onboarding/UserSegmentForm';
 
 const buildSteps = (invites: Invite[]): OnboardingWizardStep[] =>
   [
+    {
+      name: 'Segment',
+      key: 'segment',
+      content: UserSegmentForm,
+    },
     {
       name: 'Welcome',
       key: 'workspace',

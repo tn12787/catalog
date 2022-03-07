@@ -11,4 +11,4 @@ export interface OnboardingWizardStep {
   hidden?: boolean;
 }
 
-export type OnboardingWizardKey = 'workspace' | 'invitation';
+export type OnboardingWizardKey = 'workspace' | 'workspace' | 'invitation';
