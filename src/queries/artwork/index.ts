@@ -1,11 +1,11 @@
 import axios from 'axios';
 import cuid from 'cuid';
 import { ReleaseTaskType } from '@prisma/client';
+import firebase from 'firebase';
 
 import { CreateArtworkVars, UpdateArtworkVars } from './types';
 
 import { ClientArtwork } from 'types/common';
-import firebase from 'firebase-details';
 
 export const updateSingleArtwork = async ({
   taskId,

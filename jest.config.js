@@ -16,6 +16,7 @@ const customJestConfig = {
     '^common/(.*)': '<rootDir>/src/common/$1',
     '^components/(.*)': '<rootDir>/src/components/$1',
     '^events/(.*)': '<rootDir>/src/events/$1',
+    '^firebaseDetails/(.*)': '<rootDir>/src/firebaseDetails/$1',
     '^images/(.*)': '<rootDir>/src/images/$1',
     '^hooks/(.*)': '<rootDir>/src/hooks/$1',
     '^pages/(.*)': '<rootDir>/src/pages/$1',
