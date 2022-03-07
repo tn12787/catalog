@@ -22,6 +22,7 @@ import { ClientRelease } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 interface Props {
   releaseData: ClientRelease;
@@ -35,6 +36,7 @@ const HeaderSection = ({ releaseData }: Props) => {
   const { bgPrimary } = useAppColors();
 
   const { workspaceMemberships, currentWorkspace } = useExtendedSession();
+  const { workspace } = useCurrentWorkspace();
 
   const canDeleteRelease = hasRequiredPermissions(
     ['DELETE_RELEASES'],
@@ -70,9 +72,7 @@ const HeaderSection = ({ releaseData }: Props) => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/overview`}>
-              <BreadcrumbLink>
-                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
-              </BreadcrumbLink>
+              <BreadcrumbLink>{workspace?.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 

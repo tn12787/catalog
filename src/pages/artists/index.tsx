@@ -6,6 +6,7 @@ import {
   Button,
   Heading,
   Link,
+  Skeleton,
   Stack,
 } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
@@ -18,11 +19,13 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import PageHead from 'components/pageItems/PageHead';
 import useArtists from 'hooks/data/artists/useArtists';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const Artists = () => {
   const { bgPrimary } = useAppColors();
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const { data: artists, isLoading } = useArtists();
+  const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const canCreateArtists = hasRequiredPermissions(
     ['CREATE_ARTISTS'],
@@ -35,11 +38,11 @@ const Artists = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/workspaces/${currentWorkspace ?? 'noworkspace'}/overview`}>
-              <BreadcrumbLink>
-                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
-              </BreadcrumbLink>
-            </Link>
+            <Skeleton isLoaded={!isWorkspaceLoading}>
+              <Link passHref href={`/overview`}>
+                <BreadcrumbLink>{workspace?.name ?? 'loading'}</BreadcrumbLink>
+              </Link>
+            </Skeleton>
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>

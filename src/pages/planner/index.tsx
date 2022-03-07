@@ -51,12 +51,8 @@ const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
 const Planner = () => {
   const { bgPrimary, primary } = useAppColors();
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
-  const { data, isLoading } = useQuery(
-    ['releaseEvents', currentWorkspace],
-    () => fetchReleaseEvents(currentWorkspace),
-    {
-      refetchInterval: 5000,
-    }
+  const { data, isLoading } = useQuery(['releaseEvents', currentWorkspace], () =>
+    fetchReleaseEvents(currentWorkspace)
   );
 
   const canEditReleases = hasRequiredPermissions(
