@@ -18,6 +18,7 @@ const OnboardingIcon = ({ isComplete }: Props) => {
       display="flex"
       alignItems="center"
       justifyContent="center"
+      color={'white'}
     >
       {isComplete && <Icon as={FiCheck}></Icon>}
     </Box>

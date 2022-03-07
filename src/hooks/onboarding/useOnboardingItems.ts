@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useRouter } from 'next/router';
 
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import { OnboardingItem } from 'components/onboarding/OnboardingPopover/types';
@@ -17,6 +18,7 @@ const useOnboardingItems = (): UseOnboardingItemsReturn => {
   const { workspace, isLoading: isCurrentWorkspaceLoading } = useCurrentWorkspace();
   const { data: releases, isLoading: areReleasesLoading } = useReleases({});
   const { data: contacts, isLoading: areContactsLoading } = useContacts({});
+  const router = useRouter();
 
   const isAnythingLoading = [
     areArtistsLoading,
@@ -30,12 +32,25 @@ const useOnboardingItems = (): UseOnboardingItemsReturn => {
       {
         name: 'Add or update workspace info',
         isComplete: !!workspace?.updatedAt,
+        onGo: () => router.push(`/workspaces/${workspace?.id}/settings`),
       },
-      { name: 'Create your first artist', isComplete: !!artists?.length },
-      { name: 'Create your first release', isComplete: !!releases?.total },
-      { name: 'Add or import some contacts', isComplete: !!contacts?.total },
+      {
+        name: 'Create your first artist',
+        isComplete: !!artists?.length,
+        onGo: () => router.push(`/artists/new`),
+      },
+      {
+        name: 'Create your first release',
+        isComplete: !!releases?.total,
+        onGo: () => router.push(`/releases/new`),
+      },
+      {
+        name: 'Add or import some contacts',
+        isComplete: !!contacts?.total,
+        onGo: () => router.push(`/contacts`),
+      },
     ];
-  }, [artists, workspace, releases, contacts]);
+  }, [artists, workspace, router, releases, contacts]);
 
   const anyOnboardingLeft = useMemo(() => {
     return isAnythingLoading ? false : onboardingItems.some((item) => !item.isComplete);

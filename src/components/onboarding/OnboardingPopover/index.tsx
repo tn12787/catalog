@@ -43,11 +43,12 @@ const OnboardingPopover: React.FC = ({ children }) => {
         w="auto"
         as={Stack}
         spacing={0}
+        rounded="xl"
       >
         <PopoverArrow bg={bgSecondary} />
-        <Stack py={2} spacing={0} minW="350px">
+        <Stack py={3} spacing={0} minW="350px">
           <Stack spacing={2}>
-            <HStack px={2} justifyContent={'space-between'}>
+            <HStack px={3} py={2} justifyContent={'space-between'}>
               <Stack spacing={5}>
                 <Stack spacing={2}>
                   <Text fontWeight={'semibold'} fontSize="lg">
