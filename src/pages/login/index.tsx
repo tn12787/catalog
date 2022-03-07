@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 import PageHead from 'components/pageItems/PageHead';
 
-const Login = () => {
+const LoginPage = () => {
   const router = useRouter();
 
   const { status } = useSession();
@@ -42,4 +42,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { session } };
 };
 
-export default Login;
+export default LoginPage;
