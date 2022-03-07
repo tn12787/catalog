@@ -78,7 +78,7 @@ const LoginPage = ({ csrfToken }: Props) => {
         <Heading fontWeight="semibold" fontSize="3xl">
           Log in to Launchday
         </Heading>
-        <Stack w="100%">
+        <Stack w="100%" spacing={6}>
           <Button leftIcon={<FcGoogle></FcGoogle>} onClick={signInWithGoogle} variant="outline">
             Sign in with Google
           </Button>
