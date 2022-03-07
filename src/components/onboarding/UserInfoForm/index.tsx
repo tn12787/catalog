@@ -76,7 +76,7 @@ const UserInfoForm = ({ onSubmit, isLastStep }: Props) => {
       <FormControl name="name" isInvalid={!!errors.name}>
         <FormLabel htmlFor="name">Name</FormLabel>
         <Input
-          placeholder={'Your name e.g. '}
+          placeholder={'Your name e.g. John Smith'}
           maxW="400px"
           {...register('name', { required: 'Please enter your name.' })}
         ></Input>

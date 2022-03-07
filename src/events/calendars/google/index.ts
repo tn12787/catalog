@@ -1,7 +1,7 @@
 import { ReleaseTask } from '@prisma/client';
 import firebase from 'firebase';
 
-import { initClient } from 'firebase-details';
+import { initClient } from 'firebaseDetails';
 import { ClientRelease } from 'types/common';
 
 export const listUserCalendars = async () => {
