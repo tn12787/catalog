@@ -38,6 +38,8 @@ const LoginPage = ({ csrfToken }: Props) => {
   const toast = useToast();
   const { status } = useSession();
 
+  const callbackUrl = (router.query.callbackUrl ?? '/overview') as string;
+
   useEffect(() => {
     if (status === 'authenticated') {
       toast({
@@ -51,14 +53,14 @@ const LoginPage = ({ csrfToken }: Props) => {
   }, [status, toast, router]);
 
   const signInWithGoogle = async () => {
-    await signIn('google', { callbackUrl: router.query.callbackUrl as string });
+    await signIn('google', { callbackUrl });
   };
 
   const signInWithEmail = async ({ email }: EmailSignInData) => {
     await signIn('email', {
       csrfToken: csrfToken,
       email,
-      callbackUrl: router.query.callbackUrl as string,
+      callbackUrl,
     });
   };
 
