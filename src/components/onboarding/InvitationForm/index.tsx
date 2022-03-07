@@ -1,6 +1,8 @@
-import { Stack, Heading, Text } from '@chakra-ui/react';
+import { Stack, Heading, Text, HStack, Link, Button } from '@chakra-ui/react';
 import React from 'react';
 import { Workspace } from '@prisma/client';
+import NextLink from 'next/link';
+import { FaArrowRight } from 'react-icons/fa';
 
 import { OnboardingWizardComponentProps } from '../types';
 
@@ -22,6 +24,19 @@ const InvitationForm = ({}: Props) => {
       {invitations?.map((invitation) => (
         <WorkspaceInvite invite={invitation} key={invitation.id}></WorkspaceInvite>
       ))}
+      <HStack alignSelf={'flex-end'}>
+        <NextLink href={'/overview'} passHref>
+          <Button
+            size="sm"
+            colorScheme={'purple'}
+            variant="link"
+            as={Link}
+            rightIcon={<FaArrowRight />}
+          >
+            Skip for now
+          </Button>
+        </NextLink>
+      </HStack>
     </Stack>
   );
 };
