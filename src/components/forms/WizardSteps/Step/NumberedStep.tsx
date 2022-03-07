@@ -14,7 +14,7 @@ const NumberedStep = ({ currentStep, index, isLastChild, label }: Omit<StepProps
 
   const isCurrentOrCompleted = isCompleted || isCurrent;
   return (
-    <HStack flex={'1 1 auto'} flexGrow={isLastChild ? 0 : 1}>
+    <HStack role={'progressbar'} flex={'1 1 auto'} flexGrow={isLastChild ? 0 : 1}>
       <HStack flexBasis="auto" flexGrow={0} as="li">
         <Circle
           aria-hidden
