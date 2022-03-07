@@ -20,8 +20,8 @@ describe('Welcome Page', () => {
     server.use(testGetInvitationHandler([testInvitation({})]));
     const { getByLabelText, getByText, getByPlaceholderText, getAllByRole } = render();
 
-    // should be 3 bars, including the invite page
-    await waitFor(() => expect(getAllByRole('progressbar')).toHaveLength(3));
+    // should be 4 bars, including the invite page
+    await waitFor(() => expect(getAllByRole('progressbar')).toHaveLength(4));
 
     const NextButtonRegex = /^Next$/;
 
@@ -43,12 +43,12 @@ describe('Welcome Page', () => {
     fireEvent.click(getByText(NextButtonRegex));
   });
 
-  it('Without invites, there should only have 2 steps walk through', async () => {
+  it('Without invites, there should only have 3 steps walk through', async () => {
     server.use(testGetInvitationHandler([]));
     const { getByLabelText, getByText, queryByText, getAllByRole } = render();
 
     // should be only 2 bars, as we don't have any invites
-    await waitFor(() => expect(getAllByRole('progressbar')).toHaveLength(2));
+    await waitFor(() => expect(getAllByRole('progressbar')).toHaveLength(3));
 
     const NextButtonRegex = /^Next$/;
     const LetsGoRegex = /^Let's go!$/;

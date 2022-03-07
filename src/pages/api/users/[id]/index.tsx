@@ -29,6 +29,7 @@ class UserHandler {
       data: {
         name: body.name,
         segment: body.segment,
+        image: body.image,
       },
     });
 

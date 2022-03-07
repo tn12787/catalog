@@ -1,4 +1,4 @@
-import { Stack, Button } from '@chakra-ui/react';
+import { Stack, Button, Avatar } from '@chakra-ui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
@@ -8,6 +8,7 @@ import { User } from '@prisma/client';
 import FormField from 'components/forms/FormContent/FormField';
 import DataList from 'components/data/DataList';
 import { updateSingleUser } from 'queries/me';
+import ImageSelect from 'components/forms/QuickForm/ImageField/ImageSelect';
 
 interface Props {
   onSubmit: () => void;
@@ -15,9 +16,7 @@ interface Props {
   userData?: User;
 }
 
-interface EditUserFormData {
-  name: string;
-}
+type EditUserFormData = Pick<User, 'name' | 'image'>;
 
 const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
   const {
@@ -25,9 +24,17 @@ const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
     handleSubmit,
     control,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm<EditUserFormData>({
-    defaultValues: { name: userData?.name as string },
+    defaultValues: { name: userData?.name as string, image: userData?.image as string },
   });
+
+  const currentImage = watch('image');
+
+  const onImageChange = (url: string) => {
+    setValue('image', url);
+  };
 
   const config = [
     {
@@ -41,6 +48,32 @@ const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
           type="text"
           control={control}
         />
+      ),
+    },
+    {
+      label: 'Profile Image',
+      content: (
+        <Stack
+          alignItems={{ base: 'flex-start', md: 'center' }}
+          direction={{ base: 'column', md: 'row' }}
+        >
+          {currentImage && (
+            <Avatar
+              size="lg"
+              borderRadius="md"
+              alt="user image"
+              src={currentImage}
+              fontWeight="semibold"
+            ></Avatar>
+          )}
+          <ImageSelect
+            message="Choose"
+            fontWeight="semibold"
+            onChange={onImageChange}
+            filePath="profilePictures"
+            entityId={userData?.id}
+          ></ImageSelect>
+        </Stack>
       ),
     },
   ];
