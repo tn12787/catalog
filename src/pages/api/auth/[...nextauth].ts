@@ -17,6 +17,7 @@ export default NextAuth({
   pages: {
     signIn: '/login',
     newUser: '/welcome',
+    verifyRequest: '/magic-link',
   },
   providers: [
     GoogleProvider({

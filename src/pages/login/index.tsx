@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import GoogleButton from 'react-google-button';
-import { getSession, signIn, useSession } from 'next-auth/react';
+import { getCsrfToken, getSession, signIn, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
@@ -24,7 +24,11 @@ interface EmailSignInData {
   email: string;
 }
 
-const LoginPage = () => {
+interface Props {
+  csrfToken: string;
+}
+
+const LoginPage = ({ csrfToken }: Props) => {
   const router = useRouter();
   const { bodySub } = useAppColors();
 
@@ -41,7 +45,11 @@ const LoginPage = () => {
   };
 
   const signInWithEmail = async ({ email }: EmailSignInData) => {
-    await signIn('email', { email, callbackUrl: router.query.callbackUrl as string });
+    await signIn('email', {
+      csrfToken: csrfToken,
+      email,
+      callbackUrl: router.query.callbackUrl as string,
+    });
   };
 
   const {
@@ -96,8 +104,8 @@ const LoginPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-
-  return { props: { session } };
+  const csrfToken = await getCsrfToken(context);
+  return { props: { session, csrfToken } };
 };
 
 export default LoginPage;
