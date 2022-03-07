@@ -10,6 +10,7 @@ import {
   useBreakpointValue,
   PlacementWithLogical,
   Progress,
+  PopoverProps,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -18,7 +19,7 @@ import OnboardingPopoverList from './OnboardingPopoverList';
 import useAppColors from 'hooks/useAppColors';
 import useOnboardingItems from 'hooks/onboarding/useOnboardingItems';
 
-const OnboardingPopover: React.FC = ({ children }) => {
+const OnboardingPopover: React.FC<PopoverProps> = ({ children, ...rest }) => {
   const { bgSecondary, bodySub, border } = useAppColors();
 
   const { items, isLoading } = useOnboardingItems();
@@ -34,6 +35,7 @@ const OnboardingPopover: React.FC = ({ children }) => {
       placement={popoverPlacement as PlacementWithLogical}
       defaultIsOpen={true}
       closeOnBlur={false}
+      {...rest}
     >
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent

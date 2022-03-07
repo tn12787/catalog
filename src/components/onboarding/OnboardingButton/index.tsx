@@ -11,27 +11,29 @@ const OnboardingButton = () => {
   const { incomplete, items } = useOnboardingItems();
   const { primary } = useAppColors();
   return !incomplete ? null : (
-    <OnboardingPopover>
-      <Box position="fixed" bottom={'50px'} right={'50px'}>
-        <IconButton
-          aria-label="Getting started"
-          colorScheme={'gray'}
-          size="lg"
-          rounded={'full'}
-          icon={<Text>🚀</Text>}
-          border="1px solid"
-          boxShadow={'xl'}
-          borderColor={primary}
-        />
-        <UnreadCountBadge
-          position="absolute"
-          top={0}
-          right={0}
-          colorScheme={'purple'}
-          count={items.filter((item) => !item.isComplete).length}
-        />
-      </Box>
-    </OnboardingPopover>
+    <Box display={{ base: 'none', md: 'block' }}>
+      <OnboardingPopover>
+        <Box position="fixed" bottom={'50px'} right={'50px'}>
+          <IconButton
+            aria-label="Getting started"
+            colorScheme={'gray'}
+            size="lg"
+            rounded={'full'}
+            icon={<Text>🚀</Text>}
+            border="1px solid"
+            boxShadow={'xl'}
+            borderColor={primary}
+          />
+          <UnreadCountBadge
+            position="absolute"
+            top={0}
+            right={0}
+            colorScheme={'purple'}
+            count={items.filter((item) => !item.isComplete).length}
+          />
+        </Box>
+      </OnboardingPopover>
+    </Box>
   );
 };
 

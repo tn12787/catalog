@@ -35,7 +35,7 @@ import { ContactWithLabels } from 'types/common';
 import ContactModal from 'components/contacts/ContactModal';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
-const NoficationsPage = () => {
+const ContactsPage = () => {
   const [search, setSearch] = useState('');
   const { bgPrimary, bodySub } = useAppColors();
 
@@ -72,9 +72,9 @@ const NoficationsPage = () => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Skeleton isLoaded={!isWorkspaceLoading}>
-              <Link passHref href={`/overview`}>
+              <NextLink passHref href={`/overview`}>
                 <BreadcrumbLink>{workspace?.name}</BreadcrumbLink>
-              </Link>
+              </NextLink>
             </Skeleton>
           </BreadcrumbItem>
 
@@ -193,8 +193,8 @@ const NoficationsPage = () => {
   );
 };
 
-NoficationsPage.getLayout = () => DashboardLayout;
+ContactsPage.getLayout = () => DashboardLayout;
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
 
-export default NoficationsPage;
+export default ContactsPage;

@@ -14,6 +14,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ReleaseTaskType } from '@prisma/client';
 
+import ReleaseTaskDrawerContent from './ReleaseTaskDrawerContent';
 import ReleaseDrawerContent from './ReleaseDrawerContent';
 
 import { EventType, ReleaseEvent } from 'types/common';
@@ -41,7 +42,15 @@ const ReleaseEventDrawer = ({ event, isOpen, onClose, ...rest }: Props) => {
           {taskHeadingByType(event?.data?.type as ReleaseTaskType, event?.release.name) ??
             'Loading Artists'}
         </DrawerHeader>
-        <DrawerBody>{event && <ReleaseDrawerContent event={event as ReleaseEvent} />}</DrawerBody>
+        <DrawerBody>
+          {event ? (
+            event.type === EventType.RELEASE ? (
+              <ReleaseDrawerContent event={event as ReleaseEvent} />
+            ) : (
+              <ReleaseTaskDrawerContent event={event as ReleaseEvent} />
+            )
+          ) : null}
+        </DrawerBody>
         <DrawerFooter>
           <Stack spacing={4} w="100%" alignItems={'center'}>
             <Divider />
