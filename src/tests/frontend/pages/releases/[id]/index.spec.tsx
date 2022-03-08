@@ -1,5 +1,5 @@
 import { ReleaseTaskType, ReleaseType } from '@prisma/client';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { useRouter } from 'next/router';
 
 import SingleReleasePage from 'pages/releases/[id]';
