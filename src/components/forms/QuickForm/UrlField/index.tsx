@@ -9,13 +9,15 @@ import useAppColors from 'hooks/useAppColors';
 
 type Props = {
   url?: string;
+  isDisabled?: boolean;
   onChange: (value: string) => void | Promise<void>;
 };
 
-const UrlField = ({ url, onChange }: Props) => {
+const UrlField = ({ isDisabled, url, onChange }: Props) => {
   const { bodySub, primary } = useAppColors();
   return (
     <QuickFormField
+      isDisabled={isDisabled}
       fieldName="url"
       value={url as string}
       renderValue={({ value }) => (

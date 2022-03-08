@@ -139,7 +139,7 @@ const Calendar = <T extends BaseEvent>({
             top={0}
             left={0}
             opacity={0.5}
-            zIndex={500}
+            zIndex={'tooltip'}
           ></Box>
         )}
         <TableCaption placement="top">

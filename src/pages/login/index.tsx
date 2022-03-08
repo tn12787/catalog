@@ -86,6 +86,8 @@ const LoginPage = ({ csrfToken }: Props) => {
 
   const errorToString = (error: string) => {
     switch (error) {
+      case 'SessionRequired':
+        return 'Please sign in to continue.';
       case 'OAuthAccountNotLinked':
         return 'Try signing in with the same account you used originally.';
       case 'OAuthSignin':
@@ -93,7 +95,7 @@ const LoginPage = ({ csrfToken }: Props) => {
         return 'Something went wrong with this provider. Please try signing in with another provider.';
       case 'Callback':
       case 'Default':
-        return "We couldn't sign you in. Please try again later";
+        return "We couldn't sign you in. Please try again later.";
       default:
         return '';
     }

@@ -23,6 +23,7 @@ import ArtistField from 'components/forms/QuickForm/ArtistField';
 import { taskHeadingByType } from 'utils/tasks';
 import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 import useAppColors from 'hooks/useAppColors';
+import { hasRequiredPermissions } from 'utils/auth';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -37,7 +38,8 @@ type RollbackContext = {
 const ReleaseDrawerContent = ({ event, loading }: Props) => {
   const release = event?.release;
   const queryClient = useQueryClient();
-  const { currentWorkspace } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
+
   const toast = useToast();
   const { border } = useAppColors();
 
@@ -87,10 +89,16 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
     }
   };
 
+  const canEdit = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    workspaceMemberships?.[currentWorkspace]
+  );
+
   return (
     <Stack w="100%" spacing={5}>
       <Skeleton isLoaded={!loading}>
         <DueDateField
+          isDisabled={!canEdit}
           fieldName="Target Date"
           date={event.release.targetDate as Date}
           onChange={(dueDate) => onSubmit({ targetDate: dueDate as Date })}
@@ -99,6 +107,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
       <Divider />
       <Skeleton isLoaded={!loading}>
         <ArtistField
+          isDisabled={!canEdit}
           artist={release.artistId}
           onChange={(artist) => onSubmit({ artist: artist })}
         />
@@ -106,6 +115,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
       <Divider />
       <Skeleton isLoaded={!loading}>
         <ReleaseTypeField
+          isDisabled={!canEdit}
           releaseType={release.type as ReleaseType}
           onChange={(type) => onSubmit({ type: type as ReleaseType })}
         />

@@ -25,7 +25,8 @@ const OverviewPage = () => {
 
   const { data: releaseEvents, isLoading: areReleaseEventsLoading } = useQuery(
     ['releaseEvents', currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id],
-    () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id)
+    () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id),
+    { enabled: !!currentWorkspace && !!workspaceMemberships?.[currentWorkspace]?.id }
   );
   const { data: upcomingReleases, isLoading: areUpcomingReleasesLoading } = useReleases({
     dates: { after: new Date(new Date().toDateString()) },

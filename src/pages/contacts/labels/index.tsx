@@ -31,6 +31,8 @@ import useContactLabels from 'hooks/data/contacts/labels/useContactLabels';
 import { FilterOptions } from 'queries/types';
 import ContactLabelModal from 'components/contacts/labels/ContactLabelModal';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 const ContactLabelsPage = () => {
   const [search, setSearch] = useState('');
@@ -46,6 +48,13 @@ const ContactLabelsPage = () => {
   const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const { data: labels, isLoading } = useContactLabels(queryArgs);
+
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
+
+  const canCreate = hasRequiredPermissions(
+    ['CREATE_CONTACTS'],
+    workspaceMemberships?.[currentWorkspace]
+  );
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
@@ -105,17 +114,19 @@ const ContactLabelsPage = () => {
                 alignItems={{ base: 'stretch', lg: 'center' }}
                 direction={{ base: 'column', lg: 'row' }}
               >
-                <Skeleton isLoaded={!isLoading}>
-                  <Button
-                    size="sm"
-                    w="100%"
-                    iconSpacing={1}
-                    onClick={onNewOpen}
-                    leftIcon={<RiAddFill fontSize="1.25em" />}
-                  >
-                    New label
-                  </Button>
-                </Skeleton>
+                {canCreate && (
+                  <Skeleton isLoaded={!isLoading}>
+                    <Button
+                      size="sm"
+                      w="100%"
+                      iconSpacing={1}
+                      onClick={onNewOpen}
+                      leftIcon={<RiAddFill fontSize="1.25em" />}
+                    >
+                      New label
+                    </Button>
+                  </Skeleton>
+                )}
               </Stack>
             </Stack>
             <Stack>
