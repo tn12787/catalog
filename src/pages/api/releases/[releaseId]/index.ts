@@ -22,7 +22,7 @@ import { buildUpdateReleaseArgs } from 'backend/apiUtils/releases';
 @requiresAuth()
 class SingleReleaseHandler {
   @Get()
-  async singleRelease(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
+  async singleRelease(@Req() req: AuthDecoratedRequest, @PathParam('releaseId') id: string) {
     return await getReleaseByIdIsomorphic(req, id);
   }
 
@@ -30,7 +30,7 @@ class SingleReleaseHandler {
   async updateRelease(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateReleaseDto,
-    @PathParam('id') id: string
+    @PathParam('releaseId') id: string
   ) {
     if (!id) throw new NotFoundException();
 
@@ -72,7 +72,7 @@ class SingleReleaseHandler {
   }
 
   @Delete()
-  async deleteRelease(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
+  async deleteRelease(@Req() req: AuthDecoratedRequest, @PathParam('releaseId') id: string) {
     const releaseWorkspace = await prisma.release.findUnique({
       where: { id },
       select: {

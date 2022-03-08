@@ -2016,10 +2016,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@storyofams/next-api-decorators@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@storyofams/next-api-decorators/-/next-api-decorators-1.7.0.tgz#1a6debcd3fab8841d92243abc4f9c7113661781e"
-  integrity sha512-n7nJ3pE7H385xFAmBSUQE2B/Lm8eqnssrh3BPGpMqzx3cSVFL6pTk6kHoVE2pzTTZMqhpg3wg044Q8zzLoK83Q==
+"@storyofams/next-api-decorators@^1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@storyofams/next-api-decorators/-/next-api-decorators-1.7.2.tgz#8c2bb405ebf755a35e70af13e0a2c43ebf5d1b6b"
+  integrity sha512-/xxwCMvjLl9f1PoloG+KpfJ5AOzdt3K+OJiQseRkD2gXzDjTHqdRlibnZJHmpUGwU4HdIETjbqTTJxnH/tkuhw==
   dependencies:
     reflect-metadata "^0.1.13"
 

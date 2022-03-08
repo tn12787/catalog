@@ -44,6 +44,7 @@ export type ContactLabelWithContacts = ContactLabel & {
 
 export type NotificationWithTask = Notification & {
   task: ReleaseTask & { release: Release };
+  actor: WorkspaceMemberWithUser | null;
 };
 
 export type ReleaseTaskWithAssignees = ReleaseTask & {

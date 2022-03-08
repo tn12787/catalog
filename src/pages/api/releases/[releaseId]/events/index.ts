@@ -8,7 +8,7 @@ import prisma from 'backend/prisma/client';
 @requiresAuth()
 class SpecificReleaseEventsHandler {
   @Get()
-  async specificReleaseEvents(@PathParam('id') id: string) {
+  async specificReleaseEvents(@PathParam('releaseId') id: string) {
     const release = await prisma.release.findUnique({
       where: { id },
       include: {

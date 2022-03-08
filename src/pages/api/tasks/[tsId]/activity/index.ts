@@ -9,7 +9,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 @requiresAuth()
 class SingleTaskHandler {
   @Get()
-  async taskEvents(@Req() req: AuthDecoratedRequest, @PathParam('id') taskId: string) {
+  async taskEvents(@Req() req: AuthDecoratedRequest, @PathParam('tsId') taskId: string) {
     if (!taskId) throw new NotFoundException();
 
     const task = await prisma.releaseTask.findUnique({

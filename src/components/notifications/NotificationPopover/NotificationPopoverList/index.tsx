@@ -27,6 +27,8 @@ const NotificationPopoverList = ({ notifications, loading }: Props) => {
             extraData: {},
             workspaceMemberId: 'loading_user',
             taskId: 'loading_task',
+            actorId: null,
+            actor: null,
             task: { id: 'test', name: 'Loading...', notes: '', status: 'COMPLETE' } as any,
           }}
         />

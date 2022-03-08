@@ -9,6 +9,22 @@ export const notificationToCopyAndLink = (
   notification: NotificationWithTask
 ): NotificationVisualData => {
   switch (notification.type) {
+    case NotificationType.TASK_ASSIGNED:
+      return {
+        message: `${notification.actor?.user.name} assigned you to ${taskHeadingByType(
+          notification.task.type,
+          notification.task.release.name
+        )} `,
+        link: `/tasks/${notification.task.id}`,
+      };
+    case NotificationType.TASK_COMMENT:
+      return {
+        message: `${notification.actor?.user.name} left a comment on ${taskHeadingByType(
+          notification.task.type,
+          notification.task.release.name
+        )} `,
+        link: `/tasks/${notification.task.id}`,
+      };
     case NotificationType.TASK_OVERDUE:
     default:
       return {

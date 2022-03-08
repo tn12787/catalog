@@ -16,7 +16,7 @@ class ReleaseListHandler {
   async createArtwork(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateReleaseTaskDto,
-    @PathParam('id') id: string
+    @PathParam('releaseId') id: string
   ) {
     const releaseWorkspace = await checkTaskUpdatePermissions(req, id);
     const activeWorkspaceMember = await getResourceWorkspaceMembership(

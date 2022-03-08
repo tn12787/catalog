@@ -18,7 +18,8 @@ export const getSingleServerSideRelease: GetServerSideProps = async (ctx) => {
         release: JSON.parse(JSON.stringify(release)), // TODO: HORRIBLE HACK pls fix
       },
     };
-  } catch {
+  } catch (e) {
+    console.log(e);
     return {
       notFound: true,
     };
