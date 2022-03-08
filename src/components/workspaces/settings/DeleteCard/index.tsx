@@ -1,18 +1,32 @@
-import { Alert, Button, Heading, Text, useDisclosure } from '@chakra-ui/react';
-import React, { useRef } from 'react';
+import { Alert, Button, Heading, Stack, Text, useDisclosure } from '@chakra-ui/react';
+import React, { useMemo, useRef } from 'react';
 
 import DeleteWorkspaceModal from './DeleteWorkspaceModal';
 
 import Card from 'components/Card';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
-import { hasRequiredPermissions } from 'utils/auth';
+import { getAllUserPermissions, hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useWorkspaceMutations from 'hooks/data/workspaces/useWorkspaceMutations';
+import useAppColors from 'hooks/useAppColors';
 
 const MembersCard = () => {
   const { workspace: workspace, isLoading } = useCurrentWorkspace();
-  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships, workspaceList } = useExtendedSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bodySub } = useAppColors();
+
+  const numberOfAdminWorkspaces = useMemo(() => {
+    const allPermissionLists = (workspaceList ?? [])?.map((item) =>
+      getAllUserPermissions(item).map((item) => item.name)
+    );
+
+    const deletableWorkspaces = allPermissionLists?.filter((permissions) =>
+      permissions.includes('DELETE_TEAM')
+    );
+
+    return deletableWorkspaces.length;
+  }, [workspaceList]);
 
   const canDelete = [
     hasRequiredPermissions(['DELETE_TEAM'], workspaceMemberships?.[currentWorkspace]),
@@ -29,25 +43,38 @@ const MembersCard = () => {
       borderWidth={'1px'}
       borderColor="red.200"
       align={'flex-start'}
-      spacing={3}
+      spacing={6}
     >
-      <Heading fontSize="xl" as="h4" fontWeight="semibold">
-        Delete workspace
-      </Heading>
-      <Alert
-        w="auto"
-        status="error"
-        py={2}
-        variant={'left-accent'}
-        rounded="lg"
-        alignSelf={'flex-start'}
+      <Stack>
+        <Heading fontSize="xl" as="h4" fontWeight="semibold">
+          Delete workspace
+        </Heading>
+        <Alert
+          w="auto"
+          status="error"
+          py={2}
+          fontSize="sm"
+          variant={'left-accent'}
+          rounded="lg"
+          alignSelf={'flex-start'}
+        >
+          {"Warning: This action can't be undone."}
+        </Alert>
+        <Text>Delete your entire workspace, including releases, artists, contacts, tasks etc.</Text>
+      </Stack>
+
+      <Stack
+        alignItems={{ base: 'stretch', lg: 'center' }}
+        direction={{ base: 'column', lg: 'row' }}
       >
-        {"Warning: This action can't be undone."}
-      </Alert>
-      <Text>Delete your entire workspace, including releases, artists, contacts, tasks etc.</Text>
-      <Button onClick={onOpen} colorScheme={'red'}>
-        Delete {workspace.name}
-      </Button>
+        <Button onClick={onOpen} isDisabled={numberOfAdminWorkspaces === 1} colorScheme={'red'}>
+          Delete {workspace.name}
+        </Button>
+
+        <Text color={bodySub} fontSize="sm">
+          {"This is your only workspace, so you can't delete it."}
+        </Text>
+      </Stack>
       <DeleteWorkspaceModal
         workspace={workspace}
         isOpen={isOpen}
