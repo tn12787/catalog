@@ -68,7 +68,7 @@ const useExtendedSession = () => {
       }
       queryClient.clear();
       setCurrentWorkspace(val as string);
-      router.replace('/overview', '/overview', { shallow: false });
+      window.location.assign('/overview');
     },
     [setCurrentWorkspace, queryClient]
   );
