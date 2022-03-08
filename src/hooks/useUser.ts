@@ -1,17 +1,12 @@
+import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
-import { signOut } from 'next-auth/react';
 
 import { fetchMe } from 'queries/me';
+import { UserResponse } from 'types/common';
 
 const useUser = () => {
-  const destroySession = () => {
-    localStorage.removeItem('activeWorkspace');
-    signOut({ callbackUrl: '/login' });
-  };
-
-  return useQuery('me', fetchMe, {
+  return useQuery<UserResponse, AxiosError>('me', fetchMe, {
     retry: false,
-    onError: destroySession,
   });
 };
 
