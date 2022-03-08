@@ -2,7 +2,7 @@ import { uniq } from 'lodash';
 import { NotFoundException } from '@storyofams/next-api-decorators';
 import { getSession } from 'next-auth/react';
 
-import { stripe } from '../stripe/server';
+import { getOrCreateStripeCustomer } from '../stripe/customers';
 
 import { defaultWorkspaceLabels } from './defaultLabels';
 
@@ -20,7 +20,7 @@ export const createDefaultWorkspaceForUser = async ({ name, userId, email }: Use
   const nameString = `${name}'s Workspace`;
 
   try {
-    const customer = await stripe.customers.create({ name: nameString, email });
+    const stripeCustomerId = await getOrCreateStripeCustomer(name, email);
 
     await prisma.workspace.create({
       data: {
@@ -33,7 +33,7 @@ export const createDefaultWorkspaceForUser = async ({ name, userId, email }: Use
           },
         },
         contactLabels: { create: defaultWorkspaceLabels },
-        stripeCustomerId: customer.id,
+        stripeCustomerId,
       },
     });
   } catch (e) {

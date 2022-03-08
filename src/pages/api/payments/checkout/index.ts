@@ -7,12 +7,16 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { getOrCreateStripeCustomer } from './../../../../backend/apiUtils/stripe/customers';
+
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
 import { CreateCheckoutSessionDto } from 'backend/models/payments/checkout/create';
 import prisma from 'backend/prisma/client';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
+import { isBackendFeatureEnabled } from 'common/features';
+import { FeatureKey } from 'common/features/types';
 
 @requiresAuth()
 class CheckoutHandler {
@@ -21,6 +25,10 @@ class CheckoutHandler {
     @Request() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateCheckoutSessionDto
   ) {
+    if (!isBackendFeatureEnabled(FeatureKey.PAYMENTS)) {
+      throw new NotFoundException();
+    }
+
     const { priceId, quantity = 1, metadata = {}, workspaceId } = body;
 
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], workspaceId);
@@ -30,12 +38,19 @@ class CheckoutHandler {
       throw new NotFoundException();
     }
 
-    const customer = await stripe.customers.retrieve(workspace.stripeCustomerId);
+    const customerId = await getOrCreateStripeCustomer(
+      req.session.token.name,
+      req.session.token.email
+    );
+
+    if (!customerId) {
+      throw new NotFoundException();
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       billing_address_collection: 'required',
-      customer: customer.id,
+      customer: customerId,
       line_items: [
         {
           price: priceId,
