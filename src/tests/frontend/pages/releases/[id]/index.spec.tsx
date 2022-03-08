@@ -46,10 +46,6 @@ describe('Single Release Page', () => {
     expect(getByText('🎥 Music Video')).toBeVisible();
     expect(getByText('📅 Timeline')).toBeVisible();
 
-    expect(getByText(/View in planner/)).not.toBeVisible();
-    fireEvent.click(getByText(/Actions/));
-    await waitFor(() => expect(getByText(/View in planner/)).toBeVisible());
-
     expect(queryByText(/View details/)).toBeNull();
   });
 
