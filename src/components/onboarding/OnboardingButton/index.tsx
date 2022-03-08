@@ -11,7 +11,7 @@ const OnboardingButton = () => {
   const { incomplete, items } = useOnboardingItems();
   const { primary } = useAppColors();
   return !incomplete ? null : (
-    <Box display={{ base: 'none', md: 'block' }}>
+    <Box zIndex={'popover'} display={{ base: 'none', md: 'block' }}>
       <OnboardingPopover>
         <Box position="fixed" bottom={'50px'} right={'50px'}>
           <IconButton

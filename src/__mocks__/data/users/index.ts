@@ -5,7 +5,7 @@ export const testUser = (extraFields: Partial<User>): User => {
     id: 'test-user-id',
     name: 'Test Users',
     email: 'test@example.com',
-    emailVerified: true,
+    emailVerified: new Date(),
     image: null,
     segment: null,
     ...extraFields,

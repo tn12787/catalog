@@ -9,6 +9,7 @@ import PageHead from 'components/pageItems/PageHead';
 import PlanCards from 'components/workspaces/settings/PlanCards';
 import MembersCard from 'components/workspaces/settings/MembersCard';
 import UpgradeCards from 'components/workspaces/settings/UpgradeCards';
+import DeleteCard from 'components/workspaces/settings/DeleteCard';
 
 const WorkspaceOverview = () => {
   const { bgPrimary } = useAppColors();
@@ -24,6 +25,7 @@ const WorkspaceOverview = () => {
         <PlanCards />
         <UpgradeCards />
         <MembersCard />
+        <DeleteCard />
       </Stack>
     </Stack>
   );

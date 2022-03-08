@@ -60,7 +60,7 @@ class SpecificCommentHandler {
     if (!activeWorkspaceMember) throw new ForbiddenException();
 
     // check if user is the author of the comment
-    if (comment.user.id !== activeWorkspaceMember.id) {
+    if (comment.user?.id !== activeWorkspaceMember.id) {
       throw new ForbiddenException('You are not the author of this comment');
     }
 
@@ -120,7 +120,7 @@ class SpecificCommentHandler {
       task?.release?.workspaceId
     );
     const canDelete =
-      comment.user.id === activeWorkspaceMember.id ||
+      comment.user?.id === activeWorkspaceMember.id ||
       userPermissions.includes('DELETE_ALL_COMMENTS');
 
     if (!canDelete) {
