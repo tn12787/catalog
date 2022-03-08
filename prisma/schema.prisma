@@ -65,7 +65,7 @@ model Workspace {
   contactLabels        ContactLabel[]
   releases             Release[]
   invites              Invite[]
-  stripeCustomerId     String            @unique
+  stripeCustomerId     String?           @unique
   stripeSubscriptionId String?           @unique
 
   createdAt DateTime  @default(now())
