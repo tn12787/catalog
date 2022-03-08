@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-import { DeleteWorkspaceMemberVars, UpdateWorkspaceMemberVars, UpdateWorkspaceVars } from './types';
+import {
+  DeleteWorkspaceMemberVars,
+  DeleteWorkspaceVars,
+  UpdateWorkspaceMemberVars,
+  UpdateWorkspaceVars,
+} from './types';
 
 import { EnrichedWorkspace } from 'types/common';
 
@@ -17,6 +22,11 @@ export const updateSingleWorkspace = async ({ id, ...data }: UpdateWorkspaceVars
     ...data,
   });
 
+  return response;
+};
+
+export const deleteSingleWorkspace = async ({ id }: DeleteWorkspaceVars) => {
+  const { data: response } = await axios.delete(`/api/workspaces/${id}`);
   return response;
 };
 

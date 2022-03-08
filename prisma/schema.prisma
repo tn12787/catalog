@@ -283,14 +283,14 @@ model MasteringData {
 }
 
 model ReleaseTaskEvent {
-  id        String          @id @default(cuid())
+  id        String           @id @default(cuid())
   type      TaskEventType
-  task      ReleaseTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task      ReleaseTask      @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String
-  user      WorkspaceMember @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId    String
+  user      WorkspaceMember? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
   extraData Json
-  timestamp DateTime        @default(now())
+  timestamp DateTime         @default(now())
 }
 
 model Distributor {

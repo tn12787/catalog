@@ -12,7 +12,7 @@ const NotFound = () => {
   const router = useRouter();
   return (
     <Flex bg={bgPrimary} direction="column" align="center" justify="center" flex={1} minH="100vh">
-      <PageHead title="Home" />
+      <PageHead title="Not Found" />
       <Stack w={'80%'} maxW="350px" spacing={6} alignItems="center">
         <Image src={notFound} alt="Not Found" />
         <Heading fontWeight="semibold" fontSize="8xl">
