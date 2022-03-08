@@ -22,7 +22,12 @@ async function seed() {
     name: 'Viewer',
     description: 'Can view most resources, cannot create anything',
     permissions: {
-      connect: [{ name: 'VIEW_RELEASES' }, { name: 'VIEW_ARTISTS' }, { name: 'VIEW_TEAM' }],
+      connect: [
+        { name: 'VIEW_RELEASES' },
+        { name: 'VIEW_ARTISTS' },
+        { name: 'VIEW_TEAM' },
+        { name: 'VIEW_CONTACTS' },
+      ],
     },
   };
 
