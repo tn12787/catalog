@@ -352,5 +352,4 @@ model Notification {
   taskId            String
   extraData         Json
   createdAt         DateTime         @default(now())
-
 }

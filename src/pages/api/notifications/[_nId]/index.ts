@@ -19,7 +19,7 @@ class SpecificNotificationHandler {
   async updateSingleNotification(
     @Req() req: AuthDecoratedRequest,
     @Body() body: UpdateNotificationDto,
-    @PathParam('nId') notificationId: string
+    @PathParam('_nId') notificationId: string
   ) {
     if (!notificationId) {
       throw new NotFoundException();
