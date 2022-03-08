@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Divider,
@@ -19,6 +20,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
+import { FaSpotify } from 'react-icons/fa';
 
 import logo from 'images/logo.svg';
 import PageHead from 'components/pageItems/PageHead';
@@ -56,6 +58,10 @@ const LoginPage = ({ csrfToken }: Props) => {
     await signIn('google', { callbackUrl });
   };
 
+  const signInWithSpotify = async () => {
+    await signIn('spotify', { callbackUrl });
+  };
+
   const signInWithEmail = async ({ email }: EmailSignInData) => {
     await signIn('email', {
       csrfToken: csrfToken,
@@ -70,6 +76,31 @@ const LoginPage = ({ csrfToken }: Props) => {
     formState: { errors },
   } = useForm<EmailSignInData>();
 
+  const errorToString = (error: string) => {
+    switch (error) {
+      case 'OAuthAccountNotLinked':
+        return 'Try signing in with the same account you used originally.';
+      case 'OAuthSignin':
+      case 'OAuthCallback':
+        return 'Something went wrong with this provider. Please try signing in with another provider.';
+      case 'Callback':
+      case 'Default':
+        return "We couldn't sign you in. Please try again later";
+      default:
+        return '';
+    }
+  };
+
+  const renderError = (error: string) => {
+    const errorString = errorToString(error);
+
+    return errorString ? (
+      <Alert rounded="md" status="warning" variant="subtle">
+        {errorString}
+      </Alert>
+    ) : null;
+  };
+
   return (
     <Flex direction="column" align="center" justify="center" flex={1} minH="100vh">
       <PageHead title="Sign in" />
@@ -81,8 +112,12 @@ const LoginPage = ({ csrfToken }: Props) => {
           Log in to Launchday
         </Heading>
         <Stack w="100%" spacing={6}>
+          {renderError(router.query?.error as string)}
           <Button leftIcon={<FcGoogle></FcGoogle>} onClick={signInWithGoogle} variant="outline">
             Sign in with Google
+          </Button>
+          <Button leftIcon={<FaSpotify></FaSpotify>} onClick={signInWithSpotify} variant="outline">
+            Sign in with Spotify
           </Button>
           <Stack
             w="100%"
