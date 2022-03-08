@@ -7,7 +7,7 @@ import { renderWithProviders } from 'tests/utils/render';
 import { ClientRelease } from 'types/common';
 import { testClientRelease } from '__mocks__/data/releases';
 import { testClientReleaseTaskData } from '__mocks__/data/tasks';
-import { testReleaseEventHandler } from '__mocks__/handlers/releases';
+import { testGetReleaseHandler, testReleaseEventHandler } from '__mocks__/handlers/releases';
 import { server } from '__mocks__/server';
 
 const testReleaseId = 'test-release-id';
@@ -28,7 +28,7 @@ describe('Single Release Page', () => {
     const testArtistName = 'basic artist test';
     const testReleaseName = 'Boio';
     const testReleaseType = ReleaseType.Album;
-    const { getByText, queryAllByText } = render({
+    const { getByText, queryAllByText, queryByText } = render({
       name: testReleaseName,
       artist: {
         name: testArtistName,
@@ -49,11 +49,15 @@ describe('Single Release Page', () => {
     expect(getByText(/View in planner/)).not.toBeVisible();
     fireEvent.click(getByText(/Actions/));
     await waitFor(() => expect(getByText(/View in planner/)).toBeVisible());
+
+    expect(queryByText(/View details/)).toBeNull();
   });
 
   it('Should show artwork info if there is some', async () => {
     const testArtistName = 'basic artist test';
     const testReleaseName = 'Boio';
+    const testTaskId = 'test-task-id';
+
     const testReleaseData = testClientRelease({
       name: testReleaseName,
       artist: {
@@ -61,25 +65,32 @@ describe('Single Release Page', () => {
       },
       artwork: { ...testClientReleaseTaskData({ type: ReleaseTaskType.ARTWORK }), url: null },
     });
+
+    const testTask = {
+      ...testClientReleaseTaskData({ type: ReleaseTaskType.ARTWORK }),
+      artworkData: { url: null, id: testTaskId, taskId: 'test-taskId' },
+      masteringData: null,
+      distributionData: null,
+      musicVideoData: null,
+      marketingData: null,
+    };
+
     server.use(
+      testGetReleaseHandler({
+        ...testReleaseData,
+        targetDate: new Date(),
+        tasks: [testTask],
+      }),
       testReleaseEventHandler({
         ...testReleaseData,
         targetDate: new Date(),
-        tasks: [
-          {
-            ...testClientReleaseTaskData({ type: ReleaseTaskType.ARTWORK }),
-            artworkData: { url: null, id: 'test-artwork-task-id', taskId: 'test-taskId' },
-            masteringData: null,
-            distributionData: null,
-            musicVideoData: null,
-            marketingData: null,
-          },
-        ],
+        tasks: [testTask],
       })
     );
-    const { queryAllByText } = render(testReleaseData);
+    const { queryAllByText, getByText } = render(testReleaseData);
 
     expect(queryAllByText(testArtistName)).toHaveLength(1);
+    await waitFor(() => expect(getByText(/View Details/)).toBeVisible());
     await waitFor(() => expect(queryAllByText('🎨 Artwork')).toHaveLength(2));
   });
 });
