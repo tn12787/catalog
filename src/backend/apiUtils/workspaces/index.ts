@@ -2,7 +2,6 @@ import { uniq } from 'lodash';
 import { NotFoundException } from '@storyofams/next-api-decorators';
 import { getSession } from 'next-auth/react';
 
-import { stripe } from '../stripe/server';
 import { getOrCreateStripeCustomer } from '../stripe/customers';
 
 import { defaultWorkspaceLabels } from './defaultLabels';
