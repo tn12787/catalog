@@ -58,7 +58,7 @@ const OverviewPage = () => {
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isWorkspaceLoading}>
             <Heading size="lg" fontWeight="semibold" alignSelf="flex-start">
-              {workspaceData?.name ?? 'loading'}
+              {isWorkspaceLoading ? 'loading' : workspaceData?.name}
             </Heading>
           </Skeleton>
         </Stack>

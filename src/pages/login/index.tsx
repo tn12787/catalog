@@ -86,6 +86,8 @@ const LoginPage = ({ csrfToken }: Props) => {
 
   const errorToString = (error: string) => {
     switch (error) {
+      case 'SessionExpired':
+        return 'Please sign in again.';
       case 'SessionRequired':
         return 'Please sign in to continue.';
       case 'OAuthAccountNotLinked':
@@ -105,7 +107,7 @@ const LoginPage = ({ csrfToken }: Props) => {
     const errorString = errorToString(error);
 
     return errorString ? (
-      <Alert rounded="md" status="warning" variant="subtle">
+      <Alert py={2} rounded="md" status="warning" variant="subtle">
         {errorString}
       </Alert>
     ) : null;

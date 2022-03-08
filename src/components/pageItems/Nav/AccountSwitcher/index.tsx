@@ -37,13 +37,13 @@ type Props = {
 
 export const AccountSwitcher = ({ onChange }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { token, currentWorkspace, onChangeWorkspace, status } = useExtendedSession();
+  const { workspaceList, currentWorkspace, onChangeWorkspace, isLoading } = useExtendedSession();
   const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
   const router = useRouter();
   const { data: userData, isLoading: isUserLoading } = useUser();
   const { bodySub, border } = useAppColors();
 
-  const sessionLoading = status === 'loading';
+  const sessionLoading = isLoading;
 
   const onLogout = async () => {
     localStorage.removeItem('activeWorkspace');
@@ -52,7 +52,7 @@ export const AccountSwitcher = ({ onChange }: Props) => {
 
   const { withoutCurrent, mapped } = useAllWorkspaceNotifications();
 
-  const userWorkspaces = userData?.workspaces || token?.workspaceMemberships;
+  const userWorkspaces = workspaceList;
   const activeWorkspace = useMemo(() => {
     return userWorkspaces?.find((item) => item.workspaceId === currentWorkspace);
   }, [currentWorkspace, userWorkspaces]);
@@ -64,7 +64,7 @@ export const AccountSwitcher = ({ onChange }: Props) => {
       <Skeleton rounded="lg" isLoaded={!isAnythingLoading}>
         <AccountSwitcherButton
           workspaceName={(workspace?.name as string) ?? 'loadingWorkspace'}
-          userName={(userData?.name || (token?.name as string)) ?? 'loadingUser'}
+          userName={userData?.name ?? 'loadingUser'}
           photoUrl={activeWorkspace?.workspace.imageUrl as string}
           unreadNotificationCount={
             withoutCurrent?.reduce((acc, item) => acc + item.notifications.total, 0) ?? 0
@@ -80,12 +80,8 @@ export const AccountSwitcher = ({ onChange }: Props) => {
       >
         <Stack>
           <HStack px={4} fontSize="xs" color={bodySub}>
-            <Avatar
-              size="2xs"
-              src={userData?.image as string}
-              name={userData?.name || (token?.name as string)}
-            />
-            <Text fontSize="xs">{token?.email}</Text>
+            <Avatar size="2xs" src={userData?.image as string} name={userData?.name as string} />
+            <Text fontSize="xs">{userData?.email as string}</Text>
           </HStack>
           <MenuOptionGroup
             type="radio"

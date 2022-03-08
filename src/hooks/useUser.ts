@@ -1,17 +1,13 @@
+import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
-import { signOut } from 'next-auth/react';
+import { User } from '@prisma/client';
 
 import { fetchMe } from 'queries/me';
+import { EnrichedWorkspaceMember } from 'types/common';
 
 const useUser = () => {
-  const destroySession = () => {
-    localStorage.removeItem('activeWorkspace');
-    signOut({ callbackUrl: '/login' });
-  };
-
-  return useQuery('me', fetchMe, {
+  return useQuery<User & { workspaces: EnrichedWorkspaceMember[] }, AxiosError>('me', fetchMe, {
     retry: false,
-    onError: destroySession,
   });
 };
 

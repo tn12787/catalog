@@ -1,9 +1,10 @@
 import { useQueryClient } from 'react-query';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo } from 'react';
 import create from 'zustand';
 
-import { EnrichedWorkspaceMember, ExtendedToken } from 'types/common';
+import useUser from 'hooks/useUser';
+import { EnrichedWorkspaceMember } from 'types/common';
 
 interface UseWorkspacePreferenceState {
   currentWorkspace: string;
@@ -16,8 +17,8 @@ const useWorkspacePreference = create<UseWorkspacePreferenceState>((set) => ({
 }));
 
 const useExtendedSession = () => {
-  const { data: session, status } = useSession();
-  const token = session?.token as ExtendedToken | undefined;
+  const { status } = useSession();
+  const { data: user, isLoading, error } = useUser();
   const { currentWorkspace: currentWorkspaceMembership, setCurrentWorkspace } =
     useWorkspacePreference(
       useCallback(
@@ -29,36 +30,47 @@ const useExtendedSession = () => {
       )
     );
 
+  const onLogout = useCallback(async () => {
+    localStorage.removeItem('activeWorkspace');
+    signOut({ callbackUrl: '/login?error=SessionExpired' });
+  }, []);
+
+  useEffect(() => {
+    if (status === 'unauthenticated' || [401, 404, 403].includes(Number(error?.response?.status))) {
+      onLogout();
+    }
+  }, [status, onLogout, error]);
+
   const workspaceMap = useMemo(() => {
-    const workspaceMemberships = token?.workspaceMemberships;
+    const workspaceMemberships = user?.workspaces;
 
     return workspaceMemberships?.reduce((acc, workspace) => {
       acc[workspace.workspaceId] = workspace;
       return acc;
     }, {} as { [key: string]: EnrichedWorkspaceMember });
-  }, [token?.workspaceMemberships]);
+  }, [user?.workspaces]);
 
   const workspaceList = useMemo(() => {
-    return token?.workspaceMemberships;
-  }, [token?.workspaceMemberships]);
+    return user?.workspaces;
+  }, [user?.workspaces]);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const workspaceMemberships = token?.workspaceMemberships;
+    const workspaceMemberships = user?.workspaces;
     const storedWorkspace = localStorage.getItem('workspace');
     if (Array.isArray(workspaceMemberships) && storedWorkspace) {
-      if (!token?.workspaceMemberships.find((workspace) => workspace.id === storedWorkspace)) {
+      if (!user?.workspaces.find((workspace) => workspace.id === storedWorkspace)) {
         localStorage.removeItem('activeWorkspace');
       }
     }
 
     if (workspaceMemberships) {
       setCurrentWorkspace(
-        localStorage.getItem('activeWorkspace') || token?.workspaceMemberships?.[0]?.workspaceId
+        localStorage.getItem('activeWorkspace') || user?.workspaces?.[0]?.workspaceId
       );
     }
-  }, [token?.workspaceMemberships, setCurrentWorkspace]);
+  }, [user?.workspaces, setCurrentWorkspace]);
 
   const onChangeWorkspace = useCallback(
     (val: string) => {
@@ -73,12 +85,11 @@ const useExtendedSession = () => {
   );
 
   return {
-    token,
     workspaceMemberships: workspaceMap,
     workspaceList,
     currentWorkspace: currentWorkspaceMembership,
     onChangeWorkspace: onChangeWorkspace,
-    status,
+    isLoading: isLoading || status === 'loading',
   };
 };
 

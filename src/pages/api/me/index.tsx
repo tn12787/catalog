@@ -1,4 +1,4 @@
-import { createHandler, Get, Request } from '@storyofams/next-api-decorators';
+import { createHandler, Get, NotFoundException, Request } from '@storyofams/next-api-decorators';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import { JWT } from 'next-auth/jwt';
@@ -14,7 +14,7 @@ class MeHandler {
     const session = (await getSession({ req })) as Session & { token: JWT };
 
     const user = await prisma.user.findUnique({
-      where: { email: session?.token?.email as string },
+      where: { id: session?.token?.sub as string },
       include: {
         workspaces: {
           include: {
@@ -29,6 +29,10 @@ class MeHandler {
         },
       },
     });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
 
     return user;
   }
