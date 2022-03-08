@@ -6,6 +6,9 @@
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
   },
+  "cacheDirectories": [
+    ".next/cache"
+  ],
   "dependencies": {
     "@ajna/pagination": "^1.4.13",
     "@chakra-ui/react": "^1.6.7",
