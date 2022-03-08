@@ -39,7 +39,7 @@ const ArtistList = ({ search, artists, loading }: Props) => {
   }
 
   return (
-    <SimpleGrid columnGap={4} rowGap={4} columns={{ base: 3, sm: 1, md: 2, xl: 3 }}>
+    <SimpleGrid columnGap={4} rowGap={4} columns={{ base: 1, md: 2, xl: 3 }}>
       {loading ? (
         <ArtistCard
           artist={{

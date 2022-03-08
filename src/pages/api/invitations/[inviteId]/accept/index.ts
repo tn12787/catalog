@@ -8,7 +8,7 @@ import { AuthDecoratedRequest } from 'types/common';
 @requiresAuth()
 class InviteAcceptanceHandler {
   @Post()
-  async acceptInvite(@PathParam('id') id: string, @Request() req: AuthDecoratedRequest) {
+  async acceptInvite(@PathParam('inviteId') id: string, @Request() req: AuthDecoratedRequest) {
     if (!id) throw new NotFoundException();
 
     const acceptingUser = req.session.token?.email;

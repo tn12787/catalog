@@ -17,7 +17,7 @@ import { AuthDecoratedRequest } from 'types/common';
 class UserHandler {
   @Put()
   async updateUser(
-    @PathParam('id') id: string,
+    @PathParam('uid') id: string,
     @Request() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateUserDto
   ) {

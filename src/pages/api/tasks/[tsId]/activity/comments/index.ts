@@ -6,7 +6,7 @@ import {
   ValidationPipe,
   NotFoundException,
 } from '@storyofams/next-api-decorators';
-import { TaskEventType } from '@prisma/client';
+import { NotificationType, TaskEventType } from '@prisma/client';
 
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -25,7 +25,7 @@ class CommentHandler {
   async createComment(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateCommentDto,
-    @PathParam('id') taskId: string
+    @PathParam('tsId') taskId: string
   ) {
     if (!taskId) throw new NotFoundException();
 
@@ -33,6 +33,7 @@ class CommentHandler {
       where: { id: taskId },
       select: {
         release: { select: { workspaceId: true } },
+        assignees: { select: { id: true } },
       },
     });
 
@@ -42,18 +43,32 @@ class CommentHandler {
       req,
       task?.release?.workspaceId
     );
-    if (!activeWorkspaceMember) throw new ForbiddenException();
 
-    const result = await prisma.releaseTaskEvent.create({
-      data: {
-        user: { connect: { id: activeWorkspaceMember.id } },
-        task: { connect: { id: taskId } },
-        type: TaskEventType.NEW_COMMENT,
-        extraData: {
-          newComment: body.text,
+    if (!activeWorkspaceMember || !task) throw new ForbiddenException();
+
+    const [result] = await prisma.$transaction([
+      prisma.releaseTaskEvent.create({
+        data: {
+          user: { connect: { id: activeWorkspaceMember.id } },
+          task: { connect: { id: taskId } },
+          type: TaskEventType.NEW_COMMENT,
+          extraData: {
+            newComment: body.text,
+          },
         },
-      },
-    });
+      }),
+      prisma.notification.createMany({
+        data: task.assignees
+          .filter((assignee) => assignee.id !== activeWorkspaceMember.id)
+          .map((item) => ({
+            type: NotificationType.TASK_COMMENT,
+            workspaceMemberId: item.id,
+            taskId,
+            extraData: {},
+            actorId: activeWorkspaceMember.id,
+          })),
+      }),
+    ]);
 
     return result;
   }

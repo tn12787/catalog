@@ -9,7 +9,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 @requiresAuth()
 class InviteRescindHandler {
   @Delete()
-  async rescindInvite(@PathParam('id') id: string, @Request() req: AuthDecoratedRequest) {
+  async rescindInvite(@PathParam('inviteId') id: string, @Request() req: AuthDecoratedRequest) {
     if (!id) throw new NotFoundException();
 
     const existingInvite = await prisma.invite.findUnique({

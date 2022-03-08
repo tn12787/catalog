@@ -2,7 +2,6 @@ import {
   BadRequestException,
   createMiddlewareDecorator,
   NextFunction,
-  NotFoundException,
   UnauthorizedException,
 } from '@storyofams/next-api-decorators';
 import { NextApiRequest, NextApiResponse } from 'next';
