@@ -11,6 +11,10 @@ const render = () => renderWithProviders(<WelcomePage />);
 jest.mock('next/router', () => ({ useRouter: jest.fn(() => ({ push: { id: jest.fn() } })) }));
 
 describe('Welcome Page', () => {
+  beforeEach(() => {
+    server.resetHandlers();
+  });
+
   it('Shows a the welcome page', async () => {
     const { getByText } = render();
     await waitFor(() => expect(getByText(/Welcome/)).toBeVisible());
@@ -29,6 +33,7 @@ describe('Welcome Page', () => {
     expect(getByText(NextButtonRegex)).toBeDisabled();
 
     fireEvent.input(getByPlaceholderText(/Your name/), { target: { value: 'Test User' } });
+    console.log('we made it here');
     await waitFor(() => expect(getByText(NextButtonRegex)).not.toBeDisabled());
     fireEvent.click(getByText(NextButtonRegex));
     await waitFor(() => expect(getByText(/How will you/)).toBeVisible());
