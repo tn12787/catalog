@@ -39,6 +39,11 @@ export default NextAuth({
     SlackProvider({
       clientId: process.env.SLACK_CLIENT_ID,
       clientSecret: process.env.SLACK_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope: 'openid profile email chat:write channels:write',
+        },
+      },
     }),
     EmailProvider({
       async sendVerificationRequest({ identifier: email, url }) {
