@@ -10,12 +10,14 @@ import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 
 type Props = {
   status: TaskStatus;
+  isDisabled?: boolean;
   onChange: (value: TaskStatus) => void | Promise<void>;
 };
 
-const StatusField = ({ status, onChange }: Props) => {
+const StatusField = ({ isDisabled, status, onChange }: Props) => {
   return (
     <QuickFormField
+      isDisabled={isDisabled}
       fieldName="status"
       value={status}
       renderValue={({ value }) => (

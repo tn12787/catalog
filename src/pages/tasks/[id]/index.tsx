@@ -24,6 +24,8 @@ import useTask from 'hooks/data/tasks/useTask';
 import { EnrichedReleaseTask } from 'types/common';
 import { getSingleServerSideTask } from 'ssr/tasks/getSingleServerSideTask';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 type SingleTaskPageProps = {
   task: EnrichedReleaseTask & { release: Release };
@@ -56,6 +58,13 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     }
   };
+
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
+
+  const canEdit = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    workspaceMemberships?.[currentWorkspace]
+  );
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
@@ -129,7 +138,7 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
               Activity
             </Heading>
             <ActivityList loading={activityLoading} events={taskActivity?.data ?? []} />
-            <NewCommentBox onSubmit={onSubmit} loading={commentLoading} />
+            {canEdit && <NewCommentBox onSubmit={onSubmit} loading={commentLoading} />}
           </Stack>
           <TaskInfo loading={taskLoading} task={taskData} />
         </Stack>

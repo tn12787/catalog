@@ -21,6 +21,8 @@ import Card from 'components/Card';
 import useAppColors from 'hooks/useAppColors';
 import { updateTask } from 'queries/tasks';
 import { UpdateTaskVars } from 'queries/tasks/types';
+import useExtendedSession from 'hooks/useExtendedSession';
+import { hasRequiredPermissions } from 'utils/auth';
 
 type Props = StackProps & {
   task: ReleaseTask;
@@ -61,11 +63,18 @@ const TaskNotes = ({ task, collapsible, ...rest }: Props) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
+
+  const canEdit = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    workspaceMemberships?.[currentWorkspace]
+  );
+
   return (
     <Card {...rest}>
       <HStack justifyContent={'space-between'}>
         <Heading size={collapsible ? 'sm' : 'md'}>Notes</Heading>
-        {!editing && (
+        {!editing && canEdit && (
           <Icon
             onClick={() => setEditing(true)}
             cursor={'pointer'}

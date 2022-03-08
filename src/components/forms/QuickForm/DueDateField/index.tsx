@@ -9,12 +9,14 @@ import DueDateSelect from './DueDateSelect';
 type Props = {
   date: Date | string;
   fieldName?: string;
+  isDisabled?: boolean;
   onChange: (value: Date | string) => void | Promise<void>;
 };
 
-const DueDateField = ({ fieldName = 'Due date', date, onChange }: Props) => {
+const DueDateField = ({ isDisabled, fieldName = 'Due date', date, onChange }: Props) => {
   return (
     <QuickFormField
+      isDisabled={isDisabled}
       fieldName={fieldName}
       value={new Date(date ?? Date.now())}
       renderValue={({ value }) => {
