@@ -1,6 +1,7 @@
 import GoogleProvider from 'next-auth/providers/google';
 import EmailProvider from 'next-auth/providers/email';
 import SpotifyProvider from 'next-auth/providers/spotify';
+import SlackProvider from 'next-auth/providers/slack';
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
@@ -34,6 +35,10 @@ export default NextAuth({
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+    }),
+    SlackProvider({
+      clientId: process.env.SLACK_CLIENT_ID,
+      clientSecret: process.env.SLACK_CLIENT_SECRET,
     }),
     EmailProvider({
       async sendVerificationRequest({ identifier: email, url }) {

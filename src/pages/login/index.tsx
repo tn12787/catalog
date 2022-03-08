@@ -20,7 +20,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { FaSpotify } from 'react-icons/fa';
+import { FaSlack, FaSpotify } from 'react-icons/fa';
 
 import logo from 'images/logo.svg';
 import PageHead from 'components/pageItems/PageHead';
@@ -60,6 +60,10 @@ const LoginPage = ({ csrfToken }: Props) => {
 
   const signInWithSpotify = async () => {
     await signIn('spotify', { callbackUrl });
+  };
+
+  const signInWithSlack = async () => {
+    await signIn('slack', { callbackUrl });
   };
 
   const signInWithEmail = async ({ email }: EmailSignInData) => {
@@ -111,13 +115,16 @@ const LoginPage = ({ csrfToken }: Props) => {
         <Heading fontWeight="semibold" fontSize="3xl">
           Log in to Launchday
         </Heading>
-        <Stack w="100%" spacing={6}>
+        <Stack w="100%" spacing={5}>
           {renderError(router.query?.error as string)}
           <Button leftIcon={<FcGoogle></FcGoogle>} onClick={signInWithGoogle} variant="outline">
             Sign in with Google
           </Button>
           <Button leftIcon={<FaSpotify></FaSpotify>} onClick={signInWithSpotify} variant="outline">
             Sign in with Spotify
+          </Button>
+          <Button leftIcon={<FaSlack></FaSlack>} onClick={signInWithSlack} variant="outline">
+            Sign in with Slack
           </Button>
           <Stack
             w="100%"
