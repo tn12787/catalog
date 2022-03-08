@@ -1,6 +1,7 @@
 import {
   Body,
   createHandler,
+  Delete,
   Get,
   Put,
   Req,
@@ -55,6 +56,16 @@ class WorkspaceHandler {
         name: body.name,
         imageUrl: body.imageUrl,
       },
+    });
+
+    return workspace;
+  }
+
+  @Delete()
+  async deleteWorkspace(@PathParam('wsId') id: string, @Request() req: AuthDecoratedRequest) {
+    await checkRequiredPermissions(req, ['DELETE_TEAM'], id);
+    const workspace = await prisma.workspace.delete({
+      where: { id },
     });
 
     return workspace;

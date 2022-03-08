@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useToast } from '@chakra-ui/react';
 import { useCallback } from 'react';
+import { signOut } from 'next-auth/react';
 
 import useExtendedSession from 'hooks/useExtendedSession';
-import { updateSingleWorkspace } from 'queries/workspaces';
+import { deleteSingleWorkspace, updateSingleWorkspace } from 'queries/workspaces';
 
 const useWorkspaceMutations = () => {
   const { currentWorkspace } = useExtendedSession();
@@ -40,8 +41,17 @@ const useWorkspaceMutations = () => {
     onError: onError.bind(null, "Couldn't update your workspace."),
   });
 
+  const deleteMutation = useMutation(deleteSingleWorkspace, {
+    onSuccess: () => {
+      onSuccess('Workspace deleted.');
+      signOut();
+    },
+    onError: onError.bind(null, "Couldn't delete your workspace."),
+  });
+
   return {
     updateSingleWorkspace: updateMutation,
+    deleteWorkspace: deleteMutation,
   };
 };
 
