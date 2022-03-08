@@ -338,6 +338,7 @@ enum NotificationType {
   TASK_DUE_TODAY
   TASK_OVERDUE
   TASK_COMMENT
+  TASK_ASSIGNED
 }
 
 model Notification {

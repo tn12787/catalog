@@ -8,6 +8,7 @@ import {
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
+import { NotificationType } from '@prisma/client';
 
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -44,6 +45,7 @@ class SingleTaskHandler {
         releaseId: true,
         release: { select: { targetDate: true } },
         type: true,
+        assignees: true,
       },
     });
 
@@ -74,15 +76,32 @@ class SingleTaskHandler {
       userId: activeWorkspaceMember?.id as string,
     });
 
-    await prisma.releaseTask.update({
-      where: {
-        releaseId_type: {
-          releaseId: releaseTask.releaseId,
-          type: releaseTask.type,
+    const currentAssignees = releaseTask.assignees.map((assignee) => assignee.id);
+
+    const newAssignees = body.assignees?.filter((item) => !currentAssignees.includes(item)) ?? [];
+
+    await prisma.$transaction([
+      prisma.releaseTask.update({
+        where: {
+          releaseId_type: {
+            releaseId: releaseTask.releaseId,
+            type: releaseTask.type,
+          },
         },
-      },
-      data: { ...updateArgs, events: { create: eventsToCreate as any } }, // TODO: find a type for this
-    });
+        data: { ...updateArgs, events: { create: eventsToCreate as any } }, // TODO: find a type for this
+      }),
+      prisma.notification.createMany({
+        data: newAssignees
+          .filter((item) => item !== activeWorkspaceMember.id)
+          .map((item) => ({
+            type: NotificationType.TASK_ASSIGNED,
+            workspaceMemberId: item,
+            taskId: id,
+            extraData: {},
+            actorId: activeWorkspaceMember.id,
+          })),
+      }),
+    ]);
   }
 }
 
