@@ -2,7 +2,6 @@ import { useQueryClient } from 'react-query';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo } from 'react';
 import create from 'zustand';
-import router from 'next/router';
 
 import { EnrichedWorkspaceMember, ExtendedToken } from 'types/common';
 
