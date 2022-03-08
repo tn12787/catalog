@@ -44,7 +44,7 @@ const useWorkspaceMutations = () => {
   const deleteMutation = useMutation(deleteSingleWorkspace, {
     onSuccess: () => {
       onSuccess('Workspace deleted.');
-      signOut();
+      signOut({ callbackUrl: '/login' });
     },
     onError: onError.bind(null, "Couldn't delete your workspace."),
   });

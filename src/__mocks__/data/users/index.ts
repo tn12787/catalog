@@ -1,6 +1,6 @@
-import { User } from '@prisma/client';
+import { UserResponse } from 'types/common';
 
-export const testUser = (extraFields: Partial<User>): User => {
+export const testUser = (extraFields: Partial<UserResponse>): UserResponse => {
   return {
     id: 'test-user-id',
     name: 'Test Users',
@@ -8,6 +8,7 @@ export const testUser = (extraFields: Partial<User>): User => {
     emailVerified: new Date(),
     image: null,
     segment: null,
+    workspaces: [],
     ...extraFields,
   };
 };
