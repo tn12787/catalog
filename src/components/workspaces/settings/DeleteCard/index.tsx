@@ -1,21 +1,7 @@
-import {
-  Alert,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Stack,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import { Alert, Button, Heading, Text, useDisclosure } from '@chakra-ui/react';
+import React, { useRef } from 'react';
+
+import DeleteWorkspaceModal from './DeleteWorkspaceModal';
 
 import Card from 'components/Card';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
@@ -34,13 +20,7 @@ const MembersCard = () => {
 
   const { deleteWorkspace } = useWorkspaceMutations();
 
-  const [inputValue, setInputValue] = useState('');
-  const cancelRef = useRef(null);
-
-  const onModalClose = () => {
-    setInputValue('');
-    onClose();
-  };
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   if (isLoading || !workspace || !canDelete) return null;
   return (
@@ -68,53 +48,16 @@ const MembersCard = () => {
       <Button onClick={onOpen} colorScheme={'red'}>
         Delete {workspace.name}
       </Button>
-      <AlertDialog
-        leastDestructiveRef={cancelRef}
-        size={'lg'}
+      <DeleteWorkspaceModal
+        workspace={workspace}
         isOpen={isOpen}
-        onClose={onModalClose}
-      >
-        <AlertDialogOverlay />
-        <AlertDialogContent py={2}>
-          <AlertDialogHeader>Delete Workspace</AlertDialogHeader>
-          <AlertDialogCloseButton></AlertDialogCloseButton>
-          <AlertDialogBody>
-            <Stack spacing={3}>
-              <Text>{"We're sorry to see you go."}</Text>
-              <Text display={'inline'}>
-                Please enter your workspace name, <strong>{workspace.name}</strong> to confirm
-                deletion:
-              </Text>
-              <FormControl>
-                <FormLabel>Workspace name</FormLabel>
-                <Input
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder={workspace.name}
-                ></Input>
-              </FormControl>
-              <Stack
-                direction={{ base: 'column', md: 'row' }}
-                alignSelf={{ base: 'stretch', md: 'flex-end' }}
-              >
-                <Button
-                  isDisabled={!workspace || workspace.name !== inputValue}
-                  colorScheme="red"
-                  isLoading={deleteWorkspace.isLoading}
-                  onClick={() => {
-                    deleteWorkspace.mutate({ id: workspace.id });
-                  }}
-                >
-                  Delete Workspace
-                </Button>
-                <Button ref={cancelRef} onClick={onModalClose}>
-                  Cancel
-                </Button>
-              </Stack>
-            </Stack>
-          </AlertDialogBody>
-        </AlertDialogContent>
-      </AlertDialog>
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isLoading={deleteWorkspace.isLoading}
+        onDelete={() => {
+          deleteWorkspace.mutate({ id: workspace.id });
+        }}
+      />
     </Card>
   );
 };
