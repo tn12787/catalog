@@ -55,6 +55,7 @@ class NotificationHandler {
         },
         include: {
           task: { include: { release: true } },
+          actor: { include: { user: true } },
         },
       }),
       prisma.notification.count(commonArgs),

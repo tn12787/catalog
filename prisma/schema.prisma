@@ -81,7 +81,8 @@ model WorkspaceMember {
   roles         Role[]
   tasksAssigned ReleaseTask[]
   actionsTaken  ReleaseTaskEvent[]
-  notifications Notification[]
+  notifications Notification[]     @relation("for")
+  notificationsTriggered Notification[] @relation("by")
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
@@ -336,18 +337,20 @@ enum NotificationType {
   TASK_DUE_IN_48_HOURS
   TASK_DUE_TODAY
   TASK_OVERDUE
+  TASK_COMMENT
 }
 
 model Notification {
   id                String           @id @default(cuid())
   type              NotificationType
-  workspaceMember   WorkspaceMember  @relation(fields: [workspaceMemberId], references: [id], onDelete: Cascade)
+  workspaceMember   WorkspaceMember  @relation(name: "for", fields: [workspaceMemberId], references: [id], onDelete: Cascade)
   workspaceMemberId String
+  actor             WorkspaceMember? @relation(name: "by", fields: [actorId], references: [id], onDelete: Cascade)
+  actorId           String?
   read              Boolean          @default(false)
   task              ReleaseTask?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId            String
   extraData         Json
   createdAt         DateTime         @default(now())
 
-  @@unique([workspaceMemberId, taskId, type])
 }
