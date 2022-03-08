@@ -6,7 +6,6 @@ import {
   Get,
   NotFoundException,
   Put,
-  Query,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
@@ -22,7 +21,7 @@ import { getArtistByIdIsomorphic } from 'backend/isomorphic/artists';
 @requiresAuth()
 class ArtistHandler {
   @Get()
-  async singleArtist(@Req() req: AuthDecoratedRequest, @Query('id') id: string) {
+  async singleArtist(@Req() req: AuthDecoratedRequest, @PathParam('arId') id: string) {
     return await getArtistByIdIsomorphic(req, id);
   }
 
@@ -30,7 +29,7 @@ class ArtistHandler {
   async updateArtist(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateArtistDto,
-    @PathParam('id') id: string
+    @PathParam('arId') id: string
   ) {
     if (!id) throw new NotFoundException();
 
@@ -65,7 +64,7 @@ class ArtistHandler {
   }
 
   @Delete()
-  async deleteArtist(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
+  async deleteArtist(@Req() req: AuthDecoratedRequest, @PathParam('arId') id: string) {
     const artist = await prisma.artist.findUnique({
       where: { id },
       select: {

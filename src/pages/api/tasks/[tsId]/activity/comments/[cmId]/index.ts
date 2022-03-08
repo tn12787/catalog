@@ -27,8 +27,8 @@ class SpecificCommentHandler {
   async updateComment(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateCommentDto,
-    @PathParam('id') taskId: string,
-    @PathParam('commentId') commentId: string
+    @PathParam('tsId') taskId: string,
+    @PathParam('cmId') commentId: string
   ) {
     if (!taskId) throw new NotFoundException();
 
@@ -82,8 +82,8 @@ class SpecificCommentHandler {
   @Delete()
   async deleteComment(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('id') taskId: string,
-    @PathParam('commentId') commentId: string
+    @PathParam('tsId') taskId: string,
+    @PathParam('cmId') commentId: string
   ) {
     if (!taskId) throw new NotFoundException();
 

@@ -23,7 +23,7 @@ import { getTaskByIdIsomorphic } from 'backend/isomorphic/tasks';
 @requiresAuth()
 class SingleTaskHandler {
   @Get()
-  async taskEvent(@Req() req: AuthDecoratedRequest, @PathParam('id') id: string) {
+  async fetchTask(@Req() req: AuthDecoratedRequest, @PathParam('tsId') id: string) {
     return await getTaskByIdIsomorphic(req, id);
   }
 
@@ -31,7 +31,7 @@ class SingleTaskHandler {
   async updateTask(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateReleaseTaskDto,
-    @PathParam('id') id: string
+    @PathParam('tsId') id: string
   ) {
     if (!id) throw new NotFoundException();
 

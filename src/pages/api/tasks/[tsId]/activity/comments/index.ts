@@ -25,7 +25,7 @@ class CommentHandler {
   async createComment(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateCommentDto,
-    @PathParam('id') taskId: string
+    @PathParam('tsId') taskId: string
   ) {
     if (!taskId) throw new NotFoundException();
 

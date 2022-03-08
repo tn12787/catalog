@@ -12,7 +12,6 @@ export const fetchContacts = async ({ workspaceId, pagination, search }: Contact
     `/api/workspaces/${workspaceId}/contacts`,
     {
       params: {
-        workspaceId,
         pageSize: pagination?.pageSize,
         page: pagination?.page,
         search,
