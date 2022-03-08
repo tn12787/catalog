@@ -8,13 +8,14 @@ import DueDateSelect from './DueDateSelect';
 
 type Props = {
   date: Date | string;
+  fieldName?: string;
   onChange: (value: Date | string) => void | Promise<void>;
 };
 
-const DueDateField = ({ date, onChange }: Props) => {
+const DueDateField = ({ fieldName = 'Due date', date, onChange }: Props) => {
   return (
     <QuickFormField
-      fieldName="Due Date"
+      fieldName={fieldName}
       value={new Date(date ?? Date.now())}
       renderValue={({ value }) => {
         return <Box>{format(new Date(value ?? Date.now()), 'PP')}</Box>;

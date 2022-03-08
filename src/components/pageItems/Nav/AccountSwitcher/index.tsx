@@ -29,6 +29,7 @@ import useUser from 'hooks/useUser';
 import useAppColors from 'hooks/useAppColors';
 import useAllWorkspaceNotifications from 'hooks/data/notifications/useAllWorkspaceNotifications';
 import UnreadCountBadge from 'components/notifications/UnreadCountBadge';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 type Props = {
   onChange: () => void;
@@ -37,8 +38,9 @@ type Props = {
 export const AccountSwitcher = ({ onChange }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { token, currentWorkspace, onChangeWorkspace, status } = useExtendedSession();
+  const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
   const router = useRouter();
-  const { data: userData } = useUser();
+  const { data: userData, isLoading: isUserLoading } = useUser();
   const { bodySub, border } = useAppColors();
 
   const sessionLoading = status === 'loading';
@@ -55,11 +57,13 @@ export const AccountSwitcher = ({ onChange }: Props) => {
     return userWorkspaces?.find((item) => item.workspaceId === currentWorkspace);
   }, [currentWorkspace, userWorkspaces]);
 
+  const isAnythingLoading = sessionLoading || isWorkspaceLoading || isUserLoading;
+
   return (
     <Menu>
-      <Skeleton rounded="lg" isLoaded={!sessionLoading}>
+      <Skeleton rounded="lg" isLoaded={!isAnythingLoading}>
         <AccountSwitcherButton
-          workspaceName={(activeWorkspace?.workspace.name as string) ?? 'loadingWorkspace'}
+          workspaceName={(workspace?.name as string) ?? 'loadingWorkspace'}
           userName={(userData?.name || (token?.name as string)) ?? 'loadingUser'}
           photoUrl={activeWorkspace?.workspace.imageUrl as string}
           unreadNotificationCount={

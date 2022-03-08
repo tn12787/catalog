@@ -1,17 +1,10 @@
 import React from 'react';
 import NextLink from 'next/link';
 import { Skeleton } from '@chakra-ui/skeleton';
-import { Button } from '@chakra-ui/button';
 import { Flex, Stack, HStack, Link, Text } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
-import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
-import { FiChevronDown } from 'react-icons/fi';
-import { useDisclosure } from '@chakra-ui/hooks';
-import { MenuDivider } from '@chakra-ui/react';
-import router from 'next/router';
-import { BiCalendar } from 'react-icons/bi';
 
-import DeleteReleaseDialog from '../DeleteReleaseDialog';
+import SingleReleaseMenu from '../SingleReleaseMenu';
 
 import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
@@ -20,9 +13,6 @@ import ReleaseType from './ReleaseType';
 import { ClientRelease } from 'types/common';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import useAppColors from 'hooks/useAppColors';
-import useExtendedSession from 'hooks/useExtendedSession';
-import { hasRequiredPermissions } from 'utils/auth';
-import { buildPlannerLink } from 'utils/planner';
 
 interface ReleaseCardProps {
   releaseData: ClientRelease;
@@ -31,13 +21,6 @@ interface ReleaseCardProps {
 
 const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
   const { border, bgSecondary } = useAppColors();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
-  const canDeleteRelease = hasRequiredPermissions(
-    ['DELETE_RELEASES'],
-    workspaceMemberships?.[currentWorkspace]
-  );
 
   const artworkTask = releaseData.artwork;
 
@@ -80,39 +63,7 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
               <ReleaseStatusBadge releaseData={releaseData} />
             </Skeleton>
           </HStack>
-          {canDeleteRelease && (
-            <Skeleton isLoaded={!loading}>
-              <Menu size="sm">
-                <MenuButton
-                  as={Button}
-                  variant="outline"
-                  colorScheme="purple"
-                  rightIcon={<FiChevronDown />}
-                  size="sm"
-                >
-                  Actions
-                </MenuButton>
-                <MenuList>
-                  <MenuItem
-                    icon={<BiCalendar />}
-                    onClick={() =>
-                      router.push(
-                        buildPlannerLink(releaseData.id, new Date(releaseData.targetDate)),
-                        buildPlannerLink(releaseData.id, new Date(releaseData.targetDate)),
-                        { shallow: true }
-                      )
-                    }
-                  >
-                    View in planner
-                  </MenuItem>
-                  <MenuDivider />
-                  <MenuItem color="red" onClick={onOpen}>
-                    Delete
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </Skeleton>
-          )}
+          <SingleReleaseMenu releaseData={releaseData} isLoading={loading} />
         </Stack>
         <Stack>
           <Skeleton isLoaded={!loading} alignSelf="flex-start">
@@ -126,13 +77,6 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           </Skeleton>
         </Stack>
       </Stack>
-      <DeleteReleaseDialog
-        onConfirm={onClose}
-        isOpen={isOpen}
-        onCancel={onClose}
-        onClose={onClose}
-        releaseData={releaseData}
-      />
     </Flex>
   );
 };

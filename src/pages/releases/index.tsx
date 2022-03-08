@@ -15,6 +15,7 @@ import { isEqual } from 'lodash';
 import { useQuery } from 'react-query';
 import { BiSearch } from 'react-icons/bi';
 import { Artist } from '@prisma/client';
+import Link from 'next/link';
 
 import ReleaseCard from 'components/releases/ReleaseCard';
 import DashboardLayout from 'components/layouts/DashboardLayout';
@@ -123,9 +124,11 @@ const Releases = () => {
             All Releases
           </Heading>
           {canCreateRelease && !shouldHideControls && (
-            <Button href={'/releases/new'} colorScheme="purple" as={'a'}>
-              Create New Release
-            </Button>
+            <Link passHref href={'/releases/new'}>
+              <Button colorScheme="purple" as={'a'}>
+                Create New Release
+              </Button>
+            </Link>
           )}
         </Stack>
         {!shouldHideControls && (

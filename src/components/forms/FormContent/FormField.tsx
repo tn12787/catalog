@@ -81,8 +81,8 @@ const FormField = <T,>({
               {...register(name as any, { ...registerArgs })}
               {...extraProps}
             >
-              {options?.map((option) => (
-                <option key={option.value} value={option.value}>
+              {options?.map((option, index) => (
+                <option key={`${option.label}_select_${index}`} value={option.value}>
                   {option.label}
                 </option>
               ))}

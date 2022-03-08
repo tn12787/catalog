@@ -33,9 +33,9 @@ import { FilterOptions } from 'queries/types';
 import Card from 'components/Card';
 import { ContactWithLabels } from 'types/common';
 import ContactModal from 'components/contacts/ContactModal';
-import useExtendedSession from 'hooks/useExtendedSession';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
-const NoficationsPage = () => {
+const ContactsPage = () => {
   const [search, setSearch] = useState('');
   const { bgPrimary, bodySub } = useAppColors();
 
@@ -49,7 +49,7 @@ const NoficationsPage = () => {
     search,
   };
 
-  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
+  const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const { data: contacts, isLoading } = useContacts(queryArgs);
 
@@ -71,11 +71,11 @@ const NoficationsPage = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/overview`}>
-              <BreadcrumbLink>
-                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
-              </BreadcrumbLink>
-            </Link>
+            <Skeleton isLoaded={!isWorkspaceLoading}>
+              <NextLink passHref href={`/overview`}>
+                <BreadcrumbLink>{workspace?.name}</BreadcrumbLink>
+              </NextLink>
+            </Skeleton>
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
@@ -193,8 +193,8 @@ const NoficationsPage = () => {
   );
 };
 
-NoficationsPage.getLayout = () => DashboardLayout;
+ContactsPage.getLayout = () => DashboardLayout;
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
 
-export default NoficationsPage;
+export default ContactsPage;

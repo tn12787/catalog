@@ -13,7 +13,6 @@ import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
 import { postNewComment } from 'queries/tasks';
 import ActivityList from 'components/tasks/activity/ActivityList';
-import useExtendedSession from 'hooks/useExtendedSession';
 import NewCommentBox from 'components/comments/NewCommentBox';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
 import { buildPlannerLink } from 'utils/planner';
@@ -24,6 +23,7 @@ import useTaskActivity from 'hooks/data/tasks/useTaskActivity';
 import useTask from 'hooks/data/tasks/useTask';
 import { EnrichedReleaseTask } from 'types/common';
 import { getSingleServerSideTask } from 'ssr/tasks/getSingleServerSideTask';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 type SingleTaskPageProps = {
   task: EnrichedReleaseTask & { release: Release };
@@ -33,7 +33,6 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
   const router = useRouter();
   const taskId = router.query['id'] as string;
   const { bgPrimary } = useAppColors();
-  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -45,6 +44,7 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
       queryClient.invalidateQueries(['taskActivity', taskId]);
     },
   });
+  const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const onSubmit = async (data: NewCommentFormData) => {
     try {
@@ -70,11 +70,11 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
         <Skeleton isLoaded={!taskLoading}>
           <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
             <BreadcrumbItem>
-              <Link passHref href={`/workspaces/${currentWorkspace ?? 'noWorkspace'}/overview`}>
-                <BreadcrumbLink>
-                  {workspaceMemberships?.[currentWorkspace]?.workspace.name}
-                </BreadcrumbLink>
-              </Link>
+              <Skeleton isLoaded={!isWorkspaceLoading}>
+                <Link passHref href={`/overview`}>
+                  <BreadcrumbLink>{workspace?.name}</BreadcrumbLink>
+                </Link>
+              </Skeleton>
             </BreadcrumbItem>
 
             <BreadcrumbItem>

@@ -3,7 +3,6 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Button,
   Flex,
   Heading,
   HStack,
@@ -17,11 +16,11 @@ import React from 'react';
 import { BiChevronRight } from 'react-icons/bi';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
+import SingleReleaseMenu from '../SingleReleaseMenu';
 
 import { ClientRelease } from 'types/common';
-import { hasRequiredPermissions } from 'utils/auth';
-import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 interface Props {
   releaseData: ClientRelease;
@@ -30,16 +29,9 @@ interface Props {
 const HeaderSection = ({ releaseData }: Props) => {
   const router = useRouter();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const { isOpen, onClose } = useDisclosure();
   const { bgPrimary } = useAppColors();
-
-  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
-
-  const canDeleteRelease = hasRequiredPermissions(
-    ['DELETE_RELEASES'],
-    workspaceMemberships?.[currentWorkspace]
-  );
+  const { workspace } = useCurrentWorkspace();
 
   const artworkUrl = releaseData.artwork?.url;
 
@@ -70,9 +62,7 @@ const HeaderSection = ({ releaseData }: Props) => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Link passHref href={`/overview`}>
-              <BreadcrumbLink>
-                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
-              </BreadcrumbLink>
+              <BreadcrumbLink>{workspace?.name}</BreadcrumbLink>
             </Link>
           </BreadcrumbItem>
 
@@ -88,15 +78,11 @@ const HeaderSection = ({ releaseData }: Props) => {
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
-        <Flex pb={3} align="center" justify="space-between" w={{ base: '90%', md: '100%' }}>
+        <Flex pb={3} align="center" justify="space-between" w={{ base: '100%', md: '100%' }}>
           <HStack alignItems="center" width="100%" margin={['0 auto']}>
             <Heading>{releaseData.name}</Heading>
           </HStack>
-          {canDeleteRelease && (
-            <Button colorScheme="red" onClick={onOpen}>
-              Delete
-            </Button>
-          )}
+          <SingleReleaseMenu releaseData={releaseData} />
         </Flex>
       </Stack>
 

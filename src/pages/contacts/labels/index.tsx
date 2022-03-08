@@ -27,10 +27,10 @@ import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedire
 import PageHead from 'components/pageItems/PageHead';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import Card from 'components/Card';
-import useExtendedSession from 'hooks/useExtendedSession';
 import useContactLabels from 'hooks/data/contacts/labels/useContactLabels';
 import { FilterOptions } from 'queries/types';
 import ContactLabelModal from 'components/contacts/labels/ContactLabelModal';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const ContactLabelsPage = () => {
   const [search, setSearch] = useState('');
@@ -43,7 +43,7 @@ const ContactLabelsPage = () => {
     search,
   };
 
-  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
+  const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const { data: labels, isLoading } = useContactLabels(queryArgs);
 
@@ -54,11 +54,11 @@ const ContactLabelsPage = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/overview`}>
-              <BreadcrumbLink>
-                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
-              </BreadcrumbLink>
-            </Link>
+            <Skeleton isLoaded={!isWorkspaceLoading}>
+              <Link passHref href={`/overview`}>
+                <BreadcrumbLink>{workspace?.name}</BreadcrumbLink>
+              </Link>
+            </Skeleton>
           </BreadcrumbItem>
 
           <BreadcrumbItem>

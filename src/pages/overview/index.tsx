@@ -1,7 +1,8 @@
 import { Stack } from '@chakra-ui/layout';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Heading, Skeleton, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
+import { TaskStatus } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -14,6 +15,7 @@ import Card from 'components/Card';
 import OverdueTasks from 'components/overview/OverdueTasks';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import useReleases from 'hooks/data/releases/useReleases';
+import useArtists from 'hooks/data/artists/useArtists';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
@@ -21,7 +23,7 @@ const OverviewPage = () => {
 
   const { workspace: workspaceData, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
-  const { data, isLoading: areReleaseEventsLoading } = useQuery(
+  const { data: releaseEvents, isLoading: areReleaseEventsLoading } = useQuery(
     ['releaseEvents', currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id],
     () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id)
   );
@@ -29,15 +31,33 @@ const OverviewPage = () => {
     dates: { after: new Date(new Date().toDateString()) },
   });
 
+  const { data: artists, isLoading: areArtistsLoading } = useArtists();
+
+  const isAnythingLoading =
+    isWorkspaceLoading ||
+    areReleaseEventsLoading ||
+    areUpcomingReleasesLoading ||
+    areArtistsLoading;
+
+  const outstandingReleaseEvents = useMemo(
+    () => releaseEvents?.filter((item) => item.data.status === TaskStatus.OUTSTANDING),
+    [releaseEvents]
+  );
+
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
       <PageHead title="Overview"></PageHead>
 
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
+          <Heading size="2xl" fontWeight="black" py={4} alignSelf="flex-start">
+            Overview
+          </Heading>
+        </Stack>
+        <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isWorkspaceLoading}>
-            <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-              {isWorkspaceLoading ? 'Loading workspace name' : workspaceData?.name}
+            <Heading size="lg" fontWeight="semibold" alignSelf="flex-start">
+              {workspaceData?.name ?? 'loading'}
             </Heading>
           </Skeleton>
         </Stack>
@@ -45,23 +65,31 @@ const OverviewPage = () => {
           <Card w="100%">
             <Stat>
               <StatLabel>Upcoming Releases</StatLabel>
-              <Skeleton isLoaded={!areUpcomingReleasesLoading}>
-                <StatNumber>{upcomingReleases?.total}</StatNumber>
+              <Skeleton display={'inline-flex'} isLoaded={!areUpcomingReleasesLoading}>
+                <StatNumber>{upcomingReleases?.total ?? 0}</StatNumber>
               </Skeleton>
             </Stat>
           </Card>
           <Card w="100%">
             <Stat>
-              <StatLabel>Plan</StatLabel>
-              <Skeleton isLoaded={!isWorkspaceLoading}>
-                <StatNumber>{upcomingReleases?.total}</StatNumber>
+              <StatLabel>Outstanding Tasks</StatLabel>
+              <Skeleton display={'inline-flex'} isLoaded={!areReleaseEventsLoading}>
+                <StatNumber>{outstandingReleaseEvents?.length ?? 0}</StatNumber>
+              </Skeleton>
+            </Stat>
+          </Card>
+          <Card w="100%">
+            <Stat>
+              <StatLabel>Artists</StatLabel>
+              <Skeleton display={'inline-flex'} isLoaded={!areArtistsLoading}>
+                <StatNumber>{artists?.length ?? 0}</StatNumber>
               </Skeleton>
             </Stat>
           </Card>
         </Stack>
 
-        <OverdueTasks data={data ?? []} loading={areReleaseEventsLoading} />
-        <MyTasks data={data ?? []} loading={areReleaseEventsLoading} />
+        <OverdueTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
+        <MyTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
       </Stack>
     </Stack>
   );

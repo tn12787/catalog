@@ -1,20 +1,20 @@
 import { ReleaseType } from '@prisma/client';
-import { IsNotEmpty, IsDate, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsDate, IsEnum, IsOptional } from 'class-validator';
 
 import { ReleaseType as ReleaseTypeEnum } from 'types/common';
 
 export class UpdateReleaseDto {
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(ReleaseTypeEnum)
   type: ReleaseType;
 
-  @IsNotEmpty()
+  @IsOptional()
   artist: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsDate()
   targetDate: Date;
 }
