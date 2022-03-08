@@ -13,7 +13,7 @@ const testUpdateReleaseHandler = rest.patch('/api/releases/:id', (req, res, ctx)
   return res(ctx.json(testClientRelease({ id: req.params.id as string })));
 });
 
-const testReleaseEventHandler = (release: EnrichedRelease) =>
+export const testReleaseEventHandler = (release: EnrichedRelease) =>
   rest.get('/api/releases/:id/events', (req, res, ctx) => {
     return res(ctx.json(getEventsForRelease(release)));
   });
