@@ -41,7 +41,7 @@ export default NextAuth({
       clientSecret: process.env.SLACK_CLIENT_SECRET,
       authorization: {
         params: {
-          scope: 'openid profile email chat:write channels:write',
+          scope: 'openid profile email',
         },
       },
     }),
