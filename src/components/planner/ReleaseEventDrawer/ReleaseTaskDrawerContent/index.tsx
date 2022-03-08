@@ -26,6 +26,7 @@ import UrlField from 'components/forms/QuickForm/UrlField';
 import ImageField from 'components/forms/QuickForm/ImageField';
 import DistributorField from 'components/forms/QuickForm/DistributorField';
 import ContactsField from 'components/forms/QuickForm/ContactsField';
+import { hasRequiredPermissions } from 'utils/auth';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -40,7 +41,7 @@ type RollbackContext = {
 const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
   const task = event?.data;
   const queryClient = useQueryClient();
-  const { currentWorkspace } = useExtendedSession();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const toast = useToast();
 
   const { mutateAsync: submitUpdate } = useMutation(updateTask, {
@@ -90,6 +91,11 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
     new Date().getTime() > new Date(event.date).getTime() &&
     event.data.status !== TaskStatus.COMPLETE;
 
+  const canEdit = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    workspaceMemberships?.[currentWorkspace]
+  );
+
   return (
     <Stack w="100%" spacing={5}>
       {isOutstanding && (
@@ -100,6 +106,7 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
       {task?.type === ReleaseTaskType.MASTERING && (
         <Skeleton isLoaded={!loading}>
           <UrlField
+            isDisabled={!canEdit}
             url={(task as ClientMastering).url ?? ''}
             onChange={(url) => onSubmit({ url })}
           />
@@ -109,6 +116,7 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
       {task?.type === ReleaseTaskType.MUSIC_VIDEO && (
         <Skeleton isLoaded={!loading}>
           <UrlField
+            isDisabled={!canEdit}
             url={(task as ClientMusicVideo).url ?? ''}
             onChange={(url) => onSubmit({ url })}
           />
@@ -117,6 +125,7 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
       {task?.type === ReleaseTaskType.ARTWORK && (
         <Skeleton isLoaded={!loading}>
           <ImageField
+            isDisabled={!canEdit}
             url={(task as ClientArtwork).url ?? ''}
             onChange={(url) => onSubmit({ url })}
           />
@@ -125,6 +134,7 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
       {task?.type === ReleaseTaskType.DISTRIBUTION && (
         <Skeleton isLoaded={!loading}>
           <DistributorField
+            isDisabled={!canEdit}
             distributor={(task as ClientDistribution).distributorId ?? ''}
             onChange={(distributor) => onSubmit({ distributor })}
           />
@@ -132,24 +142,28 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
       )}
       <Skeleton isLoaded={!loading}>
         <StatusField
+          isDisabled={!canEdit}
           status={task?.status as TaskStatus}
           onChange={(status) => onSubmit({ status })}
         />
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <AssigneesField
+          isDisabled={!canEdit}
           assignees={task?.assignees as WorkspaceMemberWithUser[]}
           onChange={(assignees) => onSubmit({ assignees })}
         />
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <ContactsField
+          isDisabled={!canEdit}
           contacts={task?.contacts as ContactWithLabels[]}
           onChange={(contacts) => onSubmit({ contacts })}
         />
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <DueDateField
+          isDisabled={!canEdit}
           date={
             event.type === EventType.RELEASE
               ? (event.release.targetDate as Date)

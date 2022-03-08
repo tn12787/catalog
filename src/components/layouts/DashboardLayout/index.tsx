@@ -33,7 +33,7 @@ const DashboardLayout: React.FC = ({ children }) => {
           position="fixed"
           bottom={'20px'}
           right={'20px'}
-          zIndex={1000}
+          zIndex={'popover'}
           boxShadow="xl"
           colorScheme="purple"
           onClick={onOpen}

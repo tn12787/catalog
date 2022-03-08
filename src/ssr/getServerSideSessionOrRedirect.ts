@@ -12,7 +12,7 @@ export const getServerSideSessionOrRedirect: GetServerSideProps<ServerSideSessio
   if (!session) {
     return {
       redirect: {
-        destination: `/login?callbackUrl=${context.req.url as string}`,
+        destination: `/login?callbackUrl=${context.req.url as string}&error=SessionRequired`,
         permanent: false,
       },
     };

@@ -35,6 +35,7 @@ type Props<T extends FieldValues> = PopoverProps & {
   renderValue?: ({ value }: { value: T }) => JSX.Element;
   onSubmit: (value: T) => void | Promise<void>;
   renderEditing: ({ value, onChange }: any) => JSX.Element;
+  isDisabled?: boolean;
 };
 
 const QuickFormField = <T extends FieldValues>({
@@ -43,6 +44,7 @@ const QuickFormField = <T extends FieldValues>({
   renderValue,
   onSubmit,
   renderEditing,
+  isDisabled,
 }: Props<T>) => {
   const { primary, bgSecondary } = useAppColors();
   const { onOpen, isOpen, onClose } = useDisclosure();
@@ -54,20 +56,20 @@ const QuickFormField = <T extends FieldValues>({
 
   return (
     <Stack>
-      <Popover isLazy isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+      <Popover isLazy isOpen={isOpen && !isDisabled} onClose={onClose} onOpen={onOpen}>
         <PopoverTrigger>
           <HStack
-            as={Button}
+            as={!isDisabled ? Button : Stack}
             fontSize="sm"
             fontWeight={'bold'}
-            _hover={{ color: primary }}
+            _hover={!isDisabled ? { color: primary } : undefined}
             justifyContent={'space-between'}
             variant="unstyled"
             onClick={onOpen}
             h="auto"
           >
             <Text textTransform={'capitalize'}>{fieldName}</Text>
-            <Icon as={FiEdit} />
+            {!isDisabled && <Icon as={FiEdit} />}
           </HStack>
         </PopoverTrigger>
         {renderValue ? renderValue({ value }) : <Box>{value}</Box>}

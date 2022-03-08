@@ -34,6 +34,8 @@ import Card from 'components/Card';
 import { ContactWithLabels } from 'types/common';
 import ContactModal from 'components/contacts/ContactModal';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import { hasRequiredPermissions } from 'utils/auth';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 const ContactsPage = () => {
   const [search, setSearch] = useState('');
@@ -63,6 +65,13 @@ const ContactsPage = () => {
   const onSelectionChange = useCallback((rows: Record<string, boolean>) => {
     setSelectedRows(rows);
   }, []);
+
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
+
+  const canCreate = hasRequiredPermissions(
+    ['CREATE_CONTACTS'],
+    workspaceMemberships?.[currentWorkspace]
+  );
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
@@ -135,21 +144,23 @@ const ContactsPage = () => {
                       variant="link"
                       leftIcon={<BsFillTagFill fontSize="1.25em" />}
                     >
-                      Manage Labels
+                      {canCreate ? 'Manage' : 'View'} Labels
                     </Button>
                   </NextLink>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading}>
-                  <Button
-                    size="sm"
-                    w="100%"
-                    iconSpacing={1}
-                    onClick={onNewOpen}
-                    leftIcon={<RiAddFill fontSize="1.25em" />}
-                  >
-                    New contact
-                  </Button>
-                </Skeleton>
+                {canCreate && (
+                  <Skeleton isLoaded={!isLoading}>
+                    <Button
+                      size="sm"
+                      w="100%"
+                      iconSpacing={1}
+                      onClick={onNewOpen}
+                      leftIcon={<RiAddFill fontSize="1.25em" />}
+                    >
+                      New contact
+                    </Button>
+                  </Skeleton>
+                )}
               </Stack>
             </Stack>
             <Stack>

@@ -9,15 +9,17 @@ import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 
 type Props = {
   assignees: WorkspaceMemberWithUser[];
+  isDisabled?: boolean;
   onChange: (value: WorkspaceMemberWithUser[]) => void | Promise<void>;
 };
 
-const AssigneesField = ({ assignees, onChange }: Props) => {
+const AssigneesField = ({ isDisabled, assignees, onChange }: Props) => {
   const mapAssignees = (assignees: WorkspaceMemberWithUser[]) =>
     assignees.map((assignee) => assignee.id);
 
   return (
     <QuickFormField
+      isDisabled={isDisabled}
       fieldName="assignees"
       value={assignees}
       renderValue={({ value }) => <AssigneeBadgeList assignees={value} />}

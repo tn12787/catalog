@@ -10,16 +10,18 @@ import { fetchDistributors } from 'queries/distribution';
 
 type Props = {
   distributor: string;
+  isDisabled?: boolean;
   onChange: (value: string) => void | Promise<void>;
 };
 
-const DistributorField = ({ distributor, onChange }: Props) => {
+const DistributorField = ({ isDisabled, distributor, onChange }: Props) => {
   const { data: distributors } = useQuery('distributors', fetchDistributors);
 
   const dataToRender = distributors?.find((item) => item.id === distributor);
 
   return (
     <QuickFormField
+      isDisabled={isDisabled}
       fieldName="distributor"
       value={distributor}
       renderValue={({}) => <Box>{dataToRender?.name}</Box>}

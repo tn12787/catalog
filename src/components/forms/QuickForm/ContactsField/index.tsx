@@ -9,14 +9,16 @@ import ContactBadgeList from 'components/contacts/ContactBadge/ContactBadgeList'
 
 type Props = {
   contacts: ContactWithLabels[];
+  isDisabled?: boolean;
   onChange: (value: ContactWithLabels[]) => void | Promise<void>;
 };
 
-const ContactsField = ({ contacts, onChange }: Props) => {
+const ContactsField = ({ isDisabled, contacts, onChange }: Props) => {
   const mapContacts = (items: ContactWithLabels[]) => items.map((item) => item.id);
 
   return (
     <QuickFormField
+      isDisabled={isDisabled}
       fieldName="contacts"
       value={contacts}
       renderValue={({ value }) => <ContactBadgeList contacts={value} />}
