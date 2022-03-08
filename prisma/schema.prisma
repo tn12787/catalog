@@ -55,7 +55,7 @@ enum UserOnboardingSegment {
 }
 
 model Workspace {
-  id                   String            @id @default(cuid())
+  id                   String            @id @default(uuid())
   name                 String
   imageUrl             String?
   provider             CloudProvider
@@ -73,7 +73,7 @@ model Workspace {
 }
 
 model WorkspaceMember {
-  id            String             @id @default(cuid())
+  id            String             @id @default(uuid())
   user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   workspace     Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   userId        String
@@ -91,7 +91,7 @@ model WorkspaceMember {
 }
 
 model User {
-  id            String                 @id @default(cuid())
+  id            String                 @id @default(uuid())
   name          String?
   email         String?                @unique
   emailVerified DateTime?
@@ -103,7 +103,7 @@ model User {
 }
 
 model Invite {
-  id          String    @id @default(cuid())
+  id          String    @id @default(uuid())
   email       String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String
@@ -116,7 +116,7 @@ model Invite {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(uuid())
   userId       String
   expires      DateTime
   sessionToken String   @unique
@@ -125,7 +125,7 @@ model Session {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
+  id                 String  @id @default(uuid())
   userId             String
   type               String
   provider           String
@@ -154,7 +154,7 @@ model VerificationToken {
 }
 
 model Artist {
-  id           String    @id @default(cuid())
+  id           String    @id @default(uuid())
   name         String
   legalName    String?
   spotifyUrl   String?
@@ -169,7 +169,7 @@ model Artist {
 }
 
 model Release {
-  id          String      @id @default(cuid())
+  id          String      @id @default(uuid())
   name        String
   artist      Artist      @relation(fields: [artistId], references: [id], onDelete: Cascade)
   artistId    String
@@ -185,7 +185,7 @@ model Release {
 }
 
 model Contact {
-  id          String         @id @default(cuid())
+  id          String         @id @default(uuid())
   name        String
   email       String?
   phone       String?
@@ -202,7 +202,7 @@ model Contact {
 }
 
 model ContactLabel {
-  id          String     @id @default(cuid())
+  id          String     @id @default(uuid())
   name        String
   workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String
@@ -213,7 +213,7 @@ model ContactLabel {
 }
 
 model ReleaseTask {
-  id               String             @id @default(cuid())
+  id               String             @id @default(uuid())
   notes            String?
   calendarEventId  String?            @unique
   dueDate          DateTime? //TODO: make this required
@@ -237,7 +237,7 @@ model ReleaseTask {
 }
 
 model ArtworkData {
-  id     String      @id @default(cuid())
+  id     String      @id @default(uuid())
   url    String?     @unique
   task   ReleaseTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId String
@@ -246,7 +246,7 @@ model ArtworkData {
 }
 
 model DistributionData {
-  id            String      @id @default(cuid())
+  id            String      @id @default(uuid())
   distributor   Distributor @relation(fields: [distributorId], references: [id])
   distributorId String
   task          ReleaseTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
@@ -256,7 +256,7 @@ model DistributionData {
 }
 
 model MarketingData {
-  id     String          @id @default(cuid())
+  id     String          @id @default(uuid())
   links  MarketingLink[]
   task   ReleaseTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId String
@@ -265,7 +265,7 @@ model MarketingData {
 }
 
 model MusicVideoData {
-  id     String      @id @default(cuid())
+  id     String      @id @default(uuid())
   url    String?     @unique
   task   ReleaseTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId String
@@ -274,7 +274,7 @@ model MusicVideoData {
 }
 
 model MasteringData {
-  id     String      @id @default(cuid())
+  id     String      @id @default(uuid())
   url    String?     @unique
   task   ReleaseTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId String
@@ -283,7 +283,7 @@ model MasteringData {
 }
 
 model ReleaseTaskEvent {
-  id        String          @id @default(cuid())
+  id        String          @id @default(uuid())
   type      TaskEventType
   task      ReleaseTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String
@@ -294,7 +294,7 @@ model ReleaseTaskEvent {
 }
 
 model Distributor {
-  id        String             @id @default(cuid())
+  id        String             @id @default(uuid())
   name      String             @unique
   siteUrl   String?            @unique
   usedFor   DistributionData[]
@@ -305,7 +305,7 @@ model Distributor {
 }
 
 model MarketingLink {
-  id            String        @id @default(cuid())
+  id            String        @id @default(uuid())
   url           String
   name          String
   marketingTask MarketingData @relation(fields: [marketingId], references: [id], onDelete: Cascade)
@@ -315,7 +315,7 @@ model MarketingLink {
 }
 
 model Role {
-  id          String            @id @default(cuid())
+  id          String            @id @default(uuid())
   name        String            @unique
   description String?
   permissions Permission[]
@@ -326,7 +326,7 @@ model Role {
 }
 
 model Permission {
-  id        String    @id @default(cuid())
+  id        String    @id @default(uuid())
   name      String    @unique
   roles     Role[]
   createdAt DateTime  @default(now())
@@ -341,7 +341,7 @@ enum NotificationType {
 }
 
 model Notification {
-  id                String           @id @default(cuid())
+  id                String           @id @default(uuid())
   type              NotificationType
   workspaceMember   WorkspaceMember  @relation(name: "for", fields: [workspaceMemberId], references: [id], onDelete: Cascade)
   workspaceMemberId String
