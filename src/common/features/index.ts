@@ -9,4 +9,3 @@ export const staticFeatures: AppFeatureMap = {
 export const isBackendFeatureEnabled = (feature: FeatureKey): boolean => {
   return staticFeatures[feature];
 };
-``;
