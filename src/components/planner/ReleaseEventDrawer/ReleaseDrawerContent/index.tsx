@@ -1,7 +1,17 @@
-import { Divider, Skeleton, Stack, useToast } from '@chakra-ui/react';
+import {
+  Divider,
+  Skeleton,
+  Stack,
+  useToast,
+  Text,
+  HStack,
+  LinkBox,
+  LinkOverlay,
+} from '@chakra-ui/react';
 import { Release, ReleaseType } from '@prisma/client';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import NextLink from 'next/link';
 
 import { ClientRelease, ReleaseEvent } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
@@ -9,6 +19,10 @@ import DueDateField from 'components/forms/QuickForm/DueDateField';
 import { updateBasicReleaseInfo } from 'queries/releases';
 import { SingleReleaseVars } from 'queries/releases/types';
 import ReleaseTypeField from 'components/forms/QuickForm/ReleaseTypeField';
+import ArtistField from 'components/forms/QuickForm/ArtistField';
+import { taskHeadingByType } from 'utils/tasks';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import useAppColors from 'hooks/useAppColors';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -25,6 +39,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
   const queryClient = useQueryClient();
   const { currentWorkspace } = useExtendedSession();
   const toast = useToast();
+  const { border } = useAppColors();
 
   const { mutateAsync: submitUpdate } = useMutation(updateBasicReleaseInfo, {
     onMutate: async (
@@ -81,7 +96,13 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
           onChange={(dueDate) => onSubmit({ targetDate: dueDate as Date })}
         />
       </Skeleton>
-
+      <Divider />
+      <Skeleton isLoaded={!loading}>
+        <ArtistField
+          artist={release.artistId}
+          onChange={(artist) => onSubmit({ artist: artist })}
+        />
+      </Skeleton>
       <Divider />
       <Skeleton isLoaded={!loading}>
         <ReleaseTypeField
@@ -89,6 +110,32 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
           onChange={(type) => onSubmit({ type: type as ReleaseType })}
         />
       </Skeleton>
+      {release.tasks.length > 0 && (
+        <Stack spacing={5}>
+          <Divider />
+          <Text fontWeight={'bold'}>Tasks</Text>
+          {release.tasks.map((item) => (
+            <LinkBox
+              p={2}
+              py={3}
+              rounded={'xl'}
+              borderColor={border}
+              borderWidth="1px"
+              as={Stack}
+              key={item.id}
+            >
+              <NextLink href={`/tasks/${item.id}`} passHref>
+                <LinkOverlay>
+                  <HStack justifyContent={'space-between'}>
+                    <Text>{taskHeadingByType(item.type)}</Text>
+                    <TaskStatusBadge status={item.status} />
+                  </HStack>
+                </LinkOverlay>
+              </NextLink>
+            </LinkBox>
+          ))}
+        </Stack>
+      )}
     </Stack>
   );
 };

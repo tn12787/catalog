@@ -5,11 +5,11 @@ import {
   BreadcrumbLink,
   Button,
   Heading,
-  Link,
   Skeleton,
   Stack,
 } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
+import NextLink from 'next/link';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -39,16 +39,16 @@ const Artists = () => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Skeleton isLoaded={!isWorkspaceLoading}>
-              <Link passHref href={`/overview`}>
+              <NextLink passHref href={`/overview`}>
                 <BreadcrumbLink>{workspace?.name ?? 'loading'}</BreadcrumbLink>
-              </Link>
+              </NextLink>
             </Skeleton>
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
-            <Link passHref href={'/artists'}>
+            <NextLink passHref href={'/artists'}>
               <BreadcrumbLink fontWeight="bold">Artists</BreadcrumbLink>
-            </Link>
+            </NextLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">

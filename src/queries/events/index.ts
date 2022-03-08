@@ -26,7 +26,7 @@ export const updateEventInCalendar = async ({
 }) => {
   switch (event.type) {
     case EventType.RELEASE:
-      return axios.put(`/api/releases/${event.release.id}`, {
+      return axios.patch(`/api/releases/${event.release.id}`, {
         name: event.release.name,
         type: event.release.type,
         artist: event.release.artist.id,

@@ -46,7 +46,7 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>
     helperText:
       'We recommend scheduling at least 4 weeks before your target release date to complete basic tasks',
     extraProps: {
-      min: new Date(),
+      min: new Date().toDateString(),
     },
   },
 ];
