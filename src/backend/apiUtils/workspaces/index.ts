@@ -17,7 +17,7 @@ type UserCreateArgs = {
 };
 
 export const createDefaultWorkspaceForUser = async ({ name, userId, email }: UserCreateArgs) => {
-  const nameString = `${name}'s Workspace`;
+  const nameString = name ? `${name}'s Workspace` : `My Workspace`;
 
   try {
     const stripeCustomerId = await getOrCreateStripeCustomer(name, email);
