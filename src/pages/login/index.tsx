@@ -25,6 +25,8 @@ import { FaSlack, FaSpotify } from 'react-icons/fa';
 import logo from 'images/logo.svg';
 import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
+import useFeatures from 'hooks/features/useFeatures';
+import { FeatureKey } from 'common/features/types';
 
 interface EmailSignInData {
   email: string;
@@ -41,6 +43,8 @@ const LoginPage = ({ csrfToken }: Props) => {
   const { status } = useSession();
 
   const callbackUrl = (router.query.callbackUrl ?? '/overview') as string;
+
+  const { isFeatureEnabled } = useFeatures();
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -120,12 +124,20 @@ const LoginPage = ({ csrfToken }: Props) => {
           <Button leftIcon={<FcGoogle></FcGoogle>} onClick={signInWithGoogle} variant="outline">
             Sign in with Google
           </Button>
-          <Button leftIcon={<FaSpotify></FaSpotify>} onClick={signInWithSpotify} variant="outline">
-            Sign in with Spotify
-          </Button>
-          <Button leftIcon={<FaSlack></FaSlack>} onClick={signInWithSlack} variant="outline">
-            Sign in with Slack
-          </Button>
+          {isFeatureEnabled(FeatureKey.SPOTIFY_LOGIN) && (
+            <Button
+              leftIcon={<FaSpotify></FaSpotify>}
+              onClick={signInWithSpotify}
+              variant="outline"
+            >
+              Sign in with Spotify
+            </Button>
+          )}
+          {isFeatureEnabled(FeatureKey.SLACK_LOGIN) && (
+            <Button leftIcon={<FaSlack></FaSlack>} onClick={signInWithSlack} variant="outline">
+              Sign in with Slack
+            </Button>
+          )}
           <Stack
             w="100%"
             direction={'row'}
