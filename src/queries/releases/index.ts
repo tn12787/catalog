@@ -36,10 +36,11 @@ export const fetchSingleRelease = async (id: string) => {
 export const updateBasicReleaseInfo = async ({
   id,
   ...rest
-}: SingleReleaseVars): Promise<ClientRelease | void> => {
+}: Pick<SingleReleaseVars, 'id'> &
+  Partial<Omit<SingleReleaseVars, 'id'>>): Promise<ClientRelease | void> => {
   if (!id) return Promise.reject();
 
-  const { data: response } = await axios.put(`/api/releases/${id}`, {
+  const { data: response } = await axios.patch(`/api/releases/${id}`, {
     ...rest,
   });
   return response;

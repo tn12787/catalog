@@ -5,10 +5,11 @@ import {
   BreadcrumbLink,
   Button,
   Heading,
-  Link,
+  Skeleton,
   Stack,
 } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
+import NextLink from 'next/link';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -18,11 +19,13 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import PageHead from 'components/pageItems/PageHead';
 import useArtists from 'hooks/data/artists/useArtists';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const Artists = () => {
   const { bgPrimary } = useAppColors();
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const { data: artists, isLoading } = useArtists();
+  const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const canCreateArtists = hasRequiredPermissions(
     ['CREATE_ARTISTS'],
@@ -35,17 +38,17 @@ const Artists = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/workspaces/${currentWorkspace ?? 'noworkspace'}/overview`}>
-              <BreadcrumbLink>
-                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
-              </BreadcrumbLink>
-            </Link>
+            <Skeleton isLoaded={!isWorkspaceLoading}>
+              <NextLink passHref href={`/overview`}>
+                <BreadcrumbLink>{workspace?.name ?? 'loading'}</BreadcrumbLink>
+              </NextLink>
+            </Skeleton>
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
-            <Link passHref href={'/artists'}>
+            <NextLink passHref href={'/artists'}>
               <BreadcrumbLink fontWeight="bold">Artists</BreadcrumbLink>
-            </Link>
+            </NextLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">

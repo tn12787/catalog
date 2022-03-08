@@ -1,31 +1,28 @@
-import { Alert, AlertIcon, Divider, Skeleton, Stack, useToast } from '@chakra-ui/react';
-import { Release, ReleaseTaskType, TaskStatus } from '@prisma/client';
+import {
+  Divider,
+  Skeleton,
+  Stack,
+  useToast,
+  Text,
+  HStack,
+  LinkBox,
+  LinkOverlay,
+} from '@chakra-ui/react';
+import { Release, ReleaseType } from '@prisma/client';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { AxiosResponse } from 'axios';
+import NextLink from 'next/link';
 
-import AssigneesField from 'components/forms/QuickForm/AssigneesField';
-import StatusField from 'components/forms/QuickForm/StatusField';
-import { updateTask } from 'queries/tasks';
-import { UpdateTaskVars } from 'queries/tasks/types';
-import {
-  ClientArtwork,
-  ClientDistribution,
-  ClientMastering,
-  ClientMusicVideo,
-  ContactWithLabels,
-  EventType,
-  ReleaseEvent,
-  ReleaseTaskEventWithUser,
-  WorkspaceMemberWithUser,
-} from 'types/common';
-import TaskNotes from 'components/tasks/TaskNotes';
+import { ClientRelease, ReleaseEvent } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
 import DueDateField from 'components/forms/QuickForm/DueDateField';
-import UrlField from 'components/forms/QuickForm/UrlField';
-import ImageField from 'components/forms/QuickForm/ImageField';
-import DistributorField from 'components/forms/QuickForm/DistributorField';
-import ContactsField from 'components/forms/QuickForm/ContactsField';
+import { updateBasicReleaseInfo } from 'queries/releases';
+import { SingleReleaseVars } from 'queries/releases/types';
+import ReleaseTypeField from 'components/forms/QuickForm/ReleaseTypeField';
+import ArtistField from 'components/forms/QuickForm/ArtistField';
+import { taskHeadingByType } from 'utils/tasks';
+import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
+import useAppColors from 'hooks/useAppColors';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -33,47 +30,51 @@ type Props = {
 };
 
 type RollbackContext = {
-  previousTask: AxiosResponse<ReleaseTaskEventWithUser[], any>;
-  newTask: AxiosResponse<ReleaseTaskEventWithUser[], any>;
+  previousRelease: ClientRelease;
+  newRelease: ClientRelease;
 };
 
 const ReleaseDrawerContent = ({ event, loading }: Props) => {
-  const task = event?.data;
+  const release = event?.release;
   const queryClient = useQueryClient();
   const { currentWorkspace } = useExtendedSession();
   const toast = useToast();
+  const { border } = useAppColors();
 
-  const { mutateAsync: submitUpdate } = useMutation(updateTask, {
-    onMutate: async (data): Promise<RollbackContext> => {
-      await queryClient.cancelQueries(['tasks', task?.id]);
+  const { mutateAsync: submitUpdate } = useMutation(updateBasicReleaseInfo, {
+    onMutate: async (
+      data: Pick<SingleReleaseVars, 'id'> & Partial<Omit<SingleReleaseVars, 'id'>>
+    ): Promise<RollbackContext> => {
+      await queryClient.cancelQueries(['releases', release?.id]);
 
-      const previousTask = queryClient.getQueryData(['tasks', task?.id]) as AxiosResponse<
-        ReleaseTaskEventWithUser[],
-        any
-      >;
+      const previousRelease = queryClient.getQueryData([
+        'releases',
+        currentWorkspace,
+        release?.id,
+      ]) as ClientRelease;
 
-      const newTask = { ...previousTask, data: { ...previousTask.data, ...data } };
-      queryClient.setQueryData(['tasks', task?.id], newTask);
+      const newRelease = { ...previousRelease, ...data } as ClientRelease;
+      queryClient.setQueryData(['releases', currentWorkspace, release?.id], newRelease);
 
       // Return a context with the previous and new todo
-      return { previousTask, newTask };
+      return { previousRelease, newRelease };
     },
     // If the mutation fails, use the context returned from onMutate to roll back
     onError: (err, newTodo, context) => {
-      const { previousTask } = context as RollbackContext;
-      queryClient.setQueryData(['tasks', task?.id], previousTask);
+      const { previousRelease } = context as RollbackContext;
+      queryClient.setQueryData(['releases', currentWorkspace, release?.id], previousRelease);
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries(['tasks', task?.id]);
+      queryClient.invalidateQueries(['releases', currentWorkspace, release?.id]);
       queryClient.invalidateQueries(['releaseEvents', currentWorkspace]);
     },
   });
 
-  const onSubmit = async (data: UpdateTaskVars) => {
+  const onSubmit = async (data: Partial<SingleReleaseVars>) => {
     try {
       await submitUpdate({
-        id: task?.id,
+        id: release.id,
         ...data,
       });
     } catch (e) {
@@ -86,82 +87,55 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
     }
   };
 
-  const isOutstanding =
-    new Date().getTime() > new Date(event.date).getTime() &&
-    event.data.status !== TaskStatus.COMPLETE;
-
   return (
     <Stack w="100%" spacing={5}>
-      {isOutstanding && (
-        <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
-          <AlertIcon></AlertIcon>This task is overdue.
-        </Alert>
-      )}
-      {task?.type === ReleaseTaskType.MASTERING && (
-        <Skeleton isLoaded={!loading}>
-          <UrlField
-            url={(task as ClientMastering).url ?? ''}
-            onChange={(url) => onSubmit({ url })}
-          />
-        </Skeleton>
-      )}
-
-      {task?.type === ReleaseTaskType.MUSIC_VIDEO && (
-        <Skeleton isLoaded={!loading}>
-          <UrlField
-            url={(task as ClientMusicVideo).url ?? ''}
-            onChange={(url) => onSubmit({ url })}
-          />
-        </Skeleton>
-      )}
-      {task?.type === ReleaseTaskType.ARTWORK && (
-        <Skeleton isLoaded={!loading}>
-          <ImageField
-            url={(task as ClientArtwork).url ?? ''}
-            onChange={(url) => onSubmit({ url })}
-          />
-        </Skeleton>
-      )}
-      {task?.type === ReleaseTaskType.DISTRIBUTION && (
-        <Skeleton isLoaded={!loading}>
-          <DistributorField
-            distributor={(task as ClientDistribution).distributorId ?? ''}
-            onChange={(distributor) => onSubmit({ distributor })}
-          />
-        </Skeleton>
-      )}
-      <Skeleton isLoaded={!loading}>
-        <StatusField
-          status={task?.status as TaskStatus}
-          onChange={(status) => onSubmit({ status })}
-        />
-      </Skeleton>
-      <Skeleton isLoaded={!loading}>
-        <AssigneesField
-          assignees={task?.assignees as WorkspaceMemberWithUser[]}
-          onChange={(assignees) => onSubmit({ assignees })}
-        />
-      </Skeleton>
-      <Skeleton isLoaded={!loading}>
-        <ContactsField
-          contacts={task?.contacts as ContactWithLabels[]}
-          onChange={(contacts) => onSubmit({ contacts })}
-        />
-      </Skeleton>
       <Skeleton isLoaded={!loading}>
         <DueDateField
-          date={
-            event.type === EventType.RELEASE
-              ? (event.release.targetDate as Date)
-              : (task?.dueDate as Date)
-          }
-          onChange={(dueDate) => onSubmit({ dueDate: dueDate as Date })}
+          fieldName="Target Date"
+          date={event.release.targetDate as Date}
+          onChange={(dueDate) => onSubmit({ targetDate: dueDate as Date })}
         />
       </Skeleton>
       <Divider />
       <Skeleton isLoaded={!loading}>
-        <TaskNotes collapsible p={0} bg="transparent" task={event.data} />
+        <ArtistField
+          artist={release.artistId}
+          onChange={(artist) => onSubmit({ artist: artist })}
+        />
       </Skeleton>
+      <Divider />
+      <Skeleton isLoaded={!loading}>
+        <ReleaseTypeField
+          releaseType={release.type as ReleaseType}
+          onChange={(type) => onSubmit({ type: type as ReleaseType })}
+        />
+      </Skeleton>
+      {release.tasks.length > 0 && (
+        <Stack spacing={5}>
+          <Divider />
+          <Text fontWeight={'bold'}>Tasks</Text>
+          {release.tasks.map((item) => (
+            <LinkBox
+              p={2}
+              py={3}
+              rounded={'xl'}
+              borderColor={border}
+              borderWidth="1px"
+              as={Stack}
+              key={item.id}
+            >
+              <NextLink href={`/tasks/${item.id}`} passHref>
+                <LinkOverlay>
+                  <HStack justifyContent={'space-between'}>
+                    <Text>{taskHeadingByType(item.type)}</Text>
+                    <TaskStatusBadge status={item.status} />
+                  </HStack>
+                </LinkOverlay>
+              </NextLink>
+            </LinkBox>
+          ))}
+        </Stack>
+      )}
     </Stack>
   );
 };

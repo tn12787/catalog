@@ -5,11 +5,10 @@ import {
   Delete,
   Get,
   NotFoundException,
-  Put,
+  Patch,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
-import { ReleaseType } from '@prisma/client';
 
 import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -18,6 +17,7 @@ import { UpdateReleaseDto } from 'backend/models/releases/update';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { getReleaseByIdIsomorphic } from 'backend/isomorphic/releases';
+import { buildUpdateReleaseArgs } from 'backend/apiUtils/releases';
 
 @requiresAuth()
 class SingleReleaseHandler {
@@ -26,7 +26,7 @@ class SingleReleaseHandler {
     return await getReleaseByIdIsomorphic(req, id);
   }
 
-  @Put()
+  @Patch()
   async updateRelease(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: UpdateReleaseDto,
@@ -34,7 +34,7 @@ class SingleReleaseHandler {
   ) {
     if (!id) throw new NotFoundException();
 
-    const releaseWorkspace = await prisma.release.findUnique({
+    const existingRelease = await prisma.release.findUnique({
       where: { id },
       select: {
         workspaceId: true,
@@ -42,16 +42,18 @@ class SingleReleaseHandler {
       },
     });
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseWorkspace?.workspaceId);
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], existingRelease?.workspaceId);
 
-    if (!releaseWorkspace) throw new NotFoundException();
+    if (!existingRelease) throw new NotFoundException();
+
+    const updateArgs = buildUpdateReleaseArgs(body);
 
     // check if there are any tasks with a due date after the new target date
-    if (body.targetDate) {
+    if (updateArgs.targetDate) {
       if (
-        releaseWorkspace?.tasks.some(({ dueDate }) => {
+        existingRelease?.tasks.some(({ dueDate }) => {
           if (!dueDate) return false;
-          return new Date(body.targetDate) < new Date(dueDate);
+          return new Date(updateArgs.targetDate as Date) < new Date(dueDate);
         })
       ) {
         throw new BadRequestException("Release target date cannot be before any task's due date");
@@ -63,10 +65,7 @@ class SingleReleaseHandler {
         id,
       },
       data: {
-        artist: { connect: { id: body.artist } },
-        name: body.name,
-        type: body.type as ReleaseType,
-        targetDate: body.targetDate,
+        ...updateArgs,
       },
     });
     return result;

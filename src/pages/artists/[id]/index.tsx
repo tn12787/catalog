@@ -18,10 +18,10 @@ import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
 import PageHead from 'components/pageItems/PageHead';
 import ReleaseList from 'components/releases/ReleaseList';
-import useExtendedSession from 'hooks/useExtendedSession';
 import { getSingleServerSideArtist } from 'ssr/artists/getSingleServerSideArtist';
 import { ArtistResponse } from 'types/common';
 import useSingleArtist from 'hooks/data/artists/useSingleArtist';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 type Props = {
   artist: ArtistResponse;
@@ -31,8 +31,7 @@ const SingleArtist = ({ artist }: Props) => {
   const router = useRouter();
   const artistId = router.query?.['id'] as string;
   const { bgPrimary } = useAppColors();
-  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
-
+  const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
   const { data: artistData, isLoading } = useSingleArtist(artistId, { initialData: artist });
 
   return (
@@ -41,11 +40,11 @@ const SingleArtist = ({ artist }: Props) => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
-            <Link passHref href={`/overview`}>
-              <BreadcrumbLink>
-                {workspaceMemberships?.[currentWorkspace]?.workspace.name}
-              </BreadcrumbLink>
-            </Link>
+            <Skeleton isLoaded={!isWorkspaceLoading}>
+              <Link passHref href={`/overview`}>
+                <BreadcrumbLink>{workspace?.name}</BreadcrumbLink>
+              </Link>
+            </Skeleton>
           </BreadcrumbItem>
 
           <BreadcrumbItem>
