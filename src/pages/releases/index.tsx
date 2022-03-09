@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { isEqual } from 'lodash';
-import { useQuery } from 'react-query';
 import { BiSearch } from 'react-icons/bi';
 import { Artist } from '@prisma/client';
 import Link from 'next/link';
