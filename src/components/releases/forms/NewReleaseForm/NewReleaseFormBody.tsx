@@ -18,7 +18,7 @@ const NewReleaseFormBody = ({
   existingRelease,
   loading,
 }: ReleaseWizardComponentProps<BasicInfoFormData>) => {
-  const { data: artists } = useArtists();
+  const { data: artists } = useArtists({});
 
   const properDateFormat = useMemo(() => {
     const existingDate =

@@ -1,5 +1,7 @@
 import { RegisterOptions, ControllerRenderProps } from 'react-hook-form';
 
+import { SortByOptions } from 'queries/types';
+
 export interface FormDatum<T, K = any> {
   name: keyof T;
   type?: string;
@@ -7,7 +9,7 @@ export interface FormDatum<T, K = any> {
   registerArgs?: RegisterOptions;
   options?: { label: string; value: K }[];
   extraProps?: { [key: string]: any };
-  helperText?: string;
+  helperContent?: string | JSX.Element;
   defaultValue?: K;
   hidden?: boolean;
   isLoading?: boolean;
@@ -17,4 +19,9 @@ export interface FormDatum<T, K = any> {
 export interface FormBodyProps<T> {
   onSubmit: (data: T) => void;
   loading?: boolean;
+}
+
+export interface SortBySelectOption<T> {
+  label: string;
+  value: SortByOptions<T>;
 }

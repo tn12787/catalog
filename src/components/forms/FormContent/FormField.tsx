@@ -50,7 +50,7 @@ const FormField = <T,>({
   label,
   options,
   extraProps,
-  helperText,
+  helperContent: helperText,
   showLabel = true,
   isLoading,
   errors,
@@ -61,7 +61,11 @@ const FormField = <T,>({
   const InputComponent = deriveComponent(type);
   return hidden ? null : (
     <Stack key={name as string}>
-      <FormControl id={name as string} isInvalid={!!get(errors, name) as any}>
+      <FormControl
+        isRequired={!!registerArgs?.required}
+        id={name as string}
+        isInvalid={!!get(errors, name) as any}
+      >
         {showLabel && <FormLabel fontSize={'sm'}>{label}</FormLabel>}
         {CustomComponent ? (
           <Controller

@@ -1,4 +1,4 @@
-import { Stack, Heading, Text, Link as ChakraLink } from '@chakra-ui/layout';
+import { Stack, Heading } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -22,6 +22,7 @@ import { getSingleServerSideArtist } from 'ssr/artists/getSingleServerSideArtist
 import { ArtistResponse } from 'types/common';
 import useSingleArtist from 'hooks/data/artists/useSingleArtist';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import ArtistOverview from 'components/artists/specific/ArtistOverview';
 
 type Props = {
   artist: ArtistResponse;
@@ -68,13 +69,7 @@ const SingleArtist = ({ artist }: Props) => {
         </Stack>
 
         <Stack spacing="20px">
-          <Card>
-            <Heading size="sm">Basic Info</Heading>
-            <Text>{artistData?.legalName}</Text>
-            <ChakraLink href={artistData?.spotifyUrl as string} isExternal>
-              Spotify
-            </ChakraLink>
-          </Card>
+          <ArtistOverview artist={artist} isLoading={isLoading}></ArtistOverview>
           <Stack spacing={4}>
             <Heading size="lg">Releases</Heading>
             <Stack spacing={4} direction={{ base: 'column', md: 'row' }}>

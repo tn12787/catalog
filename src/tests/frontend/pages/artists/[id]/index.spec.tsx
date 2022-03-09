@@ -17,6 +17,7 @@ describe('Single Artist Page', () => {
   it("Shows the artist' names and basic info", async () => {
     const testArtistName = 'basic artist test';
     const testArtistLegalName = 'basic artist legal name';
+    const testInstagramUsername = 'basicartistinstagramusername';
     const { getByText, queryByText, queryAllByText } = render({
       name: testArtistName,
       legalName: testArtistLegalName,
@@ -24,6 +25,27 @@ describe('Single Artist Page', () => {
     expect(queryAllByText(testArtistName)).not.toHaveLength(0);
     expect(getByText(testArtistLegalName)).toBeVisible();
     expect(queryByText(/Basic Info/)).toBeVisible();
+
+    expect(queryByText(testInstagramUsername)).toBeNull();
+    expect(queryByText(/Spotify/)).toBeNull();
+    expect(queryByText(/Linktree/)).toBeNull();
+  });
+
+  it("Shows the artist' links if we have them", async () => {
+    const testArtistName = 'basic artist test';
+    const testArtistLegalName = 'basic artist legal name';
+    const testInstagramUsername = 'basicartistinstagramusername';
+    const { getByText } = render({
+      name: testArtistName,
+      legalName: testArtistLegalName,
+      instagramUsername: testInstagramUsername,
+      spotifyId: 'spotify-id',
+      linkTreeUrl: 'linktree-url',
+    });
+
+    expect(getByText(testInstagramUsername)).toBeVisible();
+    expect(getByText(/Spotify/)).toBeVisible();
+    expect(getByText(/Linktree/)).toBeVisible();
   });
 
   it("Shows the artist's release stats with no releases yet", async () => {

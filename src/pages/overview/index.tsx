@@ -32,7 +32,7 @@ const OverviewPage = () => {
     dates: { after: new Date(new Date().toDateString()) },
   });
 
-  const { data: artists, isLoading: areArtistsLoading } = useArtists();
+  const { data: artists, isLoading: areArtistsLoading } = useArtists({});
 
   const isAnythingLoading =
     isWorkspaceLoading ||
