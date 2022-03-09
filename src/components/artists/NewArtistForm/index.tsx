@@ -1,72 +1,43 @@
-import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
+import { Heading, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useMutation, useQueryClient } from 'react-query';
 
 import { FormArtist } from './types';
 import NewArtistFormBody from './NewArtistFormBody';
 
 import Card from 'components/Card';
-import { createSingleArtist, updateSingleArtist } from 'queries/artists';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { CreateSingleArtistVars, SingleArtistVars } from 'queries/artists/types';
+import useArtistMutations from 'hooks/data/artists/useArtistMutations';
 
 interface Props {
   existingArtist?: FormArtist;
 }
 
 const NewArtistForm = ({ existingArtist }: Props) => {
-  const toast = useToast();
   const router = useRouter();
 
   const { currentWorkspace } = useExtendedSession();
 
-  const queryClient = useQueryClient();
-  const { mutateAsync: createArtist, isLoading: createLoading } = useMutation(createSingleArtist, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['artists']);
-    },
-  });
-
-  const { mutateAsync: updateArtist, isLoading: updateLoading } = useMutation(updateSingleArtist, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['artists']);
-    },
-  });
+  const { createSingleArtist, updateSingleArtist } = useArtistMutations();
 
   const onCreate = async (data: FormArtist) => {
-    try {
-      const result = await createArtist({
-        ...data,
-        workspace: currentWorkspace,
-      } as CreateSingleArtistVars);
-      toast({
-        status: 'success',
-        title: 'Success',
-        description: 'Your changes were saved.',
-      });
-      router.push(`/artists/${result?.id}`);
-    } catch (e: any) {
-      toast({ status: 'error', title: 'Oh no...', description: e.toString() });
-    }
+    const result = await createSingleArtist.mutateAsync({
+      ...data,
+      workspace: currentWorkspace,
+    } as CreateSingleArtistVars);
+
+    router.push(`/artists/${result?.id}`);
   };
 
   const onUpdate = async (data: FormArtist) => {
-    try {
-      await updateArtist({
-        ...data,
-        id: existingArtist?.id,
-      } as SingleArtistVars);
-      toast({
-        status: 'success',
-        title: 'Success',
-        description: 'Your changes were saved.',
-      });
-      router.push(`/artists/${existingArtist?.id}`);
-    } catch (e: any) {
-      toast({ status: 'error', title: 'Oh no...', description: e.toString() });
-    }
+    await updateSingleArtist.mutateAsync({
+      ...data,
+      id: existingArtist?.id,
+    } as SingleArtistVars);
+
+    router.push(`/artists/${existingArtist?.id}`);
   };
 
   const { bgPrimary } = useAppColors();
@@ -82,7 +53,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
         </Text>
         <Card width="100%">
           <NewArtistFormBody
-            isLoading={createLoading || updateLoading}
+            isLoading={createSingleArtist.isLoading || updateSingleArtist.isLoading}
             onSubmit={existingArtist ? onUpdate : onCreate}
             existingArtist={existingArtist}
           />
