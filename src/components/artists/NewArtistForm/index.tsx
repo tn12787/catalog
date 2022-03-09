@@ -1,9 +1,20 @@
-import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
+import {
+  Avatar,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Stack,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 import { FiArrowRight } from 'react-icons/fi';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
+import { user } from 'firebase-functions/v1/auth';
 
 import { newArtistConfig } from './artistConfig';
 import { FormArtist } from './types';
@@ -15,6 +26,7 @@ import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { CreateSingleArtistVars, SingleArtistVars } from 'queries/artists/types';
 import useArtists from 'hooks/data/artists/useArtists';
+import ImageSelect from 'components/forms/QuickForm/ImageField/ImageSelect';
 
 interface Props {
   existingArtist?: FormArtist;
@@ -30,6 +42,8 @@ const NewArtistForm = ({ existingArtist }: Props) => {
     handleSubmit,
     reset,
     control,
+    watch,
+    setValue,
   } = useForm<FormArtist>({
     defaultValues: {
       ...existingArtist,
@@ -94,6 +108,12 @@ const NewArtistForm = ({ existingArtist }: Props) => {
 
   const { bgPrimary } = useAppColors();
 
+  const currentImage = watch('imageUrl');
+
+  const onImageChange = (url: string) => {
+    setValue('imageUrl', url);
+  };
+
   return (
     <Stack bg={bgPrimary} flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
@@ -106,7 +126,31 @@ const NewArtistForm = ({ existingArtist }: Props) => {
         <Stack as="form" onSubmit={handleSubmit(existingArtist ? onUpdate : onCreate)} width="100%">
           <Card width="100%">
             <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
+              <FormControl name="image">
+                <FormLabel fontSize={'sm'} htmlFor="name">
+                  Artist Image (optional)
+                </FormLabel>
+                <Stack alignItems={{ base: 'center' }} direction={{ base: 'column' }}>
+                  {currentImage && (
+                    <Avatar
+                      boxSize={{ base: '100%', md: '100%' }}
+                      borderRadius="md"
+                      src={currentImage}
+                      alt="workspace image"
+                    />
+                  )}
+                  <ImageSelect
+                    message="Choose an image"
+                    fontWeight="semibold"
+                    onChange={onImageChange}
+                    filePath="artistImages"
+                    entityId={existingArtist?.id}
+                  ></ImageSelect>
+                </Stack>
+              </FormControl>
+
               <FormContent
+                py={0}
                 config={newArtistConfig()}
                 errors={errors}
                 register={register}

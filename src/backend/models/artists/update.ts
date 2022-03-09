@@ -8,10 +8,16 @@ export class UpdateArtistDto {
   name: string;
 
   @IsOptional()
-  spotifyUrl?: string;
+  spotifyId?: string;
 
   @IsOptional()
-  instagramUrl?: string;
+  instagramUsername?: string;
+
+  @IsOptional()
+  imageUrl?: string;
+
+  @IsOptional()
+  linkTreeUrl?: string;
 
   @IsNotEmpty()
   legalName: string;

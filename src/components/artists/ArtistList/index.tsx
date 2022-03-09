@@ -46,7 +46,7 @@ const ArtistList = ({ search, artists, loading }: Props) => {
             id: 'artists_loading',
             name: 'Loading',
             legalName: 'Legal Name',
-            spotifyUrl: '',
+            spotifyId: '',
             instagramUrl: '',
             workspaceId: '',
             createdAt: new Date(),

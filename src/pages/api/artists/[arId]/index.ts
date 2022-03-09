@@ -45,7 +45,7 @@ class ArtistHandler {
     const optionalArgs = pickBy(
       {
         legalName: body.legalName,
-        spotifyUrl: body.spotifyUrl,
+        spotifyId: body.spotifyId,
       },
       (v) => v !== undefined
     );

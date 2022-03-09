@@ -41,8 +41,10 @@ class ArtistHandler {
       data: {
         name: body.name,
         legalName: body.legalName,
-        instagramUrl: body.instagramUrl,
-        spotifyUrl: body.spotifyUrl,
+        instagramUsername: body.instagramUsername,
+        spotifyId: body.spotifyId,
+        imageUrl: body.imageUrl,
+        linkTreeUrl: body.linkTreeUrl,
         workspace: {
           connect: { id: body.workspace },
         },

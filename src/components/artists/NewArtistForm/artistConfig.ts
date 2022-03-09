@@ -7,7 +7,7 @@ export const newArtistConfig = (): FormDatum<FormArtist>[] => [
     name: 'name',
     label: 'Name',
     type: 'text',
-    registerArgs: { required: 'Please enter a name for your release.' },
+    registerArgs: { required: 'Please enter an artist name.' },
     extraProps: {
       placeholder: 'Artist name, e.g. "Tame Impala"',
     },
@@ -24,21 +24,28 @@ export const newArtistConfig = (): FormDatum<FormArtist>[] => [
     },
   },
   {
-    name: 'spotifyUrl',
-    label: 'Spotify Url',
+    name: 'spotifyId',
+    label: 'Spotify Artist ID',
     type: 'text',
 
     extraProps: {
-      placeholder:
-        'e.g.: https://open.spotify.com/artist/4cEtc4SN2eJFPVGvNsbGTH?si=ifVNr2bURq-TrQ74mwc1FQ',
+      placeholder: 'e.g.: 4cEtc4SN2eJFPVGvNsbGTH',
     },
   },
   {
-    name: 'instagramUrl',
-    label: 'Instagram',
+    name: 'instagramUsername',
+    label: 'Instagram Username',
     type: 'text',
     extraProps: {
-      placeholder: 'e.g. https://www.instagram.com/tomnortonmusic',
+      placeholder: 'e.g. tomnortonmusic',
+    },
+  },
+  {
+    name: 'linkTreeUrl',
+    label: 'Linktree URL',
+    type: 'text',
+    extraProps: {
+      placeholder: 'e.g. linktr.ee/tomnorton',
     },
   },
 ];

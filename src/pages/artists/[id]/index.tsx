@@ -10,6 +10,7 @@ import {
   Stat,
   StatLabel,
   StatNumber,
+  Image,
 } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
 
@@ -69,11 +70,41 @@ const SingleArtist = ({ artist }: Props) => {
 
         <Stack spacing="20px">
           <Card>
-            <Heading size="sm">Basic Info</Heading>
-            <Text>{artistData?.legalName}</Text>
-            <ChakraLink href={artistData?.spotifyUrl as string} isExternal>
-              Spotify
-            </ChakraLink>
+            <Stack spacing={6} direction={{ base: 'column', lg: 'row' }}>
+              <Image
+                rounded="lg"
+                maxHeight="400px"
+                maxWidth="400px"
+                objectFit="cover"
+                alt="artistPic"
+                src={artist.imageUrl ?? 'https://semantic-ui.com/images/wireframe/image.png'}
+              ></Image>
+              <Stack direction={{ base: 'column' }}>
+                <Heading size="sm">Basic Info</Heading>
+                <Text>{artistData?.legalName}</Text>
+                {artistData?.spotifyId && (
+                  <ChakraLink
+                    href={`https://open.spotify.com/artist/${artistData?.spotifyId}`}
+                    isExternal
+                  >
+                    Spotify
+                  </ChakraLink>
+                )}
+                {artistData?.instagramUsername && (
+                  <ChakraLink
+                    href={`https://www.instagram.com/${artistData?.instagramUsername}`}
+                    isExternal
+                  >
+                    Instagram
+                  </ChakraLink>
+                )}
+                {artistData?.linkTreeUrl && (
+                  <ChakraLink href={artistData?.linkTreeUrl} isExternal>
+                    Instagram
+                  </ChakraLink>
+                )}
+              </Stack>
+            </Stack>
           </Card>
           <Stack spacing={4}>
             <Heading size="lg">Releases</Heading>
