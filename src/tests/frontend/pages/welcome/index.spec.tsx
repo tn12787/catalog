@@ -33,7 +33,6 @@ describe('Welcome Page', () => {
     expect(getByText(NextButtonRegex)).toBeDisabled();
 
     fireEvent.input(getByPlaceholderText(/Your name/), { target: { value: 'Test User' } });
-    console.log('we made it here');
     await waitFor(() => expect(getByText(NextButtonRegex)).not.toBeDisabled());
     fireEvent.click(getByText(NextButtonRegex));
     await waitFor(() => expect(getByText(/How will you/)).toBeVisible());
@@ -49,6 +48,7 @@ describe('Welcome Page', () => {
 
     await waitFor(() => expect(getByText(/Your very own workspace/)).toBeVisible());
 
+    fireEvent.input(getByPlaceholderText(/Your new workspace name/), { target: { value: '' } });
     expect(getByText(NextButtonRegex)).toBeDisabled();
     fireEvent.input(getByPlaceholderText(/Your new workspace name/), { target: { value: 'test' } });
     await waitFor(() => expect(getByText(NextButtonRegex)).not.toBeDisabled());
