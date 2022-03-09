@@ -348,7 +348,7 @@ model Notification {
   type              NotificationType
   workspaceMember   WorkspaceMember  @relation(name: "for", fields: [workspaceMemberId], references: [id], onDelete: Cascade)
   workspaceMemberId String
-  actor             WorkspaceMember? @relation(name: "by", fields: [actorId], references: [id], onDelete: Cascade)
+  actor             WorkspaceMember? @relation(name: "by", fields: [actorId], references: [id], onDelete: SetNull)
   actorId           String?
   read              Boolean          @default(false)
   task              ReleaseTask?     @relation(fields: [taskId], references: [id], onDelete: Cascade)

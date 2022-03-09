@@ -99,7 +99,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
       <Skeleton isLoaded={!loading}>
         <DueDateField
           isDisabled={!canEdit}
-          fieldName="Target Date"
+          fieldName="Release Date"
           date={event.release.targetDate as Date}
           onChange={(dueDate) => onSubmit({ targetDate: dueDate as Date })}
         />

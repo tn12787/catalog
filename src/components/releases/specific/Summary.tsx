@@ -50,7 +50,7 @@ const fields = (releaseData: ClientRelease): SummaryField[] => [
   { name: 'Status', content: <ReleaseStatusBadge releaseData={releaseData} /> },
   { name: 'Release Type', content: <Text>{releaseData.type}</Text> },
   {
-    name: 'Target Date',
+    name: 'Release Date',
     content: <Text fontSize="sm">{dayjs.utc(releaseData.targetDate).format('LL')}</Text>,
   },
 ];
