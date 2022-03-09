@@ -29,7 +29,7 @@ export const buildArtworkConfig = (
     name: 'dueDate',
     label: 'Due on',
     type: 'date',
-    helperText:
+    helperContent:
       'We recommend aiming to complete artwork at least 4 weeks before your target release date.',
     registerArgs: {
       required: 'Please enter a due date.',
@@ -63,7 +63,7 @@ export const buildNewArtworkConfig = (): FormDatum<EditArtworkFormData, TaskStat
     name: 'dueDate',
     label: 'Due on',
     type: 'date',
-    helperText:
+    helperContent:
       'We recommend aiming to complete artwork at least 4 weeks before your target release date.',
     registerArgs: {
       required: 'Please enter a due date.',

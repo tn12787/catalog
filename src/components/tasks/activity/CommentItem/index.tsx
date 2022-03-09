@@ -50,7 +50,7 @@ const CommentItem = ({ event, updates }: Props) => {
   const { workspaceMemberships, currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
-  const isAuthor = event.user?.id === workspaceMemberships?.[currentWorkspace].id;
+  const isAuthor = event.user?.id === workspaceMemberships?.[currentWorkspace]?.id;
 
   const canDeleteComment =
     isAuthor ||

@@ -8,57 +8,47 @@ import {
   MenuItem,
   MenuList,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
-import { CellProps } from 'react-table';
-import { useMutation, useQueryClient } from 'react-query';
+
+import ArtistModal from '../ArtistModal';
 
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
-import { WorkspaceMemberWithUserAndRoles } from 'types/common';
+import { ArtistResponse } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';
-import { rescindInvitation } from 'queries/invitations';
+import useContactLabelMutations from 'hooks/data/contacts/labels/useContactLabelMutations';
 
-type Props = CellProps<WorkspaceMemberWithUserAndRoles>;
+type Props = { artist: ArtistResponse };
 
-const InvitationMenu = ({ value }: Props) => {
+const ArtistMenu = ({ artist }: Props) => {
   const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
   const canEdit = [
-    hasRequiredPermissions(['UPDATE_TEAM'], workspaceMemberships?.[currentWorkspace]),
-    workspaceMemberships?.[currentWorkspace]?.id !== value.id,
+    hasRequiredPermissions(['UPDATE_ARTISTS'], workspaceMemberships?.[currentWorkspace]),
   ].every(Boolean);
+
+  const canDelete = hasRequiredPermissions(
+    ['DELETE_ARTISTS'],
+    workspaceMemberships?.[currentWorkspace]
+  );
 
   const { primary } = useAppColors();
   const cancelRef = useRef(null);
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
-  const queryClient = useQueryClient();
-  const toast = useToast();
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
 
-  const { mutateAsync: removeInivte, isLoading } = useMutation(rescindInvitation, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['workspace', currentWorkspace]);
-    },
-  });
+  const {
+    deleteSingleContactLabel: { mutateAsync, isLoading },
+  } = useContactLabelMutations();
 
   const onDelete = async () => {
     try {
-      await removeInivte(value.id);
-      toast({
-        status: 'success',
-        title: 'Invitation rescinded',
-      });
+      await mutateAsync({ workspaceId: currentWorkspace, id: artist.id, name: artist.name });
       onDeleteClose();
-    } catch (error: any) {
-      toast({
-        status: 'error',
-        title: 'Oh no...',
-        description: error.toString(),
-      });
-    }
+    } catch (error: any) {}
   };
 
   return canEdit ? (
@@ -77,9 +67,12 @@ const InvitationMenu = ({ value }: Props) => {
           icon={<BiDotsHorizontalRounded fontSize={'24px'} />}
         ></MenuButton>
         <MenuList>
-          <MenuItem color="red.500" onClick={onDeleteOpen}>
-            Rescind invitation
-          </MenuItem>
+          <MenuItem onClick={onEditOpen}>Edit info</MenuItem>
+          {canDelete && (
+            <MenuItem color="red.500" onClick={onDeleteOpen}>
+              Delete artist
+            </MenuItem>
+          )}
         </MenuList>
       </Menu>
       <Dialog
@@ -88,12 +81,12 @@ const InvitationMenu = ({ value }: Props) => {
         loading={isLoading}
         isOpen={isDeleteOpen}
         onClose={onDeleteClose}
-        title={`Rescind invitation to ${value.email} ?`}
-        message="Don't worry, you can always invite them again later."
+        title={`Delete artist?`}
+        message="Are you sure? This action cannot be undone. It will remove all releases associated to this artist."
         buttons={
           <ButtonGroup size={'sm'}>
             <Button colorScheme="red" isLoading={isLoading} ml={3} onClick={onDelete}>
-              Rescind invitatation
+              Remove
             </Button>
             <Button ref={cancelRef} onClick={onDeleteClose}>
               Cancel
@@ -101,10 +94,11 @@ const InvitationMenu = ({ value }: Props) => {
           </ButtonGroup>
         }
       />
+      <ArtistModal artist={artist} isOpen={isEditOpen} onClose={onEditClose} />
     </Flex>
   ) : (
     <></>
   );
 };
 
-export default InvitationMenu;
+export default ArtistMenu;

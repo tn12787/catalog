@@ -26,8 +26,8 @@ class ArtistHandler {
         name: 'asc',
       },
       include: {
-        _count: {
-          select: { releases: true },
+        releases: {
+          select: { name: true },
         },
       },
     });

@@ -2,9 +2,6 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class UpdateArtistDto {
   @IsNotEmpty()
-  id: string;
-
-  @IsNotEmpty()
   name: string;
 
   @IsOptional()
@@ -21,7 +18,4 @@ export class UpdateArtistDto {
 
   @IsNotEmpty()
   legalName: string;
-
-  @IsNotEmpty()
-  workspace: string;
 }

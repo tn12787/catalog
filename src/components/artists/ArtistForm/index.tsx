@@ -1,21 +1,19 @@
-import { Heading, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
 
 import { FormArtist } from './types';
 import ArtistFormBody from './ArtistFormBody';
 
-import Card from 'components/Card';
-import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { CreateSingleArtistVars, SingleArtistVars } from 'queries/artists/types';
 import useArtistMutations from 'hooks/data/artists/useArtistMutations';
 
 interface Props {
   existingArtist?: FormArtist;
+  onSubmitSuccess?: () => void;
 }
 
-const ArtistForm = ({ existingArtist }: Props) => {
+const ArtistForm = ({ existingArtist, onSubmitSuccess }: Props) => {
   const router = useRouter();
 
   const { currentWorkspace } = useExtendedSession();
@@ -28,6 +26,7 @@ const ArtistForm = ({ existingArtist }: Props) => {
       workspace: currentWorkspace,
     } as CreateSingleArtistVars);
 
+    onSubmitSuccess?.();
     router.push(`/artists/${result?.id}`);
   };
 
@@ -37,29 +36,16 @@ const ArtistForm = ({ existingArtist }: Props) => {
       id: existingArtist?.id,
     } as SingleArtistVars);
 
+    onSubmitSuccess?.();
     router.push(`/artists/${existingArtist?.id}`);
   };
 
-  const { bgPrimary } = useAppColors();
-
   return (
-    <Stack bg={bgPrimary} flex={1} align="center" direction="column" width="100%" height="100%">
-      <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <Heading>{existingArtist ? 'Edit Artist' : 'Create a new artist'}</Heading>
-        <Text>
-          {existingArtist
-            ? 'Add or change basic info about the artist.'
-            : 'Add basic info about the artist.'}
-        </Text>
-        <Card width="100%">
-          <ArtistFormBody
-            isLoading={createSingleArtist.isLoading || updateSingleArtist.isLoading}
-            onSubmit={existingArtist ? onUpdate : onCreate}
-            existingArtist={existingArtist}
-          />
-        </Card>
-      </Stack>
-    </Stack>
+    <ArtistFormBody
+      isLoading={createSingleArtist.isLoading || updateSingleArtist.isLoading}
+      onSubmit={existingArtist ? onUpdate : onCreate}
+      existingArtist={existingArtist}
+    />
   );
 };
 

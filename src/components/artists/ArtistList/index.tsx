@@ -1,16 +1,17 @@
 import { Stack, Text, Icon, SimpleGrid, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
-import { Artist } from '@prisma/client';
 import NextImage from 'next/image';
 
 import ArtistCard from '../ArtistCard';
 
 import profilePic from 'images/no-artists-yet.svg';
+import { ArtistResponse } from 'types/common';
+import { testClientRelease } from '__mocks__/data/releases';
 
 interface Props {
   search: string;
-  artists: Artist[] | undefined;
+  artists: ArtistResponse[] | undefined;
   loading?: boolean;
 }
 
@@ -47,11 +48,13 @@ const ArtistList = ({ search, artists, loading }: Props) => {
             name: 'Loading',
             legalName: 'Legal Name',
             spotifyId: '',
-            instagramUrl: '',
+            instagramUsername: '',
+            imageUrl: null,
+            linkTreeUrl: null,
             workspaceId: '',
             createdAt: new Date(),
             updatedAt: new Date(),
-            _count: { releases: 4 },
+            releases: [testClientRelease({})],
           }}
           loading
         />

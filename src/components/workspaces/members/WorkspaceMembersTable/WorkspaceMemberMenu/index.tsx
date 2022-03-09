@@ -35,7 +35,7 @@ const WorkspaceMemberMenu = ({ value }: Props) => {
 
   const canEdit = [
     hasRequiredPermissions(['UPDATE_TEAM'], workspaceMemberships?.[currentWorkspace]),
-    workspaceMemberships?.[currentWorkspace].id !== value.id,
+    workspaceMemberships?.[currentWorkspace]?.id !== value.id,
   ].every(Boolean);
 
   const { primary } = useAppColors();

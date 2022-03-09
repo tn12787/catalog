@@ -83,7 +83,7 @@ const UserInfoForm = ({ onSubmit, isLastStep }: Props) => {
         <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
       </FormControl>
       <FormControl name="image">
-        <FormLabel htmlFor="name">Profile photo (optional)</FormLabel>
+        <FormLabel htmlFor="name">Profile photo</FormLabel>
         <Stack
           alignItems={{ base: 'flex-start', md: 'center' }}
           direction={{ base: 'column', md: 'row' }}

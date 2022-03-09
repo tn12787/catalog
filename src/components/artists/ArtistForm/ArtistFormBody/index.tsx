@@ -49,7 +49,7 @@ const ArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Props)
       <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
         <FormControl name="image">
           <FormLabel fontSize={'sm'} htmlFor="name">
-            Artist Image (optional)
+            Artist Image
           </FormLabel>
           <Stack alignItems={{ base: 'center' }} direction={{ base: 'column' }}>
             {currentImage && (
