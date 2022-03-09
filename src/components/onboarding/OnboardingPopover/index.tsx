@@ -11,6 +11,7 @@ import {
   PlacementWithLogical,
   Progress,
   PopoverProps,
+  PopoverCloseButton,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -65,6 +66,7 @@ const OnboardingPopover: React.FC<PopoverProps> = ({ children, onClose, onOpen, 
         spacing={0}
         rounded="xl"
       >
+        <PopoverCloseButton />
         <PopoverArrow bg={bgSecondary} />
         <Stack py={3} spacing={0} minW="350px">
           <Stack spacing={2}>
