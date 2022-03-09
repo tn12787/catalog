@@ -1,4 +1,4 @@
-import { Stack, Image, Skeleton, Text, HStack, Icon, Link, Avatar } from '@chakra-ui/react';
+import { Stack, Skeleton, Text, HStack, Icon, Link, Avatar } from '@chakra-ui/react';
 import React from 'react';
 import { BiDisc } from 'react-icons/bi';
 import { FaSpotify } from 'react-icons/fa';
