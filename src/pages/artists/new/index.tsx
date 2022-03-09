@@ -2,20 +2,20 @@ import React from 'react';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import NewArtistForm from 'components/artists/NewArtistForm';
 import PageHead from 'components/pageItems/PageHead';
+import NewArtist from 'components/artists/NewArtist';
 
-const NewArtist = () => {
+const NewArtistPage = () => {
   return (
     <>
       <PageHead title="New Artist" />
-      <NewArtistForm />
+      <NewArtist />
     </>
   );
 };
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
 
-NewArtist.getLayout = () => DashboardLayout;
+NewArtistPage.getLayout = () => DashboardLayout;
 
-export default NewArtist;
+export default NewArtistPage;

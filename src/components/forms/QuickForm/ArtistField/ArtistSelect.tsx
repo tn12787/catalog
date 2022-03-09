@@ -9,7 +9,7 @@ type Props = {
 };
 
 const ArtistSelect = ({ value, onChange }: Props) => {
-  const { data: artists } = useArtists();
+  const { data: artists } = useArtists({});
 
   return (
     <Stack p={2} alignItems={'flex-start'} minW="250px" w="100%">

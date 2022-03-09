@@ -23,7 +23,7 @@ import { ClientRelease, ReleaseType } from 'types/common';
 import { fetchReleases } from 'queries/releases';
 import useDebounce from 'hooks/useDebounce';
 import ReleaseList from 'components/releases/ReleaseList';
-import { SortByOptions, SortOrder } from 'queries/types';
+import { SortOrder } from 'queries/types';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
@@ -31,11 +31,7 @@ import { hasRequiredPermissions } from 'utils/auth';
 import PageHead from 'components/pageItems/PageHead';
 import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';
-
-interface SortBySelectOption<T> {
-  label: string;
-  value: SortByOptions<T>;
-}
+import { SortBySelectOption } from 'types/forms';
 
 const sortOptions: SortBySelectOption<ClientRelease>[] = [
   {

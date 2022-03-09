@@ -1,8 +1,9 @@
 import React from 'react';
 import NextLink from 'next/link';
 import { Skeleton } from '@chakra-ui/skeleton';
-import { Flex, Stack, HStack, Link, Text } from '@chakra-ui/layout';
+import { Flex, Stack, HStack, Link, Text, Box } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
+import NextImage from 'next/image';
 
 import SingleReleaseMenu from '../SingleReleaseMenu';
 
@@ -13,6 +14,7 @@ import ReleaseType from './ReleaseType';
 import { ClientRelease } from 'types/common';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import useAppColors from 'hooks/useAppColors';
+import releasePlaceholder from 'images/release-placeholder.png';
 
 interface ReleaseCardProps {
   releaseData: ClientRelease;
@@ -37,17 +39,23 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
       pb={{ base: '10px', md: 0 }}
     >
       <Skeleton isLoaded={!loading} w={{ base: '100%', md: 'auto' }}>
-        <Image
-          src={artworkTask?.url || 'https://semantic-ui.com/images/wireframe/image.png'}
-          alt="this is an image"
+        <Box
           width={{ base: '100%', md: '170px' }}
           minW={{ base: '100%', md: '170px' }}
           height={{ base: '220px', md: '170px' }}
-          backgroundSize="cover"
-          objectFit="cover"
           borderRight="1px solid"
+          display={'flex'}
           borderColor={border}
-        />
+        >
+          <Image
+            as={artworkTask?.url ? Image : NextImage}
+            src={artworkTask?.url as string}
+            fallbackSrc={releasePlaceholder}
+            alt="this is an image"
+            backgroundSize="cover"
+            objectFit="cover"
+          />
+        </Box>
       </Skeleton>
       <Stack spacing={2} py={{ base: 3, md: 0 }} width="100%" direction="column" px={5}>
         <Stack direction={{ base: 'column', md: 'row' }} justify="space-between">

@@ -26,6 +26,8 @@ jobs:
       - run: yarn build
   test:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgres://notarealDb
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2

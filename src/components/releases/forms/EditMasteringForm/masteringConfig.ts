@@ -27,7 +27,7 @@ export const buildMasteringConfig = (): FormDatum<EditMasteringFormData>[] => [
     name: 'dueDate',
     label: 'Due on',
     type: 'date',
-    helperText:
+    helperContent:
       'We recommend aiming to complete distribution at least 4 weeks before your target release date.',
     registerArgs: {
       required: 'Please enter a due date.',

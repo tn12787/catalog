@@ -8,13 +8,13 @@ export const buildEditContactConfig = (): FormDatum<ContactWithLabels>[] => [
     label: 'Name',
     type: 'text',
     extraProps: {
-      required: true,
+      required: 'Please enter a name for this contact.',
       Placeholder: 'Example inc.',
     },
   },
   {
     name: 'email',
-    label: 'Email (optional)',
+    label: 'Email',
     type: 'email',
     extraProps: {
       placeholder: 'name@example.com',
@@ -22,7 +22,7 @@ export const buildEditContactConfig = (): FormDatum<ContactWithLabels>[] => [
   },
   {
     name: 'phone',
-    label: 'Phone (optional)',
+    label: 'Phone',
     type: 'tel',
     extraProps: {
       placeholder: '+1 (555) 555-5555',
@@ -30,7 +30,7 @@ export const buildEditContactConfig = (): FormDatum<ContactWithLabels>[] => [
   },
   {
     name: 'website',
-    label: 'Website (optional)',
+    label: 'Website',
     type: 'url',
     extraProps: {
       placeholder: 'https://example.com',

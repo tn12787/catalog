@@ -29,7 +29,7 @@ const ContactLabelMenu = ({ value }: Props) => {
 
   const canEdit = [
     hasRequiredPermissions(['UPDATE_CONTACTS'], workspaceMemberships?.[currentWorkspace]),
-    workspaceMemberships?.[currentWorkspace].id !== value.id,
+    workspaceMemberships?.[currentWorkspace]?.id !== value.id,
   ].every(Boolean);
 
   const { primary } = useAppColors();

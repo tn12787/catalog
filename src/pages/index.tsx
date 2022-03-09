@@ -23,12 +23,12 @@ const config: FormDatum<MailingListData>[] = [
   },
   {
     name: 'firstName',
-    label: 'First Name (optional)',
+    label: 'First Name',
     type: 'text',
   },
   {
     name: 'lastName',
-    label: 'Last Name (optional)',
+    label: 'Last Name',
     type: 'text',
   },
 ];
