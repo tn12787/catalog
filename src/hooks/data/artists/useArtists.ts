@@ -4,12 +4,17 @@ import { useQuery, UseQueryOptions } from 'react-query';
 import { ArtistResponse } from 'types/common';
 import { fetchArtists } from 'queries/artists';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { ArtistFilterOptions } from 'queries/artists/types';
 
-const useArtists = (options?: UseQueryOptions<ArtistResponse[], AxiosError>) => {
+const useArtists = (
+  queryArgs: Omit<ArtistFilterOptions, 'workspace'>,
+  options?: UseQueryOptions<ArtistResponse[], AxiosError>
+) => {
   const { currentWorkspace } = useExtendedSession();
+  const totalArgs = { workspace: currentWorkspace, ...queryArgs };
   return useQuery<ArtistResponse[], AxiosError>(
-    ['artists', currentWorkspace],
-    () => fetchArtists(currentWorkspace),
+    ['artists', totalArgs],
+    () => fetchArtists(totalArgs),
     {
       enabled: !!currentWorkspace,
       ...options,

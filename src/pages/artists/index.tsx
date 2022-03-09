@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { BiChevronRight, BiSearch } from 'react-icons/bi';
 import NextLink from 'next/link';
-import { orderBy, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -31,6 +31,7 @@ import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import { SortOrder } from 'queries/types';
 import { ArtistResponse } from 'types/common';
 import { SortBySelectOption } from 'types/forms';
+import useDebounce from 'hooks/useDebounce';
 
 const sortOptions: SortBySelectOption<ArtistResponse>[] = [
   {
@@ -66,26 +67,29 @@ const sortOptions: SortBySelectOption<ArtistResponse>[] = [
 const Artists = () => {
   const { bgPrimary, bgSecondary, primary } = useAppColors();
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
-  const { data: artists, isLoading } = useArtists();
   const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
   const [sortByValue, setSortBy] = useState<SortBySelectOption<ArtistResponse>>(sortOptions[0]);
+  const [search, setSearch] = React.useState('');
+
+  const debouncedSearch = useDebounce(search, 150);
+
+  const queryArgs = useMemo(
+    () => ({
+      search: debouncedSearch,
+      sorting: {
+        key: sortByValue.value.key,
+        order: sortByValue.value.order,
+      },
+      workspace: currentWorkspace ?? '',
+    }),
+    [currentWorkspace, debouncedSearch, sortByValue]
+  );
+
+  const { data: artists, isLoading } = useArtists(queryArgs);
 
   const canCreateArtists = hasRequiredPermissions(
     ['CREATE_ARTISTS'],
     workspaceMemberships?.[currentWorkspace]
-  );
-
-  const [search, setSearch] = React.useState('');
-
-  const filteredArtists = useMemo(
-    () =>
-      artists?.filter((item) => item.name?.toLowerCase().includes(search.toLowerCase()) ?? false),
-    [artists, search]
-  );
-
-  const sortedFilteredArtists = useMemo(
-    () => orderBy(filteredArtists, [sortByValue.value.key], [sortByValue.value.order]),
-    [filteredArtists, sortByValue]
   );
 
   const shouldHideControls = artists?.length === 0 || isLoading;
@@ -160,7 +164,7 @@ const Artists = () => {
         )}
 
         <Stack>
-          <ArtistList artists={sortedFilteredArtists} search={''} loading={isLoading} />
+          <ArtistList artists={artists} search={''} loading={isLoading} />
         </Stack>
       </Stack>
     </Stack>

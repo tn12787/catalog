@@ -1,14 +1,24 @@
 import axios from 'axios';
 import { Artist } from '@prisma/client';
 
-import { CreateSingleArtistVars, SingleArtistVars } from './types';
+import { ArtistFilterOptions, CreateSingleArtistVars, SingleArtistVars } from './types';
 
 import { ArtistResponse } from 'types/common';
 
-export const fetchArtists = async (workspaceId: string): Promise<ArtistResponse[]> => {
+export const fetchArtists = async ({
+  workspace,
+  search,
+  sorting,
+}: ArtistFilterOptions): Promise<ArtistResponse[]> => {
   const { data } = await axios.get(`/api/artists`, {
-    params: { workspace: workspaceId },
+    params: {
+      workspace,
+      search,
+      sortBy: sorting?.key,
+      sortOrder: sorting?.order,
+    },
   });
+
   return data;
 };
 
