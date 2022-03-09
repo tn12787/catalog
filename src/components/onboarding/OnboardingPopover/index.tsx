@@ -19,7 +19,7 @@ import OnboardingPopoverList from './OnboardingPopoverList';
 import useAppColors from 'hooks/useAppColors';
 import useOnboardingItems from 'hooks/onboarding/useOnboardingItems';
 
-const OnboardingPopover: React.FC<PopoverProps> = ({ children, ...rest }) => {
+const OnboardingPopover: React.FC<PopoverProps> = ({ children, onClose, onOpen, ...rest }) => {
   const { bgSecondary, bodySub, border } = useAppColors();
 
   const { items, isLoading } = useOnboardingItems();
@@ -30,11 +30,29 @@ const OnboardingPopover: React.FC<PopoverProps> = ({ children, ...rest }) => {
     return acc + (item.isComplete ? 1 : 0);
   }, 0);
 
+  const onPopoverClose = () => {
+    localStorage.setItem('onboardingPopover', 'closed');
+    onClose?.();
+  };
+
+  const onPopoverOpen = () => {
+    localStorage.setItem('onboardingPopover', 'open');
+    onOpen?.();
+  };
+
+  const shouldBeOpen = () => {
+    const preference = localStorage.getItem('onboardingPopover') ?? 'open';
+
+    return preference === 'open';
+  };
+
   return isLoading ? null : (
     <Popover
       placement={popoverPlacement as PlacementWithLogical}
-      defaultIsOpen={true}
+      defaultIsOpen={shouldBeOpen()}
       closeOnBlur={false}
+      onClose={onPopoverClose}
+      onOpen={onPopoverOpen}
       {...rest}
     >
       <PopoverTrigger>{children}</PopoverTrigger>
