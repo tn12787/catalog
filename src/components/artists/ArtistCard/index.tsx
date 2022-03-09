@@ -1,4 +1,4 @@
-import { Stack, Image, Skeleton, Text, HStack, Icon, Link } from '@chakra-ui/react';
+import { Stack, Image, Skeleton, Text, HStack, Icon, Link, Avatar } from '@chakra-ui/react';
 import React from 'react';
 import { BiDisc } from 'react-icons/bi';
 import { FaSpotify } from 'react-icons/fa';
@@ -27,16 +27,14 @@ const ArtistCard = ({ artist, loading }: Props) => {
       bg={bgSecondary}
     >
       <Skeleton isLoaded={!loading}>
-        <Image
+        <Avatar
           height="140px"
           w="100%"
           objectFit="cover"
           alt="artistPic"
-          src={
-            artist.imageUrl ??
-            'https://www.theatromarrakech.com/wp-content/plugins/urvenue-plugin/images/placeholder.artist.jpg'
-          }
-        ></Image>
+          borderRadius={0}
+          src={artist.imageUrl as string}
+        ></Avatar>
       </Skeleton>
       <HStack p={3} px={3} justifyContent="space-between">
         <HStack>

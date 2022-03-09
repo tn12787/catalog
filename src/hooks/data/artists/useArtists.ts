@@ -10,9 +10,10 @@ const useArtists = (
   queryArgs: Omit<ArtistFilterOptions, 'workspace'>,
   options?: UseQueryOptions<ArtistResponse[], AxiosError>
 ) => {
-  const { currentWorkspace } = useExtendedSession();
+  const { currentWorkspace, isLoading } = useExtendedSession();
   const totalArgs = { workspace: currentWorkspace, ...queryArgs };
-  return useQuery<ArtistResponse[], AxiosError>(
+
+  const query = useQuery<ArtistResponse[], AxiosError>(
     ['artists', totalArgs],
     () => fetchArtists(totalArgs),
     {
@@ -20,6 +21,7 @@ const useArtists = (
       ...options,
     }
   );
+  return { ...query, isLoading: query.isLoading || isLoading };
 };
 
 export default useArtists;

@@ -92,7 +92,7 @@ const Artists = () => {
     workspaceMemberships?.[currentWorkspace]
   );
 
-  const shouldHideControls = artists?.length === 0 || isLoading;
+  const shouldHideControls = artists?.length === 0;
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
@@ -128,37 +128,43 @@ const Artists = () => {
 
         {!shouldHideControls && (
           <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-            <InputGroup borderRadius="md" maxW={{ base: '100%', md: '400px' }} bg={bgSecondary}>
-              <Input
-                focusBorderColor={primary}
-                placeholder="Filter artists..."
-                onChange={(e) => setSearch(e.target.value)}
-                value={search}
-              />
-              <InputRightElement>
-                <Icon as={BiSearch} />
-              </InputRightElement>
-            </InputGroup>
+            <Skeleton isLoaded={!isLoading}>
+              <InputGroup borderRadius="md" maxW={{ base: '100%', md: '400px' }} bg={bgSecondary}>
+                <Input
+                  focusBorderColor={primary}
+                  placeholder="Filter artists..."
+                  onChange={(e) => setSearch(e.target.value)}
+                  value={search}
+                />
+                <InputRightElement>
+                  <Icon as={BiSearch} />
+                </InputRightElement>
+              </InputGroup>
+            </Skeleton>
             <HStack>
-              <Text whiteSpace="nowrap" fontSize="sm" fontWeight="bold">
-                Sort by:
-              </Text>
-              <Select
-                bg={bgSecondary}
-                value={JSON.stringify(sortByValue)}
-                onChange={(e) => {
-                  const valueAsObj = JSON.parse(e.target.value);
-                  const item = sortOptions.find((item) => isEqual(item, valueAsObj));
+              <Skeleton isLoaded={!isLoading}>
+                <Text whiteSpace="nowrap" fontSize="sm" fontWeight="bold">
+                  Sort by:
+                </Text>
+              </Skeleton>
+              <Skeleton isLoaded={!isLoading}>
+                <Select
+                  bg={bgSecondary}
+                  value={JSON.stringify(sortByValue)}
+                  onChange={(e) => {
+                    const valueAsObj = JSON.parse(e.target.value);
+                    const item = sortOptions.find((item) => isEqual(item, valueAsObj));
 
-                  setSortBy(item ?? sortOptions[0]);
-                }}
-              >
-                {sortOptions.map((item) => (
-                  <option key={item.label} value={JSON.stringify(item)}>
-                    {item.label}
-                  </option>
-                ))}
-              </Select>
+                    setSortBy(item ?? sortOptions[0]);
+                  }}
+                >
+                  {sortOptions.map((item) => (
+                    <option key={item.label} value={JSON.stringify(item)}>
+                      {item.label}
+                    </option>
+                  ))}
+                </Select>
+              </Skeleton>
             </HStack>
           </Stack>
         )}
