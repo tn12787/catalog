@@ -2,7 +2,7 @@ import { FormArtist } from './types';
 
 import { FormDatum } from 'types/forms';
 
-export const newArtistConfig = (): FormDatum<FormArtist>[] => [
+export const buildArtistConfig = (): FormDatum<FormArtist>[] => [
   {
     name: 'name',
     label: 'Name',

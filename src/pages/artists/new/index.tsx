@@ -1,15 +1,15 @@
 import React from 'react';
 
+import ArtistForm from 'components/artists/ArtistForm';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import NewArtistForm from 'components/artists/NewArtistForm';
 import PageHead from 'components/pageItems/PageHead';
 
 const NewArtist = () => {
   return (
     <>
       <PageHead title="New Artist" />
-      <NewArtistForm />
+      <ArtistForm />
     </>
   );
 };

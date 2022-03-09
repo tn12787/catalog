@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiArrowRight } from 'react-icons/fi';
 
-import { newArtistConfig } from '../artistConfig';
+import { buildArtistConfig } from '../artistConfig';
 import { FormArtist } from '../types';
 
 import ImageSelect from 'components/forms/QuickForm/ImageField/ImageSelect';
@@ -15,7 +15,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-const NewArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Props) => {
+const ArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Props) => {
   const {
     register,
     formState: { errors },
@@ -72,7 +72,7 @@ const NewArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Pro
 
         <FormContent
           py={0}
-          config={newArtistConfig()}
+          config={buildArtistConfig()}
           errors={errors}
           register={register}
           control={control}
@@ -93,4 +93,4 @@ const NewArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Pro
   );
 };
 
-export default NewArtistFormBody;
+export default ArtistFormBody;

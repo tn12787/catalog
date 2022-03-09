@@ -3,7 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 import { FormArtist } from './types';
-import NewArtistFormBody from './NewArtistFormBody';
+import ArtistFormBody from './ArtistFormBody';
 
 import Card from 'components/Card';
 import useAppColors from 'hooks/useAppColors';
@@ -15,7 +15,7 @@ interface Props {
   existingArtist?: FormArtist;
 }
 
-const NewArtistForm = ({ existingArtist }: Props) => {
+const ArtistForm = ({ existingArtist }: Props) => {
   const router = useRouter();
 
   const { currentWorkspace } = useExtendedSession();
@@ -52,7 +52,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
             : 'Add basic info about the artist.'}
         </Text>
         <Card width="100%">
-          <NewArtistFormBody
+          <ArtistFormBody
             isLoading={createSingleArtist.isLoading || updateSingleArtist.isLoading}
             onSubmit={existingArtist ? onUpdate : onCreate}
             existingArtist={existingArtist}
@@ -63,4 +63,4 @@ const NewArtistForm = ({ existingArtist }: Props) => {
   );
 };
 
-export default NewArtistForm;
+export default ArtistForm;
