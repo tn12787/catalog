@@ -1,4 +1,4 @@
-import { Stack, Skeleton, Text, HStack, Icon, Link, Avatar } from '@chakra-ui/react';
+import { Stack, Skeleton, Text, HStack, Icon, Link, Image } from '@chakra-ui/react';
 import React from 'react';
 import { BiDisc } from 'react-icons/bi';
 import { FaSpotify } from 'react-icons/fa';
@@ -7,6 +7,7 @@ import { SiLinktree } from 'react-icons/si';
 import NextLink from 'next/link';
 
 import ArtistLink from '../specific/ArtistLink';
+import ArtistPlaceholder from '../ArtistPlaceholder';
 
 import useAppColors from 'hooks/useAppColors';
 import { ArtistResponse } from 'types/common';
@@ -23,18 +24,20 @@ const ArtistCard = ({ artist, loading }: Props) => {
       borderRadius="lg"
       boxShadow="none"
       overflow="hidden"
+      border="1px solid"
       borderColor={border}
       bg={bgSecondary}
     >
       <Skeleton isLoaded={!loading}>
-        <Avatar
+        <Image
           height="140px"
           w="100%"
           objectFit="cover"
           alt="artistPic"
           borderRadius={0}
           src={artist.imageUrl as string}
-        ></Avatar>
+          fallback={<ArtistPlaceholder minH={0} h={'140px'} rounded="none" />}
+        ></Image>
       </Skeleton>
       <HStack p={3} px={3} justifyContent="space-between">
         <HStack>

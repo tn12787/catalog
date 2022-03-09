@@ -22,7 +22,7 @@ describe('New Artist Page', () => {
 
     expect(getByText(/basic info about/)).toBeVisible();
 
-    expect(getByText(/Image/)).toBeVisible();
+    expect(getByText(/Photo/)).toBeVisible();
     expect(getByText(/^Name/)).toBeVisible();
     expect(getByText(/^Legal Name/)).toBeVisible();
     expect(getAllByText(/Spotify/)).toHaveLength(2);

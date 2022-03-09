@@ -3,7 +3,7 @@ import { useToast } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
 import useExtendedSession from 'hooks/useExtendedSession';
-import { createSingleArtist, updateSingleArtist } from 'queries/artists';
+import { createSingleArtist, deleteSingleArtist, updateSingleArtist } from 'queries/artists';
 
 const useArtistMutations = () => {
   const { currentWorkspace } = useExtendedSession();
@@ -45,9 +45,15 @@ const useArtistMutations = () => {
     onError: onError.bind(null, 'Something went wrong', 'Please try again later.'),
   });
 
+  const deleteMutation = useMutation(deleteSingleArtist, {
+    onSuccess: onSuccess.bind(null, 'Artist deleted.'),
+    onError: onError.bind(null, 'Something went wrong', 'Please try again later.'),
+  });
+
   return {
     createSingleArtist: createMutation,
     updateSingleArtist: updateMutation,
+    deleteSingleArtist: deleteMutation,
   };
 };
 

@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { useRouter } from 'next/router';
 
 import ArtistModal from '../ArtistModal';
 
@@ -19,7 +20,7 @@ import useAppColors from 'hooks/useAppColors';
 import { ArtistResponse } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';
-import useContactLabelMutations from 'hooks/data/contacts/labels/useContactLabelMutations';
+import useArtistMutations from 'hooks/data/artists/useArtistMutations';
 
 type Props = { artist: ArtistResponse };
 
@@ -39,14 +40,16 @@ const ArtistMenu = ({ artist }: Props) => {
   const cancelRef = useRef(null);
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+  const router = useRouter();
 
   const {
-    deleteSingleContactLabel: { mutateAsync, isLoading },
-  } = useContactLabelMutations();
+    deleteSingleArtist: { mutateAsync, isLoading },
+  } = useArtistMutations();
 
   const onDelete = async () => {
     try {
-      await mutateAsync({ workspaceId: currentWorkspace, id: artist.id, name: artist.name });
+      await mutateAsync(artist.id);
+      router.push('/artists');
       onDeleteClose();
     } catch (error: any) {}
   };

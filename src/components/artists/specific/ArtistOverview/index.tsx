@@ -9,6 +9,7 @@ import ArtistLink from '../ArtistLink';
 import { ArtistResponse } from 'types/common';
 import Card from 'components/Card';
 import ArtistMenu from 'components/artists/ArtistMenu';
+import ArtistPlaceholder from 'components/artists/ArtistPlaceholder';
 
 type Props = {
   artist: ArtistResponse;
@@ -27,10 +28,14 @@ const ArtistOverview = ({ artist, isLoading }: Props) => {
               maxWidth={{ base: '100%', sm: '400px' }}
               objectFit="cover"
               alt="artistPic"
-              src={
-                artist.imageUrl ??
-                'https://www.theatromarrakech.com/wp-content/plugins/urvenue-plugin/images/placeholder.artist.jpg'
+              fallback={
+                <ArtistPlaceholder
+                  h={{ base: '100%', sm: '400px' }}
+                  w={{ base: '100%', sm: '400px' }}
+                  minH={0}
+                />
               }
+              src={artist.imageUrl ?? undefined}
             ></Image>
           </Skeleton>
           <Stack direction={{ base: 'column' }}>

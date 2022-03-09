@@ -132,7 +132,7 @@ const ArtistsPage = () => {
               <InputGroup borderRadius="md" maxW={{ base: '100%', md: '400px' }} bg={bgSecondary}>
                 <Input
                   focusBorderColor={primary}
-                  placeholder="Filter artists..."
+                  placeholder="Search artists..."
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
                 />
