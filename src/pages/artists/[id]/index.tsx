@@ -1,4 +1,4 @@
-import { Stack, Heading, Text, Link as ChakraLink } from '@chakra-ui/layout';
+import { Stack, Heading } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -10,11 +10,8 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  Image,
 } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
-import { FiExternalLink, FiInstagram } from 'react-icons/fi';
-import { SiLinktree } from 'react-icons/si';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
@@ -25,6 +22,7 @@ import { getSingleServerSideArtist } from 'ssr/artists/getSingleServerSideArtist
 import { ArtistResponse } from 'types/common';
 import useSingleArtist from 'hooks/data/artists/useSingleArtist';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import ArtistOverview from 'components/artists/specific/ArtistOverview';
 
 type Props = {
   artist: ArtistResponse;
@@ -71,52 +69,7 @@ const SingleArtist = ({ artist }: Props) => {
         </Stack>
 
         <Stack spacing="20px">
-          <Card>
-            <Stack spacing={6} direction={{ base: 'column', lg: 'row' }}>
-              <Image
-                rounded="lg"
-                maxHeight="400px"
-                maxWidth="400px"
-                objectFit="cover"
-                alt="artistPic"
-                src={
-                  artist.imageUrl ??
-                  'https://www.theatromarrakech.com/wp-content/plugins/urvenue-plugin/images/placeholder.artist.jpg'
-                }
-              ></Image>
-              <Stack direction={{ base: 'column' }}>
-                <Heading size="sm">Basic Info</Heading>
-                <Text>{artistData?.legalName}</Text>
-                {artistData?.spotifyId && (
-                  <ChakraLink
-                    href={`https://open.spotify.com/artist/${artistData?.spotifyId}`}
-                    isExternal
-                  >
-                    Spotify
-                    <FiExternalLink />
-                  </ChakraLink>
-                )}
-                {artistData?.instagramUsername && (
-                  <ChakraLink
-                    fontWeight={'medium'}
-                    href={`https://www.instagram.com/${artistData?.instagramUsername}`}
-                    isExternal
-                  >
-                    <FiInstagram />
-                    {artistData?.instagramUsername}
-                    <FiExternalLink />
-                  </ChakraLink>
-                )}
-                {artistData?.linkTreeUrl && (
-                  <ChakraLink href={artistData?.linkTreeUrl} isExternal>
-                    <SiLinktree />
-                    Linktree
-                    <FiExternalLink />
-                  </ChakraLink>
-                )}
-              </Stack>
-            </Stack>
-          </Card>
+          <ArtistOverview artist={artist} isLoading={isLoading}></ArtistOverview>
           <Stack spacing={4}>
             <Heading size="lg">Releases</Heading>
             <Stack spacing={4} direction={{ base: 'column', md: 'row' }}>

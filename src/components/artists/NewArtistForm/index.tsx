@@ -1,32 +1,16 @@
-import {
-  Avatar,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
-import { FiArrowRight } from 'react-icons/fi';
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
-import { user } from 'firebase-functions/v1/auth';
 
-import { newArtistConfig } from './artistConfig';
 import { FormArtist } from './types';
+import NewArtistFormBody from './NewArtistFormBody';
 
 import Card from 'components/Card';
-import FormContent from 'components/forms/FormContent';
 import { createSingleArtist, updateSingleArtist } from 'queries/artists';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { CreateSingleArtistVars, SingleArtistVars } from 'queries/artists/types';
-import useArtists from 'hooks/data/artists/useArtists';
-import ImageSelect from 'components/forms/QuickForm/ImageField/ImageSelect';
 
 interface Props {
   existingArtist?: FormArtist;
@@ -36,23 +20,8 @@ const NewArtistForm = ({ existingArtist }: Props) => {
   const toast = useToast();
   const router = useRouter();
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-    control,
-    watch,
-    setValue,
-  } = useForm<FormArtist>({
-    defaultValues: {
-      ...existingArtist,
-    },
-  });
-
   const { currentWorkspace } = useExtendedSession();
 
-  const { data: artists } = useArtists();
   const queryClient = useQueryClient();
   const { mutateAsync: createArtist, isLoading: createLoading } = useMutation(createSingleArtist, {
     onSuccess: () => {
@@ -100,19 +69,7 @@ const NewArtistForm = ({ existingArtist }: Props) => {
     }
   };
 
-  useEffect(() => {
-    reset({
-      ...existingArtist,
-    });
-  }, [existingArtist, artists, reset]);
-
   const { bgPrimary } = useAppColors();
-
-  const currentImage = watch('imageUrl');
-
-  const onImageChange = (url: string) => {
-    setValue('imageUrl', url);
-  };
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" direction="column" width="100%" height="100%">
@@ -123,53 +80,13 @@ const NewArtistForm = ({ existingArtist }: Props) => {
             ? 'Add or change basic info about the artist.'
             : 'Add basic info about the artist.'}
         </Text>
-        <Stack as="form" onSubmit={handleSubmit(existingArtist ? onUpdate : onCreate)} width="100%">
-          <Card width="100%">
-            <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
-              <FormControl name="image">
-                <FormLabel fontSize={'sm'} htmlFor="name">
-                  Artist Image (optional)
-                </FormLabel>
-                <Stack alignItems={{ base: 'center' }} direction={{ base: 'column' }}>
-                  {currentImage && (
-                    <Avatar
-                      boxSize={{ base: '100%', md: '100%' }}
-                      borderRadius="md"
-                      src={currentImage}
-                      alt="workspace image"
-                    />
-                  )}
-                  <ImageSelect
-                    message="Choose an image"
-                    fontWeight="semibold"
-                    onChange={onImageChange}
-                    filePath="artistImages"
-                    entityId={existingArtist?.id}
-                  ></ImageSelect>
-                </Stack>
-              </FormControl>
-
-              <FormContent
-                py={0}
-                config={newArtistConfig()}
-                errors={errors}
-                register={register}
-                control={control}
-              />
-              <Flex justify="flex-end">
-                <Button
-                  colorScheme="purple"
-                  flexGrow={0}
-                  rightIcon={<FiArrowRight />}
-                  isLoading={createLoading || updateLoading}
-                  type="submit"
-                >
-                  {existingArtist ? 'Save' : 'Create'}
-                </Button>
-              </Flex>
-            </Stack>
-          </Card>
-        </Stack>
+        <Card width="100%">
+          <NewArtistFormBody
+            isLoading={createLoading || updateLoading}
+            onSubmit={existingArtist ? onUpdate : onCreate}
+            existingArtist={existingArtist}
+          />
+        </Card>
       </Stack>
     </Stack>
   );
