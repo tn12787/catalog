@@ -9,6 +9,7 @@ import {
   InputRightElement,
   HStack,
   Select,
+  Skeleton,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { isEqual } from 'lodash';
@@ -20,7 +21,6 @@ import Link from 'next/link';
 import ReleaseCard from 'components/releases/ReleaseCard';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { ClientRelease, ReleaseType } from 'types/common';
-import { fetchReleases } from 'queries/releases';
 import useDebounce from 'hooks/useDebounce';
 import ReleaseList from 'components/releases/ReleaseList';
 import { SortOrder } from 'queries/types';
@@ -32,6 +32,7 @@ import PageHead from 'components/pageItems/PageHead';
 import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';
 import { SortBySelectOption } from 'types/forms';
+import useReleases from 'hooks/data/releases/useReleases';
 
 const sortOptions: SortBySelectOption<ClientRelease>[] = [
   {
@@ -87,18 +88,14 @@ const Releases = () => {
     page: currentPage,
   };
 
-  const { data: response, isLoading } = useQuery(
-    ['releases', queryArgs],
-    () => fetchReleases(queryArgs),
-    { enabled: !!currentWorkspace }
-  );
+  const { data: response, isLoading } = useReleases(queryArgs, { keepPreviousData: true });
 
   const canCreateRelease = hasRequiredPermissions(
     ['CREATE_RELEASES'],
     workspaceMemberships?.[currentWorkspace]
   );
 
-  const shouldHideControls = (response?.results?.length === 0 && !debouncedSearch) || isLoading;
+  const shouldHideControls = response?.results?.length === 0 && !debouncedSearch;
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
@@ -129,37 +126,43 @@ const Releases = () => {
         </Stack>
         {!shouldHideControls && (
           <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-            <InputGroup borderRadius="md" maxW={{ base: '100%', md: '400px' }} bg={bgSecondary}>
-              <Input
-                focusBorderColor={primary}
-                placeholder="Search releases..."
-                onChange={(e) => setSearch(e.target.value)}
-                value={search}
-              />
-              <InputRightElement>
-                <Icon as={BiSearch} />
-              </InputRightElement>
-            </InputGroup>
+            <Skeleton isLoaded={!isLoading}>
+              <InputGroup borderRadius="md" maxW={{ base: '100%', md: '400px' }} bg={bgSecondary}>
+                <Input
+                  focusBorderColor={primary}
+                  placeholder="Search releases..."
+                  onChange={(e) => setSearch(e.target.value)}
+                  value={search}
+                />
+                <InputRightElement>
+                  <Icon as={BiSearch} />
+                </InputRightElement>
+              </InputGroup>
+            </Skeleton>
             <HStack>
-              <Text whiteSpace="nowrap" fontSize="sm" fontWeight="bold">
-                Sort by:
-              </Text>
-              <Select
-                bg={bgSecondary}
-                value={JSON.stringify(sortBy)}
-                onChange={(e) => {
-                  const valueAsObj = JSON.parse(e.target.value);
-                  const item = sortOptions.find((item) => isEqual(item, valueAsObj));
+              <Skeleton isLoaded={!isLoading}>
+                <Text whiteSpace="nowrap" fontSize="sm" fontWeight="bold">
+                  Sort by:
+                </Text>
+              </Skeleton>
+              <Skeleton isLoaded={!isLoading}>
+                <Select
+                  bg={bgSecondary}
+                  value={JSON.stringify(sortBy)}
+                  onChange={(e) => {
+                    const valueAsObj = JSON.parse(e.target.value);
+                    const item = sortOptions.find((item) => isEqual(item, valueAsObj));
 
-                  setSortBy(item ?? sortOptions[0]);
-                }}
-              >
-                {sortOptions.map((item) => (
-                  <option key={item.label} value={JSON.stringify(item)}>
-                    {item.label}
-                  </option>
-                ))}
-              </Select>
+                    setSortBy(item ?? sortOptions[0]);
+                  }}
+                >
+                  {sortOptions.map((item) => (
+                    <option key={item.label} value={JSON.stringify(item)}>
+                      {item.label}
+                    </option>
+                  ))}
+                </Select>
+              </Skeleton>
             </HStack>
           </Stack>
         )}

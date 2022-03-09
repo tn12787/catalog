@@ -8,6 +8,7 @@ import ArtistCard from '../ArtistCard';
 import profilePic from 'images/no-artists-yet.svg';
 import { ArtistResponse } from 'types/common';
 import { testClientRelease } from '__mocks__/data/releases';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   search: string;
@@ -16,9 +17,10 @@ interface Props {
 }
 
 const ArtistList = ({ search, artists, loading }: Props) => {
+  const { bodySub } = useAppColors();
   if ((!loading && !artists) || artists?.length === 0) {
     return search ? (
-      <Stack spacing={5} py={'40px'} align="center">
+      <Stack color={bodySub} spacing={5} py={'40px'} align="center">
         <Icon as={BiSearch} fontSize="7xl" />
         <Text fontSize="sm">No items match your search. Try entering another query.</Text>
       </Stack>

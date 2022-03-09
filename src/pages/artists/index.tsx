@@ -85,14 +85,14 @@ const ArtistsPage = () => {
     [currentWorkspace, debouncedSearch, sortByValue]
   );
 
-  const { data: artists, isLoading } = useArtists(queryArgs);
+  const { data: artists, isLoading } = useArtists(queryArgs, { keepPreviousData: true });
 
   const canCreateArtists = hasRequiredPermissions(
     ['CREATE_ARTISTS'],
     workspaceMemberships?.[currentWorkspace]
   );
 
-  const shouldHideControls = artists?.length === 0;
+  const shouldHideControls = artists?.length === 0 && !debouncedSearch;
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
@@ -170,7 +170,7 @@ const ArtistsPage = () => {
         )}
 
         <Stack>
-          <ArtistList artists={artists} search={''} loading={isLoading} />
+          <ArtistList artists={artists} search={debouncedSearch} loading={isLoading} />
         </Stack>
       </Stack>
     </Stack>

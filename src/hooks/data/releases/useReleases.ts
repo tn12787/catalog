@@ -11,14 +11,16 @@ const useReleases = (
   queryArgs: Omit<ReleaseFilterOptions, 'workspace'>,
   options?: UseQueryOptions<PaginatedQueryResult<ClientRelease>, AxiosError>
 ) => {
-  const { currentWorkspace } = useExtendedSession();
+  const { currentWorkspace, isLoading } = useExtendedSession();
 
   const totalArgs = { workspace: currentWorkspace, ...queryArgs };
-  return useQuery<PaginatedQueryResult<ClientRelease>, AxiosError>(
+  const query = useQuery<PaginatedQueryResult<ClientRelease>, AxiosError>(
     ['releases', totalArgs],
     () => fetchReleases(totalArgs),
     { enabled: !!currentWorkspace, ...options }
   );
+
+  return { ...query, isLoading: query.isLoading || isLoading };
 };
 
 export default useReleases;
