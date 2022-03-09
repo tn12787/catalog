@@ -13,6 +13,8 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
+import { FiExternalLink, FiInstagram } from 'react-icons/fi';
+import { SiLinktree } from 'react-icons/si';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
@@ -77,7 +79,10 @@ const SingleArtist = ({ artist }: Props) => {
                 maxWidth="400px"
                 objectFit="cover"
                 alt="artistPic"
-                src={artist.imageUrl ?? 'https://semantic-ui.com/images/wireframe/image.png'}
+                src={
+                  artist.imageUrl ??
+                  'https://www.theatromarrakech.com/wp-content/plugins/urvenue-plugin/images/placeholder.artist.jpg'
+                }
               ></Image>
               <Stack direction={{ base: 'column' }}>
                 <Heading size="sm">Basic Info</Heading>
@@ -88,19 +93,25 @@ const SingleArtist = ({ artist }: Props) => {
                     isExternal
                   >
                     Spotify
+                    <FiExternalLink />
                   </ChakraLink>
                 )}
                 {artistData?.instagramUsername && (
                   <ChakraLink
+                    fontWeight={'medium'}
                     href={`https://www.instagram.com/${artistData?.instagramUsername}`}
                     isExternal
                   >
-                    Instagram
+                    <FiInstagram />
+                    {artistData?.instagramUsername}
+                    <FiExternalLink />
                   </ChakraLink>
                 )}
                 {artistData?.linkTreeUrl && (
                   <ChakraLink href={artistData?.linkTreeUrl} isExternal>
-                    Instagram
+                    <SiLinktree />
+                    Linktree
+                    <FiExternalLink />
                   </ChakraLink>
                 )}
               </Stack>

@@ -33,7 +33,10 @@ const ArtistCard = ({ artist, loading }: Props) => {
           w="100%"
           objectFit="cover"
           alt="artistPic"
-          src={artist.imageUrl ?? 'https://semantic-ui.com/images/wireframe/image.png'}
+          src={
+            artist.imageUrl ??
+            'https://www.theatromarrakech.com/wp-content/plugins/urvenue-plugin/images/placeholder.artist.jpg'
+          }
         ></Image>
       </Skeleton>
       <HStack p={3} px={3} justifyContent="space-between">
