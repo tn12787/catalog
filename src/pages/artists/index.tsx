@@ -64,7 +64,7 @@ const sortOptions: SortBySelectOption<ArtistResponse>[] = [
   },
 ];
 
-const Artists = () => {
+const ArtistsPage = () => {
   const { bgPrimary, bgSecondary, primary } = useAppColors();
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
@@ -179,6 +179,6 @@ const Artists = () => {
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
 
-Artists.getLayout = () => DashboardLayout;
+ArtistsPage.getLayout = () => DashboardLayout;
 
-export default Artists;
+export default ArtistsPage;

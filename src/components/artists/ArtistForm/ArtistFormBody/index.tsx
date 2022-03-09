@@ -44,6 +44,9 @@ const ArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Props)
     setValue('imageUrl', url);
   };
 
+  const name = watch('name');
+  const legalName = watch('legalName');
+
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack py={6} spacing={6} width="100%" maxW="500px" margin="0 auto">
@@ -84,6 +87,7 @@ const ArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Props)
             rightIcon={<FiArrowRight />}
             isLoading={loading}
             type="submit"
+            isDisabled={!name || !legalName}
           >
             {existingArtist ? 'Save' : 'Create'}
           </Button>
