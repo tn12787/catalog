@@ -56,7 +56,7 @@ class SingleReleaseHandler {
           return new Date(updateArgs.targetDate as Date) < new Date(dueDate);
         })
       ) {
-        throw new BadRequestException("Release target date cannot be before any task's due date");
+        throw new BadRequestException("Release date cannot be before any task's due date");
       }
     }
 

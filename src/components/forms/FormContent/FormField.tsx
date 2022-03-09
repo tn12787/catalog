@@ -5,16 +5,15 @@ import {
   InputGroup,
   InputRightElement,
   Box,
-  Text,
   Spinner,
   FormHelperText,
   Input,
   Textarea,
   Select,
+  FormErrorMessage,
 } from '@chakra-ui/react';
-import { ErrorMessage } from '@hookform/error-message';
 import React from 'react';
-import { UseFormReturn, FieldValues, Controller, Control } from 'react-hook-form';
+import { UseFormReturn, FieldValues, Controller, Control, FieldError } from 'react-hook-form';
 import { get } from 'lodash';
 
 import { InputComponentType } from './types';
@@ -100,22 +99,15 @@ const FormField = <T,>({
             )}
           </InputGroup>
         )}
-
+        <FormErrorMessage>
+          {(errors as Record<keyof T, FieldError>)?.[name]?.message}
+        </FormErrorMessage>
         {helperText && (
           <FormHelperText color="grey" fontSize="sm">
             {helperText}
           </FormHelperText>
         )}
       </FormControl>
-      <ErrorMessage
-        render={({ message }) => (
-          <Text fontSize="sm" color="red.400">
-            {message}
-          </Text>
-        )}
-        name={name as any}
-        errors={errors}
-      ></ErrorMessage>
     </Stack>
   );
 };
