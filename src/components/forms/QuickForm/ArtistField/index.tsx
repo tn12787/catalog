@@ -14,7 +14,7 @@ type Props = {
 };
 
 const ArtistField = ({ isDisabled, artist, onChange }: Props) => {
-  const { data: artists } = useArtists();
+  const { data: artists } = useArtists({});
 
   const dataToRender = artists?.find((item) => item.id === artist);
 

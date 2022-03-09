@@ -7,6 +7,8 @@ export const testArtist = (extraFields: Partial<ArtistResponse>): ArtistResponse
     legalName: 'Test Artist Legal Name',
     spotifyId: null,
     instagramUsername: null,
+    imageUrl: null,
+    linkTreeUrl: null,
     workspaceId: 'test-workspace-id',
     createdAt: new Date(),
     updatedAt: new Date(),
