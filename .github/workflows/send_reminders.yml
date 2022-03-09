@@ -9,5 +9,5 @@ jobs:
       - name: run job
         run: |
           curl --request POST \
-          --url 'https://launchday.vercel.app/api/jobs/reminders' \
+          --url 'https://launchday-postgres.herokuapp.com/api/jobs/reminders' \
           --header 'Authorization: Bearer ${{ secrets.CRON_JOB_KEY }}'
