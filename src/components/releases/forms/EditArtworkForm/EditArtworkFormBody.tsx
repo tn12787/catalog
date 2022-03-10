@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { TaskStatus } from '@prisma/client';
 import { format } from 'date-fns';
 
-import { EditArtworkFormData } from '../../specific/Artwork/types';
+import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
 
 import { buildArtworkConfig } from './artworkConfig';
 

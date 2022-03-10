@@ -40,13 +40,18 @@ const NoReleasesYet = () => {
         <Text textAlign="center">
           Create your first release to start turbocharging your artist workflow.
         </Text>
-        {noArtists && (
-          <Alert status="info">You need to create an artist before you can create a release.</Alert>
-        )}
+
         {canCreateRelease && (
-          <Button isDisabled={noArtists} href={'/releases/new'} colorScheme="purple" as={'a'}>
-            Get Started
-          </Button>
+          <>
+            {noArtists && (
+              <Alert status="info" py={2} rounded="md" fontSize={'sm'}>
+                You need to create an artist before you can create a release.
+              </Alert>
+            )}
+            <Button isDisabled={noArtists} href={'/releases/new'} colorScheme="purple" as={'a'}>
+              Get Started
+            </Button>
+          </>
         )}
       </Stack>
     </Stack>

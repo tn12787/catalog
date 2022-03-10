@@ -1,7 +1,7 @@
 import { TaskStatus } from '@prisma/client';
 
 import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
-import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
+import { EditArtworkFormData } from 'components/releases/specific/tasks/Artwork/types';
 import { FormDatum } from 'types/forms';
 
 export const buildArtworkConfig = (

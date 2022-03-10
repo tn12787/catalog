@@ -6,7 +6,7 @@ import { BiArrowBack } from 'react-icons/bi';
 import { TaskStatus } from '@prisma/client';
 
 import { buildWizardArtworkConfig } from '../EditArtworkForm/artworkConfig';
-import { EditArtworkFormData } from '../../specific/Artwork/types';
+import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
 
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';

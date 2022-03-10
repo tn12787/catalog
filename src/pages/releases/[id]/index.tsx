@@ -2,6 +2,7 @@ import { Stack } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
 
+import ReleaseTaskGrid from 'components/releases/specific/tasks/ReleaseTaskGrid';
 import { ClientRelease } from 'types/common';
 import Events from 'components/releases/specific/Events';
 import HeaderSection from 'components/releases/specific/HeaderSection';
@@ -11,7 +12,9 @@ import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
 import { getSingleServerSideRelease } from 'ssr/releases/getSingleServerSideRelease';
 import useSingleRelease from 'hooks/data/releases/useSingleRelease';
-import ReleaseTaskGrid from 'components/releases/specific/ReleaseTaskGrid';
+import { clientReleaseTasks, hasAllRequiredTasks } from 'utils/releases';
+import IncompleteTasks from 'components/releases/specific/IncompleteTasks';
+import NewReleaseAlert from 'components/releases/specific/NewReleaseAlert';
 
 interface Props {
   release: ClientRelease;
@@ -29,6 +32,11 @@ const SpecificRelease = ({ release }: Props) => {
       <PageHead title={`${resolvedData.artist.name} - ${resolvedData.name}`} />
       <HeaderSection releaseData={resolvedData} />
       <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
+        {!clientReleaseTasks(resolvedData).length ? (
+          <NewReleaseAlert></NewReleaseAlert>
+        ) : (
+          !hasAllRequiredTasks(resolvedData) && <IncompleteTasks></IncompleteTasks>
+        )}
         <Summary releaseData={resolvedData} />
         <ReleaseTaskGrid releaseData={resolvedData}></ReleaseTaskGrid>
         <Events releaseData={resolvedData} />

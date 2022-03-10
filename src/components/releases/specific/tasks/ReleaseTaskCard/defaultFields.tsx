@@ -2,7 +2,7 @@ import { ReleaseTask, TaskStatus } from '@prisma/client';
 import { Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
-import { SummaryField } from '../Summary';
+import { SummaryField } from '../../Summary';
 
 import { ReleaseTaskWithAssignees, WorkspaceMemberWithUser } from 'types/common';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';

@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
 import { BiArrowBack } from 'react-icons/bi';
 import { FiSave } from 'react-icons/fi';
+import { EditDistributionFormData } from 'components/releases/specific/Distribution/types';
 
 import { ReleaseWizardComponentProps } from '../types';
 
@@ -11,8 +12,7 @@ import ArtworkReview from './ArtworkReview';
 import DistributionReview from './DistributionReview';
 
 import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
-import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
-import { EditDistributionFormData } from 'components/releases/specific/Distribution/types';
+import { EditArtworkFormData } from 'components/releases/specific/tasks/Artwork/types';
 
 const ReviewData = ({
   completeState,

@@ -3,7 +3,7 @@ import React from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import 'firebase/storage';
 
-import { EditArtworkFormData } from '../../specific/Artwork/types';
+import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
 
 import EditArtworkFormBody from './EditArtworkFormBody';
 

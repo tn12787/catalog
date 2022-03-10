@@ -17,10 +17,9 @@ import OverdueTasks from 'components/overview/OverdueTasks';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import useReleases from 'hooks/data/releases/useReleases';
 import useArtists from 'hooks/data/artists/useArtists';
-import ReleaseList from 'components/releases/ReleaseList';
 import { SortOrder } from 'queries/types';
 import { ClientRelease } from 'types/common';
-import NoReleasesUpcoming from 'components/releases/ReleaseList/NoReleasesUpcoming';
+import OverviewReleases from 'components/overview/OverviewReleases';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
@@ -68,7 +67,7 @@ const OverviewPage = () => {
 
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
-          <Heading size="2xl" fontWeight="black" py={4} alignSelf="flex-start">
+          <Heading size="2xl" fontWeight="black" pt={4} alignSelf="flex-start">
             Overview
           </Heading>
         </Stack>
@@ -109,15 +108,10 @@ const OverviewPage = () => {
         <OverdueTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
         <MyTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
 
-        <Card>
-          <Heading size="md">Upcoming Releases</Heading>
-          <ReleaseList
-            isLoading={areUpcomingReleasesLoading}
-            EmptyComponent={NoReleasesUpcoming}
-            search=""
-            releases={upcomingReleases?.results?.slice(0, 5) ?? []}
-          />
-        </Card>
+        <OverviewReleases
+          releases={upcomingReleases}
+          isLoading={areUpcomingReleasesLoading}
+        ></OverviewReleases>
       </Stack>
     </Stack>
   );

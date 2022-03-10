@@ -3,7 +3,7 @@ import { Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import { User } from '@prisma/client';
 
 import { EditDistributionFormData } from '../../specific/Distribution/types';
-import { EditArtworkFormData } from '../../specific/Artwork/types';
+import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
 
 import { ReviewConfigItem } from './types';
 

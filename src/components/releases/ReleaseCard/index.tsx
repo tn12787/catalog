@@ -3,9 +3,9 @@ import NextLink from 'next/link';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { Flex, Stack, HStack, Link, Text, Box } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
-import NextImage from 'next/image';
 
 import SingleReleaseMenu from '../SingleReleaseMenu';
+import ReleasePlaceholder from '../ReleasePlaceholder';
 
 import ReleaseArtist from './ReleaseArtist';
 import ReleaseDate from './ReleaseDate';
@@ -48,12 +48,13 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           borderColor={border}
         >
           <Image
-            as={artworkTask?.url ? Image : NextImage}
+            as={Image}
             src={artworkTask?.url as string}
             fallbackSrc={releasePlaceholder}
             alt="this is an image"
             backgroundSize="cover"
             objectFit="cover"
+            fallback={<ReleasePlaceholder />}
           />
         </Box>
       </Skeleton>

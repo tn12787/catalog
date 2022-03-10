@@ -62,7 +62,7 @@ const sortOptions: SortBySelectOption<ClientRelease>[] = [
   },
 ];
 
-const Releases = () => {
+const ReleasesPage = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<SortBySelectOption<ClientRelease>>(sortOptions[0]);
 
@@ -183,6 +183,6 @@ const Releases = () => {
 
 export const getServerSideProps = getServerSideSessionOrRedirect;
 
-Releases.getLayout = () => DashboardLayout;
+ReleasesPage.getLayout = () => DashboardLayout;
 
-export default Releases;
+export default ReleasesPage;

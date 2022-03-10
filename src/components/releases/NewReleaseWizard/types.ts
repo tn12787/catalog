@@ -1,5 +1,5 @@
 import { BasicInfoFormData } from '../forms/NewReleaseForm/types';
-import { EditArtworkFormData } from '../specific/Artwork/types';
+import { EditArtworkFormData } from '../specific/tasks/Artwork/types';
 import { EditDistributionFormData } from '../specific/Distribution/types';
 
 import { ClientRelease } from 'types/common';

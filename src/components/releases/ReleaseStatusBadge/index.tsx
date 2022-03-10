@@ -2,7 +2,7 @@ import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import { ClientRelease } from 'types/common';
-import { clientReleaseTasks } from 'utils/releases';
+import { clientReleaseTasks, hasAllRequiredTasks } from 'utils/releases';
 import { isTaskComplete, isTaskOverdue } from 'utils/tasks';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const releaseToBadge = (releaseData: ClientRelease) => {
-  if (!['artwork', 'distribution', 'mastering'].every((item) => releaseData.hasOwnProperty(item))) {
+  if (!hasAllRequiredTasks(releaseData)) {
     return { label: 'Tasks Missing', color: 'gray' };
   }
 

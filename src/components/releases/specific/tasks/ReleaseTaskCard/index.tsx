@@ -1,9 +1,9 @@
 import { Flex, Heading, Stack, Text, Link, HStack, Badge } from '@chakra-ui/layout';
-import { Button, Tooltip } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
 
-import { SummaryField } from '../Summary';
+import { SummaryField } from '../../Summary';
 
 import Card from 'components/Card';
 import { ClientReleaseTaskData } from 'types/common';

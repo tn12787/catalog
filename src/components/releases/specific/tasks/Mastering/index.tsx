@@ -1,12 +1,12 @@
 import React from 'react';
 import { Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 
-import { SummaryField } from '../Summary';
+import { SummaryField } from '../../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
-import { ClientRelease, EventType } from 'types/common';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
+import { ClientRelease, EventType } from 'types/common';
 
 interface Props {
   releaseData: ClientRelease;

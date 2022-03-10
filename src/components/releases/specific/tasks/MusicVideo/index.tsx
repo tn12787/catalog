@@ -1,42 +1,41 @@
 import { Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
-import { SummaryField } from '../Summary';
-import EditArtworkForm from '../../forms/EditArtworkForm';
+import { SummaryField } from '../../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
 import { ClientRelease, EventType } from 'types/common';
+import EditMusicVideoForm from 'components/releases/forms/EditMusicVideoForm';
 
 interface Props {
   releaseData: ClientRelease;
 }
 
-const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): SummaryField[] => {
-  return [...defaultFields(artworkTask)].filter(Boolean) as SummaryField[];
+const buildFields = (musicVideoInfo: ClientRelease['musicVideo'] | undefined): SummaryField[] => {
+  return [...defaultFields(musicVideoInfo)];
 };
 
-const Artwork = ({ releaseData }: Props) => {
+const MusicVideo = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const artworkTask = releaseData.artwork;
+  const musicVideoInfo = releaseData.musicVideo;
   return (
     <>
       <ReleaseTaskCard
-        heading={'🎨 Artwork '}
+        heading={'🎥 Music Video '}
         onEditClick={onOpen}
-        fields={buildFields(artworkTask)}
-        taskType={EventType.ARTWORK}
-        data={artworkTask}
+        fields={buildFields(musicVideoInfo)}
+        taskType={EventType.MUSIC_VIDEO}
+        data={musicVideoInfo}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalContent>
-          <EditArtworkForm releaseData={releaseData} onSubmitSuccess={onClose} />
+          <EditMusicVideoForm releaseData={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>
       </Modal>
     </>
   );
 };
 
-export default Artwork;
+export default MusicVideo;
