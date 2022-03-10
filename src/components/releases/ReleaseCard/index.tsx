@@ -14,7 +14,6 @@ import ReleaseType from './ReleaseType';
 import { ClientRelease } from 'types/common';
 import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import useAppColors from 'hooks/useAppColors';
-import releasePlaceholder from 'images/release-placeholder.png';
 
 interface ReleaseCardProps {
   releaseData: ClientRelease;
@@ -50,7 +49,6 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           <Image
             as={Image}
             src={artworkTask?.url as string}
-            fallbackSrc={releasePlaceholder}
             alt="this is an image"
             backgroundSize="cover"
             objectFit="cover"

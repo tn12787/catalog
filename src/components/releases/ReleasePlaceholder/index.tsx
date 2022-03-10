@@ -1,6 +1,5 @@
 import { Stack, Icon, StackProps } from '@chakra-ui/react';
 import React from 'react';
-import { FiUser } from 'react-icons/fi';
 import { BiDisc } from 'react-icons/bi';
 
 import useAppColors from 'hooks/useAppColors';
