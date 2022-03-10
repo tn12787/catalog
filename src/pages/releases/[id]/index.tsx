@@ -2,19 +2,19 @@ import { Stack } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
 
+import ReleaseTaskGrid from 'components/releases/specific/tasks/ReleaseTaskGrid';
 import { ClientRelease } from 'types/common';
-import Artwork from 'components/releases/specific/Artwork';
-import Distribution from 'components/releases/specific/Distribution';
 import Events from 'components/releases/specific/Events';
 import HeaderSection from 'components/releases/specific/HeaderSection';
 import Summary from 'components/releases/specific/Summary';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
-import Mastering from 'components/releases/specific/Mastering';
-import MusicVideo from 'components/releases/specific/MusicVideo';
 import { getSingleServerSideRelease } from 'ssr/releases/getSingleServerSideRelease';
 import useSingleRelease from 'hooks/data/releases/useSingleRelease';
+import { clientReleaseTasks, hasAllRequiredTasks } from 'utils/releases';
+import IncompleteTasks from 'components/releases/specific/IncompleteTasks';
+import NewReleaseAlert from 'components/releases/specific/NewReleaseAlert';
 
 interface Props {
   release: ClientRelease;
@@ -32,15 +32,13 @@ const SpecificRelease = ({ release }: Props) => {
       <PageHead title={`${resolvedData.artist.name} - ${resolvedData.name}`} />
       <HeaderSection releaseData={resolvedData} />
       <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
+        {!clientReleaseTasks(resolvedData).length ? (
+          <NewReleaseAlert></NewReleaseAlert>
+        ) : (
+          !hasAllRequiredTasks(resolvedData) && <IncompleteTasks></IncompleteTasks>
+        )}
         <Summary releaseData={resolvedData} />
-        <Stack w="100%" spacing={4} direction={{ base: 'column', lg: 'row' }}>
-          <Artwork releaseData={resolvedData} />
-          <Distribution releaseData={resolvedData} />
-        </Stack>
-        <Stack w="100%" spacing={4} direction={{ base: 'column', lg: 'row' }}>
-          <Mastering releaseData={resolvedData} />
-          <MusicVideo releaseData={resolvedData} />
-        </Stack>
+        <ReleaseTaskGrid releaseData={resolvedData}></ReleaseTaskGrid>
         <Events releaseData={resolvedData} />
       </Stack>
     </Stack>

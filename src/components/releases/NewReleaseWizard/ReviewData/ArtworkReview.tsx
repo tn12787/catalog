@@ -6,7 +6,7 @@ import { TaskStatus } from '@prisma/client';
 import { renderReviewData } from './data';
 import { ReviewConfigItem } from './types';
 
-import { EditArtworkFormData } from 'components/releases/specific/Artwork/types';
+import { EditArtworkFormData } from 'components/releases/specific/tasks/Artwork/types';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {

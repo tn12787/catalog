@@ -9,6 +9,7 @@ import profilePic from 'images/no-artists-yet.svg';
 import { ArtistResponse } from 'types/common';
 import { testClientRelease } from '__mocks__/data/releases';
 import useAppColors from 'hooks/useAppColors';
+import { testArtist } from '__mocks__/data/artists';
 
 interface Props {
   search: string;
@@ -44,22 +45,15 @@ const ArtistList = ({ search, artists, loading }: Props) => {
   return (
     <SimpleGrid columnGap={4} rowGap={4} columns={{ base: 1, md: 2, xl: 3 }}>
       {loading ? (
-        <ArtistCard
-          artist={{
-            id: 'artists_loading',
-            name: 'Loading',
-            legalName: 'Legal Name',
-            spotifyId: '',
-            instagramUsername: '',
-            imageUrl: null,
-            linkTreeUrl: null,
-            workspaceId: '',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            releases: [testClientRelease({})],
-          }}
-          loading
-        />
+        <>
+          <ArtistCard
+            artist={testArtist({
+              releases: [testClientRelease({})],
+            })}
+            loading
+          />
+          <ArtistCard artist={testArtist({})} loading />
+        </>
       ) : (
         artists?.map((datum, index) => {
           return <ArtistCard key={index.toString()} artist={datum} />;

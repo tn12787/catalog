@@ -27,6 +27,7 @@ import ImageField from 'components/forms/QuickForm/ImageField';
 import DistributorField from 'components/forms/QuickForm/DistributorField';
 import ContactsField from 'components/forms/QuickForm/ContactsField';
 import { hasRequiredPermissions } from 'utils/auth';
+import { isTaskOverdue } from 'utils/tasks';
 
 type Props = {
   event: ReleaseEvent & { release: Release };
@@ -87,9 +88,7 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
     }
   };
 
-  const isOutstanding =
-    new Date().getTime() > new Date(event.date).getTime() &&
-    event.data.status !== TaskStatus.COMPLETE;
+  const isOverdue = isTaskOverdue(event.data);
 
   const canEdit = hasRequiredPermissions(
     ['UPDATE_RELEASES'],
@@ -98,7 +97,7 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
 
   return (
     <Stack w="100%" spacing={5}>
-      {isOutstanding && (
+      {isOverdue && (
         <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
           <AlertIcon></AlertIcon>This task is overdue.
         </Alert>

@@ -1,11 +1,11 @@
+import { format } from 'date-fns';
 import { Stack, Flex, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { BiArrowBack } from 'react-icons/bi';
 
-import { EditMusicVideoFormData } from '../../specific/MusicVideo/types';
+import { EditMusicVideoFormData } from '../../specific/tasks/MusicVideo/types';
 
 import { buildMusicVideoConfig } from './musicVideoConfig';
 
@@ -20,10 +20,9 @@ const EditMusicVideoFormBody = ({
   existingRelease,
   loading,
 }: ReleaseWizardComponentProps<EditMusicVideoFormData>) => {
-  const formattedDueDate = useMemo(
-    () => dayjs(existingRelease?.musicVideo?.dueDate).format('YYYY-MM-DD'),
-    [existingRelease?.musicVideo?.dueDate]
-  );
+  const formattedDueDate = useMemo(() => {
+    return format(new Date(existingRelease?.musicVideo?.dueDate ?? Date.now()), 'yyyy-MM-dd');
+  }, [existingRelease?.musicVideo?.dueDate]);
 
   const {
     register,

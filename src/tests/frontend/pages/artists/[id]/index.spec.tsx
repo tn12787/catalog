@@ -18,6 +18,7 @@ describe('Single Artist Page', () => {
     const testArtistName = 'basic artist test';
     const testArtistLegalName = 'basic artist legal name';
     const testInstagramUsername = 'basicartistinstagramusername';
+    const testTiktokUsername = 'tiktokusernametest';
     const { getByText, queryByText, queryAllByText } = render({
       name: testArtistName,
       legalName: testArtistLegalName,
@@ -27,6 +28,7 @@ describe('Single Artist Page', () => {
     expect(queryByText(/Basic Info/)).toBeVisible();
 
     expect(queryByText(testInstagramUsername)).toBeNull();
+    expect(queryByText(testTiktokUsername)).toBeNull();
     expect(queryByText(/Spotify/)).toBeNull();
     expect(queryByText(/Linktree/)).toBeNull();
   });
@@ -35,27 +37,30 @@ describe('Single Artist Page', () => {
     const testArtistName = 'basic artist test';
     const testArtistLegalName = 'basic artist legal name';
     const testInstagramUsername = 'basicartistinstagramusername';
+    const testTiktokUsername = 'tiktokusernametest';
     const { getByText } = render({
       name: testArtistName,
       legalName: testArtistLegalName,
       instagramUsername: testInstagramUsername,
+      tiktokUsername: testTiktokUsername,
       spotifyId: 'spotify-id',
       linkTreeUrl: 'linktree-url',
     });
 
     expect(getByText(testInstagramUsername)).toBeVisible();
+    expect(getByText(testTiktokUsername)).toBeVisible();
     expect(getByText(/Spotify/)).toBeVisible();
     expect(getByText(/Linktree/)).toBeVisible();
   });
 
   it("Shows the artist's release stats with no releases yet", async () => {
     const { getByText } = render({});
-    expect(getByText(/^Releases/)).toBeVisible();
+    expect(getByText(/^Releases$/)).toBeVisible();
     expect(getByText(/Lifetime Releases/)).toBeVisible();
     expect(getByText(/Upcoming/)).toBeVisible();
     expect(getByText(/YTD/)).toBeVisible();
 
-    expect(getByText(/No releases yet/)).toBeVisible();
+    expect(getByText(/No releases/)).toBeVisible();
   });
 
   it("Shows the artist's releases with an upcoming release", async () => {
@@ -65,6 +70,6 @@ describe('Single Artist Page', () => {
     });
     expect(getByText(testReleaseName)).toBeVisible();
 
-    expect(queryByText(/No releases yet/)).toBeNull();
+    expect(queryByText(/No releases/)).toBeNull();
   });
 });

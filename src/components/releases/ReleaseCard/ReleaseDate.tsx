@@ -14,7 +14,7 @@ const ReleaseDate = ({ releaseData }: Props) => {
     <HStack align="center">
       <Icon fontSize="22px" as={FiCalendar} />
       <HStack alignItems="center">
-        <Text fontSize="sm">{format(new Date(releaseData.targetDate), 'PP')}</Text>
+        <Text fontSize="sm">{format(new Date(releaseData.targetDate), 'PPP')}</Text>
         <Text fontSize="xs">
           (
           {formatDistanceToNow(new Date(releaseData.targetDate), {

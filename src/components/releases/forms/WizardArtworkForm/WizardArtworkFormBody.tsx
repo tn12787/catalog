@@ -5,8 +5,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';
 import { TaskStatus } from '@prisma/client';
 
-import { buildNewArtworkConfig } from '../EditArtworkForm/artworkConfig';
-import { EditArtworkFormData } from '../../specific/Artwork/types';
+import { buildWizardArtworkConfig } from '../EditArtworkForm/artworkConfig';
+import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
 
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
@@ -67,7 +67,7 @@ const WizardArtworkFormBody = ({
           <Stack>
             <FormContent
               control={control}
-              config={buildNewArtworkConfig()}
+              config={buildWizardArtworkConfig(completeState?.basics?.targetDate as Date)}
               errors={errors}
               register={register}
             />

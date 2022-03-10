@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   ParseDatePipe,
+  ParseNumberPipe,
   Post,
   Query,
   Request,
@@ -31,8 +32,8 @@ class ReleaseListHandler {
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Release>('targetDate')) sortBy: keyof Release,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,
-    @Query('pageSize', DefaultValuePipe(10)) pageSize: number,
-    @Query('page', DefaultValuePipe(1)) page: number,
+    @Query('pageSize', ParseNumberPipe({ nullable: true }), DefaultValuePipe(10)) pageSize: number,
+    @Query('page', ParseNumberPipe({ nullable: true }), DefaultValuePipe(1)) page: number,
     @Query('before', ParseDatePipe({ nullable: true })) before: Date,
     @Query('after', ParseDatePipe({ nullable: true })) after: Date
   ) {

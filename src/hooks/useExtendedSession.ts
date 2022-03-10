@@ -57,6 +57,8 @@ const useExtendedSession = () => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
+    if (isLoading) return;
+
     const workspaceMemberships = user?.workspaces;
     const storedWorkspace = localStorage.getItem('workspace');
     if (Array.isArray(workspaceMemberships) && storedWorkspace) {
@@ -70,7 +72,7 @@ const useExtendedSession = () => {
         localStorage.getItem('activeWorkspace') || user?.workspaces?.[0]?.workspaceId
       );
     }
-  }, [user?.workspaces, setCurrentWorkspace]);
+  }, [user?.workspaces, isLoading, setCurrentWorkspace]);
 
   const onChangeWorkspace = useCallback(
     (val: string) => {

@@ -9,6 +9,7 @@ export const testArtist = (extraFields: Partial<ArtistResponse>): ArtistResponse
     instagramUsername: null,
     imageUrl: null,
     linkTreeUrl: null,
+    tiktokUsername: null,
     workspaceId: 'test-workspace-id',
     createdAt: new Date(),
     updatedAt: new Date(),

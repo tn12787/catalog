@@ -1,7 +1,7 @@
 import { Stack, Skeleton, Text, HStack, Icon, Link, Image } from '@chakra-ui/react';
 import React from 'react';
 import { BiDisc } from 'react-icons/bi';
-import { FaSpotify } from 'react-icons/fa';
+import { FaSpotify, FaTiktok } from 'react-icons/fa';
 import { FiInstagram } from 'react-icons/fi';
 import { SiLinktree } from 'react-icons/si';
 import NextLink from 'next/link';
@@ -64,6 +64,15 @@ const ArtistCard = ({ artist, loading }: Props) => {
               href={`https://www.instagram.com/${artist?.instagramUsername}`}
             >
               {artist?.instagramUsername}
+            </ArtistLink>
+          )}
+          {artist?.tiktokUsername && (
+            <ArtistLink
+              iconOnly
+              icon={<FaTiktok />}
+              href={`https://www.tiktok.com/@${artist?.tiktokUsername}`}
+            >
+              {artist?.tiktokUsername}
             </ArtistLink>
           )}
           {artist?.linkTreeUrl && (

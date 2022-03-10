@@ -14,15 +14,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { BiChevronRight } from 'react-icons/bi';
-import NextImage from 'next/image';
 
 import DeleteReleaseDialog from '../DeleteReleaseDialog';
 import SingleReleaseMenu from '../SingleReleaseMenu';
+import ReleasePlaceholder from '../ReleasePlaceholder';
 
 import { ClientRelease } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
-import releasePlaceholder from 'images/release-placeholder.png';
 
 interface Props {
   releaseData: ClientRelease;
@@ -42,12 +41,13 @@ const HeaderSection = ({ releaseData }: Props) => {
       <Flex position="relative" overflow="hidden" w="100%">
         <Box filter="blur(5px)" transform={'scale(1.05)'} maxH="200px" width="100%">
           <Image
-            as={artworkUrl ? Image : NextImage}
+            as={Image}
             w="100%"
             layout="responsive"
             objectFit="cover"
             alt="album art"
-            src={artworkUrl || releasePlaceholder}
+            src={artworkUrl as string}
+            fallback={<ReleasePlaceholder h="200px"></ReleasePlaceholder>}
           />
         </Box>
         <Box

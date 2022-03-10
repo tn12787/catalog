@@ -3,7 +3,15 @@ import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, useToast } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertIcon,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Icon,
+  useToast,
+} from '@chakra-ui/react';
 import { BiCalendar, BiChevronRight } from 'react-icons/bi';
 import { Release, ReleaseTask, ReleaseTaskType } from '@prisma/client';
 import Link from 'next/link';
@@ -18,7 +26,7 @@ import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
 import { buildPlannerLink } from 'utils/planner';
 import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
-import { taskHeadingByType } from 'utils/tasks';
+import { taskHeadingByType, isTaskOverdue } from 'utils/tasks';
 import useTaskActivity from 'hooks/data/tasks/useTaskActivity';
 import useTask from 'hooks/data/tasks/useTask';
 import { EnrichedReleaseTask } from 'types/common';
@@ -60,6 +68,8 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
   };
 
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
+
+  const isOverdue = isTaskOverdue(taskData as ReleaseTask);
 
   const canEdit = hasRequiredPermissions(
     ['UPDATE_RELEASES'],
@@ -124,6 +134,11 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
             </ChakraLink>
           </Link>
         </Stack>
+        {isOverdue && (
+          <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
+            <AlertIcon></AlertIcon>This task is overdue.
+          </Alert>
+        )}
         <Stack
           alignItems={'flex-start'}
           direction={{ base: 'column-reverse', md: 'row' }}

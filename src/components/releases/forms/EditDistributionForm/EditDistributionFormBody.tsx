@@ -4,10 +4,10 @@ import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { TaskStatus } from '@prisma/client';
 import { useQuery } from 'react-query';
-import dayjs from 'dayjs';
 import { BiArrowBack } from 'react-icons/bi';
+import { format } from 'date-fns';
 
-import { EditDistributionFormData } from '../../specific/Distribution/types';
+import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
 import { buildDistribConfig } from './distribConfig';
 
@@ -25,7 +25,7 @@ const EditDistributionFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditDistributionFormData>) => {
   const formattedDueDate = useMemo(
-    () => dayjs(existingRelease?.distribution?.dueDate).format('YYYY-MM-DD'),
+    () => format(new Date(existingRelease?.distribution?.dueDate ?? Date.now()), 'yyyy-MM-dd'),
     [existingRelease?.distribution?.dueDate]
   );
 

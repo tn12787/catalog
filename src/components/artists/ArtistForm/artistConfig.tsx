@@ -56,9 +56,18 @@ export const buildArtistConfig = (): FormDatum<FormArtist>[] => [
     },
   },
   {
+    name: 'tiktokUsername',
+    label: 'Tiktok Username',
+    type: 'text',
+    leftAddon: <Text>@</Text>,
+    extraProps: {
+      placeholder: 'e.g. charlieputh',
+    },
+  },
+  {
     name: 'linkTreeUrl',
     label: 'Linktree URL',
-    type: 'text',
+    type: 'url',
     extraProps: {
       placeholder: 'e.g. linktr.ee/tomnorton',
     },

@@ -28,7 +28,7 @@ describe('Single Release Page', () => {
     const testArtistName = 'basic artist test';
     const testReleaseName = 'Boio';
     const testReleaseType = ReleaseType.Album;
-    const { getByText, queryAllByText, queryByText } = render({
+    const { getByText, getAllByText, queryAllByText, queryByText } = render({
       name: testReleaseName,
       artist: {
         name: testArtistName,
@@ -40,7 +40,7 @@ describe('Single Release Page', () => {
     expect(getByText(/Actions/)).toBeVisible();
     expect(getByText(testReleaseType)).toBeVisible();
 
-    expect(getByText('🎨 Artwork')).toBeVisible();
+    await waitFor(() => expect(getAllByText('🎨 Artwork')).toHaveLength(2));
     expect(getByText('💿 Distribution')).toBeVisible();
     expect(getByText('🎚️ Mastering')).toBeVisible();
     expect(getByText('🎥 Music Video')).toBeVisible();

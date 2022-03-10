@@ -62,6 +62,8 @@ export interface EnrichedRelease extends Release {
   tasks: EnrichedReleaseTask[];
 }
 
+export type EnrichedReleaseWithoutArtist = Omit<EnrichedRelease, 'artist'>;
+
 export type ArtistResponse = Artist & { releases: ClientRelease[] };
 
 export type UserResponse = User & { workspaces: EnrichedWorkspaceMember[] };
