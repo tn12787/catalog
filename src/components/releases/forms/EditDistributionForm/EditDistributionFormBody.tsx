@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { TaskStatus } from '@prisma/client';
 import { useQuery } from 'react-query';
 import { BiArrowBack } from 'react-icons/bi';
-import { format } from 'date-fns';
+import { addDays, format, startOfDay } from 'date-fns';
 
 import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
@@ -25,7 +25,11 @@ const EditDistributionFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditDistributionFormData>) => {
   const formattedDueDate = useMemo(
-    () => format(new Date(existingRelease?.distribution?.dueDate ?? Date.now()), 'yyyy-MM-dd'),
+    () =>
+      format(
+        new Date(existingRelease?.distribution?.dueDate ?? addDays(startOfDay(new Date()), 7)),
+        'yyyy-MM-dd'
+      ),
     [existingRelease?.distribution?.dueDate]
   );
 

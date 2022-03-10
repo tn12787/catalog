@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { TaskStatus } from '@prisma/client';
-import { format } from 'date-fns';
+import { addDays, format, startOfDay } from 'date-fns';
 
 import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
 
@@ -18,7 +18,11 @@ const EditArtworkFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditArtworkFormData>) => {
   const formattedDueDate = useMemo(
-    () => format(new Date(existingRelease?.artwork?.dueDate ?? Date.now()), 'yyyy-MM-dd'),
+    () =>
+      format(
+        new Date(existingRelease?.artwork?.dueDate ?? addDays(startOfDay(new Date()), 7)),
+        'yyyy-MM-dd'
+      ),
     [existingRelease?.artwork?.dueDate]
   );
 

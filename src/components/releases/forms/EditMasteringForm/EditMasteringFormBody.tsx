@@ -3,24 +3,29 @@ import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';
-import { format } from 'date-fns';
-
-import { EditMasteringFormData } from '../../specific/tasks/Mastering/types';
+import { addDays, format, startOfDay } from 'date-fns';
 
 import { buildMasteringConfig } from './masteringConfig';
 
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
+import { EditMasteringFormData } from 'components/releases/specific/tasks/Mastering/types';
 
 const EditMasteringFormBody = ({
   onSubmit,
+  onSkip,
+  isSkippable,
   canGoBack,
   onBack,
   existingRelease,
   loading,
 }: ReleaseWizardComponentProps<EditMasteringFormData>) => {
   const formattedDueDate = useMemo(
-    () => format(new Date(existingRelease?.mastering?.dueDate ?? Date.now()), 'yyyy-MM-dd'),
+    () =>
+      format(
+        new Date(existingRelease?.mastering?.dueDate ?? addDays(startOfDay(new Date()), 7)),
+        'yyyy-MM-dd'
+      ),
     [existingRelease?.mastering?.dueDate]
   );
 
@@ -64,6 +69,16 @@ const EditMasteringFormBody = ({
             )}
           </Flex>
           <ButtonGroup>
+            {isSkippable && (
+              <Button
+                colorScheme="purple"
+                variant="ghost"
+                flexGrow={0}
+                onClick={() => onSkip?.('mastering')}
+              >
+                Skip
+              </Button>
+            )}
             <Button
               colorScheme="purple"
               flexGrow={0}

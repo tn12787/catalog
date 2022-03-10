@@ -9,10 +9,12 @@ import { ReleaseWizardComponentProps } from '../types';
 import BasicInfoReview from './BasicInfoReview';
 import ArtworkReview from './ArtworkReview';
 import DistributionReview from './DistributionReview';
+import MasteringReview from './MasteringReview';
 
 import { EditDistributionFormData } from 'components/releases/specific/tasks/Distribution/types';
 import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
 import { EditArtworkFormData } from 'components/releases/specific/tasks/Artwork/types';
+import { EditMasteringFormData } from 'components/releases/specific/tasks/Mastering/types';
 
 const ReviewData = ({
   completeState,
@@ -25,6 +27,7 @@ const ReviewData = ({
     <Stack w="100%">
       <Stack maxW="600px" w="100%" spacing="50px" margin="0 auto">
         <BasicInfoReview data={completeState?.basics as BasicInfoFormData} />
+        <MasteringReview data={completeState?.mastering as EditMasteringFormData} />
         <ArtworkReview data={completeState?.artwork as EditArtworkFormData} />
         <DistributionReview data={completeState?.distribution as EditDistributionFormData} />
         <HStack justify="space-between">

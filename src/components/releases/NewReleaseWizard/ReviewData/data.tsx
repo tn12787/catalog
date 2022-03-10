@@ -11,6 +11,7 @@ import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/type
 import { basicInfoConfig } from 'components/releases/forms/NewReleaseForm/releaseConfig';
 import { AssigneeList, StatusBadge } from 'components/tasks/TaskTable/columns';
 import { ClientReleaseTask } from 'types/common';
+import { EditMasteringFormData } from 'components/releases/specific/tasks/Mastering/types';
 
 export const renderReviewData = <
   T extends BasicInfoFormData | EditArtworkFormData | EditDistributionFormData
@@ -81,5 +82,9 @@ export const distribReviewConfig: ReviewConfigItem<EditDistributionFormData>[] =
     key: 'distributor',
     label: 'Distributor',
   },
+  ...baseReviewConfig,
+];
+
+export const masterngReviewConfig: ReviewConfigItem<EditMasteringFormData>[] = [
   ...baseReviewConfig,
 ];

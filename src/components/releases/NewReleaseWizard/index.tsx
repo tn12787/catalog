@@ -11,6 +11,7 @@ import { BasicInfoFormData } from '../forms/NewReleaseForm/types';
 import { EditArtworkFormData } from '../specific/tasks/Artwork/types';
 import { EditDistributionFormData } from '../specific/tasks/Distribution/types';
 import WizardArtworkFormBody from '../forms/WizardArtworkForm/WizardArtworkFormBody';
+import EditMasteringFormBody from '../forms/EditMasteringForm/EditMasteringFormBody';
 
 import { CombinedFormState, ReleaseWizardKey, ReleaseWizardStep } from './types';
 import ReviewData from './ReviewData';
@@ -28,6 +29,13 @@ const buildSteps = (): ReleaseWizardStep[] => [
     name: 'Basics',
     key: 'basics',
     content: NewReleaseFormBody,
+  },
+  {
+    name: 'Mastering',
+    isSkippable: true,
+    canGoBack: true,
+    key: 'mastering',
+    content: EditMasteringFormBody,
   },
   {
     name: 'Artwork',
@@ -100,7 +108,7 @@ const NewReleaseWizard = () => {
   };
 
   const onSubmit = async (
-    key: 'basics' | 'artwork' | 'distribution' | 'review',
+    key: ReleaseWizardKey,
     data: BasicInfoFormData | EditArtworkFormData | EditDistributionFormData
   ) => {
     if (key === 'review') {

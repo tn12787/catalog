@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { addDays, format, startOfDay } from 'date-fns';
 import { Stack, Flex, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
@@ -21,7 +21,10 @@ const EditMusicVideoFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditMusicVideoFormData>) => {
   const formattedDueDate = useMemo(() => {
-    return format(new Date(existingRelease?.musicVideo?.dueDate ?? Date.now()), 'yyyy-MM-dd');
+    return format(
+      new Date(existingRelease?.musicVideo?.dueDate ?? addDays(startOfDay(new Date()), 7)),
+      'yyyy-MM-dd'
+    );
   }, [existingRelease?.musicVideo?.dueDate]);
 
   const {
