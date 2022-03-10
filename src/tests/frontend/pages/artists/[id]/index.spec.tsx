@@ -18,6 +18,7 @@ describe('Single Artist Page', () => {
     const testArtistName = 'basic artist test';
     const testArtistLegalName = 'basic artist legal name';
     const testInstagramUsername = 'basicartistinstagramusername';
+    const testTiktokUsername = 'tiktokusernametest';
     const { getByText, queryByText, queryAllByText } = render({
       name: testArtistName,
       legalName: testArtistLegalName,
@@ -27,6 +28,7 @@ describe('Single Artist Page', () => {
     expect(queryByText(/Basic Info/)).toBeVisible();
 
     expect(queryByText(testInstagramUsername)).toBeNull();
+    expect(queryByText(testTiktokUsername)).toBeNull();
     expect(queryByText(/Spotify/)).toBeNull();
     expect(queryByText(/Linktree/)).toBeNull();
   });
@@ -35,6 +37,7 @@ describe('Single Artist Page', () => {
     const testArtistName = 'basic artist test';
     const testArtistLegalName = 'basic artist legal name';
     const testInstagramUsername = 'basicartistinstagramusername';
+    const testTiktokUsername = 'tiktokusernametest';
     const { getByText } = render({
       name: testArtistName,
       legalName: testArtistLegalName,
@@ -44,6 +47,7 @@ describe('Single Artist Page', () => {
     });
 
     expect(getByText(testInstagramUsername)).toBeVisible();
+    expect(getByText(new RegExp(`/${testTiktokUsername}/`))).toBeVisible();
     expect(getByText(/Spotify/)).toBeVisible();
     expect(getByText(/Linktree/)).toBeVisible();
   });

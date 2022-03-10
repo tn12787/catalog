@@ -51,6 +51,7 @@ const ArtistList = ({ search, artists, loading }: Props) => {
             legalName: 'Legal Name',
             spotifyId: '',
             instagramUsername: '',
+            tiktokUsername: '',
             imageUrl: null,
             linkTreeUrl: null,
             workspaceId: '',

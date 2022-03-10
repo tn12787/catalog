@@ -11,6 +11,9 @@ export class UpdateArtistDto {
   instagramUsername?: string;
 
   @IsOptional()
+  tiktokUsername?: string;
+
+  @IsOptional()
   imageUrl?: string;
 
   @IsOptional()

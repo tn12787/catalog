@@ -13,6 +13,7 @@ export interface FormDatum<T, K = any> {
   defaultValue?: K;
   hidden?: boolean;
   isLoading?: boolean;
+  leftAddon?: React.ReactNode;
   CustomComponent?: React.FC<ControllerRenderProps> & { ref?: any };
 }
 
