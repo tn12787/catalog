@@ -1,14 +1,11 @@
 import { Stack, Td, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 
 import { BaseEvent, EventType } from './types';
 import CalendarEvent from './CalendarEvent';
 
 import useAppColors from 'hooks/useAppColors';
-dayjs.extend(utc);
 
 interface Props<T> {
   day: {

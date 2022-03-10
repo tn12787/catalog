@@ -27,6 +27,7 @@ describe('New Artist Page', () => {
     expect(getByText(/^Legal Name/)).toBeVisible();
     expect(getAllByText(/Spotify/)).toHaveLength(2);
     expect(getByText(/Instagram/)).toBeVisible();
+    expect(getByText(/Tiktok/)).toBeVisible();
     expect(getByText(/Linktree/)).toBeVisible();
 
     expect(getByText(/^Create$/)).toBeDisabled();

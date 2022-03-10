@@ -17,12 +17,12 @@ import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
 import PageHead from 'components/pageItems/PageHead';
-import ReleaseList from 'components/releases/ReleaseList';
 import { getSingleServerSideArtist } from 'ssr/artists/getSingleServerSideArtist';
 import { ArtistResponse } from 'types/common';
 import useSingleArtist from 'hooks/data/artists/useSingleArtist';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import ArtistOverview from 'components/artists/specific/ArtistOverview';
+import ArtistReleases from 'components/artists/specific/ArtistReleases';
 
 type Props = {
   artist: ArtistResponse;
@@ -110,16 +110,7 @@ const SingleArtist = ({ artist }: Props) => {
                 </Stat>
               </Card>
             </Stack>
-            <Heading size="md">Catalog</Heading>
-            <ReleaseList
-              search=""
-              releases={
-                artistData?.releases?.map((item) => ({
-                  ...item,
-                  artist: { name: artistData?.name },
-                })) ?? []
-              }
-            />
+            <ArtistReleases artist={artistData} isLoading={isLoading} />
           </Stack>
         </Stack>
       </Stack>

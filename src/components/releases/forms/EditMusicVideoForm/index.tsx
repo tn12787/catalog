@@ -2,7 +2,7 @@ import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { EditMusicVideoFormData } from '../../specific/MusicVideo/types';
+import { EditMusicVideoFormData } from '../../specific/tasks/MusicVideo/types';
 
 import EditMusicVideoFormBody from './EditMusicVideoFormBody';
 

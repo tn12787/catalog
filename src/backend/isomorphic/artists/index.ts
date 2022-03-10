@@ -15,7 +15,21 @@ export const getArtistByIdIsomorphic = async (
     where: {
       id,
     },
-    include: { releases: { include: { tasks: { include: { artworkData: true } } } } },
+    include: {
+      releases: {
+        include: {
+          tasks: {
+            include: {
+              artworkData: true,
+              distributionData: { include: { distributor: true } },
+              masteringData: true,
+              marketingData: { include: { links: true } },
+              musicVideoData: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   await checkRequiredPermissions(req, ['VIEW_ARTISTS'], artist?.workspaceId);

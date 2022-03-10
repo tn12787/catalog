@@ -1,9 +1,8 @@
 import { useToast, useDisclosure } from '@chakra-ui/react';
-import dayjs from 'dayjs';
 import React, { useEffect, useRef } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import { cloneDeep } from 'lodash';
-import { format } from 'date-fns';
+import { format, isAfter, isBefore, startOfDay } from 'date-fns';
 import { useRouter } from 'next/router';
 
 import ReleaseEventDrawer from '../ReleaseEventDrawer';
@@ -93,9 +92,9 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
   const canDropEvent = (item: ReleaseEvent, targetDate: Date) => {
     switch (item.type) {
       case 'release':
-        return dayjs(targetDate).isAfter(dayjs());
+        return isAfter(new Date(targetDate), startOfDay(new Date()));
       default:
-        return dayjs(targetDate).isBefore(dayjs(item.release.targetDate));
+        return isBefore(new Date(targetDate), startOfDay(new Date(item.release.targetDate)));
     }
   };
 
@@ -107,7 +106,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
     try {
       await updateReleaseEvent({
         event: item,
-        targetDate: dayjs.utc(targetDate).toISOString(),
+        targetDate: new Date(targetDate).toISOString(),
       });
       toast.closeAll();
       toast({

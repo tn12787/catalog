@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { Heading, Skeleton, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { TaskStatus } from '@prisma/client';
+import { startOfDay } from 'date-fns';
 
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -16,6 +17,9 @@ import OverdueTasks from 'components/overview/OverdueTasks';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import useReleases from 'hooks/data/releases/useReleases';
 import useArtists from 'hooks/data/artists/useArtists';
+import { SortOrder } from 'queries/types';
+import { ClientRelease } from 'types/common';
+import OverviewReleases from 'components/overview/OverviewReleases';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
@@ -28,9 +32,21 @@ const OverviewPage = () => {
     () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id),
     { enabled: !!currentWorkspace && !!workspaceMemberships?.[currentWorkspace]?.id }
   );
-  const { data: upcomingReleases, isLoading: areUpcomingReleasesLoading } = useReleases({
-    dates: { after: new Date(new Date().toDateString()) },
-  });
+
+  const upcomingReleaseQueryArgs = {
+    dates: { after: startOfDay(new Date()) },
+    pagination: {
+      pageSize: 5,
+      page: 1,
+    },
+    sorting: {
+      key: 'targetDate' as keyof ClientRelease,
+      order: SortOrder.ASC,
+    },
+  };
+
+  const { data: upcomingReleases, isLoading: areUpcomingReleasesLoading } =
+    useReleases(upcomingReleaseQueryArgs);
 
   const { data: artists, isLoading: areArtistsLoading } = useArtists({});
 
@@ -51,7 +67,7 @@ const OverviewPage = () => {
 
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
-          <Heading size="2xl" fontWeight="black" py={4} alignSelf="flex-start">
+          <Heading size="2xl" fontWeight="black" pt={4} alignSelf="flex-start">
             Overview
           </Heading>
         </Stack>
@@ -91,6 +107,11 @@ const OverviewPage = () => {
 
         <OverdueTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
         <MyTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
+
+        <OverviewReleases
+          releases={upcomingReleases}
+          isLoading={areUpcomingReleasesLoading}
+        ></OverviewReleases>
       </Stack>
     </Stack>
   );

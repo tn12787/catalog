@@ -2,7 +2,7 @@ import { TaskStatus } from '@prisma/client';
 
 import { FormDatum } from 'types/forms';
 import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
-import { EditMusicVideoFormData } from 'components/releases/specific/MusicVideo/types';
+import { EditMusicVideoFormData } from 'components/releases/specific/tasks/MusicVideo/types';
 
 export const buildMusicVideoConfig = (): FormDatum<EditMusicVideoFormData>[] => [
   {

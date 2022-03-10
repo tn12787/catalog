@@ -1,4 +1,5 @@
-import { ReleaseTaskType } from '@prisma/client';
+import { ReleaseTask, ReleaseTaskType, TaskStatus } from '@prisma/client';
+import { isBefore } from 'date-fns';
 
 export const taskHeadingByType = (type: ReleaseTaskType, releaseName?: string) => {
   const releasePrefix = releaseName ? `${releaseName}: ` : '';
@@ -16,4 +17,10 @@ export const taskHeadingByType = (type: ReleaseTaskType, releaseName?: string) =
     default:
       return `${releasePrefix}🚩 Release Day`;
   }
+};
+
+export const isTaskComplete = (task: ReleaseTask) => task.status === TaskStatus.COMPLETE;
+
+export const isTaskOverdue = (task: ReleaseTask) => {
+  return !isTaskComplete(task) && isBefore(new Date(task.dueDate as Date), Date.now());
 };

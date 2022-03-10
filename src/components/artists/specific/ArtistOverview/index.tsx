@@ -2,7 +2,7 @@ import { Stack, Heading, HStack, Image, Text, Skeleton } from '@chakra-ui/react'
 import React from 'react';
 import { FiUser, FiInstagram } from 'react-icons/fi';
 import { SiLinktree } from 'react-icons/si';
-import { FaSpotify } from 'react-icons/fa';
+import { FaSpotify, FaTiktok } from 'react-icons/fa';
 
 import ArtistLink from '../ArtistLink';
 
@@ -39,12 +39,12 @@ const ArtistOverview = ({ artist, isLoading }: Props) => {
             ></Image>
           </Skeleton>
           <Stack direction={{ base: 'column' }}>
-            <Heading size="md">Basic Info</Heading>
+            <Heading size="sm">Basic Info</Heading>
             <HStack>
               <FiUser></FiUser>
               <Text>{artist?.legalName}</Text>
             </HStack>
-
+            <Heading size="sm">Socials</Heading>
             {artist?.spotifyId && (
               <ArtistLink
                 icon={<FaSpotify />}
@@ -59,6 +59,14 @@ const ArtistOverview = ({ artist, isLoading }: Props) => {
                 href={`https://www.instagram.com/${artist?.instagramUsername}`}
               >
                 {artist?.instagramUsername}
+              </ArtistLink>
+            )}
+            {artist?.tiktokUsername && (
+              <ArtistLink
+                icon={<FaTiktok />}
+                href={`https://www.tiktok.com/@${artist?.tiktokUsername}`}
+              >
+                {artist?.tiktokUsername}
               </ArtistLink>
             )}
             {artist?.linkTreeUrl && (

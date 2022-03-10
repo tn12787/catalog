@@ -159,6 +159,7 @@ model Artist {
   legalName         String?
   spotifyId         String?
   instagramUsername String?
+  tiktokUsername    String?
   imageUrl          String?
   linkTreeUrl       String?
   workspace         Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)

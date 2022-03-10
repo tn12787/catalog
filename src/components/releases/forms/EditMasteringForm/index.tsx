@@ -2,7 +2,7 @@ import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { EditMasteringFormData } from '../../specific/Mastering/types';
+import { EditMasteringFormData } from '../../specific/tasks/Mastering/types';
 
 import EditMasteringFormBody from './EditMasteringFormBody';
 

@@ -8,13 +8,14 @@ import { EventListItem } from './EventListItem';
 import Card from 'components/Card';
 import { ClientRelease } from 'types/common';
 import { fetchSpecificReleaseEvents } from 'queries/events';
+import { testReleaseEvent } from '__mocks__/data/releases/events';
 
 interface Props {
   releaseData: ClientRelease;
 }
 
 const Events = ({ releaseData }: Props) => {
-  const { data } = useQuery(['releaseEvents', releaseData.id], () =>
+  const { data, isLoading } = useQuery(['releaseEvents', releaseData.id], () =>
     fetchSpecificReleaseEvents(releaseData.id)
   );
 
@@ -33,9 +34,11 @@ const Events = ({ releaseData }: Props) => {
         alignItems={['center', 'center', 'stretch']}
       >
         <EventList spacing="8">
-          {data?.map((event, i) => (
-            <EventListItem event={event} key={i.toString()} />
-          ))}
+          {isLoading ? (
+            <EventListItem event={testReleaseEvent({})} isLoading></EventListItem>
+          ) : (
+            data?.map((event, i) => <EventListItem event={event} key={i.toString()} />)
+          )}
         </EventList>
       </Flex>
     </Card>

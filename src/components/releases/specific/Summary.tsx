@@ -10,11 +10,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 import React from 'react';
+import { format } from 'date-fns';
 
 import NewReleaseForm from '../forms/NewReleaseForm';
 
@@ -23,10 +20,6 @@ import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import Card from 'components/Card';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
-
-dayjs.extend(utc);
-dayjs.extend(relativeTime);
-dayjs.extend(localizedFormat);
 
 interface Props {
   releaseData: ClientRelease;
@@ -51,7 +44,7 @@ const fields = (releaseData: ClientRelease): SummaryField[] => [
   { name: 'Release Type', content: <Text>{releaseData.type}</Text> },
   {
     name: 'Release Date',
-    content: <Text fontSize="sm">{dayjs.utc(releaseData.targetDate).format('LL')}</Text>,
+    content: <Text fontSize="sm">{format(new Date(releaseData.targetDate), 'PPP')}</Text>,
   },
 ];
 

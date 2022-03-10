@@ -4,7 +4,7 @@ import { Stack } from '@chakra-ui/layout';
 
 import { distribReviewConfig, renderReviewData } from './data';
 
-import { EditDistributionFormData } from 'components/releases/specific/Distribution/types';
+import { EditDistributionFormData } from 'components/releases/specific/tasks/Distribution/types';
 import { fetchDistributors } from 'queries/distribution';
 
 interface Props {

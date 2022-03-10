@@ -11,6 +11,7 @@ import {
   Textarea,
   Select,
   FormErrorMessage,
+  InputLeftAddon,
 } from '@chakra-ui/react';
 import React from 'react';
 import { UseFormReturn, FieldValues, Controller, Control, FieldError } from 'react-hook-form';
@@ -49,7 +50,8 @@ const FormField = <T,>({
   label,
   options,
   extraProps,
-  helperContent: helperText,
+  leftAddon,
+  helperContent,
   showLabel = true,
   isLoading,
   errors,
@@ -76,6 +78,7 @@ const FormField = <T,>({
           />
         ) : (
           <InputGroup>
+            {leftAddon && <InputLeftAddon>{leftAddon}</InputLeftAddon>}
             <InputComponent
               width="100%"
               focusBorderColor={primary}
@@ -102,9 +105,9 @@ const FormField = <T,>({
         <FormErrorMessage>
           {(errors as Record<keyof T, FieldError>)?.[name]?.message}
         </FormErrorMessage>
-        {helperText && (
+        {helperContent && (
           <FormHelperText color="grey" fontSize="sm">
-            {helperText}
+            {helperContent}
           </FormHelperText>
         )}
       </FormControl>

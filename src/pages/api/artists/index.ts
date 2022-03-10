@@ -61,6 +61,7 @@ class ArtistHandler {
         name: body.name,
         legalName: body.legalName,
         instagramUsername: body.instagramUsername,
+        tiktokUsername: body.tiktokUsername,
         spotifyId: body.spotifyId,
         imageUrl: body.imageUrl,
         linkTreeUrl: body.linkTreeUrl,

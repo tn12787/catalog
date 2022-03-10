@@ -1,5 +1,5 @@
-import { Text, Box, Stack } from '@chakra-ui/react';
-import { Thead, Tr, Th, Tbody, Td, Table as ChakraTable } from '@chakra-ui/table';
+import { Text, Box, Stack, Skeleton } from '@chakra-ui/react';
+import { Thead, Tbody, Tr, Th, Table as ChakraTable, Td } from '@chakra-ui/table';
 import React, { useMemo } from 'react';
 import {
   Cell,
@@ -16,6 +16,7 @@ import { BiDownArrow, BiUpArrow } from 'react-icons/bi';
 import { isEqual } from 'lodash';
 
 import IndeterminateCheckbox from './IndeterminateCheckbox';
+import TableBody from './TableBody';
 
 interface Props<T extends object> {
   columns: Column<T>[];
@@ -45,7 +46,7 @@ const Table = <T extends object>({
     page,
     prepareRow,
     state: { selectedRowIds },
-  } = useTable(
+  } = useTable<T>(
     {
       columns,
       data,
@@ -95,7 +96,30 @@ const Table = <T extends object>({
     if (!isEqual(selectedRows, selectedRowIds)) onSelectedRowsChange?.(selectedRowIds);
   }, [selectedRows, selectedRowIds, onSelectedRowsChange]);
 
-  const hasData = page?.length || loading;
+  const renderTableContent = () => {
+    if (loading) {
+      return (
+        <Tbody>
+          <Tr>
+            <Td>
+              <Skeleton>loading</Skeleton>
+            </Td>
+          </Tr>
+        </Tbody>
+      );
+    }
+
+    if (page?.length)
+      return (
+        <TableBody
+          getTableBodyProps={getTableBodyProps}
+          page={page}
+          prepareRow={prepareRow}
+        ></TableBody>
+      );
+
+    return emptyContent;
+  };
 
   return (
     <Box overflowX="auto" borderWidth={'1px'} borderRadius={'md'}>
@@ -134,38 +158,8 @@ const Table = <T extends object>({
             </Tr>
           ))}
         </Thead>
-        {hasData && (
-          <Tbody {...getTableBodyProps()}>
-            {page.map((row, index) => {
-              prepareRow(row);
-              return (
-                <Tr
-                  _last={{ borderBottom: 'none' }}
-                  borderBottomWidth={'1px'}
-                  {...row.getRowProps()}
-                  key={index.toString()}
-                >
-                  {row.cells.map((cell, index) => (
-                    <Td
-                      borderBottom="none"
-                      display="flex"
-                      alignItems={'center'}
-                      py={2}
-                      px={2}
-                      {...(cell.column?.extraProps ?? {})}
-                      {...cell.getCellProps()}
-                      key={index.toString()}
-                    >
-                      {cell.render('Cell')}
-                    </Td>
-                  ))}
-                </Tr>
-              );
-            })}
-          </Tbody>
-        )}
+        {renderTableContent()}
       </ChakraTable>
-      {!hasData && emptyContent}
     </Box>
   );
 };

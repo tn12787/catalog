@@ -2,9 +2,9 @@ import { Stack, Flex, Button } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiArrowRight, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { ReleaseType } from '@prisma/client';
 import { isEmpty } from 'lodash';
+import { format } from 'date-fns';
 
 import { ReleaseWizardComponentProps } from '../../NewReleaseWizard/types';
 
@@ -25,7 +25,7 @@ const NewReleaseFormBody = ({
   const properDateFormat = useMemo(() => {
     const existingDate =
       existingRelease?.targetDate ?? new Date(Date.now() + 1209600000 * 2).toDateString();
-    return dayjs(existingDate).format('YYYY-MM-DD');
+    return format(new Date(existingDate), 'yyyy-MM-dd');
   }, [existingRelease?.targetDate]);
 
   const {
