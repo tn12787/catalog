@@ -4,9 +4,7 @@ import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 import { EditArtworkFormData } from 'components/releases/specific/tasks/Artwork/types';
 import { FormDatum } from 'types/forms';
 
-export const buildArtworkConfig = (
-  alreadyCompleted: boolean
-): FormDatum<EditArtworkFormData, TaskStatus>[] => [
+export const buildArtworkConfig = (): FormDatum<EditArtworkFormData, TaskStatus>[] => [
   {
     name: 'assignees',
     label: 'Assignees',
@@ -52,7 +50,6 @@ export const buildArtworkConfig = (
     name: 'artworkData',
     label: 'Artwork File',
     type: 'file',
-    hidden: !alreadyCompleted,
     registerArgs: {},
     extraProps: { accept: 'image/jpeg, image/png' },
   },
@@ -61,6 +58,24 @@ export const buildArtworkConfig = (
 export const buildWizardArtworkConfig = (
   releaseDate?: Date
 ): FormDatum<EditArtworkFormData, TaskStatus>[] => [
+  {
+    name: 'assignees',
+    label: 'Assignees',
+    CustomComponent: AssigneeSelect,
+  },
+  {
+    name: 'status',
+    label: 'Status',
+    type: 'select',
+    registerArgs: {
+      required: 'Please select a type',
+    },
+    options: [
+      { label: 'Outstanding', value: TaskStatus.OUTSTANDING },
+      { label: 'In progress', value: TaskStatus.IN_PROGRESS },
+      { label: 'Complete', value: TaskStatus.COMPLETE },
+    ],
+  },
   {
     name: 'dueDate',
     label: 'Due on',
@@ -72,7 +87,16 @@ export const buildWizardArtworkConfig = (
     },
     extraProps: {
       min: new Date(),
-      max: releaseDate ? new Date(releaseDate) : undefined,
+    },
+  },
+  {
+    name: 'notes',
+    label: 'Notes',
+    type: 'textarea',
+    registerArgs: {},
+    extraProps: {
+      placeholder: 'Add notes here about this task.',
+      maxLength: 200,
     },
   },
 ];
