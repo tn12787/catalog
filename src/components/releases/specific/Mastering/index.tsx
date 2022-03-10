@@ -1,45 +1,19 @@
 import React from 'react';
-import { Text, Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import { TaskStatus } from '@prisma/client';
+import { Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 
 import { SummaryField } from '../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
+import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
-import { ClientRelease, EventType, WorkspaceMemberWithUser } from 'types/common';
-import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
-import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
+import { ClientRelease, EventType } from 'types/common';
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
-
-dayjs.extend(utc);
-dayjs.extend(relativeTime);
-dayjs.extend(localizedFormat);
 
 interface Props {
   releaseData: ClientRelease;
 }
 
 const buildFields = (masteringInfo: ClientRelease['mastering'] | undefined): SummaryField[] => {
-  const isComplete = masteringInfo?.status === TaskStatus.COMPLETE;
-  return [
-    {
-      name: 'Assignees',
-      content: (
-        <AssigneeBadgeList assignees={masteringInfo?.assignees as WorkspaceMemberWithUser[]} />
-      ),
-    },
-    {
-      name: 'Status',
-      content: <TaskStatusBadge status={masteringInfo?.status as TaskStatus} />,
-    },
-    masteringInfo?.dueDate && {
-      name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: <Text fontSize="sm">{dayjs.utc(masteringInfo.dueDate).format('LL')}</Text>,
-    },
-  ].filter(Boolean) as SummaryField[];
+  return [...defaultFields(masteringInfo)].filter(Boolean) as SummaryField[];
 };
 
 const Mastering = ({ releaseData }: Props) => {
@@ -48,7 +22,7 @@ const Mastering = ({ releaseData }: Props) => {
   return (
     <>
       <ReleaseTaskCard
-        heading={'🎚️ Mastering '}
+        heading={'🎚️ Mastering'}
         onEditClick={onOpen}
         fields={buildFields(masteringInfo)}
         taskType={EventType.MASTERING}

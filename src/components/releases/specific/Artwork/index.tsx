@@ -1,45 +1,19 @@
-import { Text, Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import { Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import { TaskStatus } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import EditArtworkForm from '../../forms/EditArtworkForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
+import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
-import { ClientRelease, EventType, WorkspaceMemberWithUser } from 'types/common';
-import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
-import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
-
-dayjs.extend(utc);
-dayjs.extend(relativeTime);
-dayjs.extend(localizedFormat);
+import { ClientRelease, EventType } from 'types/common';
 
 interface Props {
   releaseData: ClientRelease;
 }
 
 const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): SummaryField[] => {
-  const isComplete = artworkTask?.status === TaskStatus.COMPLETE;
-  return [
-    {
-      name: 'Assignees',
-      content: (
-        <AssigneeBadgeList assignees={artworkTask?.assignees as WorkspaceMemberWithUser[]} />
-      ),
-    },
-    {
-      name: 'Status',
-      content: <TaskStatusBadge status={artworkTask?.status as TaskStatus} />,
-    },
-    artworkTask?.dueDate && {
-      name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: <Text fontSize="sm">{dayjs.utc(artworkTask?.dueDate).format('LL')}</Text>,
-    },
-  ].filter(Boolean) as SummaryField[];
+  return [...defaultFields(artworkTask)].filter(Boolean) as SummaryField[];
 };
 
 const Artwork = ({ releaseData }: Props) => {

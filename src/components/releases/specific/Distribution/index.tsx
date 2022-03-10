@@ -1,22 +1,12 @@
 import { Modal, ModalContent, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import { TaskStatus } from '@prisma/client';
 
 import { SummaryField } from '../Summary';
 import EditDistributionForm from '../../forms/EditDistributionForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
+import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
-import { ClientRelease, EventType, WorkspaceMemberWithUser } from 'types/common';
-import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
-import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
-
-dayjs.extend(utc);
-dayjs.extend(relativeTime);
-dayjs.extend(localizedFormat);
+import { ClientRelease, EventType } from 'types/common';
 
 interface Props {
   releaseData: ClientRelease;
@@ -25,25 +15,11 @@ interface Props {
 const buildFields = (
   distributionTask: ClientRelease['distribution'] | undefined
 ): SummaryField[] => {
-  const isComplete = distributionTask?.status === TaskStatus.COMPLETE;
   return [
-    {
-      name: 'Assignees',
-      content: (
-        <AssigneeBadgeList assignees={distributionTask?.assignees as WorkspaceMemberWithUser[]} />
-      ),
-    },
-    {
-      name: 'Status',
-      content: <TaskStatusBadge status={distributionTask?.status as TaskStatus} />,
-    },
+    ...defaultFields(distributionTask),
     {
       name: 'Distributor',
       content: <Text fontSize="sm">{distributionTask?.distributor?.name}</Text>,
-    },
-    {
-      name: `${isComplete ? 'Original ' : ''}Due Date`,
-      content: <Text fontSize="sm">{dayjs.utc(distributionTask?.dueDate).format('LL')}</Text>,
     },
   ];
 };

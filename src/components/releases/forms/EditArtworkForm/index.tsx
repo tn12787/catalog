@@ -2,10 +2,6 @@ import { Stack, Text, useToast, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import 'firebase/storage';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { EditArtworkFormData } from '../../specific/Artwork/types';
 
@@ -15,10 +11,6 @@ import { createSingleArtwork, updateSingleArtwork, uploadImageToFirebase } from 
 import { ClientRelease } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
-
-dayjs.extend(utc);
-dayjs.extend(relativeTime);
-dayjs.extend(localizedFormat);
 
 interface Props {
   releaseData: ClientRelease;

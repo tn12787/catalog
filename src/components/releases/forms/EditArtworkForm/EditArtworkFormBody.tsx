@@ -2,8 +2,8 @@ import { Stack, Flex, Button, Image, HStack } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { TaskStatus } from '@prisma/client';
+import { format } from 'date-fns';
 
 import { EditArtworkFormData } from '../../specific/Artwork/types';
 
@@ -18,7 +18,7 @@ const EditArtworkFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditArtworkFormData>) => {
   const formattedDueDate = useMemo(
-    () => dayjs(existingRelease?.artwork?.dueDate).format('YYYY-MM-DD'),
+    () => format(new Date(existingRelease?.artwork?.dueDate ?? Date.now()), 'yyyy-MM-dd'),
     [existingRelease?.artwork?.dueDate]
   );
 

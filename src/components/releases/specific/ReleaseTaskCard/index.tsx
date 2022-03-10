@@ -1,5 +1,5 @@
-import { Flex, Heading, Stack, Text, Link, HStack } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
+import { Flex, Heading, Stack, Text, Link, HStack, Badge } from '@chakra-ui/layout';
+import { Button, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
 
@@ -11,6 +11,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import { EventType } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
+import { isTaskOverdue } from 'utils/tasks';
 
 interface Props<T> {
   heading: string | JSX.Element;
@@ -57,6 +58,11 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
             </Heading>
           ) : (
             heading
+          )}
+          {data && isTaskOverdue(data) && (
+            <Badge variant={'outline'} colorScheme="red">
+              Overdue
+            </Badge>
           )}
         </Stack>
         {data && (

@@ -2,8 +2,8 @@ import { Stack, Flex, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { BiArrowBack } from 'react-icons/bi';
+import { format } from 'date-fns';
 
 import { EditMasteringFormData } from '../../specific/Mastering/types';
 
@@ -20,7 +20,7 @@ const EditMasteringFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditMasteringFormData>) => {
   const formattedDueDate = useMemo(
-    () => dayjs(existingRelease?.mastering?.dueDate).format('YYYY-MM-DD'),
+    () => format(new Date(existingRelease?.mastering?.dueDate ?? Date.now()), 'yyyy-MM-dd'),
     [existingRelease?.mastering?.dueDate]
   );
 
