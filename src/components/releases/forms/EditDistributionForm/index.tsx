@@ -2,7 +2,7 @@ import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { EditDistributionFormData } from '../../specific/Distribution/types';
+import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
 import EditDistributionFormBody from './EditDistributionFormBody';
 

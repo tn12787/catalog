@@ -27,7 +27,7 @@ const ReleaseList = ({ isLoading, search, releases, EmptyComponent = NoReleasesY
           artist: { name: 'me', id: 'loading' } as Artist,
           targetDate: new Date().toISOString(),
           name: 'Loading',
-          type: ReleaseType.ALBUM,
+          type: ReleaseType.Album,
           artistId: 'blank_id',
           workspaceId: 'loading',
           createdAt: new Date(),

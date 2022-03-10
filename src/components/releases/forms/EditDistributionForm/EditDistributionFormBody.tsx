@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import { BiArrowBack } from 'react-icons/bi';
 import { format } from 'date-fns';
 
-import { EditDistributionFormData } from '../../specific/Distribution/types';
+import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
 import { buildDistribConfig } from './distribConfig';
 

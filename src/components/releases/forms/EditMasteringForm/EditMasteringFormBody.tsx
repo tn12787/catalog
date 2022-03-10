@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';
 import { format } from 'date-fns';
 
-import { EditMasteringFormData } from '../../specific/Mastering/types';
+import { EditMasteringFormData } from '../../specific/tasks/Mastering/types';
 
 import { buildMasteringConfig } from './masteringConfig';
 

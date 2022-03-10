@@ -5,7 +5,7 @@ import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';
 
-import { EditMusicVideoFormData } from '../../specific/MusicVideo/types';
+import { EditMusicVideoFormData } from '../../specific/tasks/MusicVideo/types';
 
 import { buildMusicVideoConfig } from './musicVideoConfig';
 

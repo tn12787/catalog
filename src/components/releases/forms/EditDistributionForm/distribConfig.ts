@@ -1,6 +1,6 @@
 import { Distributor, TaskStatus } from '@prisma/client';
 
-import { EditDistributionFormData } from '../../specific/Distribution/types';
+import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
 import { FormDatum } from 'types/forms';
 import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';

@@ -9,7 +9,7 @@ import EditDistributionFormBody from '../forms/EditDistributionForm/EditDistribu
 import NewReleaseFormBody from '../forms/NewReleaseForm/NewReleaseFormBody';
 import { BasicInfoFormData } from '../forms/NewReleaseForm/types';
 import { EditArtworkFormData } from '../specific/tasks/Artwork/types';
-import { EditDistributionFormData } from '../specific/Distribution/types';
+import { EditDistributionFormData } from '../specific/tasks/Distribution/types';
 import WizardArtworkFormBody from '../forms/WizardArtworkForm/WizardArtworkFormBody';
 
 import { CombinedFormState, ReleaseWizardKey, ReleaseWizardStep } from './types';
