@@ -14,12 +14,10 @@ import {
 import React, { useState } from 'react';
 import { isEqual } from 'lodash';
 import { BiSearch } from 'react-icons/bi';
-import { Artist } from '@prisma/client';
 import Link from 'next/link';
 
-import ReleaseCard from 'components/releases/ReleaseCard';
 import DashboardLayout from 'components/layouts/DashboardLayout';
-import { ClientRelease, ReleaseType } from 'types/common';
+import { ClientRelease } from 'types/common';
 import useDebounce from 'hooks/useDebounce';
 import ReleaseList from 'components/releases/ReleaseList';
 import { SortOrder } from 'queries/types';
@@ -165,24 +163,9 @@ const Releases = () => {
             </HStack>
           </Stack>
         )}
-        {isLoading ? (
-          <ReleaseCard
-            releaseData={{
-              id: 'release_loading',
-              artist: { name: 'me', id: 'loading' } as Artist,
-              targetDate: new Date().toISOString(),
-              name: 'Loading',
-              type: ReleaseType.ALBUM,
-              artistId: 'blank_id',
-              workspaceId: 'loading',
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            }}
-            loading
-          />
-        ) : (
-          <ReleaseList releases={response?.results} search={debouncedSearch} />
-        )}
+
+        <ReleaseList isLoading={isLoading} releases={response?.results} search={debouncedSearch} />
+
         {!shouldHideControls && (
           <PaginationControl
             loading={isLoading}

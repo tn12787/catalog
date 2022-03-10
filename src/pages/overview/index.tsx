@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { Heading, Skeleton, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { TaskStatus } from '@prisma/client';
+import { startOfDay } from 'date-fns';
 
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -16,6 +17,10 @@ import OverdueTasks from 'components/overview/OverdueTasks';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import useReleases from 'hooks/data/releases/useReleases';
 import useArtists from 'hooks/data/artists/useArtists';
+import ReleaseList from 'components/releases/ReleaseList';
+import { SortOrder } from 'queries/types';
+import { ClientRelease } from 'types/common';
+import NoReleasesUpcoming from 'components/releases/ReleaseList/NoReleasesUpcoming';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
@@ -28,9 +33,21 @@ const OverviewPage = () => {
     () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id),
     { enabled: !!currentWorkspace && !!workspaceMemberships?.[currentWorkspace]?.id }
   );
-  const { data: upcomingReleases, isLoading: areUpcomingReleasesLoading } = useReleases({
-    dates: { after: new Date(new Date().toDateString()) },
-  });
+
+  const upcomingReleaseQueryArgs = {
+    dates: { after: startOfDay(new Date()) },
+    pagination: {
+      pageSize: 5,
+      page: 1,
+    },
+    sorting: {
+      key: 'targetDate' as keyof ClientRelease,
+      order: SortOrder.ASC,
+    },
+  };
+
+  const { data: upcomingReleases, isLoading: areUpcomingReleasesLoading } =
+    useReleases(upcomingReleaseQueryArgs);
 
   const { data: artists, isLoading: areArtistsLoading } = useArtists({});
 
@@ -91,6 +108,16 @@ const OverviewPage = () => {
 
         <OverdueTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
         <MyTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
+
+        <Card>
+          <Heading size="md">Upcoming Releases</Heading>
+          <ReleaseList
+            isLoading={areUpcomingReleasesLoading}
+            EmptyComponent={NoReleasesUpcoming}
+            search=""
+            releases={upcomingReleases?.results?.slice(0, 5) ?? []}
+          />
+        </Card>
       </Stack>
     </Stack>
   );

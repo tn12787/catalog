@@ -1,4 +1,4 @@
-import { Stack } from '@chakra-ui/react';
+import { Alert, Stack } from '@chakra-ui/react';
 import React from 'react';
 import { Text, Heading, Button } from '@chakra-ui/react';
 import NextImage from 'next/image';
@@ -6,13 +6,23 @@ import NextImage from 'next/image';
 import profilePic from 'images/no-releases-yet.svg';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import useArtists from 'hooks/data/artists/useArtists';
 
 const NoReleasesYet = () => {
-  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
+  const {
+    currentWorkspace,
+    workspaceMemberships,
+    isLoading: sessionLoading,
+  } = useExtendedSession();
+  const { data: artists, isLoading: artistsLoading } = useArtists({});
   const canCreateRelease = hasRequiredPermissions(
     ['CREATE_RELEASES'],
     workspaceMemberships?.[currentWorkspace]
   );
+
+  const thingsLoading = [sessionLoading, artistsLoading].some(Boolean);
+
+  const noArtists = !artists?.length && !thingsLoading;
 
   return (
     <Stack w="100%">
@@ -30,8 +40,11 @@ const NoReleasesYet = () => {
         <Text textAlign="center">
           Create your first release to start turbocharging your artist workflow.
         </Text>
+        {noArtists && (
+          <Alert status="info">You need to create an artist before you can create a release.</Alert>
+        )}
         {canCreateRelease && (
-          <Button href={'/releases/new'} colorScheme="purple" as={'a'}>
+          <Button isDisabled={noArtists} href={'/releases/new'} colorScheme="purple" as={'a'}>
             Get Started
           </Button>
         )}

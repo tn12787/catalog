@@ -1,6 +1,7 @@
 import { Stack, Text, Icon } from '@chakra-ui/react';
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
+import { Artist, ReleaseType } from '@prisma/client';
 
 import NoReleasesYet from './NoReleasesYet';
 
@@ -10,12 +11,33 @@ import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   search: string;
+  isLoading?: boolean;
   releases: ClientRelease[] | undefined;
   EmptyComponent?: React.FC;
 }
 
-const ReleaseList = ({ search, releases, EmptyComponent = NoReleasesYet }: Props) => {
+const ReleaseList = ({ isLoading, search, releases, EmptyComponent = NoReleasesYet }: Props) => {
   const { bodySub } = useAppColors();
+
+  if (isLoading) {
+    return (
+      <ReleaseCard
+        releaseData={{
+          id: 'release_loading',
+          artist: { name: 'me', id: 'loading' } as Artist,
+          targetDate: new Date().toISOString(),
+          name: 'Loading',
+          type: ReleaseType.ALBUM,
+          artistId: 'blank_id',
+          workspaceId: 'loading',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }}
+        loading
+      />
+    );
+  }
+
   if (!releases || releases?.length === 0) {
     return search ? (
       <Stack color={bodySub} spacing={5} py={'40px'} align="center">
@@ -23,7 +45,7 @@ const ReleaseList = ({ search, releases, EmptyComponent = NoReleasesYet }: Props
         <Text fontSize="sm">No items match your search. Try entering another query.</Text>
       </Stack>
     ) : (
-      <EmptyComponent></EmptyComponent>
+      <EmptyComponent />
     );
   }
 
