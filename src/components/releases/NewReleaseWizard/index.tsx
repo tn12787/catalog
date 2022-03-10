@@ -82,6 +82,10 @@ const NewReleaseWizard = () => {
     try {
       const result = await createRelease({
         ...data.basics,
+        mastering: data.mastering && {
+          ...data.mastering,
+          assignees: data.mastering?.assignees?.map(({ id }) => id) ?? [],
+        },
         artwork: data.artwork && {
           ...data.artwork,
           assignees: data.artwork?.assignees?.map(({ id }) => id) ?? [],
