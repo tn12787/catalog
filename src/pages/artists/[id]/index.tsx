@@ -113,6 +113,7 @@ const SingleArtist = ({ artist }: Props) => {
             <Heading size="md">Catalog</Heading>
             <ReleaseList
               search=""
+              isLoading={isLoading}
               releases={
                 artistData?.releases?.map((item) => ({
                   ...item,
