@@ -1,6 +1,5 @@
 import React from 'react';
 import { Heading, HStack, Stack, Text } from '@chakra-ui/react';
-import { User } from '@prisma/client';
 
 import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
@@ -10,7 +9,8 @@ import { ReviewConfigItem } from './types';
 import { BasicInfoFormData } from 'components/releases/forms/NewReleaseForm/types';
 import { basicInfoConfig } from 'components/releases/forms/NewReleaseForm/releaseConfig';
 import { AssigneeList, StatusBadge } from 'components/tasks/TaskTable/columns';
-import { ClientReleaseTask } from 'types/common';
+import { ClientReleaseTaskData } from 'types/common';
+import { EditMasteringFormData } from 'components/releases/specific/tasks/Mastering/types';
 
 export const renderReviewData = <
   T extends BasicInfoFormData | EditArtworkFormData | EditDistributionFormData
@@ -54,7 +54,7 @@ export const basicInfoDataConfig: ReviewConfigItem<BasicInfoFormData>[] = basicI
 );
 
 export const baseReviewConfig: ReviewConfigItem<
-  Pick<ClientReleaseTask & { assignees: User[] }, 'assignees' | 'status' | 'dueDate' | 'notes'>
+  Pick<ClientReleaseTaskData, 'assignees' | 'status' | 'dueDate' | 'notes'>
 >[] = [
   {
     key: 'assignees',
@@ -81,5 +81,9 @@ export const distribReviewConfig: ReviewConfigItem<EditDistributionFormData>[] =
     key: 'distributor',
     label: 'Distributor',
   },
+  ...baseReviewConfig,
+];
+
+export const masterngReviewConfig: ReviewConfigItem<EditMasteringFormData>[] = [
   ...baseReviewConfig,
 ];

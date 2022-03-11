@@ -1,9 +1,10 @@
 import { Stack, Flex, Button, Image, HStack, Text, ButtonGroup } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { Controller, useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';
 import { TaskStatus } from '@prisma/client';
+import { format } from 'date-fns';
 
 import { buildWizardArtworkConfig } from '../EditArtworkForm/artworkConfig';
 import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
@@ -13,6 +14,7 @@ import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizar
 import ImageDropper from 'components/images/ImageDropper';
 import useAppColors from 'hooks/useAppColors';
 import { uploadImageToFirebase } from 'queries/artwork';
+import { defaultTaskDueDate } from 'utils/tasks';
 
 const WizardArtworkFormBody = ({
   onSubmit,
@@ -27,6 +29,11 @@ const WizardArtworkFormBody = ({
   const [uploading, setUploading] = useState(false);
   const { bodySub } = useAppColors();
 
+  const properDateFormat = useMemo(() => {
+    const existingDate = completeState?.artwork?.dueDate ?? defaultTaskDueDate();
+    return format(new Date(existingDate), 'yyyy-MM-dd');
+  }, [completeState?.artwork?.dueDate]);
+
   const {
     register,
     formState: { errors },
@@ -37,9 +44,14 @@ const WizardArtworkFormBody = ({
     reset,
   } = useForm<EditArtworkFormData>({
     shouldUnregister: false,
+    defaultValues: {
+      ...completeState?.artwork,
+      dueDate: properDateFormat as unknown as Date,
+    },
   });
 
   const watchedAlbumArt = watch('artworkData');
+  const watchedArtUrl = watch('url');
 
   const onSubmitFn = async (data: EditArtworkFormData) => {
     const { artworkData, ...rest } = data;
@@ -52,17 +64,23 @@ const WizardArtworkFormBody = ({
 
   useEffect(() => {
     const newStatus =
-      watchedAlbumArt || completeState?.artwork?.url ? TaskStatus.COMPLETE : TaskStatus.OUTSTANDING;
+      watchedAlbumArt || watchedArtUrl ? TaskStatus.COMPLETE : TaskStatus.OUTSTANDING;
     if (completeState?.artwork) {
-      reset({ ...completeState?.artwork, status: newStatus, artworkData: watchedAlbumArt });
+      reset({
+        ...completeState?.artwork,
+        status: newStatus,
+        url: watchedArtUrl,
+        artworkData: watchedAlbumArt,
+        dueDate: properDateFormat as unknown as Date,
+      });
     } else {
       setValue('status', newStatus);
     }
-  }, [setValue, watchedAlbumArt, completeState?.artwork, reset]);
+  }, [setValue, watchedAlbumArt, watchedArtUrl, properDateFormat, completeState?.artwork, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmitFn)} width="100%">
-      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+      <Stack width="100%" maxW="600px" margin="0 auto">
         {showForm ? (
           <Stack>
             <FormContent
@@ -75,7 +93,9 @@ const WizardArtworkFormBody = ({
               <Text color={bodySub}>Already have artwork?</Text>
               <Button
                 onClick={() => {
-                  reset({});
+                  reset({
+                    dueDate: properDateFormat as unknown as Date,
+                  });
                   setShowForm(false);
                 }}
                 colorScheme="purple"
@@ -87,7 +107,7 @@ const WizardArtworkFormBody = ({
               </Button>
             </HStack>
           </Stack>
-        ) : watchedAlbumArt || completeState?.artwork?.url ? (
+        ) : watchedAlbumArt || watchedArtUrl ? (
           <Stack>
             <Image
               borderRadius="5px"
@@ -96,13 +116,14 @@ const WizardArtworkFormBody = ({
               objectFit="cover"
               alt="completed artwork"
               src={
-                watchedAlbumArt
-                  ? URL.createObjectURL(watchedAlbumArt as Blob)
-                  : completeState?.artwork?.url || ''
+                watchedAlbumArt ? URL.createObjectURL(watchedAlbumArt as Blob) : watchedArtUrl || ''
               }
             />
             <Button
-              onClick={() => setValue('artworkData', undefined)}
+              onClick={() => {
+                setValue('artworkData', undefined);
+                setValue('url', null);
+              }}
               colorScheme="purple"
               fontWeight="normal"
               variant="link"
@@ -115,6 +136,7 @@ const WizardArtworkFormBody = ({
             <Controller
               render={({ field }: any) => (
                 <ImageDropper
+                  containerProps={{ h: '400px' }}
                   onChange={(e) => field.onChange(e.target.files?.[0])}
                   onDrop={(files) => field.onChange(files[0])}
                   accept={'image/jpeg, image/png'}

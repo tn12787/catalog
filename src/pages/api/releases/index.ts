@@ -112,6 +112,13 @@ class ReleaseListHandler {
           dueDate: body.distribution?.dueDate ?? new Date(),
           status: body.distribution?.status as TaskStatus,
         }),
+      body.mastering &&
+        buildCreateReleaseTaskArgs({
+          ...body.mastering,
+          type: ReleaseTaskType.MASTERING,
+          dueDate: body.mastering?.dueDate ?? new Date(),
+          status: body.mastering?.status as TaskStatus,
+        }),
     ].filter(Boolean) as any; // TODO: Find a type for this
 
     const result = await prisma.release.create({

@@ -11,6 +11,7 @@ import { buildMusicVideoConfig } from './musicVideoConfig';
 
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
+import { defaultTaskDueDate } from 'utils/tasks';
 
 const EditMusicVideoFormBody = ({
   onSubmit,
@@ -21,7 +22,10 @@ const EditMusicVideoFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditMusicVideoFormData>) => {
   const formattedDueDate = useMemo(() => {
-    return format(new Date(existingRelease?.musicVideo?.dueDate ?? Date.now()), 'yyyy-MM-dd');
+    return format(
+      new Date(existingRelease?.musicVideo?.dueDate ?? defaultTaskDueDate()),
+      'yyyy-MM-dd'
+    );
   }, [existingRelease?.musicVideo?.dueDate]);
 
   const {
@@ -34,7 +38,7 @@ const EditMusicVideoFormBody = ({
     defaultValues: existingRelease?.musicVideo
       ? {
           ...existingRelease?.musicVideo,
-          dueDate: formattedDueDate,
+          dueDate: formattedDueDate as unknown as Date,
         }
       : { assignees: [] },
   });
@@ -42,15 +46,17 @@ const EditMusicVideoFormBody = ({
   useEffect(() => {
     reset({
       ...existingRelease?.musicVideo,
-      dueDate: formattedDueDate,
+      dueDate: formattedDueDate as unknown as Date,
     });
   }, [existingRelease?.musicVideo, formattedDueDate, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+      <Stack width="100%" margin="0 auto">
         <FormContent
-          config={buildMusicVideoConfig()}
+          config={buildMusicVideoConfig(
+            existingRelease?.targetDate ? new Date(existingRelease?.targetDate) : null
+          )}
           control={control}
           errors={errors}
           register={register}

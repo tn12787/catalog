@@ -25,7 +25,7 @@ import {
 import Stripe from 'stripe';
 
 export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
-  dueDate: string | Date;
+  dueDate: string | Date | null;
 }
 
 export type WorkspaceMemberWithUser = WorkspaceMember & { user: User };
