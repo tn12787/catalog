@@ -52,6 +52,7 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
             alt="this is an image"
             backgroundSize="cover"
             objectFit="cover"
+            w="100%"
             fallback={<ReleasePlaceholder />}
           />
         </Box>
@@ -61,9 +62,11 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
           <HStack alignItems="center" direction={{ base: 'column', md: 'row' }}>
             <Skeleton isLoaded={!loading}>
               <NextLink passHref href={`/releases/${releaseData.id}`}>
-                <Text fontSize={'2xl'} as={Link} isTruncated fontWeight="semibold">
-                  {releaseData.name}
-                </Text>
+                <Link overflow={'hidden'} maxW="200px">
+                  <Text fontSize={'2xl'} maxW="sm" isTruncated fontWeight="semibold">
+                    {releaseData.name}
+                  </Text>
+                </Link>
               </NextLink>
             </Skeleton>
             <Skeleton display="flex" alignItems="center" isLoaded={!loading}>
