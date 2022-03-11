@@ -19,8 +19,6 @@ class SpecificReleaseEventsHandler {
             contacts: { include: { labels: true } },
             artworkData: true,
             distributionData: true,
-            marketingData: true,
-            musicVideoData: true,
             masteringData: true,
           },
         },

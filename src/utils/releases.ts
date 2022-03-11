@@ -1,6 +1,7 @@
 import { ClientRelease, ReleaseTaskWithAssignees } from 'types/common';
+
 export const clientReleaseTasks = (release?: ClientRelease) =>
-  [release?.artwork, release?.distribution, release?.mastering, release?.musicVideo].filter(
+  [release?.artwork, release?.distribution, release?.mastering].filter(
     Boolean
   ) as ReleaseTaskWithAssignees[];
 

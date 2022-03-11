@@ -49,12 +49,12 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
         data: flattenField(release, ReleaseTaskType.DISTRIBUTION) as ClientReleaseTaskData,
         release: release,
       };
-    case ReleaseTaskType.MARKETING:
+    case ReleaseTaskType.GENERIC:
       return {
-        name: `${release.name}: marketing`,
+        name: `${release.name}: GENERIC`,
         date: (task.dueDate as Date)?.toISOString() ?? '',
-        type: EventType.MARKETING,
-        data: flattenField(release, ReleaseTaskType.MARKETING) as ClientReleaseTaskData,
+        type: EventType.GENERIC,
+        data: flattenField(release, ReleaseTaskType.GENERIC) as ClientReleaseTaskData,
         release: release,
       };
     case ReleaseTaskType.MASTERING:
@@ -65,14 +65,7 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
         data: flattenField(release, ReleaseTaskType.MASTERING) as ClientReleaseTaskData,
         release: release,
       };
-    case ReleaseTaskType.MUSIC_VIDEO:
-      return {
-        name: `${release.name}: music video`,
-        date: (task.dueDate as Date)?.toISOString() ?? '',
-        type: EventType.MUSIC_VIDEO,
-        data: flattenField(release, ReleaseTaskType.MUSIC_VIDEO) as ClientReleaseTaskData,
-        release: release,
-      };
+
     default:
       throw new InternalServerErrorException();
   }

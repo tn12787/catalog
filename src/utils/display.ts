@@ -6,8 +6,8 @@ export const releaseTaskTypeToDisplayName = (type: ReleaseTaskType) => {
       return 'Artwork';
     case ReleaseTaskType.DISTRIBUTION:
       return 'Distribution';
-    case ReleaseTaskType.MARKETING:
-      return 'Marketing';
+    case ReleaseTaskType.GENERIC:
+      return 'Generic';
     case ReleaseTaskType.MASTERING:
       return 'Mastering';
     case ReleaseTaskType.MUSIC_VIDEO:

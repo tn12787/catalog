@@ -60,14 +60,11 @@ export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: Rel
 };
 
 export const deriveTypeSpecificUpdateArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
-  // TODO: Support marketing
   switch (type) {
     case ReleaseTaskType.ARTWORK:
       return body.url ? { artworkData: { update: { url: body.url } } } : undefined;
     case ReleaseTaskType.MASTERING:
       return body.url ? { masteringData: { update: { url: body.url } } } : undefined;
-    case ReleaseTaskType.MUSIC_VIDEO:
-      return body.url ? { musicVideoData: { update: { url: body.url } } } : undefined;
     case ReleaseTaskType.DISTRIBUTION:
       return body.distributor
         ? {
@@ -89,8 +86,6 @@ export const deriveTypeSpecificCreateArgs = (body: CreateReleaseTaskDto) => {
       return { artworkData: { create: { url: body.url } } };
     case ReleaseTaskType.MASTERING:
       return { masteringData: { create: { url: body.url } } };
-    case ReleaseTaskType.MUSIC_VIDEO:
-      return { musicVideoData: { create: { url: body.url } } };
     case ReleaseTaskType.DISTRIBUTION:
       return {
         distributionData: {

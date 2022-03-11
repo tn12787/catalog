@@ -67,8 +67,6 @@ describe('Single Release Page', () => {
       artworkData: { url: null, id: testTaskId, taskId: 'test-taskId' },
       masteringData: null,
       distributionData: null,
-      musicVideoData: null,
-      marketingData: null,
     };
 
     server.use(

@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import * as React from 'react';
-import { BiCalendar, BiFlag, BiImageAlt, BiVideo, BiVolumeFull } from 'react-icons/bi';
+import { BiCalendar, BiFlag, BiImageAlt, BiVolumeFull } from 'react-icons/bi';
 import { ImStack } from 'react-icons/im';
 
 import { ReleaseEvent } from 'types/common';
@@ -35,8 +35,6 @@ const deriveEventIcon = (type: ReleaseEvent['type']) => {
       return ImStack;
     case 'mastering':
       return BiVolumeFull;
-    case 'musicVideo':
-      return BiVideo;
     default:
       return BiCalendar;
   }

@@ -30,8 +30,7 @@ enum ReleaseTaskType {
   MASTERING
   ARTWORK
   DISTRIBUTION
-  MUSIC_VIDEO
-  MARKETING
+  GENERIC
 }
 
 enum TaskEventType {
@@ -230,8 +229,6 @@ model ReleaseTask {
   updatedAt        DateTime?          @updatedAt
   artworkData      ArtworkData?
   distributionData DistributionData?
-  marketingData    MarketingData?
-  musicVideoData   MusicVideoData?
   masteringData    MasteringData?
   events           ReleaseTaskEvent[]
   notifications    Notification[]
@@ -254,24 +251,6 @@ model DistributionData {
   distributorId String
   task          ReleaseTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId        String
-
-  @@unique([taskId])
-}
-
-model MarketingData {
-  id     String          @id @default(cuid())
-  links  MarketingLink[]
-  task   ReleaseTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId String
-
-  @@unique([taskId])
-}
-
-model MusicVideoData {
-  id     String      @id @default(cuid())
-  url    String?     @unique
-  task   ReleaseTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId String
 
   @@unique([taskId])
 }
@@ -305,16 +284,6 @@ model Distributor {
   updatedAt DateTime?          @updatedAt
 
   @@unique([name, siteUrl])
-}
-
-model MarketingLink {
-  id            String        @id @default(cuid())
-  url           String
-  name          String
-  marketingTask MarketingData @relation(fields: [marketingId], references: [id], onDelete: Cascade)
-  marketingId   String
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime?     @updatedAt
 }
 
 model Role {

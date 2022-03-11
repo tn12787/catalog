@@ -10,10 +10,6 @@ export const taskHeadingByType = (type: ReleaseTaskType, releaseName?: string) =
       return `${releasePrefix}📦 Distribution`;
     case ReleaseTaskType.MASTERING:
       return `${releasePrefix}🎧 Mastering`;
-    case ReleaseTaskType.MUSIC_VIDEO:
-      return `${releasePrefix}🎥 Music Video`;
-    case ReleaseTaskType.MARKETING:
-      return `${releasePrefix}📷 Marketing`;
     default:
       return `${releasePrefix}🚩 Release Day`;
   }

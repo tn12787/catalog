@@ -9,12 +9,9 @@ import {
   ReleaseTask,
   ArtworkData,
   DistributionData,
-  MarketingData,
   MasteringData,
-  MusicVideoData,
   Release,
   Distributor,
-  MarketingLink,
   Notification,
   Artist,
   ReleaseTaskEvent,
@@ -72,24 +69,15 @@ export interface ClientRelease extends Omit<EnrichedRelease, 'tasks' | 'targetDa
   artwork?: ReleaseTaskWithAssignees & Omit<ArtworkData, 'taskId'>;
   distribution?: ReleaseTaskWithAssignees &
     Omit<DistributionData, 'taskId'> & { distributor?: Distributor };
-  marketing?: ReleaseTaskWithAssignees & Omit<MarketingData, 'taskId'> & { links: MarketingLink[] };
   mastering?: ReleaseTaskWithAssignees & Omit<MasteringData, 'taskId'>;
-  musicVideo?: ReleaseTaskWithAssignees & Omit<MusicVideoData, 'taskId'>;
   targetDate: string | Date;
 }
 
 export type ClientArtwork = Required<ClientRelease>['artwork'];
 export type ClientDistribution = Required<ClientRelease>['distribution'];
-export type ClientMarketing = Required<ClientRelease>['marketing'];
 export type ClientMastering = Required<ClientRelease>['mastering'];
-export type ClientMusicVideo = Required<ClientRelease>['musicVideo'];
 
-export type ClientReleaseTaskData =
-  | ClientArtwork
-  | ClientDistribution
-  | ClientMarketing
-  | ClientMastering
-  | ClientMusicVideo;
+export type ClientReleaseTaskData = ClientArtwork | ClientDistribution | ClientMastering;
 
 export enum ReleaseType {
   SINGLE = 'Single',
@@ -102,8 +90,6 @@ export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Com
 export type EnrichedReleaseTask = ReleaseTaskWithAssignees & {
   artworkData: ArtworkData | null;
   distributionData: (DistributionData & { distributor?: Distributor }) | null;
-  marketingData: (MarketingData & { links?: MarketingLink[] }) | null;
-  musicVideoData: MusicVideoData | null;
   masteringData: MasteringData | null;
   dueDate: Date | null;
 };
@@ -119,9 +105,8 @@ export interface ReleaseEvent {
 export enum EventType {
   ARTWORK = 'artwork',
   DISTRIBUTION = 'distribution',
-  MARKETING = 'marketing',
+  GENERIC = 'generic',
   MASTERING = 'mastering',
-  MUSIC_VIDEO = 'musicVideo',
   RELEASE = 'release',
 }
 

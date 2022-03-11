@@ -42,9 +42,9 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
     ['UPDATE_RELEASES'],
     workspaceMemberships?.[currentWorkspace]
   );
-  const { bodySub } = useAppColors();
+  const { bodySub, border } = useAppColors();
   return (
-    <Card flex={1}>
+    <Card flex={1} border="1px solid" borderColor={border}>
       <Flex
         direction={['column', 'column', 'row']}
         align="center"
