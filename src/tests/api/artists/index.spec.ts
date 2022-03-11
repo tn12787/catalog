@@ -6,7 +6,6 @@ import { prismaMock } from './../../../../setupBackendTests';
 import { CreateArtistDto } from 'backend/models/artists/create';
 import { testArtist } from '__mocks__/data/artists';
 import ArtistHandler from 'pages/api/artists';
-import { testWorkspace, testWorkspaceMemberShip } from '__mocks__/data/workspaces';
 
 describe('/api/artists', () => {
   test("Doesn't allow PATCH for requests", async () => {
