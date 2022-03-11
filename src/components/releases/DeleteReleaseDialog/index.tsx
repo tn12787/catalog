@@ -2,6 +2,7 @@ import { AlertDialogProps } from '@chakra-ui/modal';
 import { Button, ButtonGroup, useToast } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
+import { useRouter } from 'next/router';
 
 import { deleteSingleRelease } from 'queries/releases';
 import { ClientRelease } from 'types/common';
@@ -16,10 +17,12 @@ interface Props extends Omit<AlertDialogProps, 'children' | 'leastDestructiveRef
 const DeleteReleaseDialog = ({ releaseData, onCancel, onConfirm, ...rest }: Props) => {
   const cancelRef = useRef<HTMLButtonElement>(null);
   const toast = useToast();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { mutateAsync: deleteRelease, isLoading } = useMutation(deleteSingleRelease, {
     onSuccess: () => {
       queryClient.invalidateQueries(['releases']);
+      router.push('/releases');
     },
   });
 
@@ -30,8 +33,7 @@ const DeleteReleaseDialog = ({ releaseData, onCancel, onConfirm, ...rest }: Prop
       await deleteRelease(releaseData.id);
       toast({
         status: 'success',
-        title: 'Deleted',
-        description: 'Your release was deleted successfully.',
+        title: 'Release Deleted',
       });
       onConfirm();
     } catch (error: any) {

@@ -1,9 +1,8 @@
 import React from 'react';
 import { HStack, Stack, Text } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
-import { TaskStatus } from '@prisma/client';
 
-import { renderReviewData } from './data';
+import { baseReviewConfig, renderReviewData } from './data';
 import { ReviewConfigItem } from './types';
 
 import { EditArtworkFormData } from 'components/releases/specific/tasks/Artwork/types';
@@ -19,7 +18,7 @@ const ArtworkReview = ({ data }: Props) => {
   if (!data) return null;
 
   const config = [
-    data.status === TaskStatus.COMPLETE && {
+    data.url && {
       key: 'url',
       CustomComponent: () => (
         <HStack justifyContent="space-between" w="100%">
@@ -37,10 +36,7 @@ const ArtworkReview = ({ data }: Props) => {
         </HStack>
       ),
     },
-    data.status === TaskStatus.OUTSTANDING && {
-      key: 'dueDate',
-      label: 'Due Date',
-    },
+    ...baseReviewConfig,
   ].filter(Boolean) as ReviewConfigItem<EditArtworkFormData>[];
   return <Stack>{renderReviewData('Artwork', config, data)}</Stack>;
 };

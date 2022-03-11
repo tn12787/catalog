@@ -1,13 +1,15 @@
 import { TaskStatus } from '@prisma/client';
 import { format } from 'date-fns';
 
-import { baseTaskConfig } from '../baseTaskConfig';
-
+import { ClientReleaseTaskData } from 'types/common';
 import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
-import { EditArtworkFormData } from 'components/releases/specific/tasks/Artwork/types';
 import { FormDatum } from 'types/forms';
 
-export const buildArtworkConfig = (): FormDatum<EditArtworkFormData, TaskStatus>[] => [
+export const baseTaskConfig = <
+  T extends Pick<ClientReleaseTaskData, 'assignees' | 'status' | 'dueDate' | 'notes'>
+>(
+  releaseDate: Date | null
+): FormDatum<T>[] => [
   {
     name: 'assignees',
     label: 'Assignees',
@@ -30,13 +32,11 @@ export const buildArtworkConfig = (): FormDatum<EditArtworkFormData, TaskStatus>
     name: 'dueDate',
     label: 'Due on',
     type: 'date',
-    helperContent:
-      'We recommend aiming to complete artwork at least 4 weeks before your target release date.',
     registerArgs: {
       required: 'Please enter a due date.',
     },
     extraProps: {
-      min: format(new Date(), 'yyyy-MM-dd'),
+      max: format(new Date(releaseDate ?? new Date()), 'yyyy-MM-dd'),
     },
   },
   {
@@ -49,15 +49,4 @@ export const buildArtworkConfig = (): FormDatum<EditArtworkFormData, TaskStatus>
       maxLength: 200,
     },
   },
-  {
-    name: 'artworkData',
-    label: 'Artwork File',
-    type: 'file',
-    registerArgs: {},
-    extraProps: { accept: 'image/jpeg, image/png' },
-  },
 ];
-
-export const buildWizardArtworkConfig = (
-  releaseDate: Date | null
-): FormDatum<EditArtworkFormData, TaskStatus>[] => [...baseTaskConfig(releaseDate)];

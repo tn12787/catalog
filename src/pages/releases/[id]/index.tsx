@@ -12,8 +12,7 @@ import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
 import { getSingleServerSideRelease } from 'ssr/releases/getSingleServerSideRelease';
 import useSingleRelease from 'hooks/data/releases/useSingleRelease';
-import { clientReleaseTasks, hasAllRequiredTasks } from 'utils/releases';
-import IncompleteTasks from 'components/releases/specific/IncompleteTasks';
+import { hasAllRequiredTasks } from 'utils/releases';
 import NewReleaseAlert from 'components/releases/specific/NewReleaseAlert';
 
 interface Props {
@@ -32,11 +31,7 @@ const SpecificRelease = ({ release }: Props) => {
       <PageHead title={`${resolvedData.artist.name} - ${resolvedData.name}`} />
       <HeaderSection releaseData={resolvedData} />
       <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
-        {!clientReleaseTasks(resolvedData).length ? (
-          <NewReleaseAlert></NewReleaseAlert>
-        ) : (
-          !hasAllRequiredTasks(resolvedData) && <IncompleteTasks></IncompleteTasks>
-        )}
+        {!hasAllRequiredTasks(resolvedData) && <NewReleaseAlert></NewReleaseAlert>}
         <Summary releaseData={resolvedData} />
         <ReleaseTaskGrid releaseData={resolvedData}></ReleaseTaskGrid>
         <Events releaseData={resolvedData} />

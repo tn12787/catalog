@@ -22,7 +22,11 @@ const OverviewReleases = ({ releases, isLoading }: Props) => {
   );
   return (
     <Card>
-      <Stack direction={{ base: 'column', md: 'row' }} justify={'space-between'}>
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        alignItems={{ base: 'stretch', md: 'center' }}
+        justify={'space-between'}
+      >
         <Heading size="md">Upcoming Releases</Heading>
 
         {canCreateRelease && (

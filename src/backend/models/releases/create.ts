@@ -24,6 +24,10 @@ export class CreateReleaseDto {
   @ValidateNested()
   distribution?: CreateReleaseTaskWithoutTypeDto;
 
+  @IsOptional()
+  @ValidateNested()
+  mastering?: CreateReleaseTaskWithoutTypeDto;
+
   @IsNotEmpty()
   @IsDate()
   targetDate: Date;

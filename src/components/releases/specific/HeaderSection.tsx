@@ -41,10 +41,10 @@ const HeaderSection = ({ releaseData }: Props) => {
       <Flex position="relative" overflow="hidden" w="100%">
         <Box filter="blur(5px)" transform={'scale(1.05)'} maxH="200px" width="100%">
           <Image
-            as={Image}
             w="100%"
             layout="responsive"
             objectFit="cover"
+            backgroundSize={'cover'}
             alt="album art"
             src={artworkUrl as string}
             fallback={<ReleasePlaceholder h="200px"></ReleasePlaceholder>}
