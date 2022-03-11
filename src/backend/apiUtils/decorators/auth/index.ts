@@ -52,7 +52,7 @@ export const requiresServiceAccount = createMiddlewareDecorator(
 
     if (!authorization) throw new UnauthorizedException();
 
-    const [_, CRON_JOB_KEY] = authorization.split(' ');
+    const [, CRON_JOB_KEY] = authorization.split(' ');
 
     if (CRON_JOB_KEY !== (process.env.CRON_SERVICE_ACCOUNT_KEY as string)) {
       throw new UnauthorizedException();
