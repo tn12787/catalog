@@ -1,6 +1,7 @@
 import { pickBy } from 'lodash';
 import {
   Body,
+  ConflictException,
   createHandler,
   Delete,
   Get,
@@ -19,7 +20,7 @@ import { UpdateArtistDto } from 'backend/models/artists/update';
 import { getArtistByIdIsomorphic } from 'backend/isomorphic/artists';
 
 @requiresAuth()
-class ArtistHandler {
+class SpecificArtistHandler {
   @Get()
   async singleArtist(@Req() req: AuthDecoratedRequest, @PathParam('arId') id: string) {
     return await getArtistByIdIsomorphic(req, id);
@@ -87,4 +88,4 @@ class ArtistHandler {
   }
 }
 
-export default createHandler(ArtistHandler);
+export default createHandler(SpecificArtistHandler);
