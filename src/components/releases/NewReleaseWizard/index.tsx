@@ -28,6 +28,7 @@ const buildSteps = (): ReleaseWizardStep[] => [
   {
     name: 'Basics',
     key: 'basics',
+    description: "First, let's capture all the basic info about the release.",
     content: NewReleaseFormBody,
   },
   {
@@ -35,6 +36,7 @@ const buildSteps = (): ReleaseWizardStep[] => [
     isSkippable: true,
     canGoBack: true,
     key: 'mastering',
+    description: 'Tracks need to be mastered before sending them off for distribution.',
     content: EditMasteringFormBody,
   },
   {
@@ -42,6 +44,7 @@ const buildSteps = (): ReleaseWizardStep[] => [
     isSkippable: true,
     canGoBack: true,
     key: 'artwork',
+    description: 'They also need album art, too.',
     content: WizardArtworkFormBody,
   },
   {
@@ -49,12 +52,14 @@ const buildSteps = (): ReleaseWizardStep[] => [
     isSkippable: true,
     canGoBack: true,
     key: 'distribution',
+    description: 'Enter details of the distribution for this release.',
     content: EditDistributionFormBody,
   },
   {
     name: 'Review',
     canGoBack: true,
     key: 'review',
+    description: 'Ready to go? Check the details of the new release below.',
     content: ReviewData,
   },
 ];
@@ -136,11 +141,11 @@ const NewReleaseWizard = () => {
     <Stack bg={bgPrimary} flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={'20px'} width="90%" maxW="container.lg">
         <Heading alignSelf="flex-start">New Release</Heading>
-        <Text>Enter info about your new release.</Text>
         <WizardSteps steps={steps} currentStep={index}></WizardSteps>
         <Card>
-          <Stack>
+          <Stack py={6} maxW="600px" alignSelf={'center'} w="100%">
             <Heading size="lg">{currentStep.name}</Heading>
+            <Text>{currentStep.description}</Text>
             <StepComponent
               completeState={allState}
               isSkippable={currentStep.isSkippable}

@@ -54,7 +54,7 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
         any
       >;
 
-      const newTask = { ...previousTask, data: { ...previousTask.data, ...data } };
+      const newTask = { ...previousTask, data: { ...previousTask?.data, ...data } };
       queryClient.setQueryData(['tasks', task?.id], newTask);
 
       // Return a context with the previous and new todo

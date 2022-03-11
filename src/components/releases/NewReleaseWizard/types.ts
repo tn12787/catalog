@@ -29,5 +29,6 @@ export interface ReleaseWizardStep {
   isSkippable?: boolean;
   canGoBack?: boolean;
   key: ReleaseWizardKey;
+  description?: string | JSX.Element;
   content: React.FC<ReleaseWizardComponentProps<any>>;
 }

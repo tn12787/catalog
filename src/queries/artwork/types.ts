@@ -1,10 +1,9 @@
 import { ClientArtwork } from 'types/common';
 
-export interface ArtworkVars extends Pick<ClientArtwork, 'status' | 'notes' | 'url'> {
+export interface ArtworkVars
+  extends Pick<ClientArtwork, 'status' | 'notes' | 'url' | 'dueDate' | 'releaseId'> {
   artworkData?: File | File[];
-  releaseId: string;
-  assignees: string[];
-  dueDate: string | Date;
+  assignees: string[]; // needs to be a string to send to API
 }
 
 export type CreateArtworkVars = ArtworkVars;

@@ -25,7 +25,7 @@ const ReviewData = ({
 }: ReleaseWizardComponentProps<any>) => {
   return (
     <Stack w="100%">
-      <Stack maxW="600px" w="100%" spacing="50px" margin="0 auto">
+      <Stack py={6} w="100%" spacing="40px" margin="0 auto">
         <BasicInfoReview data={completeState?.basics as BasicInfoFormData} />
         <MasteringReview data={completeState?.mastering as EditMasteringFormData} />
         <ArtworkReview data={completeState?.artwork as EditArtworkFormData} />

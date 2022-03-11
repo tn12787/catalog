@@ -3,13 +3,14 @@ import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { BiArrowBack } from 'react-icons/bi';
-import { addDays, format, startOfDay } from 'date-fns';
+import { format } from 'date-fns';
 
 import { buildMasteringConfig } from './masteringConfig';
 
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 import { EditMasteringFormData } from 'components/releases/specific/tasks/Mastering/types';
+import { defaultTaskDueDate } from 'utils/tasks';
 
 const EditMasteringFormBody = ({
   onSubmit,
@@ -17,16 +18,12 @@ const EditMasteringFormBody = ({
   isSkippable,
   canGoBack,
   onBack,
-  existingRelease,
   loading,
+  completeState,
 }: ReleaseWizardComponentProps<EditMasteringFormData>) => {
   const formattedDueDate = useMemo(
-    () =>
-      format(
-        new Date(existingRelease?.mastering?.dueDate ?? addDays(startOfDay(new Date()), 7)),
-        'yyyy-MM-dd'
-      ),
-    [existingRelease?.mastering?.dueDate]
+    () => format(new Date(completeState?.mastering?.dueDate ?? defaultTaskDueDate()), 'yyyy-MM-dd'),
+    [completeState?.mastering?.dueDate]
   );
 
   const {
@@ -36,26 +33,28 @@ const EditMasteringFormBody = ({
     reset,
     control,
   } = useForm<EditMasteringFormData>({
-    defaultValues: existingRelease?.mastering
+    defaultValues: completeState?.mastering
       ? {
-          ...existingRelease?.mastering,
-          dueDate: formattedDueDate,
+          ...completeState?.mastering,
+          dueDate: formattedDueDate as unknown as Date,
         }
       : { assignees: [] },
   });
 
   useEffect(() => {
     reset({
-      ...existingRelease?.mastering,
-      dueDate: formattedDueDate,
+      ...completeState?.mastering,
+      dueDate: formattedDueDate as unknown as Date,
     });
-  }, [existingRelease?.mastering, formattedDueDate, reset]);
-
+  }, [completeState?.mastering, formattedDueDate, reset]);
+  console.log(completeState);
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+      <Stack width="100%">
         <FormContent
-          config={buildMasteringConfig()}
+          config={buildMasteringConfig(
+            completeState?.basics?.targetDate ? new Date(completeState?.basics?.targetDate) : null
+          )}
           control={control}
           errors={errors}
           register={register}

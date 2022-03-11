@@ -2,10 +2,9 @@ import { Stack, Flex, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import { TaskStatus } from '@prisma/client';
 import { useQuery } from 'react-query';
 import { BiArrowBack } from 'react-icons/bi';
-import { addDays, format, startOfDay } from 'date-fns';
+import { format } from 'date-fns';
 
 import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
@@ -14,6 +13,7 @@ import { buildDistribConfig } from './distribConfig';
 import FormContent from 'components/forms/FormContent';
 import { fetchDistributors } from 'queries/distribution';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
+import { defaultTaskDueDate } from 'utils/tasks';
 
 const EditDistributionFormBody = ({
   onSubmit,
@@ -21,52 +21,49 @@ const EditDistributionFormBody = ({
   isSkippable,
   canGoBack,
   onBack,
-  existingRelease,
+  completeState,
   loading,
 }: ReleaseWizardComponentProps<EditDistributionFormData>) => {
   const formattedDueDate = useMemo(
     () =>
-      format(
-        new Date(existingRelease?.distribution?.dueDate ?? addDays(startOfDay(new Date()), 7)),
-        'yyyy-MM-dd'
-      ),
-    [existingRelease?.distribution?.dueDate]
+      format(new Date(completeState?.distribution?.dueDate ?? defaultTaskDueDate()), 'yyyy-MM-dd'),
+    [completeState?.distribution?.dueDate]
   );
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
     reset,
     control,
   } = useForm<EditDistributionFormData>({
-    defaultValues: existingRelease?.distribution
+    defaultValues: completeState?.distribution
       ? {
-          ...existingRelease?.distribution,
-          distributor: existingRelease?.distribution?.distributor?.id,
-          dueDate: formattedDueDate,
+          ...completeState?.distribution,
+          distributor: completeState?.distribution?.distributor,
+          dueDate: formattedDueDate as unknown as Date,
         }
       : { assignees: [] },
   });
 
   const { data: distributors } = useQuery('distributors', fetchDistributors);
 
-  const status = watch('status');
-
   useEffect(() => {
     reset({
-      ...existingRelease?.distribution,
-      distributor: existingRelease?.distribution?.distributorId,
-      dueDate: formattedDueDate,
+      ...completeState?.distribution,
+      distributor: completeState?.distribution?.distributor,
+      dueDate: formattedDueDate as unknown as Date,
     });
-  }, [existingRelease?.distribution, distributors, formattedDueDate, reset]);
+  }, [completeState?.distribution, distributors, formattedDueDate, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+      <Stack width="100%" margin="0 auto">
         <FormContent
-          config={buildDistribConfig(status === TaskStatus.COMPLETE, distributors ?? [])}
+          config={buildDistribConfig(
+            completeState?.basics?.targetDate ? new Date(completeState?.basics?.targetDate) : null,
+            distributors ?? []
+          )}
           control={control}
           errors={errors}
           register={register}

@@ -11,6 +11,9 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>
     name: 'name',
     label: 'Release Title',
     type: 'text',
+    extraProps: {
+      placeholder: 'Your new release title',
+    },
     registerArgs: { required: 'Please enter a name for your release.' },
   },
   {
@@ -45,7 +48,7 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>
     type: 'date',
     registerArgs: { required: 'Please enter a date for your release.' },
     helperContent:
-      'We recommend scheduling at least 4 weeks before your target release date to complete basic tasks',
+      'We recommend scheduling at least 4 weeks before your target release date to complete basic tasks.',
     extraProps: {
       min: startOfDay(new Date()),
     },

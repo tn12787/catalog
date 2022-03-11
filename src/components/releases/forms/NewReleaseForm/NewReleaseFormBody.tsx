@@ -70,7 +70,7 @@ const NewReleaseFormBody = ({
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+      <Stack width="100%" margin="0 auto">
         <FormContent
           config={basicInfoConfig(artists ?? [])}
           errors={errors}

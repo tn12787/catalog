@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { TaskStatus } from '@prisma/client';
-import { addDays, format, startOfDay } from 'date-fns';
+import { format } from 'date-fns';
 
 import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
 
@@ -11,6 +11,7 @@ import { buildArtworkConfig } from './artworkConfig';
 
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
+import { defaultTaskDueDate } from 'utils/tasks';
 
 const EditArtworkFormBody = ({
   onSubmit,
@@ -18,11 +19,7 @@ const EditArtworkFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<EditArtworkFormData>) => {
   const formattedDueDate = useMemo(
-    () =>
-      format(
-        new Date(existingRelease?.artwork?.dueDate ?? addDays(startOfDay(new Date()), 7)),
-        'yyyy-MM-dd'
-      ),
+    () => format(new Date(existingRelease?.artwork?.dueDate ?? defaultTaskDueDate()), 'yyyy-MM-dd'),
     [existingRelease?.artwork?.dueDate]
   );
 
@@ -37,7 +34,7 @@ const EditArtworkFormBody = ({
     defaultValues: existingRelease?.artwork
       ? {
           ...existingRelease?.artwork,
-          dueDate: formattedDueDate,
+          dueDate: formattedDueDate as unknown as Date,
         }
       : { assignees: [] },
   });
@@ -48,13 +45,13 @@ const EditArtworkFormBody = ({
   useEffect(() => {
     reset({
       ...existingRelease?.artwork,
-      dueDate: formattedDueDate,
+      dueDate: formattedDueDate as unknown as Date,
     });
   }, [existingRelease?.artwork, formattedDueDate, reset]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
-      <Stack py={6} spacing={6} width="100%" maxW="600px" margin="0 auto">
+      <Stack width="100%" margin="0 auto">
         {status === TaskStatus.COMPLETE &&
           (existingRelease?.artwork?.url || (watchedAlbumArt as File[])?.length) && (
             <Image
@@ -71,7 +68,7 @@ const EditArtworkFormBody = ({
             />
           )}
         <FormContent
-          config={buildArtworkConfig(status === TaskStatus.COMPLETE)}
+          config={buildArtworkConfig()}
           errors={errors}
           control={control}
           register={register}
