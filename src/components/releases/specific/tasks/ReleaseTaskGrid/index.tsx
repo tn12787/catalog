@@ -15,7 +15,7 @@ const ReleaseTaskGrid = ({ releaseData }: Props) => {
     <Stack spacing={4}>
       <Card spacing={4}>
         <Heading fontWeight="semibold" fontSize="2xl">
-          Release Tasks
+          Release Prep
         </Heading>
         <Stack w="100%" spacing={4} direction={{ base: 'column', xl: 'row' }}>
           <Mastering releaseData={releaseData} />
