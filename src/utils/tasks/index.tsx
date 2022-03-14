@@ -17,7 +17,7 @@ export const taskHeadingByType = (
     case ReleaseTaskType.GENERIC:
       return `${releasePrefix}${taskName || 'Generic Task'}`;
     default:
-      return `${releasePrefix}${taskName ?? '🚩 Release Day'}`;
+      return `${releasePrefix}${'🚩 Release Day'}`;
   }
 };
 
