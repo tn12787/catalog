@@ -11,7 +11,7 @@ interface Props {
 
 const releaseToBadge = (releaseData: ClientRelease) => {
   if (!hasAllRequiredTasks(releaseData)) {
-    return { label: 'Tasks Missing', color: 'gray' };
+    return { label: 'Prep Info Missing', color: 'gray' };
   }
 
   const tasks = clientReleaseTasks(releaseData);

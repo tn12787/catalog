@@ -28,7 +28,7 @@ import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
 import { taskHeadingByType, isTaskOverdue } from 'utils/tasks';
 import useTaskActivity from 'hooks/data/tasks/useTaskActivity';
-import useTask from 'hooks/data/tasks/useTask';
+import useSingleTask from 'hooks/data/tasks/useSingleTask';
 import { EnrichedReleaseTask } from 'types/common';
 import { getSingleServerSideTask } from 'ssr/tasks/getSingleServerSideTask';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
@@ -46,7 +46,7 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const { data: taskData, isLoading: taskLoading } = useTask(taskId, { initialData: task });
+  const { data: taskData, isLoading: taskLoading } = useSingleTask(taskId, { initialData: task });
   const { data: taskActivity, isLoading: activityLoading } = useTaskActivity(taskId);
 
   const { mutateAsync: postComment, isLoading: commentLoading } = useMutation(postNewComment, {

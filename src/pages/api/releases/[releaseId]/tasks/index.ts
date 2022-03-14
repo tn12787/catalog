@@ -13,7 +13,7 @@ import { CreateReleaseTaskDto } from 'backend/models/tasks/combined';
 @requiresAuth()
 class ReleaseListHandler {
   @Post()
-  async createArtwork(
+  async createTask(
     @Req() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateReleaseTaskDto,
     @PathParam('releaseId') id: string

@@ -5,22 +5,22 @@ import { TaskStatus } from '@prisma/client';
 
 import TaskTable from 'components/tasks/TaskTable';
 import Card from 'components/Card';
-import { ReleaseEvent } from 'types/common';
+import { EnrichedReleaseTask } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {
-  data: ReleaseEvent[];
+  data: EnrichedReleaseTask[];
   loading: boolean;
 }
 
 const MyTasks = ({ data, loading }: Props) => {
   const { bodySub } = useAppColors();
-  const tabData = (data: ReleaseEvent[], loading: boolean) => [
+  const tabData = (data: EnrichedReleaseTask[], loading: boolean) => [
     {
       label: 'Outstanding',
       content: (
         <TaskTable
-          data={data.filter((item) => item.data?.status !== TaskStatus.COMPLETE)}
+          data={data.filter((item) => item?.status !== TaskStatus.COMPLETE)}
           loading={loading}
           emptyContent={
             <Stack py={8} alignItems="center" w="100%" alignSelf="center">

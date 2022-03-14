@@ -11,6 +11,16 @@ export const fetchSingleTask = async (id: string) => {
   return response.data;
 };
 
+export const fetchTaskList = async (workspaceId: string) => {
+  const response = await axios.get<(EnrichedReleaseTask & { release: Release })[]>(`/api/tasks`, {
+    params: {
+      workspace: workspaceId,
+    },
+  });
+
+  return response.data;
+};
+
 export const fetchTaskActivity = async (id: string) => {
   return await axios.get<ReleaseTaskEventWithUser[]>(`/api/tasks/${id}/activity`);
 };

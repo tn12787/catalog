@@ -216,9 +216,10 @@ model ContactLabel {
 
 model ReleaseTask {
   id               String             @id @default(cuid())
+  name             String?
   notes            String?
   calendarEventId  String?            @unique
-  dueDate          DateTime? //TODO: make this required
+  dueDate          DateTime           @default(now())
   status           TaskStatus
   type             ReleaseTaskType
   release          Release            @relation(fields: [releaseId], references: [id], onDelete: Cascade)

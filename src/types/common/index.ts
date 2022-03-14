@@ -63,6 +63,8 @@ export type EnrichedReleaseWithoutArtist = Omit<EnrichedRelease, 'artist'>;
 
 export type ArtistResponse = Artist & { releases: ClientRelease[] };
 
+export type TaskResponse = EnrichedReleaseTask & { release: Release };
+
 export type UserResponse = User & { workspaces: EnrichedWorkspaceMember[] };
 
 export interface ClientRelease extends Omit<EnrichedRelease, 'tasks' | 'targetDate'> {

@@ -3,10 +3,10 @@ import React from 'react';
 import { columns } from './columns';
 
 import Table from 'components/data/Table';
-import { ReleaseEvent } from 'types/common';
+import { EnrichedReleaseTask } from 'types/common';
 
 interface Props {
-  data: ReleaseEvent[];
+  data: EnrichedReleaseTask[];
   loading: boolean;
   emptyContent?: JSX.Element;
 }
