@@ -19,14 +19,14 @@ const ContactsField = ({ isDisabled, contacts, onChange }: Props) => {
   return (
     <QuickFormField
       isDisabled={isDisabled}
-      fieldName="contacts"
+      fieldName="linked contacts"
       value={contacts}
       renderValue={({ value }) => <ContactBadgeList contacts={value} />}
       onSubmit={onChange}
       renderEditing={({ value, onChange }) => (
         <Stack p={2}>
           <Text fontSize={'sm'} fontWeight={'semibold'}>
-            Edit contacts
+            Edit linked contacts
           </Text>
           <ContactSelect
             value={value}

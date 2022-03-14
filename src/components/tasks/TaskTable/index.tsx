@@ -1,18 +1,31 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { Column } from 'react-table';
 
 import { columns } from './columns';
 
 import Table from 'components/data/Table';
-import { EnrichedReleaseTask } from 'types/common';
+import { TaskResponse } from 'types/common';
 
 interface Props {
-  data: EnrichedReleaseTask[];
+  data: TaskResponse[];
   loading: boolean;
   emptyContent?: JSX.Element;
+  columns?: Column<TaskResponse>[];
+  includeReleaseColumn?: boolean;
 }
 
-const TaskTable = ({ data, loading, emptyContent }: Props) => {
-  return <Table data={data} columns={columns} loading={loading} emptyContent={emptyContent} />;
+const TaskTable = ({
+  data,
+  columns: passedColumns,
+  loading,
+  includeReleaseColumn = true,
+  emptyContent,
+}: Props) => {
+  const memoColumns = useMemo(() => {
+    return passedColumns ? passedColumns : columns(includeReleaseColumn);
+  }, [includeReleaseColumn, passedColumns]);
+
+  return <Table data={data} columns={memoColumns} loading={loading} emptyContent={emptyContent} />;
 };
 
 export default TaskTable;

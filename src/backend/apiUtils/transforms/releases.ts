@@ -1,6 +1,8 @@
 import { ReleaseTaskType } from '@prisma/client';
 import { omit } from 'lodash';
 
+import { TaskResponse } from './../../../types/common/index';
+
 import { EnrichedRelease, ClientRelease, EnrichedReleaseTask } from 'types/common';
 
 export const transformReleaseToApiShape = (release: EnrichedRelease): ClientRelease => {
@@ -14,6 +16,9 @@ export const transformReleaseToApiShape = (release: EnrichedRelease): ClientRele
       ReleaseTaskType.DISTRIBUTION
     ) as ClientRelease['distribution'],
     mastering: flattenField(release, ReleaseTaskType.MASTERING) as ClientRelease['mastering'],
+    generic: release.tasks
+      .filter((item) => item.type === ReleaseTaskType.GENERIC)
+      .map((item) => stripDbFields(item)) as TaskResponse[],
   };
 };
 

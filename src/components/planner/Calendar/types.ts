@@ -11,6 +11,6 @@ export enum EventType {
 export interface BaseEvent {
   date: string;
   name: string;
-  data: { status: TaskStatus; type: ReleaseTaskType };
+  data: { status: TaskStatus; name: string | null; type: ReleaseTaskType };
   release: Release;
 }

@@ -72,6 +72,7 @@ export interface ClientRelease extends Omit<EnrichedRelease, 'tasks' | 'targetDa
   distribution?: ReleaseTaskWithAssignees &
     Omit<DistributionData, 'taskId'> & { distributor?: Distributor };
   mastering?: ReleaseTaskWithAssignees & Omit<MasteringData, 'taskId'>;
+  generic: TaskResponse[];
   targetDate: string | Date;
 }
 
@@ -83,7 +84,7 @@ export type ClientReleaseTaskData =
   | ClientArtwork
   | ClientDistribution
   | ClientMastering
-  | ReleaseTaskWithAssignees;
+  | TaskResponse;
 
 export enum ReleaseType {
   SINGLE = 'Single',

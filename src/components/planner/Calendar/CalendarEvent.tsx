@@ -62,8 +62,11 @@ const CalendarEvent = <T extends BaseEvent = ReleaseEvent>({
         ></Box>
       </Tooltip>
       <Text isTruncated>
-        {taskHeadingByType(event?.data?.type as ReleaseTaskType, event.release.name) ??
-          event.release.name}
+        {taskHeadingByType(
+          event.data.name,
+          event?.data?.type as ReleaseTaskType,
+          event.release.name
+        ) ?? event.release.name}
       </Text>
     </HStack>
   );

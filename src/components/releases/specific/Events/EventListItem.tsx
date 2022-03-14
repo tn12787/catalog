@@ -13,6 +13,7 @@ import {
 import { format } from 'date-fns';
 import * as React from 'react';
 import { BiCalendar, BiFlag, BiImageAlt, BiVolumeFull } from 'react-icons/bi';
+import { BsCheck } from 'react-icons/bs';
 import { ImStack } from 'react-icons/im';
 
 import { ReleaseEvent } from 'types/common';
@@ -35,6 +36,8 @@ const deriveEventIcon = (type: ReleaseEvent['type']) => {
       return ImStack;
     case 'mastering':
       return BiVolumeFull;
+    case 'generic':
+      return BsCheck;
     default:
       return BiCalendar;
   }
@@ -69,6 +72,7 @@ export const EventListItem = ({
         <Skeleton display="flex" isLoaded={!isLoading}>
           <Heading fontSize="md" fontWeight="semibold">
             {taskHeadingByType(
+              event.data.name,
               event.data.type,
               includeReleaseName ? event.release.name : undefined
             )}

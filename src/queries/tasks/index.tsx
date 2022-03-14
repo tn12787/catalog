@@ -50,6 +50,12 @@ export const updateTask = async ({ id, ...rest }: UpdateTaskVars) => {
   return await axios.patch<ReleaseTaskWithAssignees>(`/api/tasks/${id}`, rest);
 };
 
+export const deleteTask = async ({ id }: Pick<UpdateTaskVars, 'id'>) => {
+  if (!id) throw new Error('No task ID passed to update.');
+
+  return await axios.delete<ReleaseTaskWithAssignees>(`/api/tasks/${id}`);
+};
+
 export const postNewComment = async ({ id, text }: NewCommentVars) => {
   if (!id) throw new Error('No task ID passed to post comment for.');
 

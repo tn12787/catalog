@@ -16,6 +16,7 @@ export const getTaskByIdIsomorphic = async (req: AuthDecoratedRequest, id: strin
       dueDate: true,
       id: true,
       status: true,
+      name: true,
       updatedAt: true,
       distributionData: { include: { distributor: true } },
       masteringData: true,

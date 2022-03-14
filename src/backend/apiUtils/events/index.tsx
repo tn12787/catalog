@@ -51,10 +51,10 @@ const taskToEvent = (release: EnrichedRelease, task: EnrichedReleaseTask): Relea
       };
     case ReleaseTaskType.GENERIC:
       return {
-        name: `${release.name}: GENERIC`,
+        name: `${release.name}: ${task.name}`,
         date: (task.dueDate as Date)?.toISOString() ?? '',
         type: EventType.GENERIC,
-        data: flattenField(release, ReleaseTaskType.GENERIC) as ClientReleaseTaskData,
+        data: { ...task, release: release },
         release: release,
       };
     case ReleaseTaskType.MASTERING:

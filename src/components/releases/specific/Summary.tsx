@@ -88,7 +88,7 @@ const Summary = ({ releaseData }: Props) => {
               justify={['space-between']}
               key={field.name}
             >
-              <Text fontSize="md" fontWeight="bold">
+              <Text fontSize="sm" fontWeight="semibold">
                 {field.name}
               </Text>
               {field.content}

@@ -6,7 +6,11 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { buildCreateTaskEvent } from 'backend/apiUtils/taskEvents';
-import { buildCreateReleaseTaskArgs, checkTaskUpdatePermissions } from 'backend/apiUtils/tasks';
+import {
+  buildCreateReleaseTaskArgs,
+  checkTaskDates,
+  checkTaskUpdatePermissions,
+} from 'backend/apiUtils/tasks';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { CreateReleaseTaskDto } from 'backend/models/tasks/combined';
 
@@ -25,11 +29,14 @@ class ReleaseListHandler {
     );
     if (!activeWorkspaceMember) throw new ForbiddenException();
 
+    await checkTaskDates(body, id);
+
     const baseArgs = buildCreateReleaseTaskArgs(body);
 
     const result = await prisma.releaseTask.create({
       data: {
         ...baseArgs,
+        name: body.name,
         release: { connect: { id } },
         type: body.type,
         status: body.status,

@@ -234,7 +234,7 @@ model ReleaseTask {
   events           ReleaseTaskEvent[]
   notifications    Notification[]
 
-  @@unique([releaseId, type])
+  @@unique([releaseId, name])
 }
 
 model ArtworkData {

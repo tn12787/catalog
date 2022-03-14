@@ -21,7 +21,7 @@ const ContactBadgeList = ({ contacts, inline }: Props) => {
         ))
       ) : (
         <Text fontSize="xs" color={bodySub}>
-          No contacts assigned
+          No contacts linked
         </Text>
       )}
     </Wrap>

@@ -1,4 +1,4 @@
-import { Stack, Heading, Text, HStack, Divider, Link as ChakraLink } from '@chakra-ui/layout';
+import { Stack, Heading, Divider } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,10 +9,10 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Icon,
+  Editable,
   useToast,
 } from '@chakra-ui/react';
-import { BiCalendar, BiChevronRight } from 'react-icons/bi';
+import { BiChevronRight } from 'react-icons/bi';
 import { Release, ReleaseTask, ReleaseTaskType } from '@prisma/client';
 import Link from 'next/link';
 
@@ -23,17 +23,17 @@ import { postNewComment } from 'queries/tasks';
 import ActivityList from 'components/tasks/activity/ActivityList';
 import NewCommentBox from 'components/comments/NewCommentBox';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
-import { buildPlannerLink } from 'utils/planner';
 import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
 import { taskHeadingByType, isTaskOverdue } from 'utils/tasks';
 import useTaskActivity from 'hooks/data/tasks/useTaskActivity';
 import useSingleTask from 'hooks/data/tasks/useSingleTask';
-import { EnrichedReleaseTask } from 'types/common';
+import { EnrichedReleaseTask, TaskResponse } from 'types/common';
 import { getSingleServerSideTask } from 'ssr/tasks/getSingleServerSideTask';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import SingleTaskMenu from 'components/tasks/SingleTaskMenu';
 
 type SingleTaskPageProps = {
   task: EnrichedReleaseTask & { release: Release };
@@ -82,7 +82,11 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
         title={
           taskLoading
             ? 'Task Details'
-            : taskHeadingByType(taskData?.type as ReleaseTaskType, taskData?.release.name)
+            : taskHeadingByType(
+                taskData?.name ?? null,
+                taskData?.type as ReleaseTaskType,
+                taskData?.release.name
+              )
         }
       />
       <Stack spacing={4} width="90%" maxW="container.lg">
@@ -110,29 +114,24 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
 
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink fontWeight="bold" href={router.pathname}>
-                {taskHeadingByType(taskData?.type as ReleaseTaskType)}
+                {taskHeadingByType(taskData?.name ?? null, taskData?.type as ReleaseTaskType)}
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
         </Skeleton>
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!taskLoading}>
-            <Heading as="h1" size="xl" alignSelf="flex-start">
-              {taskHeadingByType(taskData?.type as ReleaseTaskType, taskData?.release.name) ??
-                'Loading Artists'}
-            </Heading>
+            <Editable>
+              <Heading as="h1" size="xl" alignSelf="flex-start">
+                {taskHeadingByType(
+                  taskData?.name ?? null,
+                  taskData?.type as ReleaseTaskType,
+                  taskData?.release.name
+                ) ?? 'Loading Artists'}
+              </Heading>
+            </Editable>
           </Skeleton>
-          <Link
-            passHref
-            href={buildPlannerLink(taskData?.id as string, taskData?.dueDate?.toString() ?? '')}
-          >
-            <ChakraLink as={HStack}>
-              <Icon as={BiCalendar} />
-              <Text fontSize="sm" fontWeight="semibold">
-                View in Planner
-              </Text>
-            </ChakraLink>
-          </Link>
+          <SingleTaskMenu task={taskData as TaskResponse} isLoading={taskLoading} />
         </Stack>
         {isOverdue && (
           <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
