@@ -40,12 +40,12 @@ export const columns = (includeReleaseColumn?: boolean): Column<TaskResponse>[] 
   [
     {
       Header: 'Name',
-      accessor: (d) => d,
+      accessor: (d: TaskResponse) => d,
       Cell: TaskLink,
     },
     includeReleaseColumn && {
       Header: 'Release',
-      accessor: (d) => d,
+      accessor: (d: TaskResponse) => d,
       Cell: ReleaseLink,
     },
     {

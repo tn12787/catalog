@@ -5,17 +5,17 @@ import { TaskStatus } from '@prisma/client';
 
 import TaskTable from 'components/tasks/TaskTable';
 import Card from 'components/Card';
-import { EnrichedReleaseTask } from 'types/common';
+import { TaskResponse } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {
-  data: EnrichedReleaseTask[];
+  data: TaskResponse[];
   loading: boolean;
 }
 
 const MyTasks = ({ data, loading }: Props) => {
   const { bodySub } = useAppColors();
-  const tabData = (data: EnrichedReleaseTask[], loading: boolean) => [
+  const tabData = (data: TaskResponse[], loading: boolean) => [
     {
       label: 'Outstanding',
       content: (
