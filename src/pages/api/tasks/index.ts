@@ -1,3 +1,4 @@
+import { pickBy } from 'lodash';
 import { Release } from '@prisma/client';
 import { createHandler, DefaultValuePipe, Get, Query, Req } from '@storyofams/next-api-decorators';
 
@@ -14,7 +15,7 @@ class TaskHandler {
   async tasks(
     @Req() req: AuthDecoratedRequest,
     @RequiredQuery('workspace') workspaceId: string,
-    @Query('assigneeId') assigneeId: string,
+    @Query('assignee') assigneeId: string,
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Release>('name')) sortBy: keyof ArtistResponse,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder
@@ -25,14 +26,19 @@ class TaskHandler {
       [sortBy]: sortOrder,
     };
 
-    const tasks = await prisma.releaseTask.findMany({
-      where: {
+    const where = pickBy(
+      {
         release: {
           workspace: { id: workspaceId },
         },
-        assignees: { some: { id: assigneeId } },
+        assignees: assigneeId ? { some: { id: assigneeId } } : undefined,
         name: { contains: search, mode: 'insensitive' } as any,
       },
+      Boolean
+    );
+
+    const tasks = await prisma.releaseTask.findMany({
+      where,
       orderBy,
       include: {
         release: true,

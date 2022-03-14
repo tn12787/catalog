@@ -79,7 +79,11 @@ export type ClientArtwork = Required<ClientRelease>['artwork'];
 export type ClientDistribution = Required<ClientRelease>['distribution'];
 export type ClientMastering = Required<ClientRelease>['mastering'];
 
-export type ClientReleaseTaskData = ClientArtwork | ClientDistribution | ClientMastering;
+export type ClientReleaseTaskData =
+  | ClientArtwork
+  | ClientDistribution
+  | ClientMastering
+  | ReleaseTaskWithAssignees;
 
 export enum ReleaseType {
   SINGLE = 'Single',

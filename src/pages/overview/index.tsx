@@ -18,13 +18,17 @@ import { SortOrder } from 'queries/types';
 import { ClientRelease } from 'types/common';
 import OverviewReleases from 'components/overview/OverviewReleases';
 import useTasks from 'hooks/data/tasks/useTasks';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
 
   const { workspace: workspaceData, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
-  const { data: releaseTasks, isLoading: areReleaseTasksLoading } = useTasks({});
+  const { data: releaseTasks, isLoading: areReleaseTasksLoading } = useTasks({
+    assignee: workspaceMemberships?.[currentWorkspace]?.id,
+  });
 
   const upcomingReleaseQueryArgs = {
     dates: { after: startOfDay(new Date()) },

@@ -1,9 +1,11 @@
-import { Heading, Stack } from '@chakra-ui/react';
+import { Button, Heading, Stack } from '@chakra-ui/react';
 import React from 'react';
+import { RiAddFill } from 'react-icons/ri';
 
 import Artwork from '../Artwork';
 import Distribution from '../Distribution';
 import Mastering from '../Mastering';
+import MarketingCard from '../MarketingCard';
 
 import { ClientRelease } from 'types/common';
 import Card from 'components/Card';
@@ -23,12 +25,7 @@ const ReleaseTaskGrid = ({ releaseData }: Props) => {
           <Distribution releaseData={releaseData} />
         </Stack>
       </Card>
-      <Card spacing={4}>
-        <Heading fontWeight="semibold" fontSize="2xl">
-          Marketing & Promotion
-        </Heading>
-        <Stack w="100%" spacing={4} direction={{ base: 'column', lg: 'row' }}></Stack>
-      </Card>
+      <MarketingCard releaseData={releaseData}></MarketingCard>
     </Stack>
   );
 };
