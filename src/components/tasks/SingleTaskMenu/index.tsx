@@ -27,7 +27,7 @@ const SingleTaskMenu = ({ task, isLoading }: Props) => {
     ['UPDATE_RELEASES'],
     workspaceMemberships?.[currentWorkspace]
   );
-  const { deleteSingleTask } = useTaskMutations();
+  const { deleteSingleTask } = useTaskMutations(task.releaseId);
 
   const deleteTask = async () => {
     await deleteSingleTask.mutateAsync({ id: task.id });

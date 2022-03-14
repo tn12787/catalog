@@ -47,7 +47,6 @@ const EditMasteringFormBody = ({
       dueDate: formattedDueDate as unknown as Date,
     });
   }, [completeState?.mastering, formattedDueDate, reset]);
-  console.log(completeState);
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack width="100%">

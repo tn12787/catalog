@@ -30,7 +30,7 @@ const SpecificRelease = ({ release }: Props) => {
     <Stack pb={4} flex={1} bg={bgPrimary} align="center" direction="column">
       <PageHead title={`${resolvedData.artist.name} - ${resolvedData.name}`} />
       <HeaderSection releaseData={resolvedData} />
-      <Stack mb={4} spacing={4} width="90%" maxW={'container.xl'}>
+      <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
         {!hasAllRequiredTasks(resolvedData) && <NewReleaseAlert></NewReleaseAlert>}
         <Summary releaseData={resolvedData} />
         <ReleaseTaskGrid isLoading={isLoading} releaseData={resolvedData}></ReleaseTaskGrid>

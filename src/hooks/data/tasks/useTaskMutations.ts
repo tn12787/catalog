@@ -5,24 +5,24 @@ import { useCallback } from 'react';
 import { createTask, deleteTask, updateTask } from 'queries/tasks';
 import useExtendedSession from 'hooks/useExtendedSession';
 
-const useTaskMutations = () => {
+const useTaskMutations = (releaseId?: string) => {
   const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
   const toast = useToast();
 
   const onSuccess = useCallback(
-    (message, task) => {
+    (message) => {
       toast({
         status: 'success',
         title: message,
       });
       queryClient.invalidateQueries(['tasks', currentWorkspace]);
-      queryClient.invalidateQueries(['releases', currentWorkspace, task.releaseId]);
+      queryClient.invalidateQueries(['releases', currentWorkspace, releaseId]);
       queryClient.invalidateQueries(['releaseEvents', currentWorkspace]);
-      queryClient.invalidateQueries(['releaseEvents', task.releaseId]);
+      queryClient.invalidateQueries(['releaseEvents', releaseId]);
     },
-    [currentWorkspace, queryClient, toast]
+    [currentWorkspace, queryClient, toast, releaseId]
   );
 
   const onError = useCallback(

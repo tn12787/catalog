@@ -10,7 +10,7 @@ import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 type Props = {
   assignees: WorkspaceMemberWithUser[];
   isDisabled?: boolean;
-  onChange: (value: WorkspaceMemberWithUser[]) => void | Promise<void>;
+  onChange: (value: string[]) => void | Promise<void>;
 };
 
 const AssigneesField = ({ isDisabled, assignees, onChange }: Props) => {

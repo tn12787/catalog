@@ -104,7 +104,7 @@ const MarketingCard = ({ releaseData, isLoading }: Props) => {
           }
         ></TaskTable>
       </Stack>
-      <MarketingModal onClose={onClose} isOpen={isOpen}></MarketingModal>
+      <MarketingModal release={releaseData} onClose={onClose} isOpen={isOpen}></MarketingModal>
     </Card>
   );
 };

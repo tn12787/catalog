@@ -13,7 +13,7 @@ import { BasicInfoFormData } from './types';
 
 import FormContent from 'components/forms/FormContent';
 import useArtists from 'hooks/data/artists/useArtists';
-import { clientReleaseTasks } from 'utils/releases';
+import { clientReleasePrepTasks } from 'utils/releases';
 
 const NewReleaseFormBody = ({
   onSubmit,
@@ -59,7 +59,7 @@ const NewReleaseFormBody = ({
   useEffect(() => {
     if (!existingRelease) return;
 
-    const tasks = clientReleaseTasks(existingRelease);
+    const tasks = clientReleasePrepTasks(existingRelease);
     clearErrors('targetDate');
     if (
       tasks

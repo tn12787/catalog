@@ -12,11 +12,11 @@ import { CreateTaskVars, UpdateTaskVars } from 'queries/tasks/types';
 interface Props {
   onSubmitSuccess?: () => void;
   task?: ReleaseTaskWithAssignees;
-  release?: ClientRelease;
+  release: ClientRelease;
 }
 
 const TaskForm = ({ onSubmitSuccess, task, release }: Props) => {
-  const { updateSingleTask, createSingleTask } = useTaskMutations();
+  const { updateSingleTask, createSingleTask } = useTaskMutations(task?.releaseId ?? release.id);
 
   const create = async (values: ReleaseTaskWithAssignees) => {
     try {

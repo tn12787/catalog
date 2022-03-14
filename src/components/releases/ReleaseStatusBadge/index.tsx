@@ -2,7 +2,11 @@ import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import { ClientRelease } from 'types/common';
-import { clientReleaseTasks, hasAllRequiredTasks } from 'utils/releases';
+import {
+  clientMarketingPrepTasks,
+  clientReleasePrepTasks,
+  hasAllRequiredTasks,
+} from 'utils/releases';
 import { isTaskComplete, isTaskOverdue } from 'utils/tasks';
 
 interface Props {
@@ -14,14 +18,20 @@ const releaseToBadge = (releaseData: ClientRelease) => {
     return { label: 'Prep Info Missing', color: 'gray' };
   }
 
-  const tasks = clientReleaseTasks(releaseData);
+  const prepTasks = clientReleasePrepTasks(releaseData);
 
-  if (tasks.some(isTaskOverdue)) {
+  if (prepTasks.some(isTaskOverdue)) {
     return { label: 'Tasks Overdue', color: 'red' };
   }
 
-  if (!tasks.every(isTaskComplete)) {
-    return { label: 'Tasks Outstanding', color: 'yellow' };
+  if (!prepTasks.every(isTaskComplete)) {
+    return { label: 'Prep In Progress', color: 'yellow' };
+  }
+
+  const marketingTasks = clientMarketingPrepTasks(releaseData);
+
+  if (marketingTasks.length && !marketingTasks.every(isTaskComplete)) {
+    return { label: 'Marketing In Progress', color: 'yellow' };
   }
 
   if (new Date(releaseData.targetDate).getTime() < Date.now()) {

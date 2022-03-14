@@ -51,7 +51,7 @@ const OverviewPage = () => {
     isWorkspaceLoading || areUpcomingReleasesLoading || areArtistsLoading || areReleaseTasksLoading;
 
   const outstandingReleaseTasks = useMemo(
-    () => releaseTasks?.filter((item) => item.status === TaskStatus.OUTSTANDING),
+    () => releaseTasks?.filter((item) => item.status !== TaskStatus.COMPLETE),
     [releaseTasks]
   );
 

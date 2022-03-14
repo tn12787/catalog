@@ -27,7 +27,6 @@ import DistributorField from 'components/forms/QuickForm/DistributorField';
 import ContactsField from 'components/forms/QuickForm/ContactsField';
 import { hasRequiredPermissions } from 'utils/auth';
 import { isTaskOverdue } from 'utils/tasks';
-import useTaskMutations from 'hooks/data/tasks/useTaskMutations';
 
 type Props = {
   event: ReleaseEvent & { release: Release };

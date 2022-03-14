@@ -37,7 +37,7 @@ const HeaderSection = ({ releaseData }: Props) => {
   const artworkUrl = releaseData.artwork?.url;
 
   return (
-    <Stack width={['100%', '100%', '90%']} maxWidth={'container.xl'} alignItems="center">
+    <Stack width={['100%', '100%', '90%']} maxWidth={'container.lg'} alignItems="center">
       <Flex position="relative" overflow="hidden" w="100%">
         <Box filter="blur(5px)" transform={'scale(1.05)'} maxH="200px" width="100%">
           <Image

@@ -17,7 +17,7 @@ import MarketingModal from '../MarketingModal';
 
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
-import { TaskResponse } from 'types/common';
+import { ClientRelease, TaskResponse } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';
 import useTaskMutations from 'hooks/data/tasks/useTaskMutations';
@@ -39,7 +39,7 @@ const MarketingTaskMenu = ({ value }: Props) => {
 
   const {
     deleteSingleTask: { mutateAsync, isLoading },
-  } = useTaskMutations();
+  } = useTaskMutations(value?.releaseId);
 
   const onDelete = async () => {
     try {
@@ -89,7 +89,12 @@ const MarketingTaskMenu = ({ value }: Props) => {
           </ButtonGroup>
         }
       />
-      <MarketingModal task={value} isOpen={isEditOpen} onClose={onEditClose} />
+      <MarketingModal
+        release={value.release as ClientRelease}
+        task={value}
+        isOpen={isEditOpen}
+        onClose={onEditClose}
+      />
     </Flex>
   ) : (
     <></>

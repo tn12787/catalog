@@ -15,6 +15,10 @@ export class UpdateBaseReleaseTaskDto {
   notes?: string;
 
   @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
   @IsArray()
   assignees?: string[];
 

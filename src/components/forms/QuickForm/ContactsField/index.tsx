@@ -10,7 +10,7 @@ import ContactBadgeList from 'components/contacts/ContactBadge/ContactBadgeList'
 type Props = {
   contacts: ContactWithLabels[];
   isDisabled?: boolean;
-  onChange: (value: ContactWithLabels[]) => void | Promise<void>;
+  onChange: (value: string[]) => void | Promise<void>;
 };
 
 const ContactsField = ({ isDisabled, contacts, onChange }: Props) => {

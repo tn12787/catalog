@@ -4,9 +4,9 @@ import React from 'react';
 import { ClientRelease, TaskResponse } from 'types/common';
 import TaskForm from 'components/releases/forms/TaskForm';
 
-type Props = Omit<ModalProps, 'children'> & { task?: TaskResponse };
+type Props = Omit<ModalProps, 'children'> & { task?: TaskResponse; release: ClientRelease };
 
-const MarketingModal = ({ task, onClose, ...rest }: Props) => {
+const MarketingModal = ({ task, onClose, release, ...rest }: Props) => {
   return (
     <Modal onClose={onClose} closeOnOverlayClick={false} size="2xl" {...rest}>
       <ModalOverlay />
@@ -14,7 +14,7 @@ const MarketingModal = ({ task, onClose, ...rest }: Props) => {
         <ModalCloseButton></ModalCloseButton>
         <TaskForm
           task={task}
-          release={task?.release as ClientRelease}
+          release={release as ClientRelease}
           onSubmitSuccess={() => onClose()}
         />
       </ModalContent>
