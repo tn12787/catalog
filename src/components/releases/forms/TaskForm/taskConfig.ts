@@ -18,5 +18,5 @@ export const buildTaskConfig = (isGeneric: boolean): FormDatum<TaskFormData>[] =
       registerArgs: { required: 'Please enter a name for this task' },
       CustomComponent: EmojiInput,
     },
-    ...baseTaskConfig(),
+    ...baseTaskConfig(null),
   ].filter(Boolean) as FormDatum<TaskFormData>[];
