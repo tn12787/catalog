@@ -8,7 +8,7 @@ type Props = Omit<ModalProps, 'children'> & { task?: TaskResponse; release: Clie
 
 const MarketingModal = ({ task, onClose, release, ...rest }: Props) => {
   return (
-    <Modal onClose={onClose} closeOnOverlayClick={false} size="2xl" {...rest}>
+    <Modal onClose={onClose} size="2xl" {...rest}>
       <ModalOverlay />
       <ModalContent w="90%">
         <ModalCloseButton></ModalCloseButton>

@@ -29,4 +29,4 @@ const FormContent = <T,>({ errors, config, register, control, ...rest }: Props<T
   );
 };
 
-export default FormContent;
+export default React.memo(FormContent);

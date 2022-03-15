@@ -4,6 +4,7 @@ import {
   Heading,
   Link,
   Modal,
+  ModalCloseButton,
   ModalContent,
   ModalOverlay,
   Text,
@@ -96,9 +97,10 @@ const Summary = ({ releaseData }: Props) => {
           );
         })}
       </Flex>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
         <ModalContent>
+          <ModalCloseButton></ModalCloseButton>
           <NewReleaseForm existingRelease={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>
       </Modal>

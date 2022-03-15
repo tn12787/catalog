@@ -99,7 +99,7 @@ const Table = <T extends object>({
   const renderTableContent = () => {
     if (loading) {
       return (
-        <Tbody>
+        <Tbody minW="0" flex={'1 1 auto'}>
           <Tr>
             <Td>
               <Skeleton>loading</Skeleton>
@@ -142,6 +142,7 @@ const Table = <T extends object>({
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   {...column.extraProps}
                   key={index.toString()}
+                  flex={'1 1 auto'}
                 >
                   {column.render('Header')}
                   <Text display="inline-block" pl="1">

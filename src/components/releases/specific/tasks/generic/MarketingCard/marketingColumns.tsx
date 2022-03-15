@@ -13,6 +13,9 @@ export const marketingColumns = (): Column<TaskResponse>[] =>
       accessor: (d: TaskResponse) => d,
       Cell: MarketingTaskMenu,
       id: 'actions',
-      width: 30,
+      width: 0.5,
+      extraProps: {
+        justifyContent: 'flex-end',
+      },
     },
   ].filter(Boolean) as Column<TaskResponse>[];

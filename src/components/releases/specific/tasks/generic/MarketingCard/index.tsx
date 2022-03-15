@@ -15,6 +15,7 @@ import { BiSearch } from 'react-icons/bi';
 
 import { marketingColumns } from './marketingColumns';
 import MarketingModal from './MarketingModal';
+import MarketingEmptyContent from './MarketingEmptyContent';
 
 import Card from 'components/Card';
 import { ClientRelease } from 'types/common';
@@ -25,7 +26,7 @@ type Props = { releaseData: ClientRelease; isLoading?: boolean };
 
 const MarketingCard = ({ releaseData, isLoading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { bodySub, bgSecondary, primary } = useAppColors();
+  const { bgSecondary, primary } = useAppColors();
   const [search, setSearch] = React.useState('');
 
   const filteredTasks = useMemo(() => {
@@ -37,6 +38,8 @@ const MarketingCard = ({ releaseData, isLoading }: Props) => {
       task.name?.toLowerCase().includes(search.toLowerCase());
     });
   }, [search, releaseData.generic]);
+
+  const tableColumns = useMemo(() => marketingColumns(), []);
 
   return (
     <Card spacing={4}>
@@ -88,20 +91,8 @@ const MarketingCard = ({ releaseData, isLoading }: Props) => {
           loading={isLoading ?? false}
           data={filteredTasks}
           includeReleaseColumn={false}
-          columns={marketingColumns()}
-          emptyContent={
-            search ? (
-              <Stack py={8} alignItems="center" w="100%" alignSelf="center">
-                <Text fontSize="2xl">🔎</Text>
-                <Text color={bodySub}>{'No items match your search.'}</Text>
-              </Stack>
-            ) : (
-              <Stack py={8} alignItems="center" w="100%" alignSelf="center">
-                <Text fontSize="2xl">📝</Text>
-                <Text color={bodySub}>{"You haven't added any marketing tasks yet."}</Text>
-              </Stack>
-            )
-          }
+          columns={tableColumns}
+          emptyContent={<MarketingEmptyContent search={search} />}
         ></TaskTable>
       </Stack>
       <MarketingModal release={releaseData} onClose={onClose} isOpen={isOpen}></MarketingModal>
@@ -109,4 +100,4 @@ const MarketingCard = ({ releaseData, isLoading }: Props) => {
   );
 };
 
-export default MarketingCard;
+export default React.memo(MarketingCard);

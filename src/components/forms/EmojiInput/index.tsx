@@ -102,4 +102,4 @@ const EmojiInput = ({ onChange, value, ...props }: Props) => {
   );
 };
 
-export default EmojiInput;
+export default React.memo(EmojiInput);

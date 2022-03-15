@@ -42,24 +42,29 @@ export const columns = (includeReleaseColumn?: boolean): Column<TaskResponse>[] 
       Header: 'Name',
       accessor: (d: TaskResponse) => d,
       Cell: TaskLink,
+      width: 1,
     },
     includeReleaseColumn && {
       Header: 'Release',
       accessor: (d: TaskResponse) => d,
       Cell: ReleaseLink,
+      width: 1,
     },
     {
       Header: 'Status',
       accessor: (d: TaskResponse) => d?.status,
       Cell: StatusBadge,
+      width: 1,
     },
     {
       Header: 'Due date',
       accessor: (d: TaskResponse) => format(new Date(d?.dueDate), 'PPP'),
+      width: 1,
     },
     {
       Header: 'Assignees',
       accessor: (d: TaskResponse) => d?.assignees,
       Cell: AssigneeList,
+      width: 1,
     },
   ].filter(Boolean) as Column<TaskResponse>[];
