@@ -6,9 +6,7 @@ import { FormDatum } from 'types/forms';
 
 export const baseTaskConfig = <
   T extends Pick<ClientReleaseTaskData, 'assignees' | 'status' | 'dueDate' | 'notes'>
->(
-  releaseDate: Date | null
-): FormDatum<T>[] => [
+>(): FormDatum<T>[] => [
   {
     name: 'assignees',
     label: 'Assignees',

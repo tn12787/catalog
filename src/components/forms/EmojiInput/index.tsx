@@ -12,7 +12,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { ChangeEvent, useMemo } from 'react';
+import React, { ChangeEvent } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { IEmojiData } from 'emoji-picker-react';
 import { MdOutlineEmojiEmotions } from 'react-icons/md';
@@ -23,40 +23,26 @@ import useAppColors from 'hooks/useAppColors';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
-const emojiRegex =
-  /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]) (.*)/;
-
 type Props = Pick<ControllerRenderProps, 'onChange'> & {
-  value: string;
+  value: {
+    text: string;
+    emoji: string;
+  };
 };
 
 const EmojiInput = ({ onChange, value, ...props }: Props) => {
   const { bodySub } = useAppColors();
 
-  const [emoji, stringValue] = useMemo(() => {
-    if (!value) return [undefined, value] as const;
-
-    const startsWithEmoji = emojiRegex.test(value);
-
-    const [, emoji, stringValue] = emojiRegex.exec(value) ?? [];
-
-    if (!startsWithEmoji) {
-      return [undefined, value] as const;
-    }
-
-    return [emoji, stringValue ?? ''] ?? ([undefined, value] as const);
-  }, [value]);
-
   const onEmojiClick = (event: React.MouseEvent<Element, MouseEvent>, emojiObject: IEmojiData) => {
     onChange({
-      target: { value: emojiObject ? `${emojiObject.emoji} ${stringValue ?? ''}` : value },
+      target: { value: { ...value, emoji: emojiObject.emoji } },
     });
     onClose();
   };
 
   const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange({
-      target: { value: emoji ? `${emoji} ${e.target.value}` : e.target.value },
+      target: { value: { ...value, text: e.target.value } },
     });
   };
 
@@ -72,21 +58,27 @@ const EmojiInput = ({ onChange, value, ...props }: Props) => {
                 onClick={onOpen}
                 fontSize="xl"
                 color={bodySub}
-                icon={emoji ? <Text>{emoji}</Text> : <Icon as={MdOutlineEmojiEmotions}></Icon>}
-                aria-label="selected-emoji"
+                icon={
+                  value.emoji ? (
+                    <Text>{value.emoji}</Text>
+                  ) : (
+                    <Icon as={MdOutlineEmojiEmotions}></Icon>
+                  )
+                }
+                aria-label="selected emoji"
               ></IconButton>
-              {emoji && (
+              {value.emoji && (
                 <IconButton
                   onClick={() => {
                     onChange({
-                      target: { value: stringValue },
+                      target: { value: { text: value.text } },
                     });
                   }}
                   size="20"
                   p={0}
                   color={bodySub}
                   icon={<Icon as={BiX}></Icon>}
-                  aria-label="selected-emoji"
+                  aria-label="remove selected emoji"
                 ></IconButton>
               )}
             </HStack>
@@ -97,9 +89,9 @@ const EmojiInput = ({ onChange, value, ...props }: Props) => {
           </PopoverContent>
         </Popover>
       </InputLeftAddon>
-      <Input {...props} value={stringValue} onChange={onValueChange}></Input>
+      <Input {...props} value={value.text} onChange={onValueChange}></Input>
     </InputGroup>
   );
 };
 
-export default React.memo(EmojiInput);
+export default EmojiInput;

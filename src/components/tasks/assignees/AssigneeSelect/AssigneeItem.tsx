@@ -14,18 +14,29 @@ interface Props extends ListItemProps {
   selected?: boolean;
 }
 
-const AssigneeItem = ({ item, itemIndex, highlightedIndex, selected, ...rest }: Props) => {
-  const isSelected = itemIndex === highlightedIndex;
-  const { bgPrimary } = useAppColors();
-  return (
-    <ListItem cursor="pointer" py={2} px={1} bg={isSelected ? bgPrimary : 'transparent'} {...rest}>
-      <HStack>
-        <Flex minW="20px">{selected && <Icon fontSize="lg" as={BiCheck} />}</Flex>
-        <Avatar size="xs" src={item.image || ''} />
-        <Text fontSize="md"> {item.name}</Text>
-      </HStack>
-    </ListItem>
-  );
-};
+const AssigneeItem = React.forwardRef<HTMLLIElement, Props>(
+  ({ item, itemIndex, highlightedIndex, selected, ...rest }: Props, ref) => {
+    const isSelected = itemIndex === highlightedIndex;
+    const { bgPrimary } = useAppColors();
+    return (
+      <ListItem
+        ref={ref}
+        cursor="pointer"
+        py={2}
+        px={1}
+        bg={isSelected ? bgPrimary : 'transparent'}
+        {...rest}
+      >
+        <HStack>
+          <Flex minW="20px">{selected && <Icon fontSize="lg" as={BiCheck} />}</Flex>
+          <Avatar size="xs" src={item.image || ''} />
+          <Text fontSize="md"> {item.name}</Text>
+        </HStack>
+      </ListItem>
+    );
+  }
+);
+
+AssigneeItem.displayName = 'AssigneeItem';
 
 export default AssigneeItem;
