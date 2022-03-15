@@ -13,7 +13,7 @@ export const marketingColumns = (): Column<TaskResponse>[] =>
       accessor: (d: TaskResponse) => d,
       Cell: MarketingTaskMenu,
       id: 'actions',
-      width: 0.5,
+      width: 0.1,
       extraProps: {
         justifyContent: 'flex-end',
       },
