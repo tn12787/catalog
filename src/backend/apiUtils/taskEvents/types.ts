@@ -26,3 +26,8 @@ export interface CreateDueDateEventData extends Pick<UpdateTaskEventData, 'userI
   dueDate: UpdateBaseReleaseTaskDto['dueDate'];
   task: ReleaseTaskWithAssignees;
 }
+
+export interface CreateNameEventData extends Pick<UpdateTaskEventData, 'userId'> {
+  name: UpdateBaseReleaseTaskDto['name'];
+  task: ReleaseTaskWithAssignees;
+}

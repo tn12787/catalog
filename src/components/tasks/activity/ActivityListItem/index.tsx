@@ -7,6 +7,7 @@ import UpdateDateItem from '../UpdateDateItem';
 import UpdateAssigneesItem from '../UpdateAssigneesItem';
 import CommentItem from '../CommentItem';
 import DeleteCommentItem from '../DeleteCommentItem';
+import UpdateNameItem from '../UpdateNameItem';
 
 import { ReleaseTaskEventWithUser } from 'types/common';
 
@@ -36,6 +37,8 @@ const ActivityListItem = ({ event, allEvents }: Props) => {
       return <UpdateAssigneesItem event={event} />;
     case TaskEventType.UPDATE_DATE:
       return <UpdateDateItem event={event} />;
+    case TaskEventType.UPDATE_NAME:
+      return <UpdateNameItem event={event} />;
     case TaskEventType.CREATE_TASK:
       return <CreateTaskItem event={event} />;
     case TaskEventType.NEW_COMMENT:

@@ -25,6 +25,10 @@ interface Props<T, L> extends Pick<ControllerRenderProps, 'onChange'> {
   emptyContent?: string | JSX.Element;
 }
 
+interface MultiSelectComponent {
+  <T, L>(props: Props<T, L>): JSX.Element | null;
+}
+
 const MultiSelect = <T extends { id: string }, L>({
   value,
   allItems,
@@ -140,4 +144,4 @@ const MultiSelect = <T extends { id: string }, L>({
 
 MultiSelect.displayName = 'MultiSelect';
 
-export default MultiSelect;
+export default React.forwardRef(MultiSelect) as MultiSelectComponent;

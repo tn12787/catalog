@@ -41,6 +41,7 @@ enum TaskEventType {
   UPDATE_ASSIGNEES
   UPDATE_STATUS
   UPDATE_DATE
+  UPDATE_NAME
 }
 
 enum UserOnboardingSegment {

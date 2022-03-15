@@ -12,12 +12,12 @@ export const deriveBadgeColorFromStatus = <T extends BaseEvent>(event: T) => {
 
   switch (event.data.status) {
     case TaskStatus.OUTSTANDING:
-      return 'gray.500';
+      return 'purple.300';
     case TaskStatus.IN_PROGRESS:
       return 'yellow.500';
     case TaskStatus.COMPLETE:
       return 'green.500';
     default:
-      return 'purple.400';
+      return 'gray.400';
   }
 };

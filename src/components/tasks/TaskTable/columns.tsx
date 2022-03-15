@@ -38,18 +38,19 @@ export const AssigneeList = ({ value: users }: { value: WorkspaceMemberWithUser[
 
 export const columns = (includeReleaseColumn?: boolean): Column<TaskResponse>[] =>
   [
-    {
-      Header: 'Name',
-      accessor: (d: TaskResponse) => d,
-      Cell: TaskLink,
-      width: 1,
-    },
     includeReleaseColumn && {
       Header: 'Release',
       accessor: (d: TaskResponse) => d,
       Cell: ReleaseLink,
       width: 1,
     },
+    {
+      Header: 'Name',
+      accessor: (d: TaskResponse) => d,
+      Cell: TaskLink,
+      width: 1,
+    },
+
     {
       Header: 'Status',
       accessor: (d: TaskResponse) => d?.status,

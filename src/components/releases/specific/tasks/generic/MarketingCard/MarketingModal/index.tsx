@@ -1,5 +1,6 @@
 import { Modal, ModalCloseButton, ModalContent, ModalOverlay, ModalProps } from '@chakra-ui/react';
 import React from 'react';
+import { ReleaseTaskType } from '@prisma/client';
 
 import { ClientRelease, TaskResponse } from 'types/common';
 import TaskForm from 'components/releases/forms/TaskForm';
@@ -19,6 +20,7 @@ const MarketingModal = ({ task, onClose, release, ...rest }: Props) => {
           task={task}
           release={release as ClientRelease}
           onSubmitSuccess={() => onClose()}
+          generic={!task || task.type === ReleaseTaskType.GENERIC}
         />
       </ModalContent>
     </Modal>

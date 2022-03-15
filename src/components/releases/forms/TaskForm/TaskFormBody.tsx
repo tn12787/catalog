@@ -5,41 +5,44 @@ import { useForm } from 'react-hook-form';
 import { addDays, format, startOfDay } from 'date-fns';
 
 import { buildTaskConfig } from './taskConfig';
+import { TaskFormData } from './types';
+import { deriveEmojiValueData } from './utils';
 
 import FormContent from 'components/forms/FormContent';
 import { FormBodyProps } from 'types/forms';
-import { ClientRelease, ReleaseTaskWithAssignees } from 'types/common';
+import { ReleaseTaskWithAssignees } from 'types/common';
 
-interface Props<T> extends FormBodyProps<T> {
-  existingData?: T;
-  release: ClientRelease;
+interface Props extends FormBodyProps<TaskFormData> {
+  existingData?: ReleaseTaskWithAssignees;
+  generic?: boolean;
 }
 
-const TaskFormBody = ({
-  onSubmit,
-  loading,
-  existingData,
-  release,
-}: Props<ReleaseTaskWithAssignees>) => {
+const TaskFormBody = ({ onSubmit, loading, existingData, generic }: Props) => {
   const properDateFormat = useMemo(() => {
     const existingDate = existingData?.dueDate ?? addDays(startOfDay(new Date()), 7);
     return format(new Date(existingDate), 'yyyy-MM-dd');
   }, [existingData?.dueDate]);
+
+  const mappedTaskName = useMemo(() => deriveEmojiValueData(existingData?.name), [existingData]);
 
   const {
     register,
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm<ReleaseTaskWithAssignees>({
-    defaultValues: { ...existingData, dueDate: properDateFormat as any },
+  } = useForm<TaskFormData>({
+    defaultValues: {
+      ...existingData,
+      dueDate: properDateFormat as any,
+      name: mappedTaskName,
+    },
   });
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack spacing={3} width="100%" maxW="600px" margin="0 auto">
         <FormContent
-          config={buildTaskConfig(release?.targetDate as Date)}
+          config={buildTaskConfig(generic ?? false)}
           control={control}
           errors={errors}
           register={register}
@@ -62,4 +65,4 @@ const TaskFormBody = ({
   );
 };
 
-export default React.memo<Props<ReleaseTaskWithAssignees>>(TaskFormBody);
+export default React.memo<Props>(TaskFormBody);

@@ -5,6 +5,7 @@ import { pick } from 'lodash';
 import { ReleaseTask, ReleaseTaskType } from '@prisma/client';
 
 import { transformContactsToPrismaQuery } from '../transforms/contacts';
+import { buildCreateTaskEvent } from '../taskEvents';
 
 import { CreateReleaseTaskDto, UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
@@ -28,13 +29,20 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
   return releaseWorkspace;
 };
 
-export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto) => {
+export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto & { userId: string }) => {
   const baseArgs = pickBy(
     {
       ...pick(body, ['status', 'notes', 'dueDate', 'type', 'name']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees, true),
       contacts: transformContactsToPrismaQuery(body.contacts, true),
+      events: {
+        create: [
+          buildCreateTaskEvent({
+            userId: body.userId,
+          }),
+        ],
+      },
     },
     (v) => !isNil(v)
   );
