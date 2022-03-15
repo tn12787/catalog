@@ -21,6 +21,7 @@ import ReleaseStatusBadge from 'components/releases/ReleaseStatusBadge';
 import Card from 'components/Card';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   releaseData: ClientRelease;
@@ -51,6 +52,7 @@ const fields = (releaseData: ClientRelease): SummaryField[] => [
 
 const Summary = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bgSecondary } = useAppColors();
 
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
   const canUpdateRelease = hasRequiredPermissions(
@@ -99,7 +101,7 @@ const Summary = ({ releaseData }: Props) => {
       </Flex>
       <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
-        <ModalContent>
+        <ModalContent bg={bgSecondary}>
           <ModalCloseButton></ModalCloseButton>
           <NewReleaseForm existingRelease={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>

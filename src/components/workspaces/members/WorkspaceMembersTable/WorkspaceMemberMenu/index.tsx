@@ -38,7 +38,7 @@ const WorkspaceMemberMenu = ({ value }: Props) => {
     workspaceMemberships?.[currentWorkspace]?.id !== value.id,
   ].every(Boolean);
 
-  const { primary } = useAppColors();
+  const { primary, bgSecondary } = useAppColors();
   const cancelRef = useRef(null);
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
@@ -114,7 +114,7 @@ const WorkspaceMemberMenu = ({ value }: Props) => {
         <ModalHeader>
           <Heading>Invite user</Heading>
         </ModalHeader>
-        <ModalContent>
+        <ModalContent bg={bgSecondary}>
           <ManageUserForm workspaceMember={value} onSubmitSuccess={() => onEditClose()} />
         </ModalContent>
       </Modal>
