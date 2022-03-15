@@ -13,6 +13,10 @@ interface Props<T> extends StackProps {
   control: UseFormReturn<T>['control'];
 }
 
+interface FormContentComponent {
+  <T>(props: Props<T>): JSX.Element | null;
+}
+
 const FormContent = <T,>({ errors, config, register, control, ...rest }: Props<T>) => {
   return (
     <Stack py={6} spacing={5} width="100%" margin="0 auto" {...rest}>
@@ -29,4 +33,4 @@ const FormContent = <T,>({ errors, config, register, control, ...rest }: Props<T
   );
 };
 
-export default React.memo(FormContent);
+export default React.memo(FormContent) as FormContentComponent;
