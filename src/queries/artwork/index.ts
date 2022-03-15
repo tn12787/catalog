@@ -4,6 +4,7 @@ import { ReleaseTaskType } from '@prisma/client';
 
 import { CreateArtworkVars, UpdateArtworkVars } from './types';
 
+import { taskHeadingByType } from 'utils/tasks';
 import firebase from 'firebaseDetails/firebaseConfig';
 import { ClientArtwork } from 'types/common';
 
@@ -26,6 +27,7 @@ export const createSingleArtwork = async ({
   const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
     ...rest,
     type: ReleaseTaskType.ARTWORK,
+    name: taskHeadingByType(null, ReleaseTaskType.ARTWORK),
   });
   return response;
 };

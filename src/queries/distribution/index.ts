@@ -4,6 +4,7 @@ import { Distributor, ReleaseTaskType } from '@prisma/client';
 import { UpdateDistributionVars, CreateDistributionVars } from './types';
 
 import { ClientDistribution } from 'types/common';
+import { taskHeadingByType } from 'utils/tasks';
 
 export const updateSingleDistribution = async ({
   taskId,
@@ -24,6 +25,7 @@ export const createSingleDistribution = async ({
   const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
     ...rest,
     type: ReleaseTaskType.DISTRIBUTION,
+    name: taskHeadingByType(null, ReleaseTaskType.DISTRIBUTION),
   });
   return response;
 };

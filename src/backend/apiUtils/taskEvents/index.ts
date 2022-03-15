@@ -8,6 +8,7 @@ import {
   UpdateTaskEventData,
   CreateDueDateEventData,
   CreateTaskEventData,
+  CreateNameEventData,
 } from './types';
 
 import prisma from 'backend/prisma/client';
@@ -34,13 +35,14 @@ export const createUpdateTaskEvents = async ({ body, id, userId }: UpdateTaskEve
 
   if (!task) throw new NotFoundException('Task not found');
 
-  const tasks = [
+  const events = [
     createAsssigneesEventIfNeeded({ assignees: body.assignees, task, userId }),
     createStatusEventIfNeeded({ status: body.status, task, userId }),
     createDueDateEventIfNeeded({ dueDate: body.dueDate, task, userId }),
+    createNameEventIfNeeded({ name: body.name, task, userId }),
   ];
 
-  return tasks.filter(Boolean);
+  return events.filter(Boolean);
 };
 
 const createAsssigneesEventIfNeeded = ({ assignees, task, userId }: CreateAssigneesEventData) => {
@@ -90,6 +92,23 @@ const createDueDateEventIfNeeded = ({ dueDate, task, userId }: CreateDueDateEven
   return {
     user: { connect: { id: userId } },
     type: TaskEventType.UPDATE_DATE,
+    extraData,
+  };
+};
+
+const createNameEventIfNeeded = ({ name, task, userId }: CreateNameEventData) => {
+  if (!name) return;
+
+  const extraData = {
+    oldName: task.name,
+    newName: name,
+  };
+
+  if (isEqual(extraData.oldName, extraData.newName)) return;
+
+  return {
+    user: { connect: { id: userId } },
+    type: TaskEventType.UPDATE_NAME,
     extraData,
   };
 };
