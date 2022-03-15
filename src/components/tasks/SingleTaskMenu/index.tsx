@@ -71,4 +71,4 @@ const SingleTaskMenu = ({ task, isLoading }: Props) => {
   );
 };
 
-export default SingleTaskMenu;
+export default React.memo(SingleTaskMenu);

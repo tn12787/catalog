@@ -1,4 +1,5 @@
 import {
+  HStack,
   Icon,
   IconButton,
   Input,
@@ -16,6 +17,7 @@ import { ControllerRenderProps } from 'react-hook-form';
 import { IEmojiData } from 'emoji-picker-react';
 import { MdOutlineEmojiEmotions } from 'react-icons/md';
 import dynamic from 'next/dynamic';
+import { BiX } from 'react-icons/bi';
 
 import useAppColors from 'hooks/useAppColors';
 
@@ -65,13 +67,29 @@ const EmojiInput = ({ onChange, value, ...props }: Props) => {
       <InputLeftAddon>
         <Popover isOpen={isOpen} onClose={onClose}>
           <PopoverTrigger>
-            <IconButton
-              onClick={onOpen}
-              fontSize="xl"
-              color={bodySub}
-              icon={emoji ? <Text>{emoji}</Text> : <Icon as={MdOutlineEmojiEmotions}></Icon>}
-              aria-label="selected-emoji"
-            ></IconButton>
+            <HStack spacing={0}>
+              <IconButton
+                onClick={onOpen}
+                fontSize="xl"
+                color={bodySub}
+                icon={emoji ? <Text>{emoji}</Text> : <Icon as={MdOutlineEmojiEmotions}></Icon>}
+                aria-label="selected-emoji"
+              ></IconButton>
+              {emoji && (
+                <IconButton
+                  onClick={() => {
+                    onChange({
+                      target: { value: stringValue },
+                    });
+                  }}
+                  size="20"
+                  p={0}
+                  color={bodySub}
+                  icon={<Icon as={BiX}></Icon>}
+                  aria-label="selected-emoji"
+                ></IconButton>
+              )}
+            </HStack>
           </PopoverTrigger>
           <PopoverContent w="auto" border="none">
             <PopoverArrow></PopoverArrow>

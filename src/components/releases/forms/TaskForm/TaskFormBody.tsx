@@ -62,4 +62,4 @@ const TaskFormBody = ({
   );
 };
 
-export default TaskFormBody;
+export default React.memo<Props<ReleaseTaskWithAssignees>>(TaskFormBody);

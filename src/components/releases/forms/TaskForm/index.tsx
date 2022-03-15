@@ -73,4 +73,4 @@ const TaskForm = ({ onSubmitSuccess, task, release }: Props) => {
   );
 };
 
-export default TaskForm;
+export default React.memo<Props>(TaskForm);

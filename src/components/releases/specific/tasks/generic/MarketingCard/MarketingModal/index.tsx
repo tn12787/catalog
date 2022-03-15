@@ -22,4 +22,4 @@ const MarketingModal = ({ task, onClose, release, ...rest }: Props) => {
   );
 };
 
-export default MarketingModal;
+export default React.memo(MarketingModal);
