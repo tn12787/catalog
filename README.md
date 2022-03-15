@@ -72,6 +72,12 @@ extraData: {
   oldDueDate: string // ISO timestamp of the previous date
   newDueDate: string // ISO timestamp of the new date
 }
+
+// TaskEventType.UPDATE_NAME
+extraData: {
+  oldName: string // ISO timestamp of the previous date
+  newName: string // ISO timestamp of the new date
+}
 ```
 
 ## Environments
