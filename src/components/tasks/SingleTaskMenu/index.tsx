@@ -6,17 +6,19 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { BiCalendar } from 'react-icons/bi';
+import { BiCalendar, BiEdit } from 'react-icons/bi';
 import { FiChevronDown } from 'react-icons/fi';
 
-import { TaskResponse } from 'types/common';
+import { ClientRelease, TaskResponse } from 'types/common';
 import { buildPlannerLink } from 'utils/planner';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import useTaskMutations from 'hooks/data/tasks/useTaskMutations';
+import MarketingModal from 'components/releases/specific/tasks/generic/MarketingCard/MarketingModal';
 
 type Props = { task: TaskResponse; isLoading?: boolean };
 
@@ -27,12 +29,20 @@ const SingleTaskMenu = ({ task, isLoading }: Props) => {
     ['UPDATE_RELEASES'],
     workspaceMemberships?.[currentWorkspace]
   );
+
+  const canEditTasks = hasRequiredPermissions(
+    ['UPDATE_RELEASES'],
+    workspaceMemberships?.[currentWorkspace]
+  );
+
   const { deleteSingleTask } = useTaskMutations(task.releaseId);
 
   const deleteTask = async () => {
     await deleteSingleTask.mutateAsync({ id: task.id });
     router.push(`/releases/${task.release.id}`);
   };
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <Skeleton isLoaded={!isLoading}>
@@ -59,6 +69,11 @@ const SingleTaskMenu = ({ task, isLoading }: Props) => {
           >
             View in planner
           </MenuItem>
+          {canEditTasks && (
+            <MenuItem icon={<BiEdit />} onClick={onOpen}>
+              Edit
+            </MenuItem>
+          )}
           <MenuDivider />
           {canDeleteTasks && (
             <MenuItem color="red" onClick={deleteTask}>
@@ -66,6 +81,12 @@ const SingleTaskMenu = ({ task, isLoading }: Props) => {
             </MenuItem>
           )}
         </MenuList>
+        <MarketingModal
+          isOpen={isOpen}
+          onClose={onClose}
+          task={task}
+          release={task.release as ClientRelease}
+        ></MarketingModal>
       </Menu>
     </Skeleton>
   );

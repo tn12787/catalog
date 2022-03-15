@@ -31,7 +31,7 @@ class ReleaseListHandler {
 
     await checkTaskDates(body, id);
 
-    const baseArgs = buildCreateReleaseTaskArgs(body);
+    const baseArgs = buildCreateReleaseTaskArgs({ ...body, userId: activeWorkspaceMember.id });
 
     const result = await prisma.releaseTask.create({
       data: {

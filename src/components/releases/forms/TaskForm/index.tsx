@@ -4,6 +4,7 @@ import { pickBy } from 'lodash';
 import { ReleaseTaskType } from '@prisma/client';
 
 import TaskFormBody from './TaskFormBody';
+import { TaskFormData } from './types';
 
 import { ClientRelease, ReleaseTaskWithAssignees } from 'types/common';
 import useTaskMutations from 'hooks/data/tasks/useTaskMutations';
@@ -13,12 +14,13 @@ interface Props {
   onSubmitSuccess?: () => void;
   task?: ReleaseTaskWithAssignees;
   release: ClientRelease;
+  generic?: boolean;
 }
 
-const TaskForm = ({ onSubmitSuccess, task, release }: Props) => {
+const TaskForm = ({ onSubmitSuccess, task, release, generic }: Props) => {
   const { updateSingleTask, createSingleTask } = useTaskMutations(task?.releaseId ?? release.id);
 
-  const create = async (values: ReleaseTaskWithAssignees) => {
+  const create = async (values: TaskFormData) => {
     try {
       await createSingleTask.mutateAsync({
         ...values,
@@ -26,6 +28,7 @@ const TaskForm = ({ onSubmitSuccess, task, release }: Props) => {
         contacts: values.contacts?.map((item) => item.id) ?? [],
         type: ReleaseTaskType.GENERIC,
         releaseId: release?.id as string,
+        name: values.name.emoji ? `${values.name.emoji} ${values.name.text}` : values.name.text,
       } as CreateTaskVars);
 
       onSubmitSuccess?.();
@@ -34,22 +37,22 @@ const TaskForm = ({ onSubmitSuccess, task, release }: Props) => {
     }
   };
 
-  const update = async (data: ReleaseTaskWithAssignees) => {
+  const update = async (data: TaskFormData) => {
     const { id, name, releaseId, status, assignees, notes, dueDate, contacts } = pickBy(
       data,
       Boolean
-    ) as ReleaseTaskWithAssignees;
+    ) as TaskFormData;
 
     try {
       await updateSingleTask.mutateAsync({
         id,
-        name,
         releaseId,
         status,
         notes,
         dueDate,
         assignees: assignees.map((item) => item.id),
         contacts: contacts.map((item) => item.id),
+        name: name.emoji ? `${name.emoji} ${name.text}` : name.text,
       } as UpdateTaskVars);
       onSubmitSuccess?.();
     } catch (e: any) {
@@ -63,10 +66,10 @@ const TaskForm = ({ onSubmitSuccess, task, release }: Props) => {
         <Heading>{task ? 'Edit' : 'Add New'} Task</Heading>
         <Text>{task ? 'Update' : 'Add'} task information using the form below.</Text>
         <TaskFormBody
-          release={release as ClientRelease}
           existingData={task}
           onSubmit={task ? update : create}
           loading={updateSingleTask.isLoading || createSingleTask.isLoading}
+          generic={generic}
         />
       </Stack>
     </Stack>

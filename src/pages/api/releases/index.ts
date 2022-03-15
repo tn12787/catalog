@@ -2,6 +2,7 @@ import {
   Body,
   createHandler,
   DefaultValuePipe,
+  ForbiddenException,
   Get,
   HttpCode,
   ParseDatePipe,
@@ -19,7 +20,10 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
-import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
+import {
+  checkRequiredPermissions,
+  getResourceWorkspaceMembership,
+} from 'backend/apiUtils/workspaces';
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 import { AuthDecoratedRequest } from 'types/common';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
@@ -95,6 +99,9 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(req, ['CREATE_RELEASES'], workspace?.id);
 
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(req, workspace?.id);
+    if (!activeWorkspaceMember) throw new ForbiddenException();
+
     const optionalArgs = [
       body.artwork &&
         buildCreateReleaseTaskArgs({
@@ -102,6 +109,7 @@ class ReleaseListHandler {
           type: ReleaseTaskType.ARTWORK,
           dueDate: body.artwork?.dueDate ?? new Date(),
           status: body.artwork?.status as TaskStatus,
+          userId: activeWorkspaceMember.id,
         }),
       body.distribution &&
         buildCreateReleaseTaskArgs({
@@ -109,6 +117,7 @@ class ReleaseListHandler {
           type: ReleaseTaskType.DISTRIBUTION,
           dueDate: body.distribution?.dueDate ?? new Date(),
           status: body.distribution?.status as TaskStatus,
+          userId: activeWorkspaceMember.id,
         }),
       body.mastering &&
         buildCreateReleaseTaskArgs({
@@ -116,6 +125,7 @@ class ReleaseListHandler {
           type: ReleaseTaskType.MASTERING,
           dueDate: body.mastering?.dueDate ?? new Date(),
           status: body.mastering?.status as TaskStatus,
+          userId: activeWorkspaceMember.id,
         }),
     ].filter(Boolean) as any; // TODO: Find a type for this
 
