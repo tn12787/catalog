@@ -39,7 +39,7 @@ type Props = {
 
 const WorkspaceMembers = ({ workspace, remainingSeats, isDisabled, loading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { bodySub } = useAppColors();
+  const { bodySub, bgSecondary } = useAppColors();
   const { manageWorkspace } = useCurrentWorkspace();
   const { isFeatureEnabled } = useFeatures();
 
@@ -101,7 +101,7 @@ const WorkspaceMembers = ({ workspace, remainingSeats, isDisabled, loading }: Pr
         <ModalHeader>
           <Heading>Invite user</Heading>
         </ModalHeader>
-        <ModalContent w="90%">
+        <ModalContent bg={bgSecondary} w="90%">
           <InviteUserForm onSubmitSuccess={() => onClose()} />
         </ModalContent>
       </Modal>

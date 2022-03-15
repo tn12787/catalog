@@ -1,7 +1,6 @@
 import { Stack } from '@chakra-ui/layout';
 import React, { useMemo } from 'react';
 import { Heading, Skeleton, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
 import { TaskStatus } from '@prisma/client';
 import { startOfDay } from 'date-fns';
 
@@ -9,8 +8,6 @@ import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import PageHead from 'components/pageItems/PageHead';
 import DashboardLayout from 'components/layouts/DashboardLayout';
-import { fetchReleaseEvents } from 'queries/events';
-import useExtendedSession from 'hooks/useExtendedSession';
 import MyTasks from 'components/overview/MyTasks';
 import Card from 'components/Card';
 import OverdueTasks from 'components/overview/OverdueTasks';
@@ -20,18 +17,18 @@ import useArtists from 'hooks/data/artists/useArtists';
 import { SortOrder } from 'queries/types';
 import { ClientRelease } from 'types/common';
 import OverviewReleases from 'components/overview/OverviewReleases';
+import useTasks from 'hooks/data/tasks/useTasks';
+import useExtendedSession from 'hooks/useExtendedSession';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
-  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
   const { workspace: workspaceData, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
+  const { workspaceMemberships, currentWorkspace } = useExtendedSession();
 
-  const { data: releaseEvents, isLoading: areReleaseEventsLoading } = useQuery(
-    ['releaseEvents', currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id],
-    () => fetchReleaseEvents(currentWorkspace, workspaceMemberships?.[currentWorkspace]?.id),
-    { enabled: !!currentWorkspace && !!workspaceMemberships?.[currentWorkspace]?.id }
-  );
+  const { data: releaseTasks, isLoading: areReleaseTasksLoading } = useTasks({
+    assignee: workspaceMemberships?.[currentWorkspace]?.id,
+  });
 
   const upcomingReleaseQueryArgs = {
     dates: { after: startOfDay(new Date()) },
@@ -51,14 +48,11 @@ const OverviewPage = () => {
   const { data: artists, isLoading: areArtistsLoading } = useArtists({});
 
   const isAnythingLoading =
-    isWorkspaceLoading ||
-    areReleaseEventsLoading ||
-    areUpcomingReleasesLoading ||
-    areArtistsLoading;
+    isWorkspaceLoading || areUpcomingReleasesLoading || areArtistsLoading || areReleaseTasksLoading;
 
-  const outstandingReleaseEvents = useMemo(
-    () => releaseEvents?.filter((item) => item.data.status === TaskStatus.OUTSTANDING),
-    [releaseEvents]
+  const outstandingReleaseTasks = useMemo(
+    () => releaseTasks?.filter((item) => item.status !== TaskStatus.COMPLETE),
+    [releaseTasks]
   );
 
   return (
@@ -90,8 +84,8 @@ const OverviewPage = () => {
           <Card w="100%">
             <Stat>
               <StatLabel>Outstanding Tasks</StatLabel>
-              <Skeleton display={'inline-flex'} isLoaded={!areReleaseEventsLoading}>
-                <StatNumber>{outstandingReleaseEvents?.length ?? 0}</StatNumber>
+              <Skeleton display={'inline-flex'} isLoaded={!areReleaseTasksLoading}>
+                <StatNumber>{outstandingReleaseTasks?.length ?? 0}</StatNumber>
               </Skeleton>
             </Stat>
           </Card>
@@ -105,8 +99,8 @@ const OverviewPage = () => {
           </Card>
         </Stack>
 
-        <OverdueTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
-        <MyTasks data={releaseEvents ?? []} loading={isAnythingLoading} />
+        <OverdueTasks data={releaseTasks ?? []} loading={isAnythingLoading} />
+        <MyTasks data={releaseTasks ?? []} loading={isAnythingLoading} />
 
         <OverviewReleases
           releases={upcomingReleases}

@@ -29,6 +29,10 @@ interface Props<T> extends FormDatum<T> {
   control: UseFormReturn<T>['control'];
 }
 
+interface FormFieldComponent {
+  <T>(props: Props<T>): JSX.Element | null;
+}
+
 const deriveComponent = (type?: string): InputComponentType => {
   switch (type) {
     case 'textarea':
@@ -115,4 +119,4 @@ const FormField = <T,>({
   );
 };
 
-export default FormField;
+export default React.memo(FormField) as FormFieldComponent;

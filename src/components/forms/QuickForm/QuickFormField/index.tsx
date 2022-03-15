@@ -33,7 +33,7 @@ type Props<T extends FieldValues> = PopoverProps & {
   fieldName: string;
   value: T;
   renderValue?: ({ value }: { value: T }) => JSX.Element;
-  onSubmit: (value: T) => void | Promise<void>;
+  onSubmit: (value: any) => void | Promise<void>;
   renderEditing: ({ value, onChange }: any) => JSX.Element;
   isDisabled?: boolean;
 };

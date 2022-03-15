@@ -5,19 +5,19 @@ import { useColorModeValue } from '@chakra-ui/color-mode';
 import { TaskStatus } from '@prisma/client';
 
 import Card from 'components/Card';
-import { ReleaseEvent } from 'types/common';
+import { TaskResponse } from 'types/common';
 import TaskTable from 'components/tasks/TaskTable';
 import useAppColors from 'hooks/useAppColors';
 
 interface Props {
-  data: ReleaseEvent[];
+  data: TaskResponse[];
   loading: boolean;
 }
 
 const OverdueTasks = ({ data, loading }: Props) => {
   const { bodySub } = useAppColors();
   const filteredData = data.filter(
-    (item) => item.data?.status !== TaskStatus.COMPLETE && isBefore(new Date(item.date), new Date())
+    (item) => item?.status !== TaskStatus.COMPLETE && isBefore(new Date(item.dueDate), new Date())
   );
 
   const overdueBg = useColorModeValue('red.500', 'red.300');

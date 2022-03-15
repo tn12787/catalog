@@ -1,7 +1,8 @@
+import { startOfDay } from 'date-fns';
 import { pickBy, isNil } from 'lodash';
-import { NotFoundException } from '@storyofams/next-api-decorators';
+import { NotFoundException, BadRequestException } from '@storyofams/next-api-decorators';
 import { pick } from 'lodash';
-import { ReleaseTaskType } from '@prisma/client';
+import { ReleaseTask, ReleaseTaskType } from '@prisma/client';
 
 import { transformContactsToPrismaQuery } from '../transforms/contacts';
 
@@ -30,7 +31,7 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
 export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto) => {
   const baseArgs = pickBy(
     {
-      ...pick(body, ['status', 'notes', 'dueDate', 'type']),
+      ...pick(body, ['status', 'notes', 'dueDate', 'type', 'name']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees, true),
       contacts: transformContactsToPrismaQuery(body.contacts, true),
@@ -46,7 +47,7 @@ export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto) => {
 export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
   const baseArgs = pickBy(
     {
-      ...pick(body, ['status', 'notes', 'dueDate']),
+      ...pick(body, ['status', 'notes', 'dueDate', 'name']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees),
       contacts: transformContactsToPrismaQuery(body.contacts),
@@ -60,14 +61,11 @@ export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: Rel
 };
 
 export const deriveTypeSpecificUpdateArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
-  // TODO: Support marketing
   switch (type) {
     case ReleaseTaskType.ARTWORK:
       return body.url ? { artworkData: { update: { url: body.url } } } : undefined;
     case ReleaseTaskType.MASTERING:
       return body.url ? { masteringData: { update: { url: body.url } } } : undefined;
-    case ReleaseTaskType.MUSIC_VIDEO:
-      return body.url ? { musicVideoData: { update: { url: body.url } } } : undefined;
     case ReleaseTaskType.DISTRIBUTION:
       return body.distributor
         ? {
@@ -89,8 +87,6 @@ export const deriveTypeSpecificCreateArgs = (body: CreateReleaseTaskDto) => {
       return { artworkData: { create: { url: body.url } } };
     case ReleaseTaskType.MASTERING:
       return { masteringData: { create: { url: body.url } } };
-    case ReleaseTaskType.MUSIC_VIDEO:
-      return { musicVideoData: { create: { url: body.url } } };
     case ReleaseTaskType.DISTRIBUTION:
       return {
         distributionData: {
@@ -106,5 +102,30 @@ export const deriveTypeSpecificCreateArgs = (body: CreateReleaseTaskDto) => {
 
     default:
       return undefined;
+  }
+};
+
+export const checkTaskDates = async (
+  task: Omit<ReleaseTask, 'assignees'> | Omit<CreateReleaseTaskDto, 'assignees'>,
+  releaseId: string
+) => {
+  const release = await prisma.release.findUnique({
+    where: {
+      id: releaseId,
+    },
+  });
+
+  if (!release) {
+    throw new NotFoundException();
+  }
+
+  // allow generic tasks to be after the due date
+  if (task.type === ReleaseTaskType.GENERIC) {
+    return;
+  }
+
+  // otherwise, tasks have to be due before release day
+  if (startOfDay(task.dueDate) > startOfDay(release.targetDate)) {
+    throw new BadRequestException('Task due date must be before release date');
   }
 };

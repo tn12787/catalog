@@ -9,6 +9,7 @@ export const testClientRelease = (extraFields: Partial<ClientRelease>): ClientRe
     name: 'Test Client Release',
     targetDate: addDays(new Date(), 30),
     artistId: 'test-artist-id',
+    generic: [],
     artist: testArtist({ id: 'test-artist-id' }),
     type: ReleaseType.ALBUM,
     workspaceId: 'test-workspace-id',

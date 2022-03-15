@@ -10,6 +10,7 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
 import { ArtistResponse } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateArtistDto } from 'backend/models/artists/create';
@@ -20,7 +21,7 @@ import { SortOrder } from 'queries/types';
 class ArtistHandler {
   @Get()
   async artists(
-    @Query('workspace') workspaceId: string,
+    @RequiredQuery('workspace') workspaceId: string,
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Release>('name')) sortBy: keyof ArtistResponse,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder

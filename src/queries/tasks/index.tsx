@@ -1,12 +1,31 @@
 import axios from 'axios';
 import { Release } from '@prisma/client';
 
-import { DeleteCommentVars, NewCommentVars, UpdateCommentVars, UpdateTaskVars } from './types';
+import {
+  CreateTaskVars,
+  DeleteCommentVars,
+  NewCommentVars,
+  TaskFilterOptions,
+  UpdateCommentVars,
+  UpdateTaskVars,
+} from './types';
 
-import { EnrichedReleaseTask, ReleaseTaskEventWithUser } from 'types/common';
+import {
+  EnrichedReleaseTask,
+  ReleaseTaskEventWithUser,
+  ReleaseTaskWithAssignees,
+} from 'types/common';
 
 export const fetchSingleTask = async (id: string) => {
   const response = await axios.get<EnrichedReleaseTask & { release: Release }>(`/api/tasks/${id}`);
+
+  return response.data;
+};
+
+export const fetchTaskList = async (params: TaskFilterOptions) => {
+  const response = await axios.get<(EnrichedReleaseTask & { release: Release })[]>(`/api/tasks`, {
+    params,
+  });
 
   return response.data;
 };
@@ -15,10 +34,26 @@ export const fetchTaskActivity = async (id: string) => {
   return await axios.get<ReleaseTaskEventWithUser[]>(`/api/tasks/${id}/activity`);
 };
 
+export const createTask = async ({
+  releaseId,
+  ...rest
+}: CreateTaskVars): Promise<ReleaseTaskWithAssignees | void> => {
+  const { data: response } = await axios.post(`/api/releases/${releaseId}/tasks`, {
+    ...rest,
+  });
+  return response;
+};
+
 export const updateTask = async ({ id, ...rest }: UpdateTaskVars) => {
   if (!id) throw new Error('No task ID passed to update.');
 
-  return await axios.patch<ReleaseTaskEventWithUser[]>(`/api/tasks/${id}`, rest);
+  return await axios.patch<ReleaseTaskWithAssignees>(`/api/tasks/${id}`, rest);
+};
+
+export const deleteTask = async ({ id }: Pick<UpdateTaskVars, 'id'>) => {
+  if (!id) throw new Error('No task ID passed to update.');
+
+  return await axios.delete<ReleaseTaskWithAssignees>(`/api/tasks/${id}`);
 };
 
 export const postNewComment = async ({ id, text }: NewCommentVars) => {

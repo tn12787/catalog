@@ -7,6 +7,7 @@ import ReleaseTaskCard from '../ReleaseTaskCard';
 import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
 import { ClientRelease, EventType } from 'types/common';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   releaseData: ClientRelease;
@@ -18,6 +19,7 @@ const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): Summary
 
 const Artwork = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bgSecondary } = useAppColors();
 
   const artworkTask = releaseData.artwork;
   return (
@@ -31,7 +33,7 @@ const Artwork = ({ releaseData }: Props) => {
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
-        <ModalContent>
+        <ModalContent bg={bgSecondary}>
           <EditArtworkForm releaseData={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>
       </Modal>

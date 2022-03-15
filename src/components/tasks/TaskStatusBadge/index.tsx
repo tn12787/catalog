@@ -9,7 +9,7 @@ interface Props {
 const deriveBadgeColor = (status?: TaskStatus) => {
   switch (status) {
     case TaskStatus.OUTSTANDING:
-      return 'red';
+      return 'purple';
     case TaskStatus.IN_PROGRESS:
       return 'orange';
     case TaskStatus.COMPLETE:
@@ -22,7 +22,7 @@ const deriveBadgeColor = (status?: TaskStatus) => {
 const deriveBadgeText = (status?: TaskStatus) => {
   switch (status) {
     case TaskStatus.OUTSTANDING:
-      return 'Oustanding';
+      return 'To do';
     case TaskStatus.IN_PROGRESS:
       return 'In progress';
     case TaskStatus.COMPLETE:

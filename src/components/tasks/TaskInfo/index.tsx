@@ -58,15 +58,6 @@ const TaskInfo = ({ loading, task }: Props) => {
           />
         </Skeleton>
       )}
-      {task?.type === ReleaseTaskType.MUSIC_VIDEO && (
-        <Skeleton isLoaded={!loading}>
-          <UrlField
-            isDisabled={!canEdit}
-            url={task?.musicVideoData?.url ?? ''}
-            onChange={(url) => onSubmit({ url })}
-          />
-        </Skeleton>
-      )}
       {task?.type === ReleaseTaskType.ARTWORK && (
         <Skeleton isLoaded={!loading}>
           <ImageField

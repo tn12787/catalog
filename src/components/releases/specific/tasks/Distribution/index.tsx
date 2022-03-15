@@ -7,6 +7,7 @@ import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
 import { ClientRelease, EventType } from 'types/common';
 import EditDistributionForm from 'components/releases/forms/EditDistributionForm';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   releaseData: ClientRelease;
@@ -27,6 +28,7 @@ const buildFields = (
 const Distribution = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const distributionTask = releaseData.distribution;
+  const { bgSecondary } = useAppColors();
 
   return (
     <>
@@ -39,7 +41,7 @@ const Distribution = ({ releaseData }: Props) => {
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
-        <ModalContent>
+        <ModalContent bg={bgSecondary}>
           <EditDistributionForm releaseData={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>
       </Modal>

@@ -1,7 +1,7 @@
 import {
-  BadRequestException,
   Body,
   createHandler,
+  Delete,
   Get,
   NotFoundException,
   Patch,
@@ -17,7 +17,11 @@ import { getResourceWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
-import { checkTaskUpdatePermissions, buildUpdateReleaseTaskArgs } from 'backend/apiUtils/tasks';
+import {
+  checkTaskUpdatePermissions,
+  buildUpdateReleaseTaskArgs,
+  checkTaskDates,
+} from 'backend/apiUtils/tasks';
 import { UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
 import { getTaskByIdIsomorphic } from 'backend/isomorphic/tasks';
 
@@ -46,6 +50,8 @@ class SingleTaskHandler {
         release: { select: { targetDate: true } },
         type: true,
         assignees: true,
+        dueDate: true,
+        status: true,
       },
     });
 
@@ -53,11 +59,9 @@ class SingleTaskHandler {
       throw new NotFoundException();
     }
 
-    if (body.dueDate && new Date(body.dueDate) > releaseTask.release.targetDate) {
-      throw new BadRequestException();
-    }
-
     const releaseWorkspace = await checkTaskUpdatePermissions(req, releaseTask.releaseId);
+
+    await checkTaskDates(releaseTask, releaseTask.releaseId);
 
     const updateArgs = {
       ...buildUpdateReleaseTaskArgs(body, releaseTask.type),
@@ -71,8 +75,7 @@ class SingleTaskHandler {
 
     const eventsToCreate = await createUpdateTaskEvents({
       body,
-      releaseId: releaseTask.releaseId,
-      type: releaseTask.type,
+      id,
       userId: activeWorkspaceMember?.id as string,
     });
 
@@ -83,10 +86,7 @@ class SingleTaskHandler {
     await prisma.$transaction([
       prisma.releaseTask.update({
         where: {
-          releaseId_type: {
-            releaseId: releaseTask.releaseId,
-            type: releaseTask.type,
-          },
+          id,
         },
         data: { ...updateArgs, events: { create: eventsToCreate as any } }, // TODO: find a type for this
       }),
@@ -102,6 +102,36 @@ class SingleTaskHandler {
           })),
       }),
     ]);
+  }
+
+  @Delete()
+  async deleteTask(@Req() req: AuthDecoratedRequest, @PathParam('tsId') id: string) {
+    if (!id) throw new NotFoundException();
+
+    // TODO: replace with a direct update
+    const releaseTask = await prisma.releaseTask.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        releaseId: true,
+        release: { select: { targetDate: true } },
+        type: true,
+        assignees: true,
+        dueDate: true,
+        status: true,
+      },
+    });
+
+    if (!releaseTask) {
+      throw new NotFoundException();
+    }
+
+    await checkTaskUpdatePermissions(req, releaseTask.releaseId);
+
+    await prisma.releaseTask.delete({ where: { id } });
+
+    return releaseTask;
   }
 }
 

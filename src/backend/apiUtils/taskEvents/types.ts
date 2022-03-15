@@ -1,5 +1,3 @@
-import { ReleaseTaskType } from '@prisma/client';
-
 import { UpdateBaseReleaseTaskDto } from 'backend/models/tasks/update';
 import { ReleaseTaskWithAssignees } from 'types/common';
 
@@ -9,8 +7,7 @@ interface BaseTaskEventData {
 
 export interface UpdateTaskEventData extends BaseTaskEventData {
   body: UpdateBaseReleaseTaskDto;
-  releaseId: string;
-  type: ReleaseTaskType;
+  id: string;
 }
 
 export interface CreateTaskEventData extends BaseTaskEventData {}
@@ -25,7 +22,7 @@ export interface CreateStatusEventData extends Pick<UpdateTaskEventData, 'userId
   task: ReleaseTaskWithAssignees;
 }
 
-export interface CreateDueDateEventIfNeeded extends Pick<UpdateTaskEventData, 'userId'> {
+export interface CreateDueDateEventData extends Pick<UpdateTaskEventData, 'userId'> {
   dueDate: UpdateBaseReleaseTaskDto['dueDate'];
   task: ReleaseTaskWithAssignees;
 }

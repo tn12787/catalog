@@ -6,7 +6,7 @@ import {
   CreateAssigneesEventData,
   CreateStatusEventData,
   UpdateTaskEventData,
-  CreateDueDateEventIfNeeded,
+  CreateDueDateEventData,
   CreateTaskEventData,
 } from './types';
 
@@ -20,16 +20,11 @@ export const buildCreateTaskEvent = ({ userId }: CreateTaskEventData) => {
   };
 };
 
-export const createUpdateTaskEvents = async ({
-  body,
-  releaseId,
-  type,
-  userId,
-}: UpdateTaskEventData) => {
+export const createUpdateTaskEvents = async ({ body, id, userId }: UpdateTaskEventData) => {
   if (!body) throw new BadRequestException('No body provided');
 
   const task = await prisma.releaseTask.findUnique({
-    where: { releaseId_type: { releaseId, type } },
+    where: { id },
     include: {
       assignees: { include: { user: true } },
       contacts: { include: { labels: true } },
@@ -82,7 +77,7 @@ const createStatusEventIfNeeded = ({ status, task, userId }: CreateStatusEventDa
   };
 };
 
-const createDueDateEventIfNeeded = ({ dueDate, task, userId }: CreateDueDateEventIfNeeded) => {
+const createDueDateEventIfNeeded = ({ dueDate, task, userId }: CreateDueDateEventData) => {
   if (!dueDate) return;
 
   const extraData = {

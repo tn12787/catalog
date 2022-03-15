@@ -42,4 +42,4 @@ const AssigneeSelect: React.FC<Props> = React.forwardRef(
 
 AssigneeSelect.displayName = 'AssigneeSelect';
 
-export default AssigneeSelect;
+export default React.memo(AssigneeSelect);
