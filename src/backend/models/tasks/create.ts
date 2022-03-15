@@ -16,6 +16,10 @@ export class CreateBaseReleaseTaskDto {
 
   @IsOptional()
   @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
   notes?: string;
 
   @IsOptional()

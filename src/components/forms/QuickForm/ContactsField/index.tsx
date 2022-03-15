@@ -10,7 +10,7 @@ import ContactBadgeList from 'components/contacts/ContactBadge/ContactBadgeList'
 type Props = {
   contacts: ContactWithLabels[];
   isDisabled?: boolean;
-  onChange: (value: ContactWithLabels[]) => void | Promise<void>;
+  onChange: (value: string[]) => void | Promise<void>;
 };
 
 const ContactsField = ({ isDisabled, contacts, onChange }: Props) => {
@@ -19,14 +19,14 @@ const ContactsField = ({ isDisabled, contacts, onChange }: Props) => {
   return (
     <QuickFormField
       isDisabled={isDisabled}
-      fieldName="contacts"
+      fieldName="linked contacts"
       value={contacts}
       renderValue={({ value }) => <ContactBadgeList contacts={value} />}
       onSubmit={onChange}
       renderEditing={({ value, onChange }) => (
         <Stack p={2}>
           <Text fontSize={'sm'} fontWeight={'semibold'}>
-            Edit contacts
+            Edit linked contacts
           </Text>
           <ContactSelect
             value={value}

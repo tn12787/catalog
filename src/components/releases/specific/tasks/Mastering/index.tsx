@@ -7,6 +7,7 @@ import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
 import EditMasteringForm from 'components/releases/forms/EditMasteringForm';
 import { ClientRelease, EventType } from 'types/common';
+import useAppColors from 'hooks/useAppColors';
 
 interface Props {
   releaseData: ClientRelease;
@@ -18,6 +19,7 @@ const buildFields = (masteringInfo: ClientRelease['mastering'] | undefined): Sum
 
 const Mastering = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bgSecondary } = useAppColors();
   const masteringInfo = releaseData.mastering;
   return (
     <>
@@ -30,7 +32,7 @@ const Mastering = ({ releaseData }: Props) => {
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
-        <ModalContent>
+        <ModalContent bg={bgSecondary}>
           <EditMasteringForm releaseData={releaseData} onSubmitSuccess={onClose} />
         </ModalContent>
       </Modal>

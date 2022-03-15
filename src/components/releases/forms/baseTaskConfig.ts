@@ -1,5 +1,4 @@
 import { TaskStatus } from '@prisma/client';
-import { format } from 'date-fns';
 
 import { ClientReleaseTaskData } from 'types/common';
 import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
@@ -34,9 +33,6 @@ export const baseTaskConfig = <
     type: 'date',
     registerArgs: {
       required: 'Please enter a due date.',
-    },
-    extraProps: {
-      max: format(new Date(releaseDate ?? new Date()), 'yyyy-MM-dd'),
     },
   },
   {

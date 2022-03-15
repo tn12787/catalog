@@ -35,8 +35,8 @@ export const updateEventInCalendar = async ({
 
     case EventType.DISTRIBUTION:
     case EventType.MASTERING:
-    case EventType.MUSIC_VIDEO:
     case EventType.ARTWORK:
+    case EventType.GENERIC:
       return axios.patch(`/api/tasks/${event.data.id}`, {
         dueDate: targetDate,
       });

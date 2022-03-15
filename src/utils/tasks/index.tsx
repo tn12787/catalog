@@ -1,7 +1,11 @@
 import { ReleaseTask, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import { addDays, isBefore, startOfDay } from 'date-fns';
 
-export const taskHeadingByType = (type: ReleaseTaskType, releaseName?: string) => {
+export const taskHeadingByType = (
+  taskName: string | null,
+  type: ReleaseTaskType,
+  releaseName?: string
+) => {
   const releasePrefix = releaseName ? `${releaseName}: ` : '';
   switch (type) {
     case ReleaseTaskType.ARTWORK:
@@ -10,12 +14,10 @@ export const taskHeadingByType = (type: ReleaseTaskType, releaseName?: string) =
       return `${releasePrefix}📦 Distribution`;
     case ReleaseTaskType.MASTERING:
       return `${releasePrefix}🎧 Mastering`;
-    case ReleaseTaskType.MUSIC_VIDEO:
-      return `${releasePrefix}🎥 Music Video`;
-    case ReleaseTaskType.MARKETING:
-      return `${releasePrefix}📷 Marketing`;
+    case ReleaseTaskType.GENERIC:
+      return `${releasePrefix}${taskName || 'Generic Task'}`;
     default:
-      return `${releasePrefix}🚩 Release Day`;
+      return `${releasePrefix}${'🚩 Release Day'}`;
   }
 };
 

@@ -21,15 +21,6 @@ interface Props<T> {
   taskType: EventType;
 }
 
-const mapTaskType = (taskType: EventType) => {
-  switch (taskType) {
-    case EventType.MUSIC_VIDEO:
-      return 'music video';
-    default:
-      return taskType;
-  }
-};
-
 const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
   heading,
   onEditClick,
@@ -42,9 +33,9 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
     ['UPDATE_RELEASES'],
     workspaceMemberships?.[currentWorkspace]
   );
-  const { bodySub } = useAppColors();
+  const { bodySub, border } = useAppColors();
   return (
-    <Card flex={1}>
+    <Card flex={1} border="1px solid" borderColor={border}>
       <Flex
         direction={['column', 'column', 'row']}
         align="center"
@@ -53,7 +44,7 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
       >
         <Stack align="center" direction={{ base: 'column', md: 'row' }}>
           {typeof heading === 'string' ? (
-            <Heading whiteSpace="nowrap" fontWeight="semibold" fontSize="2xl">
+            <Heading whiteSpace="nowrap" fontWeight="bold" fontSize="xl">
               {heading}
             </Heading>
           ) : (
@@ -87,7 +78,7 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
                   justify={['space-between']}
                   key={name}
                 >
-                  <Text fontSize="md" fontWeight="bold">
+                  <Text fontSize="sm" fontWeight="semibold">
                     {name}
                   </Text>
                   {content}
@@ -99,7 +90,7 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
       ) : (
         <Stack spacing={3} align="center" direction="column" justify="space-between">
           <Text fontSize="sm" color={bodySub}>
-            This release has no {mapTaskType(taskType)} info yet.
+            This release has no {taskType} info yet.
           </Text>
           {canEdit && (
             <Button size="sm" flexGrow={0} onClick={onEditClick} colorScheme="purple">

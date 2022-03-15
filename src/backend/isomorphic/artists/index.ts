@@ -23,8 +23,6 @@ export const getArtistByIdIsomorphic = async (
               artworkData: true,
               distributionData: { include: { distributor: true } },
               masteringData: true,
-              marketingData: { include: { links: true } },
-              musicVideoData: true,
             },
           },
         },

@@ -2,7 +2,7 @@ import { Stack, Flex, Button } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiArrowRight, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import { ReleaseType } from '@prisma/client';
+import { ReleaseTaskType, ReleaseType } from '@prisma/client';
 import { isEmpty } from 'lodash';
 import { addWeeks, format, startOfDay } from 'date-fns';
 
@@ -13,7 +13,7 @@ import { BasicInfoFormData } from './types';
 
 import FormContent from 'components/forms/FormContent';
 import useArtists from 'hooks/data/artists/useArtists';
-import { clientReleaseTasks } from 'utils/releases';
+import { clientReleasePrepTasks } from 'utils/releases';
 
 const NewReleaseFormBody = ({
   onSubmit,
@@ -59,9 +59,13 @@ const NewReleaseFormBody = ({
   useEffect(() => {
     if (!existingRelease) return;
 
-    const tasks = clientReleaseTasks(existingRelease);
+    const tasks = clientReleasePrepTasks(existingRelease);
     clearErrors('targetDate');
-    if (tasks.some((task) => task.dueDate && new Date(task.dueDate) > new Date(selectedDate))) {
+    if (
+      tasks
+        .filter((item) => item.type !== ReleaseTaskType.GENERIC)
+        .some((task) => task.dueDate && new Date(task.dueDate) > new Date(selectedDate))
+    ) {
       setError('targetDate', {
         message: 'There are tasks for this release due after this date.',
       });

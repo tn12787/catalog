@@ -1,4 +1,12 @@
+import { ReleaseTask } from '@prisma/client';
+
+import { FilterOptions } from 'queries/types';
 import { ReleaseTaskWithAssignees } from 'types/common';
+
+export interface TaskFilterOptions extends FilterOptions<ReleaseTask> {
+  workspace: string;
+  assignee?: string;
+}
 
 export interface NewCommentVars {
   id: string;
@@ -14,6 +22,21 @@ export type UpdateCommentVars = ExistingCommentVars & { text: string };
 export type DeleteCommentVars = ExistingCommentVars;
 
 export type UpdateTaskVars = Partial<
-  Pick<ReleaseTaskWithAssignees, 'assignees' | 'contacts' | 'dueDate' | 'notes' | 'status'> &
-    Pick<ReleaseTaskWithAssignees, 'id'> & { url?: string; distributor?: string }
+  Pick<ReleaseTaskWithAssignees, 'id' | 'dueDate' | 'notes' | 'name' | 'status'> & {
+    url?: string;
+    distributor?: string;
+    assignees?: string[];
+    contacts?: string[];
+  }
 >;
+
+export type CreateTaskVars = Pick<
+  ReleaseTaskWithAssignees,
+  'name' | 'type' | 'dueDate' | 'notes' | 'status'
+> & {
+  releaseId: string;
+  url?: string;
+  distributor?: string;
+  assignees: string[];
+  contacts: string[];
+};

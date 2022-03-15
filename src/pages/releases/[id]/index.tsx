@@ -23,7 +23,7 @@ const SpecificRelease = ({ release }: Props) => {
   const { bgPrimary } = useAppColors();
   const router = useRouter();
   const releaseId = router.query['id'] as string;
-  const { data: releaseData } = useSingleRelease(releaseId, { initialData: release });
+  const { data: releaseData, isLoading } = useSingleRelease(releaseId, { initialData: release });
 
   const resolvedData = releaseData ?? release;
   return (
@@ -33,7 +33,7 @@ const SpecificRelease = ({ release }: Props) => {
       <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
         {!hasAllRequiredTasks(resolvedData) && <NewReleaseAlert></NewReleaseAlert>}
         <Summary releaseData={resolvedData} />
-        <ReleaseTaskGrid releaseData={resolvedData}></ReleaseTaskGrid>
+        <ReleaseTaskGrid isLoading={isLoading} releaseData={resolvedData}></ReleaseTaskGrid>
         <Events releaseData={resolvedData} />
       </Stack>
     </Stack>

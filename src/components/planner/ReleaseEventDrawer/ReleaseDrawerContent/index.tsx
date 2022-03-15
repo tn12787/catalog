@@ -137,7 +137,7 @@ const ReleaseDrawerContent = ({ event, loading }: Props) => {
               <NextLink href={`/tasks/${item.id}`} passHref>
                 <LinkOverlay>
                   <HStack justifyContent={'space-between'}>
-                    <Text>{taskHeadingByType(item.type)}</Text>
+                    <Text>{taskHeadingByType(item.name, item.type)}</Text>
                     <TaskStatusBadge status={item.status} />
                   </HStack>
                 </LinkOverlay>

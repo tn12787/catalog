@@ -39,8 +39,11 @@ const ReleaseEventDrawer = ({ event, isOpen, onClose, ...rest }: Props) => {
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader>
-          {taskHeadingByType(event?.data?.type as ReleaseTaskType, event?.release.name) ??
-            'Loading Artists'}
+          {taskHeadingByType(
+            event?.data?.name ?? null,
+            event?.data?.type as ReleaseTaskType,
+            event?.release.name
+          ) ?? 'Loading Artists'}
         </DrawerHeader>
         <DrawerBody>
           {event ? (

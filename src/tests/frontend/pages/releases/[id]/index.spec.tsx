@@ -40,10 +40,13 @@ describe('Single Release Page', () => {
     expect(getByText(/Actions/)).toBeVisible();
     expect(getByText(testReleaseType)).toBeVisible();
 
+    expect(getByText(/Release Prep/)).toBeVisible();
+    expect(getByText(/Marketing & Promotion/)).toBeVisible();
+
     await waitFor(() => expect(getAllByText('🎨 Artwork')).toHaveLength(2));
+
     expect(getByText('💿 Distribution')).toBeVisible();
     expect(getByText('🎚️ Mastering')).toBeVisible();
-    expect(getByText('🎥 Music Video')).toBeVisible();
     expect(getByText('📅 Timeline')).toBeVisible();
 
     expect(queryByText(/View details/)).toBeNull();
@@ -67,8 +70,6 @@ describe('Single Release Page', () => {
       artworkData: { url: null, id: testTaskId, taskId: 'test-taskId' },
       masteringData: null,
       distributionData: null,
-      musicVideoData: null,
-      marketingData: null,
     };
 
     server.use(

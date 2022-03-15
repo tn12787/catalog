@@ -9,6 +9,10 @@ type Props<T extends object> = Pick<
   loading?: boolean;
 };
 
+interface TableBodyComponent {
+  <T extends object>(props: Props<T>): JSX.Element | null;
+}
+
 const TableBody = <T extends object>({
   page,
   getTableBodyProps,
@@ -47,4 +51,4 @@ const TableBody = <T extends object>({
   );
 };
 
-export default TableBody;
+export default React.memo(TableBody) as TableBodyComponent;

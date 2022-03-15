@@ -32,8 +32,6 @@ export const getReleaseByIdIsomorphic = async (
           contacts: { include: { labels: true } },
           artworkData: true,
           distributionData: { include: { distributor: true } },
-          marketingData: { include: { links: true } },
-          musicVideoData: true,
           masteringData: true,
         },
       },

@@ -12,7 +12,6 @@ import {
   ClientArtwork,
   ClientDistribution,
   ClientMastering,
-  ClientMusicVideo,
   ContactWithLabels,
   EventType,
   ReleaseEvent,
@@ -112,15 +111,6 @@ const ReleaseTaskDrawerContent = ({ event, loading }: Props) => {
         </Skeleton>
       )}
 
-      {task?.type === ReleaseTaskType.MUSIC_VIDEO && (
-        <Skeleton isLoaded={!loading}>
-          <UrlField
-            isDisabled={!canEdit}
-            url={(task as ClientMusicVideo).url ?? ''}
-            onChange={(url) => onSubmit({ url })}
-          />
-        </Skeleton>
-      )}
       {task?.type === ReleaseTaskType.ARTWORK && (
         <Skeleton isLoaded={!loading}>
           <ImageField

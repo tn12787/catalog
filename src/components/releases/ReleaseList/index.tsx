@@ -30,6 +30,7 @@ const ReleaseList = ({ isLoading, search, releases, EmptyComponent = NoReleasesY
           type: ReleaseType.Album,
           artistId: 'blank_id',
           workspaceId: 'loading',
+          generic: [],
           createdAt: new Date(),
           updatedAt: new Date(),
         }}
