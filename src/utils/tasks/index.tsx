@@ -1,6 +1,8 @@
 import { ReleaseTask, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import { addDays, isAfter, startOfDay, startOfToday } from 'date-fns';
 
+import { maybePluralize } from 'utils/words';
+
 export const taskHeadingByType = (
   taskName: string | null,
   type: ReleaseTaskType,
@@ -29,4 +31,16 @@ export const isTaskOverdue = (task: ReleaseTask) => {
 
 export const defaultTaskDueDate = () => {
   return addDays(startOfToday(), 7);
+};
+
+export const dayDifferenceToString = (difference: number): string => {
+  if (difference === 0) {
+    return 'now overdue';
+  }
+
+  if (difference < 0) {
+    return `due in ${-difference} ${maybePluralize(Math.abs(difference), 'day')}`;
+  }
+
+  return `overdue by ${difference} ${maybePluralize(Math.abs(difference), 'day')}`;
 };
