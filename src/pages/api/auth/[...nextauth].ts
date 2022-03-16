@@ -74,25 +74,6 @@ export default NextAuth({
     jwt: true,
   },
   callbacks: {
-    async jwt({ token, isNewUser }) {
-      try {
-        const numberOfUserWorkspaces = await prisma.workspaceMember.count({
-          where: { userId: token.sub as string },
-        });
-
-        if (isNewUser || !numberOfUserWorkspaces) {
-          await createDefaultWorkspaceForUser({
-            name: token.name as string,
-            userId: token.sub as string,
-            email: token.email as string,
-          });
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        return { ...token };
-      }
-    },
     async session({ session, token, user }) {
       try {
         const userWorkspaces = await prisma.workspaceMember.findMany({
