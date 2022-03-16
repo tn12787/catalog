@@ -30,7 +30,14 @@ class UserHandler {
         name: body.name,
         segment: body.segment,
         image: body.image,
-        receiveEmail: body.receiveEmail,
+        emailPreferences: {
+          connectOrCreate: {
+            where: {
+              userId: id,
+            },
+            create: { reminders: body.receiveEmail },
+          },
+        },
       },
     });
 
