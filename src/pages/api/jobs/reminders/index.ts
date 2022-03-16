@@ -76,7 +76,7 @@ class RemindersHandler {
           templateId: notificationTemplateId,
           dynamicTemplateData: {
             workspaceName: member.workspace.name,
-            ctaText: 'View Task',
+            ctaText: 'View Details',
             ctaUrl: `${process.env.NEXTAUTH_URL}/tasks/${task.id}`,
             manageUrl: `${process.env.NEXTAUTH_URL}/workspaces/${member.workspace.id}/settings`,
             title: `${taskHeadingByType(
