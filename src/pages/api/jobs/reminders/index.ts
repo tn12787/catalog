@@ -67,10 +67,13 @@ class RemindersHandler {
       skipDuplicates: true,
     });
 
+    let emailsSent = 0;
     workspaceMembersToNotify.forEach((member) => {
-      member.tasksAssigned.map(async (task) => {
-        const dayDifference = differenceInCalendarDays(new Date(), new Date(task.dueDate));
+      if (!member.user.receiveEmail) return; // skip users who have disable email notifications
 
+      member.tasksAssigned.map(async (task) => {
+        ++emailsSent;
+        const dayDifference = differenceInCalendarDays(new Date(), new Date(task.dueDate));
         await sendDynamicEmail<NotificationEmailData>({
           to: member.user.email as string,
           templateId: notificationTemplateId,
@@ -78,7 +81,7 @@ class RemindersHandler {
             workspaceName: member.workspace.name,
             ctaText: 'View Details',
             ctaUrl: `${process.env.NEXTAUTH_URL}/tasks/${task.id}`,
-            manageUrl: `${process.env.NEXTAUTH_URL}/workspaces/${member.workspace.id}/settings`,
+            manageUrl: `${process.env.NEXTAUTH_URL}/user/settings`,
             title: `${taskHeadingByType(
               task.name,
               task.type,
@@ -92,7 +95,8 @@ class RemindersHandler {
 
     return {
       acknowledged: true,
-      created: notificationsToPost.length,
+      notificationsCreated: notificationsToPost.length,
+      emailsSent,
     };
   }
 }
