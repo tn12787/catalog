@@ -21,12 +21,12 @@ const SomethingWentWrong = ({ resetErrorBoundary, error }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
   return (
     <Stack align="center" w="100%" justify="center" direction="column">
-      <Stack align="center" maxW="container.md" spacing={7}>
+      <Stack align="center" w="100%" maxW="container.md" spacing={7}>
         <Stack align="center">
           <Heading>Oh no...</Heading>
           <Text>Something went wrong.</Text>
         </Stack>
-        <Stack w="90%" fontSize="sm" rounded="lg" p={2} bg={bgPrimary}>
+        <Stack overflowX="auto" w="90%" fontSize="sm" rounded="lg" p={2} bg={bgPrimary}>
           <Text fontWeight={'semibold'}>Error message</Text>
           <Text as="pre" whiteSpace={'pre-wrap'}>
             {error.message}
