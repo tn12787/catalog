@@ -15,19 +15,20 @@ interface Props extends Pick<ControllerRenderProps, 'onChange'> {
   borderless?: boolean;
 }
 
-const ContactSelect: React.FC<Props> = React.forwardRef(
-  ({ value, borderless = false, onChange }: Props) => {
+const ContactSelect: React.FC<Props> = React.forwardRef<HTMLSelectElement, Props>(
+  ({ value, borderless = false, onChange }: Props, ref) => {
     const { data: contacts, isLoading } = useContacts({ pagination: { page: 1, pageSize: 1000 } });
 
     const allContacts = contacts?.results || [];
 
     return (
       <MultiSelect
+        ref={ref}
         isLoading={isLoading}
         value={value}
         onChange={onChange}
         borderless={borderless}
-        itemToString={(item) => item?.name || ''}
+        itemToString={(item: ContactWithLabels) => item?.name || ''}
         renderSelectedItems={ContactSelectedItems}
         renderListItem={(props: MultiSelectListItemProps<Contact>) => <ContactItem {...props} />}
         allItems={allContacts}
