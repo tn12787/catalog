@@ -4,7 +4,7 @@ import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { BiArrowBack } from 'react-icons/bi';
-import { format } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 
 import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
@@ -61,7 +61,9 @@ const EditDistributionFormBody = ({
       <Stack width="100%" margin="0 auto">
         <FormContent
           config={buildDistribConfig(
-            completeState?.basics?.targetDate ? new Date(completeState?.basics?.targetDate) : null,
+            completeState?.basics?.targetDate
+              ? startOfDay(new Date(completeState?.basics?.targetDate))
+              : null,
             distributors ?? []
           )}
           control={control}

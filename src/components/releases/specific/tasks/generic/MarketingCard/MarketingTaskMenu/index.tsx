@@ -12,6 +12,7 @@ import {
 import React, { useRef } from 'react';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { CellProps } from 'react-table';
+import { pick } from 'lodash';
 
 import MarketingModal from '../MarketingModal';
 
@@ -39,7 +40,7 @@ const MarketingTaskMenu = ({ value }: Props) => {
 
   const {
     deleteSingleTask: { mutateAsync, isLoading },
-  } = useTaskMutations(value?.releaseId);
+  } = useTaskMutations(pick(value, ['id', 'releaseId']));
 
   const onDelete = async () => {
     try {

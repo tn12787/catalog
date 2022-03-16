@@ -133,7 +133,7 @@ export const checkTaskDates = async (
   }
 
   // otherwise, tasks have to be due before release day
-  if (startOfDay(task.dueDate) > startOfDay(release.targetDate)) {
+  if (startOfDay(task.dueDate) >= startOfDay(release.targetDate)) {
     throw new BadRequestException('Task due date must be before release date');
   }
 };
