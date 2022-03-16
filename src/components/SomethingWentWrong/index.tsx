@@ -26,7 +26,7 @@ const SomethingWentWrong = ({ resetErrorBoundary, error }: Props) => {
           <Heading>Oh no...</Heading>
           <Text>Something went wrong.</Text>
         </Stack>
-        <Stack w="90%" fontSize="sm" rounded="lg" p={2} bg={bgPrimary}>
+        <Stack overflowX="auto" w="90%" fontSize="sm" rounded="lg" p={2} bg={bgPrimary}>
           <Text fontWeight={'semibold'}>Error message</Text>
           <Text as="pre" whiteSpace={'pre-wrap'}>
             {error.message}
