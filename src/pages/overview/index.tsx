@@ -2,7 +2,7 @@ import { Stack } from '@chakra-ui/layout';
 import React, { useMemo } from 'react';
 import { Heading, Skeleton, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import { TaskStatus } from '@prisma/client';
-import { startOfDay } from 'date-fns';
+import { startOfToday } from 'date-fns';
 
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -31,7 +31,7 @@ const OverviewPage = () => {
   });
 
   const upcomingReleaseQueryArgs = {
-    dates: { after: startOfDay(new Date()) },
+    dates: { after: startOfToday() },
     pagination: {
       pageSize: 5,
       page: 1,

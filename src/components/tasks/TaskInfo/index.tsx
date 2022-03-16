@@ -1,12 +1,11 @@
 import { Heading, Skeleton } from '@chakra-ui/react';
 import { ReleaseTaskType, TaskStatus } from '@prisma/client';
 import React from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { pick } from 'lodash';
 
 import Card from 'components/Card';
 import StatusField from 'components/forms/QuickForm/StatusField';
 import { ContactWithLabels, EnrichedReleaseTask, WorkspaceMemberWithUser } from 'types/common';
-import { updateTask } from 'queries/tasks';
 import AssigneesField from 'components/forms/QuickForm/AssigneesField';
 import { UpdateTaskVars } from 'queries/tasks/types';
 import DueDateField from 'components/forms/QuickForm/DueDateField';
@@ -16,21 +15,16 @@ import DistributorField from 'components/forms/QuickForm/DistributorField';
 import ContactsField from 'components/forms/QuickForm/ContactsField';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
+import useTaskMutations from 'hooks/data/tasks/useTaskMutations';
 
 type Props = { loading?: boolean; task: EnrichedReleaseTask | undefined };
 
 const TaskInfo = ({ loading, task }: Props) => {
-  const queryClient = useQueryClient();
-  const { mutateAsync: submitUpdate } = useMutation(updateTask, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['tasks', task?.id]);
-      queryClient.invalidateQueries(['taskActivity', task?.id]);
-    },
-  });
+  const { updateSingleTask } = useTaskMutations(pick(task, 'id', 'releaseId'));
 
   const onSubmit = async (data: UpdateTaskVars) => {
     try {
-      await submitUpdate({
+      await updateSingleTask.mutateAsync({
         id: task?.id,
         ...data,
       });
