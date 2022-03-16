@@ -57,6 +57,15 @@ export default NextAuth({
       },
     }),
   ],
+  events: {
+    createUser: async ({ user }) => {
+      await createDefaultWorkspaceForUser({
+        name: user.name as string,
+        userId: user.sub as string,
+        email: user.email as string,
+      });
+    },
+  },
   secret: process.env.SECRET,
   jwt: {
     signingKey: process.env.JWT_SIGNING_KEY as string,
@@ -78,8 +87,9 @@ export default NextAuth({
             email: token.email as string,
           });
         }
-        return { ...token };
       } catch (e) {
+        console.error(e);
+      } finally {
         return { ...token };
       }
     },
