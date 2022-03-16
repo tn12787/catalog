@@ -63,13 +63,15 @@ export const postNewComment = async ({ id, text }: NewCommentVars) => {
 };
 
 export const updateComment = async ({ commentId, taskId, text }: UpdateCommentVars) => {
-  if (!taskId || !commentId) return;
+  if (!taskId || !commentId)
+    throw new Error('No task ID or comment ID passed to update comment for.');
 
   return await axios.put(`/api/tasks/${taskId}/activity/comments/${commentId}`, { text });
 };
 
 export const deleteComment = async ({ commentId, taskId }: DeleteCommentVars) => {
-  if (!taskId || !commentId) return;
+  if (!taskId || !commentId)
+    throw new Error('No task ID or comment ID passed to delete comment for.');
 
   return await axios.delete(`/api/tasks/${taskId}/activity/comments/${commentId}`);
 };

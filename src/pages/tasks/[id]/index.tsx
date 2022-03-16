@@ -2,7 +2,6 @@ import { Stack, Heading, Divider } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import {
   Alert,
   AlertIcon,
@@ -10,7 +9,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Editable,
-  useToast,
 } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
 import { Release, ReleaseTask, ReleaseTaskType } from '@prisma/client';
@@ -19,7 +17,6 @@ import Link from 'next/link';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
-import { postNewComment } from 'queries/tasks';
 import ActivityList from 'components/tasks/activity/ActivityList';
 import NewCommentBox from 'components/comments/NewCommentBox';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
@@ -34,6 +31,7 @@ import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import SingleTaskMenu from 'components/tasks/SingleTaskMenu';
+import useCommentMutations from 'hooks/data/tasks/comments/useCommentMutations';
 
 type SingleTaskPageProps = {
   task: EnrichedReleaseTask & { release: Release };
@@ -43,29 +41,19 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
   const router = useRouter();
   const taskId = router.query['id'] as string;
   const { bgPrimary } = useAppColors();
-  const queryClient = useQueryClient();
-  const toast = useToast();
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
   const { data: taskData, isLoading: taskLoading } = useSingleTask(taskId, { initialData: task });
   const { data: taskActivity, isLoading: activityLoading } = useTaskActivity(taskId);
 
-  const { mutateAsync: postComment, isLoading: commentLoading } = useMutation(postNewComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['taskActivity', currentWorkspace, taskId]);
-    },
-  });
+  const { postSingleComment } = useCommentMutations({ id: taskData?.id });
   const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
 
   const onSubmit = async (data: NewCommentFormData) => {
-    try {
-      await postComment({
-        id: taskId,
-        text: data.text,
-      });
-    } catch (e: any) {
-      toast({ status: 'error', title: 'Oh no...', description: e.toString() });
-    }
+    await postSingleComment.mutateAsync({
+      id: taskId,
+      text: data.text,
+    });
   };
 
   const isOverdue = isTaskOverdue(taskData as ReleaseTask);
@@ -151,7 +139,7 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
               Activity
             </Heading>
             <ActivityList loading={activityLoading} events={taskActivity?.data ?? []} />
-            {canEdit && <NewCommentBox onSubmit={onSubmit} loading={commentLoading} />}
+            {canEdit && <NewCommentBox onSubmit={onSubmit} loading={postSingleComment.isLoading} />}
           </Stack>
           <TaskInfo loading={taskLoading} task={taskData} />
         </Stack>

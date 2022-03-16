@@ -12,7 +12,6 @@ import {
 import React, { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Prisma } from '@prisma/client';
-import { useMutation, useQueryClient } from 'react-query';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { last } from 'lodash';
 
@@ -22,9 +21,9 @@ import useAppColors from 'hooks/useAppColors';
 import Card from 'components/Card';
 import { hasRequiredPermissions } from 'utils/auth';
 import useExtendedSession from 'hooks/useExtendedSession';
-import { deleteComment, updateComment } from 'queries/tasks';
 import CommentInput from 'components/comments/CommentInput';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
+import useCommentMutations from 'hooks/data/tasks/comments/useCommentMutations';
 
 interface Props {
   event: ReleaseTaskEventWithUser;
@@ -49,7 +48,6 @@ const CommentItem = ({ event, updates }: Props) => {
 
   const { newComment } = event.extraData as Prisma.JsonObject;
   const { workspaceMemberships, currentWorkspace } = useExtendedSession();
-  const queryClient = useQueryClient();
 
   const isAuthor = event.user?.id === workspaceMemberships?.[currentWorkspace]?.id;
 
@@ -59,15 +57,11 @@ const CommentItem = ({ event, updates }: Props) => {
   const canEditComment = isAuthor;
   const toast = useToast();
 
-  const { mutateAsync: deleteSelected } = useMutation(deleteComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['taskActivity', currentWorkspace, event.taskId]);
-    },
-  });
+  const { deleteSingleComment, updateSingleComment } = useCommentMutations({ id: event.taskId });
 
   const onDelete = async () => {
     try {
-      await deleteSelected({
+      await deleteSingleComment.mutateAsync({
         taskId: event.taskId,
         commentId: event.id,
       });
@@ -76,18 +70,9 @@ const CommentItem = ({ event, updates }: Props) => {
     }
   };
 
-  const { mutateAsync: updateExistingComment, isLoading: updateCommentLoading } = useMutation(
-    updateComment,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['taskActivity', currentWorkspace, event.taskId]);
-      },
-    }
-  );
-
   const onSubmit = async (data: NewCommentFormData) => {
     try {
-      await updateExistingComment({
+      await updateSingleComment.mutateAsync({
         taskId: event.taskId,
         commentId: event.id,
         text: data.text,
@@ -150,7 +135,7 @@ const CommentItem = ({ event, updates }: Props) => {
           <CommentInput
             defaultValue={latestCommentText as string}
             onSubmit={onSubmit}
-            loading={updateCommentLoading}
+            loading={updateSingleComment.isLoading}
             onCancel={() => setEditing(false)}
           />
         ) : (
