@@ -14,6 +14,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Prisma } from '@prisma/client';
 import { useMutation, useQueryClient } from 'react-query';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { last } from 'lodash';
 
 import AssigneeBadge from 'components/tasks/assignees/AssigneeBadge';
 import { ReleaseTaskEventWithUser, WorkspaceMemberWithUser } from 'types/common';
@@ -31,13 +32,13 @@ interface Props {
 }
 
 const getLatestCommentUpdate = (updates: ReleaseTaskEventWithUser[]) => {
-  const last = updates.at(-1);
+  const lastItem = last(updates);
 
-  if (!last) {
+  if (!lastItem) {
     return undefined;
   }
 
-  const { newComment } = last.extraData as Prisma.JsonObject;
+  const { newComment } = lastItem.extraData as Prisma.JsonObject;
 
   return newComment;
 };
@@ -114,7 +115,7 @@ const CommentItem = ({ event, updates }: Props) => {
                 </Text>
                 <Text color={bodySub} fontSize="xs">
                   edited{' '}
-                  {formatDistanceToNow(new Date(updates.at(-1)?.timestamp as Date), {
+                  {formatDistanceToNow(new Date(last(updates)?.timestamp as Date), {
                     addSuffix: true,
                   })}
                 </Text>
