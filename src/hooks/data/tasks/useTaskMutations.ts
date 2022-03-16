@@ -18,6 +18,7 @@ const useTaskMutations = (releaseId?: string) => {
         title: message,
       });
       queryClient.invalidateQueries(['tasks', currentWorkspace]);
+      queryClient.invalidateQueries(['tasks', currentWorkspace]);
       queryClient.invalidateQueries(['releases', currentWorkspace, releaseId]);
       queryClient.invalidateQueries(['releaseEvents', currentWorkspace]);
       queryClient.invalidateQueries(['releaseEvents', releaseId]);
