@@ -15,7 +15,7 @@ interface Props extends Pick<ControllerRenderProps, 'onChange'> {
 }
 
 const ContactLabelSelect: React.FC<Props> = React.forwardRef(
-  ({ value, borderless, onChange }: Props, ref) => {
+  ({ value, borderless, onChange }: Props, _) => {
     const { data: allLabels, isLoading } = useContactLabels({});
 
     return (
