@@ -27,7 +27,7 @@ const SpecificRelease = ({ release }: Props) => {
 
   const resolvedData = releaseData ?? release;
   return (
-    <Stack pb={4} flex={1} bg={bgPrimary} align="center" direction="column">
+    <Stack pb={4} flex={1} bg={bgPrimary} align="center" width="100%" direction="column">
       <PageHead title={`${resolvedData.artist.name} - ${resolvedData.name}`} />
       <HeaderSection releaseData={resolvedData} />
       <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
