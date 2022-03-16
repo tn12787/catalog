@@ -51,7 +51,7 @@ export const notificationToCopyAndLink = (
         };
       }
       const dayDifference = differenceInCalendarDays(
-        new Date(),
+        new Date(notification.createdAt),
         new Date(notification.task.dueDate)
       );
 
