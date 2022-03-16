@@ -7,9 +7,7 @@ import ContactLabelMenu from './ContactLabelMenu';
 import { ContactLabelWithContacts } from 'types/common';
 import ContactLabelChip from 'components/contacts/ContactLabelChip';
 import useAppColors from 'hooks/useAppColors';
-
-const maybePluralize = (count: number, noun: string, suffix = 's') =>
-  `${noun}${count !== 1 ? suffix : ''}`;
+import { maybePluralize } from 'utils/words';
 
 function ContactLabelCell({
   value,

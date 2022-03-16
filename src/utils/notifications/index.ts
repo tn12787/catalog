@@ -4,19 +4,7 @@ import { differenceInCalendarDays } from 'date-fns';
 import { NotificationVisualData } from './types';
 
 import { NotificationWithTask } from 'types/common';
-import { taskHeadingByType } from 'utils/tasks';
-
-const dayDifferenceToString = (difference: number): string => {
-  if (difference === 0) {
-    return 'now overdue';
-  }
-
-  if (difference < 0) {
-    return `due in ${-difference} days`;
-  }
-
-  return `overdue by ${difference} days`;
-};
+import { dayDifferenceToString, taskHeadingByType } from 'utils/tasks';
 
 export const notificationToCopyAndLink = (
   notification: NotificationWithTask
