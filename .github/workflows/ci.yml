@@ -18,9 +18,9 @@ jobs:
           path: |
             ${{ github.workspace }}/node_modules
             ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}-
       - run: yarn
       - run: yarn build
   test:
