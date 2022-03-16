@@ -64,6 +64,18 @@ export default NextAuth({
         userId: user.sub as string,
         email: user.email as string,
       });
+
+      await prisma.user.update({
+        where: { id: user.sub as string },
+        data: {
+          emailPreferences: {
+            connectOrCreate: {
+              where: { userId: user.sub as string },
+              create: {},
+            },
+          },
+        },
+      });
     },
   },
   secret: process.env.SECRET,
