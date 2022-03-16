@@ -35,6 +35,10 @@ const UserInformation = ({ user }: Props) => {
         ></Avatar>
       ),
     },
+    {
+      label: 'Email Notifications',
+      content: <Text fontWeight="semibold">{user?.receiveEmail ? 'On' : 'Off'}</Text>,
+    },
   ];
 
   return (
