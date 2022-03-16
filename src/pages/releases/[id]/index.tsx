@@ -2,7 +2,7 @@ import { Stack } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import ReleaseTaskGrid from 'components/releases/specific/tasks/ReleaseTaskGrid';
+import ReleasePrepCard from 'components/releases/specific/tasks/ReleasePrepCard';
 import { ClientRelease } from 'types/common';
 import Events from 'components/releases/specific/Events';
 import HeaderSection from 'components/releases/specific/HeaderSection';
@@ -12,8 +12,7 @@ import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
 import { getSingleServerSideRelease } from 'ssr/releases/getSingleServerSideRelease';
 import useSingleRelease from 'hooks/data/releases/useSingleRelease';
-import { hasAllRequiredTasks } from 'utils/releases';
-import NewReleaseAlert from 'components/releases/specific/NewReleaseAlert';
+import MarketingCard from 'components/releases/specific/tasks/generic/MarketingCard';
 
 interface Props {
   release: ClientRelease;
@@ -31,9 +30,9 @@ const SpecificRelease = ({ release }: Props) => {
       <PageHead title={`${resolvedData.artist.name} - ${resolvedData.name}`} />
       <HeaderSection releaseData={resolvedData} />
       <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
-        {!hasAllRequiredTasks(resolvedData) && <NewReleaseAlert></NewReleaseAlert>}
         <Summary releaseData={resolvedData} />
-        <ReleaseTaskGrid isLoading={isLoading} releaseData={resolvedData}></ReleaseTaskGrid>
+        <ReleasePrepCard isLoading={isLoading} releaseData={resolvedData}></ReleasePrepCard>
+        <MarketingCard isLoading={isLoading} releaseData={resolvedData}></MarketingCard>
         <Events releaseData={resolvedData} />
       </Stack>
     </Stack>

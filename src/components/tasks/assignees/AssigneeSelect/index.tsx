@@ -15,31 +15,29 @@ interface Props extends Pick<ControllerRenderProps, 'onChange'> {
   borderless?: boolean;
 }
 
-const AssigneeSelect: React.FC<Props> = React.forwardRef(
-  ({ value, borderless = false, onChange }: Props) => {
-    const { workspace: workspaceData, isLoading } = useCurrentWorkspace();
+const AssigneeSelect: React.FC<Props> = ({ value, borderless = false, onChange }: Props) => {
+  const { workspace: workspaceData, isLoading } = useCurrentWorkspace();
 
-    const allWorkspaceMembers = workspaceData?.members || [];
+  const allWorkspaceMembers = workspaceData?.members || [];
 
-    return (
-      <MultiSelect
-        isLoading={isLoading}
-        value={value}
-        onChange={onChange}
-        borderless={borderless}
-        itemToString={(item) => item?.user?.name || ''}
-        renderSelectedItems={AssigneeSelectedItems}
-        renderListItem={(props: MultiSelectListItemProps<User>) => <AssigneeItem {...props} />}
-        allItems={allWorkspaceMembers}
-        filterFn={(item: WorkspaceMemberWithUserAndRoles, search: string) =>
-          item.user.name?.toLowerCase().includes(search.toLowerCase()) ?? false
-        }
-        getItem={(item: WorkspaceMemberWithUserAndRoles) => item.user}
-      />
-    );
-  }
-);
+  return (
+    <MultiSelect
+      isLoading={isLoading}
+      value={value}
+      onChange={onChange}
+      borderless={borderless}
+      itemToString={(item) => item?.user?.name || ''}
+      renderSelectedItems={AssigneeSelectedItems}
+      renderListItem={(props: MultiSelectListItemProps<User>) => <AssigneeItem {...props} />}
+      allItems={allWorkspaceMembers}
+      filterFn={(item: WorkspaceMemberWithUserAndRoles, search: string) =>
+        item.user.name?.toLowerCase().includes(search.toLowerCase()) ?? false
+      }
+      getItem={(item: WorkspaceMemberWithUserAndRoles) => item.user}
+    />
+  );
+};
 
 AssigneeSelect.displayName = 'AssigneeSelect';
 
-export default React.memo(AssigneeSelect);
+export default AssigneeSelect;

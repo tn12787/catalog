@@ -57,6 +57,15 @@ export default NextAuth({
       },
     }),
   ],
+  events: {
+    createUser: async ({ user }) => {
+      await createDefaultWorkspaceForUser({
+        name: user.name as string,
+        userId: user.sub as string,
+        email: user.email as string,
+      });
+    },
+  },
   secret: process.env.SECRET,
   jwt: {
     signingKey: process.env.JWT_SIGNING_KEY as string,
@@ -65,24 +74,6 @@ export default NextAuth({
     jwt: true,
   },
   callbacks: {
-    async jwt({ token, isNewUser }) {
-      try {
-        const numberOfUserWorkspaces = await prisma.workspaceMember.count({
-          where: { userId: token.sub as string },
-        });
-
-        if (isNewUser || !numberOfUserWorkspaces) {
-          await createDefaultWorkspaceForUser({
-            name: token.name as string,
-            userId: token.sub as string,
-            email: token.email as string,
-          });
-        }
-        return { ...token };
-      } catch (e) {
-        return { ...token };
-      }
-    },
     async session({ session, token, user }) {
       try {
         const userWorkspaces = await prisma.workspaceMember.findMany({
@@ -101,7 +92,8 @@ export default NextAuth({
         session.accessToken = token.accessToken;
         return { ...session, token: { ...token, workspaceMemberships: userWorkspaces }, user };
       } catch (e) {
-        return session;
+        console.error(e);
+        return { expires: 'now' };
       }
     },
     redirect({ url, baseUrl }) {

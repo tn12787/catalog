@@ -8,7 +8,6 @@ import NewReleaseFormBody from './NewReleaseFormBody';
 import { ClientRelease } from 'types/common';
 import { updateBasicReleaseInfo } from 'queries/releases';
 import { SingleReleaseVars } from 'queries/releases/types';
-import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 
 interface Props {

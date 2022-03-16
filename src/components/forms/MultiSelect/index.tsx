@@ -25,24 +25,23 @@ interface Props<T, L> extends Pick<ControllerRenderProps, 'onChange'> {
   emptyContent?: string | JSX.Element;
 }
 
-interface MultiSelectComponent {
-  <T, L>(props: Props<T, L>): JSX.Element | null;
-}
-
-const MultiSelect = <T extends { id: string }, L>({
-  value,
-  allItems,
-  isLoading,
-  filterFn = () => true,
-  itemToString = (item) => item?.id ?? 'item',
-  searchPlaceholder = 'Search',
-  borderless = false,
-  renderSelectedItems,
-  getItem,
-  onChange,
-  renderListItem,
-  emptyContent = 'No items match your search',
-}: Props<T, L>) => {
+const MultiSelect = <T extends { id: string }, L>(
+  {
+    value,
+    allItems,
+    isLoading,
+    filterFn = () => true,
+    itemToString = (item) => item?.id ?? 'item',
+    searchPlaceholder = 'Search',
+    borderless = false,
+    renderSelectedItems,
+    getItem,
+    onChange,
+    renderListItem,
+    emptyContent = 'No items match your search',
+  }: Props<T, L>,
+  ref: any
+) => {
   const [searchString, setSearchString] = React.useState('');
 
   const currentItems = value || [];
@@ -104,7 +103,7 @@ const MultiSelect = <T extends { id: string }, L>({
             />
           </InputRightElement>
 
-          <MultiSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
+          <MultiSelectList {...getMenuProps()} ref={ref} isOpen={isOpen && !isLoading}>
             {filteredItems.length ? (
               filteredItems.map((item: T, index: number) =>
                 renderListItem({
@@ -144,4 +143,4 @@ const MultiSelect = <T extends { id: string }, L>({
 
 MultiSelect.displayName = 'MultiSelect';
 
-export default React.forwardRef(MultiSelect) as MultiSelectComponent;
+export default MultiSelect;
