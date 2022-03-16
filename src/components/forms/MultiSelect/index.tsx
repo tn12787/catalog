@@ -1,6 +1,6 @@
 import { Input } from '@chakra-ui/input';
 import { InputGroup, Flex, InputRightElement, Text, IconButton, Stack } from '@chakra-ui/react';
-import React from 'react';
+import React, { forwardRef, Ref } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { useCombobox } from 'downshift';
 import { BiChevronDown } from 'react-icons/bi';
@@ -11,7 +11,7 @@ import { MultiSelectListItemProps, SelectedItemListProps } from './types';
 
 import useAppColors from 'hooks/useAppColors';
 
-interface Props<T, L> extends Pick<ControllerRenderProps, 'onChange'> {
+interface Props<T extends object, L> extends Pick<ControllerRenderProps, 'onChange'> {
   value: T[];
   allItems: T[];
   filterFn?: (item: T, search: string) => boolean;
@@ -25,122 +25,125 @@ interface Props<T, L> extends Pick<ControllerRenderProps, 'onChange'> {
   emptyContent?: string | JSX.Element;
 }
 
-const MultiSelect = <T extends { id: string }, L>(
-  {
-    value,
-    allItems,
-    isLoading,
-    filterFn = () => true,
-    itemToString = (item) => item?.id ?? 'item',
-    searchPlaceholder = 'Search',
-    borderless = false,
-    renderSelectedItems,
-    getItem,
-    onChange,
-    renderListItem,
-    emptyContent = 'No items match your search',
-  }: Props<T, L>,
-  ref: any
-) => {
-  const [searchString, setSearchString] = React.useState('');
+const MultiSelect = forwardRef<HTMLSelectElement, any>(
+  <T extends { id: string }, L>(
+    {
+      value,
+      allItems,
+      isLoading,
+      filterFn = () => true,
+      itemToString = () => 'item',
+      searchPlaceholder = 'Search',
+      borderless = false,
+      renderSelectedItems,
+      getItem,
+      onChange,
+      renderListItem,
+      emptyContent = 'No items match your search',
+    }: Props<T, L>,
+    ref: Ref<HTMLSelectElement>
+  ) => {
+    const [searchString, setSearchString] = React.useState('');
 
-  const currentItems = value || [];
-  const filteredItems = allItems.filter((item) => filterFn(item, searchString)) || [];
+    const currentItems = value || [];
+    const filteredItems = allItems.filter((item) => filterFn(item, searchString)) || [];
 
-  const { bgPrimary, primary, bodySub, border } = useAppColors();
+    const { bgPrimary, primary, bodySub, border } = useAppColors();
 
-  const onItemChange = (item: T) => {
-    const newItemsWithoutDuplicate = uniqBy([...currentItems, item], (item) => item.id).filter(
-      Boolean
-    );
+    const onItemChange = (item: T) => {
+      const newItemsWithoutDuplicate = uniqBy([...currentItems, item], (item) => item.id).filter(
+        Boolean
+      );
 
-    onChange(newItemsWithoutDuplicate);
-  };
+      onChange(newItemsWithoutDuplicate);
+    };
 
-  const {
-    isOpen,
-    closeMenu,
-    getMenuProps,
-    getInputProps,
-    getComboboxProps,
-    getToggleButtonProps,
-    getItemProps,
-    highlightedIndex,
-    selectItem,
-  } = useCombobox({
-    items: filteredItems,
-    onInputValueChange: ({ inputValue }) => {
-      setSearchString(inputValue ?? '');
-    },
-    inputValue: searchString,
-    onSelectedItemChange: (changes) => {
-      onItemChange(changes.selectedItem as T);
-      setSearchString('');
-    },
-    itemToString,
-  });
+    const {
+      isOpen,
+      closeMenu,
+      getMenuProps,
+      getInputProps,
+      getComboboxProps,
+      getToggleButtonProps,
+      getItemProps,
+      highlightedIndex,
+      selectItem,
+    } = useCombobox({
+      items: filteredItems,
+      onInputValueChange: ({ inputValue }) => {
+        setSearchString(inputValue ?? '');
+      },
+      inputValue: searchString,
+      onSelectedItemChange: (changes) => {
+        onItemChange(changes.selectedItem as T);
+        setSearchString('');
+      },
+      itemToString,
+    });
 
-  return (
-    <Stack>
-      {renderSelectedItems?.({ items: currentItems, onChange })}
-      <InputGroup borderRadius="md" w="full">
-        <Flex {...getComboboxProps()} position="relative" w="100%" direction="column">
-          <Input
-            {...getToggleButtonProps()}
-            {...getInputProps()}
-            placeholder={searchPlaceholder}
-            borderWidth={borderless ? '0' : '1px'}
-            borderColor={border}
-            value={searchString}
-            focusBorderColor={primary}
-          />
-          <InputRightElement>
-            <IconButton
-              fontSize="xl"
-              variant="ghost"
+    return (
+      <Stack>
+        {renderSelectedItems?.({ items: currentItems, onChange })}
+        <InputGroup borderRadius="md" w="full">
+          <Flex {...getComboboxProps()} position="relative" w="100%" direction="column">
+            <Input
+              ref={ref}
               {...getToggleButtonProps()}
-              icon={<BiChevronDown />}
+              {...getInputProps()}
+              placeholder={searchPlaceholder}
+              borderWidth={borderless ? '0' : '1px'}
+              borderColor={border}
+              value={searchString}
+              focusBorderColor={primary}
             />
-          </InputRightElement>
+            <InputRightElement>
+              <IconButton
+                fontSize="xl"
+                variant="ghost"
+                {...getToggleButtonProps()}
+                icon={<BiChevronDown />}
+              />
+            </InputRightElement>
 
-          <MultiSelectList {...getMenuProps()} ref={ref} isOpen={isOpen && !isLoading}>
-            {filteredItems.length ? (
-              filteredItems.map((item: T, index: number) =>
-                renderListItem({
-                  item: getItem(item),
-                  itemIndex: index,
-                  ...getItemProps({ item: item, index }),
-                  highlightedIndex,
-                  onClick: () => {
-                    selectItem(item);
-                    closeMenu();
-                  },
-                  selected: currentItems?.some((currentItem) => currentItem.id === item.id),
-                  _hover: {
-                    bgColor: bgPrimary,
-                  },
-                  key: index,
-                })
-              )
-            ) : (
-              <Text
-                p={3}
-                fontSize="md"
-                borderRadius="md"
-                cursor="pointer"
-                transition="background-color 220ms, color 220ms"
-                color={bodySub}
-              >
-                {emptyContent}
-              </Text>
-            )}
-          </MultiSelectList>
-        </Flex>
-      </InputGroup>
-    </Stack>
-  );
-};
+            <MultiSelectList {...getMenuProps()} isOpen={isOpen && !isLoading}>
+              {filteredItems.length ? (
+                filteredItems.map((item: T, index: number) =>
+                  renderListItem({
+                    item: getItem(item),
+                    itemIndex: index,
+                    ...getItemProps({ item: item, index }),
+                    highlightedIndex,
+                    onClick: () => {
+                      selectItem(item);
+                      closeMenu();
+                    },
+                    selected: currentItems?.some((currentItem) => currentItem.id === item.id),
+                    _hover: {
+                      bgColor: bgPrimary,
+                    },
+                    key: index,
+                  })
+                )
+              ) : (
+                <Text
+                  p={3}
+                  fontSize="md"
+                  borderRadius="md"
+                  cursor="pointer"
+                  transition="background-color 220ms, color 220ms"
+                  color={bodySub}
+                >
+                  {emptyContent}
+                </Text>
+              )}
+            </MultiSelectList>
+          </Flex>
+        </InputGroup>
+      </Stack>
+    );
+  }
+);
 
 MultiSelect.displayName = 'MultiSelect';
 
-export default MultiSelect;
+export default React.memo(MultiSelect);

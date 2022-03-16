@@ -15,17 +15,18 @@ interface Props extends Pick<ControllerRenderProps, 'onChange'> {
   borderless?: boolean;
 }
 
-const RoleSelect: React.FC<Props> = React.forwardRef(
+const RoleSelect: React.FC<Props> = React.forwardRef<HTMLSelectElement, Props>(
   ({ value, borderless, onChange }: Props, ref) => {
     const { data: allRoles, isLoading } = useQuery(['roles'], fetchRoles);
 
     return (
       <MultiSelect
+        ref={ref}
         isLoading={isLoading}
         value={value}
         onChange={onChange}
         borderless={borderless}
-        itemToString={(item) => item?.name || ''}
+        itemToString={(item: Role) => item?.name || ''}
         renderSelectedItems={RoleSelectedItems}
         renderListItem={(props: MultiSelectListItemProps<Role>) => <RoleItem {...props} />}
         allItems={allRoles ?? []}

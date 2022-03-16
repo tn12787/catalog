@@ -14,17 +14,18 @@ interface Props extends Pick<ControllerRenderProps, 'onChange'> {
   borderless?: boolean;
 }
 
-const ContactLabelSelect: React.FC<Props> = React.forwardRef(
-  ({ value, borderless, onChange }: Props, _) => {
+const ContactLabelSelect: React.FC<Props> = React.forwardRef<HTMLSelectElement, Props>(
+  ({ value, borderless, onChange }: Props, ref) => {
     const { data: allLabels, isLoading } = useContactLabels({});
 
     return (
       <MultiSelect
+        ref={ref}
         isLoading={isLoading}
         value={value}
         onChange={onChange}
         borderless={borderless}
-        itemToString={(item) => item?.name || ''}
+        itemToString={(item: ContactLabel) => item?.name || ''}
         renderSelectedItems={ContactLabelSelectedItems}
         renderListItem={(props: MultiSelectListItemProps<ContactLabel>) => (
           <ContactLabelItem {...props} />
