@@ -111,7 +111,8 @@ export default NextAuth({
         session.accessToken = token.accessToken;
         return { ...session, token: { ...token, workspaceMemberships: userWorkspaces }, user };
       } catch (e) {
-        return session;
+        console.error(e);
+        return { expires: 'now' };
       }
     },
     redirect({ url, baseUrl }) {
