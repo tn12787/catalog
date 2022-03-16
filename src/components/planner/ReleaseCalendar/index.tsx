@@ -2,7 +2,7 @@ import { useToast, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect, useRef } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import { cloneDeep } from 'lodash';
-import { format, isAfter, isBefore, startOfDay } from 'date-fns';
+import { isAfter, isBefore, isSameDay, startOfDay, startOfToday } from 'date-fns';
 import { useRouter } from 'next/router';
 
 import ReleaseEventDrawer from '../ReleaseEventDrawer';
@@ -92,17 +92,21 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
   const canDropEvent = (item: ReleaseEvent, targetDate: Date) => {
     switch (item.type) {
       case 'release':
-        return isAfter(new Date(targetDate), startOfDay(new Date()));
+        return isAfter(startOfDay(new Date(targetDate)), startOfToday());
       default:
-        return isBefore(new Date(targetDate), startOfDay(new Date(item.release.targetDate)));
+        return isBefore(
+          startOfDay(new Date(targetDate)),
+          startOfDay(new Date(item.release.targetDate))
+        );
     }
   };
 
   const onItemDropped = async (item: ReleaseEvent, targetDate: Date) => {
-    const backupItem = cloneDeep(item);
-    if (format(new Date(item.date), 'yyyy-MM-dd') === format(targetDate, 'yyyy-MM-dd')) {
+    if (isSameDay(new Date(item.date), targetDate)) {
       return;
     }
+
+    const backupItem = cloneDeep(item);
     try {
       await updateReleaseEvent({
         event: item,

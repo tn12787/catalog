@@ -2,7 +2,7 @@ import { Stack, Button, ButtonGroup, HStack } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import { addDays, format, startOfDay } from 'date-fns';
+import { format } from 'date-fns';
 
 import { buildTaskConfig } from './taskConfig';
 import { TaskFormData } from './types';
@@ -11,6 +11,7 @@ import { deriveEmojiValueData } from './utils';
 import FormContent from 'components/forms/FormContent';
 import { FormBodyProps } from 'types/forms';
 import { ReleaseTaskWithAssignees } from 'types/common';
+import { defaultTaskDueDate } from 'utils/tasks';
 
 interface Props extends FormBodyProps<TaskFormData> {
   existingData?: ReleaseTaskWithAssignees;
@@ -19,7 +20,7 @@ interface Props extends FormBodyProps<TaskFormData> {
 
 const TaskFormBody = ({ onSubmit, loading, existingData, generic }: Props) => {
   const properDateFormat = useMemo(() => {
-    const existingDate = existingData?.dueDate ?? addDays(startOfDay(new Date()), 7);
+    const existingDate = existingData?.dueDate ?? defaultTaskDueDate();
     return format(new Date(existingDate), 'yyyy-MM-dd');
   }, [existingData?.dueDate]);
 

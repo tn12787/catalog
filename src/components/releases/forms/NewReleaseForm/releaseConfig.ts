@@ -1,5 +1,5 @@
 import { Artist } from '@prisma/client';
-import { startOfDay } from 'date-fns';
+import { startOfYesterday } from 'date-fns';
 
 import { BasicInfoFormData } from './types';
 
@@ -50,7 +50,7 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>
     helperContent:
       'We recommend scheduling at least 4 weeks before your target release date to complete basic tasks.',
     extraProps: {
-      min: startOfDay(new Date()),
+      min: startOfYesterday(),
     },
   },
 ];
