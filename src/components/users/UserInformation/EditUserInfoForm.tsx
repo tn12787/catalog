@@ -1,4 +1,4 @@
-import { Stack, Button, Avatar } from '@chakra-ui/react';
+import { Stack, Button, Avatar, Switch } from '@chakra-ui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiSave } from 'react-icons/fi';
@@ -16,7 +16,7 @@ interface Props {
   userData?: User;
 }
 
-type EditUserFormData = Pick<User, 'name' | 'image'>;
+type EditUserFormData = Pick<User, 'name' | 'image' | 'receiveEmail'>;
 
 const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
   const {
@@ -27,7 +27,11 @@ const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
     setValue,
     watch,
   } = useForm<EditUserFormData>({
-    defaultValues: { name: userData?.name as string, image: userData?.image as string },
+    defaultValues: {
+      name: userData?.name as string,
+      image: userData?.image as string,
+      receiveEmail: userData?.receiveEmail as boolean,
+    },
   });
 
   const currentImage = watch('image');
@@ -74,6 +78,21 @@ const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
             entityId={userData?.id}
           ></ImageSelect>
         </Stack>
+      ),
+    },
+    {
+      label: 'Email Notifications',
+      content: (
+        <FormField
+          register={register}
+          errors={errors}
+          showLabel={false}
+          name="receiveEmail"
+          CustomComponent={({ onChange, value }) => {
+            return <Switch colorScheme="purple" isChecked={!!value} onChange={onChange} />;
+          }}
+          control={control}
+        />
       ),
     },
   ];

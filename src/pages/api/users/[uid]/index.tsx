@@ -30,6 +30,7 @@ class UserHandler {
         name: body.name,
         segment: body.segment,
         image: body.image,
+        receiveEmail: body.receiveEmail,
       },
     });
 
