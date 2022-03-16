@@ -45,13 +45,14 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
   const { bgPrimary } = useAppColors();
   const queryClient = useQueryClient();
   const toast = useToast();
+  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
   const { data: taskData, isLoading: taskLoading } = useSingleTask(taskId, { initialData: task });
   const { data: taskActivity, isLoading: activityLoading } = useTaskActivity(taskId);
 
   const { mutateAsync: postComment, isLoading: commentLoading } = useMutation(postNewComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['taskActivity', taskId]);
+      queryClient.invalidateQueries(['taskActivity', currentWorkspace, taskId]);
     },
   });
   const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
@@ -66,8 +67,6 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
       toast({ status: 'error', title: 'Oh no...', description: e.toString() });
     }
   };
-
-  const { currentWorkspace, workspaceMemberships } = useExtendedSession();
 
   const isOverdue = isTaskOverdue(taskData as ReleaseTask);
 

@@ -2,10 +2,13 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useToast } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
+import { TaskResponse } from 'types/common';
 import { createTask, deleteTask, updateTask } from 'queries/tasks';
 import useExtendedSession from 'hooks/useExtendedSession';
 
-const useTaskMutations = (releaseId?: string) => {
+type UseTaskMutationArgs = Partial<Pick<TaskResponse, 'id' | 'releaseId'>>;
+
+const useTaskMutations = ({ id, releaseId }: UseTaskMutationArgs) => {
   const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
@@ -17,13 +20,13 @@ const useTaskMutations = (releaseId?: string) => {
         status: 'success',
         title: message,
       });
-      queryClient.invalidateQueries(['tasks', currentWorkspace]);
-      queryClient.invalidateQueries(['tasks', currentWorkspace]);
+      queryClient.invalidateQueries(['tasks', currentWorkspace, id]);
+      queryClient.invalidateQueries(['taskActivity', currentWorkspace, id]);
       queryClient.invalidateQueries(['releases', currentWorkspace, releaseId]);
       queryClient.invalidateQueries(['releaseEvents', currentWorkspace]);
       queryClient.invalidateQueries(['releaseEvents', releaseId]);
     },
-    [currentWorkspace, queryClient, toast, releaseId]
+    [currentWorkspace, queryClient, toast, releaseId, id]
   );
 
   const onError = useCallback(

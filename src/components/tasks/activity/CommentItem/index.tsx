@@ -61,7 +61,7 @@ const CommentItem = ({ event, updates }: Props) => {
 
   const { mutateAsync: deleteSelected } = useMutation(deleteComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['taskActivity', event.taskId]);
+      queryClient.invalidateQueries(['taskActivity', currentWorkspace, event.taskId]);
     },
   });
 
@@ -80,7 +80,7 @@ const CommentItem = ({ event, updates }: Props) => {
     updateComment,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['taskActivity', event.taskId]);
+        queryClient.invalidateQueries(['taskActivity', currentWorkspace, event.taskId]);
       },
     }
   );

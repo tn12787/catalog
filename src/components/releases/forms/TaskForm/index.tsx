@@ -18,7 +18,10 @@ interface Props {
 }
 
 const TaskForm = ({ onSubmitSuccess, task, release, generic }: Props) => {
-  const { updateSingleTask, createSingleTask } = useTaskMutations(task?.releaseId ?? release.id);
+  const { updateSingleTask, createSingleTask } = useTaskMutations({
+    id: task?.id,
+    releaseId: task?.id || release.id,
+  });
 
   const create = async (values: TaskFormData) => {
     try {

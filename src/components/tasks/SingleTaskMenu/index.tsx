@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { BiCalendar, BiEdit } from 'react-icons/bi';
 import { FiChevronDown } from 'react-icons/fi';
+import { pick } from 'lodash';
 
 import { ClientRelease, TaskResponse } from 'types/common';
 import { buildPlannerLink } from 'utils/planner';
@@ -35,7 +36,7 @@ const SingleTaskMenu = ({ task, isLoading }: Props) => {
     workspaceMemberships?.[currentWorkspace]
   );
 
-  const { deleteSingleTask } = useTaskMutations(task.releaseId);
+  const { deleteSingleTask } = useTaskMutations(pick(task, ['id', 'releaseId']));
 
   const deleteTask = async () => {
     await deleteSingleTask.mutateAsync({ id: task.id });
