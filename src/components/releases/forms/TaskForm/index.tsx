@@ -9,6 +9,7 @@ import { TaskFormData } from './types';
 import { ClientRelease, ReleaseTaskWithAssignees } from 'types/common';
 import useTaskMutations from 'hooks/data/tasks/useTaskMutations';
 import { CreateTaskVars, UpdateTaskVars } from 'queries/tasks/types';
+import { midday } from 'utils/dates';
 
 interface Props {
   onSubmitSuccess?: () => void;
@@ -52,7 +53,7 @@ const TaskForm = ({ onSubmitSuccess, task, release, generic }: Props) => {
         releaseId,
         status,
         notes,
-        dueDate,
+        dueDate: midday(dueDate),
         assignees: assignees.map((item) => item.id),
         contacts: contacts.map((item) => item.id),
         name: name.emoji ? `${name.emoji} ${name.text}` : name.text,
