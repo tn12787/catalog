@@ -9,9 +9,10 @@ import EditUserInfoForm from './EditUserInfoForm';
 
 import Card from 'components/Card';
 import DataList from 'components/data/DataList';
+import { UserResponse } from 'types/common';
 
 interface Props {
-  user?: User;
+  user?: UserResponse;
   loading?: boolean;
 }
 
@@ -37,7 +38,9 @@ const UserInformation = ({ user }: Props) => {
     },
     {
       label: 'Email Notifications',
-      content: <Text fontWeight="semibold">{user?.receiveEmail ? 'On' : 'Off'}</Text>,
+      content: (
+        <Text fontWeight="semibold">{user?.emailPreferences?.reminders ? 'On' : 'Off'}</Text>
+      ),
     },
   ];
 

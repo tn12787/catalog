@@ -31,11 +31,11 @@ class UserHandler {
         segment: body.segment,
         image: body.image,
         emailPreferences: {
-          connectOrCreate: {
-            where: {
-              userId: id,
+          upsert: {
+            create: { reminders: body.emailPreferences?.reminders },
+            update: {
+              reminders: body.emailPreferences?.reminders,
             },
-            create: { reminders: body.receiveEmail },
           },
         },
       },

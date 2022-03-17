@@ -18,6 +18,7 @@ import {
   Invite,
   ContactLabel,
   Contact,
+  EmailPreferences,
 } from '@prisma/client';
 import Stripe from 'stripe';
 
@@ -65,7 +66,10 @@ export type ArtistResponse = Artist & { releases: ClientRelease[] };
 
 export type TaskResponse = EnrichedReleaseTask & { release: Release };
 
-export type UserResponse = User & { workspaces: EnrichedWorkspaceMember[] };
+export type UserResponse = User & {
+  workspaces: EnrichedWorkspaceMember[];
+  emailPreferences: EmailPreferences;
+};
 
 export interface ClientRelease extends Omit<EnrichedRelease, 'tasks' | 'targetDate'> {
   artwork?: ReleaseTaskWithAssignees & Omit<ArtworkData, 'taskId'>;
