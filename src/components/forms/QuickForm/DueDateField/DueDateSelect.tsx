@@ -5,6 +5,7 @@ import React from 'react';
 import { BiArrowToLeft, BiArrowToRight } from 'react-icons/bi';
 
 import useAppColors from 'hooks/useAppColors';
+import { midday } from 'utils/dates';
 
 type Props = {
   value: Date | string;
@@ -17,6 +18,7 @@ const DueDateSelect = ({ onChange, value }: Props) => {
 
   const isSelectedDate = (date: Date) =>
     format(date, 'yyyy-MM-dd') === format(new Date(value), 'yyyy-MM-dd');
+
   return (
     <Stack p={2} alignItems={'flex-start'} w="100%">
       <HStack w="100%" justify="space-between">
@@ -76,7 +78,7 @@ const DueDateSelect = ({ onChange, value }: Props) => {
                     p={3}
                     fontWeight={isCurrentDate ? 'bold' : 'normal'}
                     cursor="pointer"
-                    onClick={() => onChange(new Date(dayDate.toDateString()))}
+                    onClick={() => onChange(midday(dayDate))}
                     key={key}
                   >
                     {getDate(dayDate)}

@@ -56,8 +56,6 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
     });
   };
 
-  const isOverdue = isTaskOverdue(taskData as ReleaseTask);
-
   const canEdit = hasRequiredPermissions(
     ['UPDATE_RELEASES'],
     workspaceMemberships?.[currentWorkspace]
@@ -120,11 +118,7 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
           </Skeleton>
           <SingleTaskMenu task={taskData as TaskResponse} isLoading={taskLoading} />
         </Stack>
-        {isOverdue && (
-          <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
-            <AlertIcon></AlertIcon>This task is overdue.
-          </Alert>
-        )}
+
         <Stack
           alignItems={'flex-start'}
           direction={{ base: 'column-reverse', md: 'row' }}

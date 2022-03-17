@@ -1,7 +1,6 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { startOfDay } from 'date-fns';
 
 import { BasicInfoFormData } from './types';
 import NewReleaseFormBody from './NewReleaseFormBody';
@@ -10,6 +9,7 @@ import { ClientRelease } from 'types/common';
 import { updateBasicReleaseInfo } from 'queries/releases';
 import { SingleReleaseVars } from 'queries/releases/types';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { midday } from 'utils/dates';
 
 interface Props {
   existingRelease?: ClientRelease;
@@ -36,7 +36,7 @@ const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
     try {
       await updateInfo({
         ...data,
-        targetDate: startOfDay(new Date(data.targetDate)),
+        targetDate: midday(data.targetDate),
         id: existingRelease?.id,
       } as SingleReleaseVars);
       toast({

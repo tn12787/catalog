@@ -1,7 +1,6 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { startOfDay } from 'date-fns';
 
 import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
@@ -10,6 +9,7 @@ import EditDistributionFormBody from './EditDistributionFormBody';
 import { ClientRelease } from 'types/common';
 import { createSingleDistribution, updateSingleDistribution } from 'queries/distribution';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { midday } from 'utils/dates';
 
 interface Props {
   releaseData: ClientRelease;
@@ -46,7 +46,7 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await createDistribution({
         ...data,
         assignees: data.assignees.map((item) => item.id),
-        dueDate: startOfDay(new Date(data.dueDate)),
+        dueDate: midday(data.dueDate),
         releaseId: releaseData.id,
       });
 
@@ -67,7 +67,7 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await updateDistribution({
         ...data,
         assignees: data.assignees.map((item) => item.id),
-        dueDate: startOfDay(new Date(data.dueDate)),
+        dueDate: midday(data.dueDate),
         taskId: releaseData.distribution?.id as string,
       });
 
