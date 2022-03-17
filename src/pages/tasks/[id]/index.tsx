@@ -2,14 +2,7 @@ import { Stack, Heading, Divider } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { useRouter } from 'next/router';
 import React from 'react';
-import {
-  Alert,
-  AlertIcon,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Editable,
-} from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Editable } from '@chakra-ui/react';
 import { BiChevronRight } from 'react-icons/bi';
 import { Release, ReleaseTask, ReleaseTaskType } from '@prisma/client';
 import Link from 'next/link';
@@ -22,7 +15,7 @@ import NewCommentBox from 'components/comments/NewCommentBox';
 import { NewCommentFormData } from 'components/comments/NewCommentBox/types';
 import TaskInfo from 'components/tasks/TaskInfo';
 import TaskNotes from 'components/tasks/TaskNotes';
-import { taskHeadingByType, isTaskOverdue } from 'utils/tasks';
+import { taskHeadingByType } from 'utils/tasks';
 import useTaskActivity from 'hooks/data/tasks/useTaskActivity';
 import useSingleTask from 'hooks/data/tasks/useSingleTask';
 import { EnrichedReleaseTask, TaskResponse } from 'types/common';
