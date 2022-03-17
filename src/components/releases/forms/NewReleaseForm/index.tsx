@@ -1,6 +1,7 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { startOfDay } from 'date-fns';
 
 import { BasicInfoFormData } from './types';
 import NewReleaseFormBody from './NewReleaseFormBody';
@@ -35,6 +36,7 @@ const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
     try {
       await updateInfo({
         ...data,
+        targetDate: startOfDay(new Date(data.targetDate)),
         id: existingRelease?.id,
       } as SingleReleaseVars);
       toast({

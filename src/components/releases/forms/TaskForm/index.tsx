@@ -2,6 +2,7 @@ import { Heading, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { pickBy } from 'lodash';
 import { ReleaseTaskType } from '@prisma/client';
+import { startOfDay } from 'date-fns';
 
 import TaskFormBody from './TaskFormBody';
 import { TaskFormData } from './types';
@@ -52,7 +53,7 @@ const TaskForm = ({ onSubmitSuccess, task, release, generic }: Props) => {
         releaseId,
         status,
         notes,
-        dueDate,
+        dueDate: startOfDay(dueDate),
         assignees: assignees.map((item) => item.id),
         contacts: contacts.map((item) => item.id),
         name: name.emoji ? `${name.emoji} ${name.text}` : name.text,

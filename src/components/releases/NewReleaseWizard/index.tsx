@@ -4,6 +4,7 @@ import { pickBy } from 'lodash';
 import { useMutation, useQueryClient } from 'react-query';
 import { useToast } from '@chakra-ui/toast';
 import { useRouter } from 'next/router';
+import { startOfDay } from 'date-fns';
 
 import EditDistributionFormBody from '../forms/EditDistributionForm/EditDistributionFormBody';
 import NewReleaseFormBody from '../forms/NewReleaseForm/NewReleaseFormBody';
@@ -87,6 +88,7 @@ const NewReleaseWizard = () => {
     try {
       const result = await createRelease({
         ...data.basics,
+        targetDate: startOfDay(new Date(data.basics?.targetDate ?? Date.now())),
         mastering: data.mastering && {
           ...data.mastering,
           assignees: data.mastering?.assignees?.map(({ id }) => id) ?? [],

@@ -2,6 +2,8 @@ import { Heading, Skeleton } from '@chakra-ui/react';
 import { ReleaseTaskType, TaskStatus } from '@prisma/client';
 import React from 'react';
 import { pick } from 'lodash';
+import { startOfDay } from 'date-fns';
+import { pickBy } from 'lodash';
 
 import Card from 'components/Card';
 import StatusField from 'components/forms/QuickForm/StatusField';
@@ -23,11 +25,16 @@ const TaskInfo = ({ loading, task }: Props) => {
   const { updateSingleTask } = useTaskMutations(pick(task, 'id', 'releaseId'));
 
   const onSubmit = async (data: UpdateTaskVars) => {
-    try {
-      await updateSingleTask.mutateAsync({
+    const args = pickBy(
+      {
         id: task?.id,
         ...data,
-      });
+        dueDate: data.dueDate ? startOfDay(data.dueDate) : undefined,
+      },
+      Boolean
+    );
+    try {
+      await updateSingleTask.mutateAsync(args);
     } catch (e) {
       console.error(e);
     }

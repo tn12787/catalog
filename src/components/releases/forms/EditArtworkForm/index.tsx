@@ -1,6 +1,8 @@
 import { Stack, Text, useToast, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { useQueryClient, useMutation } from 'react-query';
+import { startOfDay } from 'date-fns';
+
 import 'firebase/storage';
 
 import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
@@ -50,6 +52,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await createArtwork({
         ...data,
         url,
+        dueDate: startOfDay(new Date(data.dueDate)),
         assignees: data.assignees.map((item) => item.id),
         releaseId: releaseData.id,
       });
@@ -74,6 +77,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await updateArtwork({
         ...data,
         url,
+        dueDate: startOfDay(new Date(data.dueDate)),
         assignees: data.assignees.map((item) => item.id),
         taskId: releaseData.artwork?.id as string,
       });

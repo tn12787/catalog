@@ -1,6 +1,7 @@
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { startOfDay } from 'date-fns';
 
 import { EditMasteringFormData } from '../../specific/tasks/Mastering/types';
 
@@ -44,6 +45,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
     try {
       await createMastering({
         ...data,
+        dueDate: startOfDay(new Date(data.dueDate)),
         assignees: data.assignees.map((item) => item.id),
         releaseId: releaseData.id,
       });
@@ -64,6 +66,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
     try {
       await updateMastering({
         ...data,
+        dueDate: startOfDay(new Date(data.dueDate)),
         assignees: data.assignees.map((item) => item.id),
         taskId: releaseData.mastering?.id as string,
       });
