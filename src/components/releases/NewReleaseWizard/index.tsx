@@ -92,14 +92,17 @@ const NewReleaseWizard = () => {
         targetDate: midday(data.basics.targetDate),
         mastering: data.mastering && {
           ...data.mastering,
+          dueDate: midday(data.mastering.dueDate),
           assignees: data.mastering?.assignees?.map(({ id }) => id) ?? [],
         },
         artwork: data.artwork && {
           ...data.artwork,
+          dueDate: midday(data.artwork.dueDate),
           assignees: data.artwork?.assignees?.map(({ id }) => id) ?? [],
         },
         distribution: data.distribution && {
           ...data.distribution,
+          dueDate: midday(data.distribution.dueDate),
           assignees: data.distribution?.assignees?.map(({ id }) => id) ?? [],
         },
         workspace: currentWorkspace,
