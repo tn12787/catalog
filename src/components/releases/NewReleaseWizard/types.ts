@@ -16,7 +16,7 @@ export interface ReleaseWizardComponentProps<T> extends FormBodyProps<T> {
 }
 
 export interface CombinedFormState {
-  basics?: BasicInfoFormData;
+  basics: BasicInfoFormData;
   artwork?: EditArtworkFormData;
   mastering?: EditMasteringFormData;
   distribution?: EditDistributionFormData;

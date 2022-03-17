@@ -4,7 +4,7 @@ import { FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { BiArrowBack } from 'react-icons/bi';
-import { format, startOfDay } from 'date-fns';
+import { format } from 'date-fns';
 
 import { EditDistributionFormData } from '../../specific/tasks/Distribution/types';
 
@@ -14,6 +14,7 @@ import FormContent from 'components/forms/FormContent';
 import { fetchDistributors } from 'queries/distribution';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 import { defaultTaskDueDate } from 'utils/tasks';
+import { midday } from 'utils/dates';
 
 const EditDistributionFormBody = ({
   onSubmit,
@@ -62,7 +63,7 @@ const EditDistributionFormBody = ({
         <FormContent
           config={buildDistribConfig(
             completeState?.basics?.targetDate
-              ? startOfDay(new Date(completeState?.basics?.targetDate))
+              ? midday(new Date(completeState?.basics?.targetDate))
               : null,
             distributors ?? []
           )}

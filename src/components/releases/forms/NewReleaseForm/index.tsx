@@ -9,6 +9,7 @@ import { ClientRelease } from 'types/common';
 import { updateBasicReleaseInfo } from 'queries/releases';
 import { SingleReleaseVars } from 'queries/releases/types';
 import useExtendedSession from 'hooks/useExtendedSession';
+import { midday } from 'utils/dates';
 
 interface Props {
   existingRelease?: ClientRelease;
@@ -35,6 +36,7 @@ const NewReleaseForm = ({ existingRelease, onSubmitSuccess }: Props) => {
     try {
       await updateInfo({
         ...data,
+        targetDate: midday(data.targetDate),
         id: existingRelease?.id,
       } as SingleReleaseVars);
       toast({

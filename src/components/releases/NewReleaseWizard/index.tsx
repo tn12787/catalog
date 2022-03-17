@@ -12,6 +12,7 @@ import { EditArtworkFormData } from '../specific/tasks/Artwork/types';
 import { EditDistributionFormData } from '../specific/tasks/Distribution/types';
 import WizardArtworkFormBody from '../forms/WizardArtworkForm/WizardArtworkFormBody';
 import EditMasteringFormBody from '../forms/EditMasteringForm/EditMasteringFormBody';
+import { EditMasteringFormData } from '../specific/tasks/Mastering/types';
 
 import { CombinedFormState, ReleaseWizardKey, ReleaseWizardStep } from './types';
 import ReviewData from './ReviewData';
@@ -23,6 +24,7 @@ import Card from 'components/Card';
 import { createSingleRelease } from 'queries/releases';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { CreateSingleReleaseVars } from 'queries/releases/types';
+import { midday } from 'utils/dates';
 
 const buildSteps = (): ReleaseWizardStep[] => [
   {
@@ -68,7 +70,7 @@ const NewReleaseWizard = () => {
   const steps = buildSteps();
   const { index, currentStep, next, previous } = useSteps<ReleaseWizardStep>(steps);
 
-  const [allState, setAllState] = useState<CombinedFormState>({});
+  const [allState, setAllState] = useState<CombinedFormState>({} as CombinedFormState);
   const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
   const { mutateAsync: createRelease, isLoading: createLoading } = useMutation(
@@ -87,16 +89,20 @@ const NewReleaseWizard = () => {
     try {
       const result = await createRelease({
         ...data.basics,
+        targetDate: midday(data.basics.targetDate),
         mastering: data.mastering && {
           ...data.mastering,
+          dueDate: midday(data.mastering.dueDate),
           assignees: data.mastering?.assignees?.map(({ id }) => id) ?? [],
         },
         artwork: data.artwork && {
           ...data.artwork,
+          dueDate: midday(data.artwork.dueDate),
           assignees: data.artwork?.assignees?.map(({ id }) => id) ?? [],
         },
         distribution: data.distribution && {
           ...data.distribution,
+          dueDate: midday(data.distribution.dueDate),
           assignees: data.distribution?.assignees?.map(({ id }) => id) ?? [],
         },
         workspace: currentWorkspace,
@@ -118,7 +124,7 @@ const NewReleaseWizard = () => {
 
   const onSubmit = async (
     key: ReleaseWizardKey,
-    data: BasicInfoFormData | EditArtworkFormData | EditDistributionFormData
+    data: BasicInfoFormData | EditArtworkFormData | EditDistributionFormData | EditMasteringFormData
   ) => {
     if (key === 'review') {
       submitNewRelease(allState);
@@ -130,7 +136,10 @@ const NewReleaseWizard = () => {
 
   const onSkip = (key: ReleaseWizardKey) => {
     setAllState((state) => {
-      return pickBy({ ...state, [key]: undefined }, (val) => val !== undefined);
+      return pickBy(
+        { ...state, [key]: undefined },
+        (val) => val !== undefined
+      ) as unknown as CombinedFormState;
     });
   };
 

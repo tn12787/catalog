@@ -1,7 +1,8 @@
-import { Heading, Skeleton } from '@chakra-ui/react';
-import { ReleaseTaskType, TaskStatus } from '@prisma/client';
+import { Alert, AlertIcon, Heading, Skeleton, Stack } from '@chakra-ui/react';
+import { ReleaseTask, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import React from 'react';
 import { pick } from 'lodash';
+import { pickBy } from 'lodash';
 
 import Card from 'components/Card';
 import StatusField from 'components/forms/QuickForm/StatusField';
@@ -16,6 +17,8 @@ import ContactsField from 'components/forms/QuickForm/ContactsField';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import useTaskMutations from 'hooks/data/tasks/useTaskMutations';
+import { midday } from 'utils/dates';
+import { isTaskOverdue } from 'utils/tasks';
 
 type Props = { loading?: boolean; task: EnrichedReleaseTask | undefined };
 
@@ -23,11 +26,16 @@ const TaskInfo = ({ loading, task }: Props) => {
   const { updateSingleTask } = useTaskMutations(pick(task, 'id', 'releaseId'));
 
   const onSubmit = async (data: UpdateTaskVars) => {
-    try {
-      await updateSingleTask.mutateAsync({
+    const args = pickBy(
+      {
         id: task?.id,
         ...data,
-      });
+        dueDate: data.dueDate ? midday(data.dueDate) : undefined,
+      },
+      Boolean
+    );
+    try {
+      await updateSingleTask.mutateAsync(args);
     } catch (e) {
       console.error(e);
     }
@@ -40,9 +48,18 @@ const TaskInfo = ({ loading, task }: Props) => {
     workspaceMemberships?.[currentWorkspace]
   );
 
+  const isOverdue = isTaskOverdue(task as ReleaseTask);
+
   return (
     <Card maxW={{ base: '100%', md: '300px' }} w="100%">
-      <Heading size="md">Task info</Heading>
+      <Stack>
+        <Heading size="md">Task info</Heading>
+        {isOverdue && (
+          <Alert fontSize="sm" py={1} borderRadius={'md'} status="error">
+            <AlertIcon></AlertIcon>This task is overdue.
+          </Alert>
+        )}
+      </Stack>
       {task?.type === ReleaseTaskType.MASTERING && (
         <Skeleton isLoaded={!loading}>
           <UrlField
