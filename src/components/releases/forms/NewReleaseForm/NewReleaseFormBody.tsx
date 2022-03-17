@@ -4,7 +4,7 @@ import { FiArrowRight, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { ReleaseTaskType, ReleaseType } from '@prisma/client';
 import { isEmpty } from 'lodash';
-import { addWeeks, format, startOfToday } from 'date-fns';
+import { format } from 'date-fns';
 
 import { ReleaseWizardComponentProps } from '../../NewReleaseWizard/types';
 
@@ -13,7 +13,7 @@ import { BasicInfoFormData } from './types';
 
 import FormContent from 'components/forms/FormContent';
 import useArtists from 'hooks/data/artists/useArtists';
-import { clientReleasePrepTasks } from 'utils/releases';
+import { clientReleasePrepTasks, defaultReleaseDate } from 'utils/releases';
 
 const NewReleaseFormBody = ({
   onSubmit,
@@ -23,7 +23,7 @@ const NewReleaseFormBody = ({
   const { data: artists } = useArtists({});
 
   const properDateFormat = useMemo(() => {
-    const existingDate = existingRelease?.targetDate ?? addWeeks(startOfToday(), 5);
+    const existingDate = existingRelease?.targetDate ?? defaultReleaseDate();
     return format(new Date(existingDate), 'yyyy-MM-dd');
   }, [existingRelease?.targetDate]);
 
