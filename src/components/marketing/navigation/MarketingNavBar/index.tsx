@@ -1,4 +1,4 @@
-import { HStack, Stack } from '@chakra-ui/react';
+import { HStack, Stack, useColorModeValue, useTheme } from '@chakra-ui/react';
 import React from 'react';
 
 import LoginButtons from './LoginButtons';
@@ -16,8 +16,21 @@ const links = [
 
 const MarketingNavBar = () => {
   const { border } = useAppColors();
+  const { colors } = useTheme();
+
+  const bg = useColorModeValue(colors.white, colors.gray[800]);
+
   return (
-    <Stack alignItems={'center'} w="100%" borderBottom={'1px solid'} borderColor={border}>
+    <Stack
+      backdropFilter={'blur(20px)'}
+      bg={`${bg}aa`}
+      alignItems={'center'}
+      w="100%"
+      borderBottom={'1px solid'}
+      borderColor={border}
+      position="fixed"
+      zIndex={'sticky'}
+    >
       <HStack p={2} w="100%" maxW="container.lg" justify={'space-between'}>
         <Wordmark></Wordmark>
         <MarketingLinks links={links}></MarketingLinks>

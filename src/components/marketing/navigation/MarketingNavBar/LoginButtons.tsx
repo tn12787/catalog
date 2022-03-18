@@ -13,7 +13,7 @@ const LoginButtons = () => {
           Log in
         </Button>
       </NextLink>
-      <NextLink href={signedIn ? '/overview' : '/login'} passHref>
+      <NextLink href={signedIn ? '/overview' : '/signup'} passHref>
         <Button size="sm" colorScheme="purple" as={Link}>
           {signedIn ? 'Go to app' : 'Sign up free'}
         </Button>

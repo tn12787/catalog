@@ -15,7 +15,7 @@ const MarketingLinks = ({ links }: Props) => {
       {links.map(({ label, href }) => (
         <NextLink href={href} passHref key={href}>
           <Link
-            color={router.pathname.match(new RegExp(href)) ? primary : bodyText}
+            color={router.pathname.match(new RegExp(`^${href}$`)) ? primary : bodyText}
             fontSize={'sm'}
             fontWeight="semibold"
           >

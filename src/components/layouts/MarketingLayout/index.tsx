@@ -4,9 +4,9 @@ import MarketingNavBar from 'components/marketing/navigation/MarketingNavBar';
 import useAppColors from 'hooks/useAppColors';
 
 const MarketingLayout: React.FC = ({ children }) => {
-  const { bgPrimary } = useAppColors();
+  const { bgSecondary } = useAppColors();
   return (
-    <Stack minH="100vh" bg={bgPrimary}>
+    <Stack minH="100vh" spacing={0} bg={bgSecondary}>
       <MarketingNavBar></MarketingNavBar>
       {children}
     </Stack>
