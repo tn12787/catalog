@@ -22,14 +22,14 @@ const MarketingNavBar = () => {
 
   return (
     <Stack
-      backdropFilter={'blur(20px)'}
+      backdropFilter={'blur(15px)'}
       bg={`${bg}aa`}
       alignItems={'center'}
       w="100%"
       borderBottom={'1px solid'}
       borderColor={border}
       position="fixed"
-      zIndex={'sticky'}
+      zIndex={'overlay'}
     >
       <HStack py={3} w="90%" maxW="container.lg" justify={'space-between'}>
         <Wordmark></Wordmark>
