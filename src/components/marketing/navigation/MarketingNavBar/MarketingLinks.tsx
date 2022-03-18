@@ -11,7 +11,7 @@ const MarketingLinks = ({ links }: Props) => {
   const { primary, bodyText } = useAppColors();
   const router = useRouter();
   return (
-    <HStack spacing={6}>
+    <HStack spacing={8}>
       {links.map(({ label, href }) => (
         <NextLink href={href} passHref key={href}>
           <Link
