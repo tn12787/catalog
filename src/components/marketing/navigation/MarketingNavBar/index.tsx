@@ -31,7 +31,7 @@ const MarketingNavBar = () => {
       position="fixed"
       zIndex={'sticky'}
     >
-      <HStack p={2} w="100%" maxW="container.lg" justify={'space-between'}>
+      <HStack py={3} w="90%" maxW="container.lg" justify={'space-between'}>
         <Wordmark></Wordmark>
         <MarketingLinks links={links}></MarketingLinks>
         <LoginButtons></LoginButtons>

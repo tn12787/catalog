@@ -11,14 +11,7 @@ const Footer = () => {
   const { bodySub, bgPrimary, bgSecondary } = useAppColors();
   return (
     <Stack bg={bgPrimary}>
-      <Stack
-        maxW="container.lg"
-        alignSelf={'center'}
-        px={2}
-        w="100%"
-        as="footer"
-        role="contentinfo"
-      >
+      <Stack maxW="container.lg" alignSelf={'center'} px={2} w="90%" as="footer" role="contentinfo">
         <Stack
           w="100%"
           spacing="8"

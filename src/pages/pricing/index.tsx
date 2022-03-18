@@ -8,7 +8,7 @@ import PageHead from 'components/pageItems/PageHead';
 
 const PricingPage = () => {
   return (
-    <Stack minH={'200vh'} alignItems={'center'} pt={'100px'}>
+    <Stack minH={'200vh'} alignItems={'center'} pt={'150px'}>
       <PageHead title={'Pricing'}></PageHead>
       <Stack spacing={'25px'} maxWidth={'container.lg'} w="100%">
         <Heading fontSize={'5xl'} colorScheme="green">
