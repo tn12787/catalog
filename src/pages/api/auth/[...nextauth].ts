@@ -61,7 +61,7 @@ export default NextAuth({
     createUser: async ({ user }) => {
       await createDefaultWorkspaceForUser({
         name: user.name as string,
-        userId: user.sub as string,
+        userId: user.id as string,
         email: user.email as string,
       });
     },
