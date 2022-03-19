@@ -5,7 +5,6 @@ import HeroWave from './HeroWave';
 import HeroRight from './HeroRight';
 
 import useAppColors from 'hooks/useAppColors';
-import InnerRadioGroup from 'components/forms/radio/InnerRadioGroup';
 
 const Hero = () => {
   const highlightBlue = useColorModeValue('blue.500', 'blue.300');
