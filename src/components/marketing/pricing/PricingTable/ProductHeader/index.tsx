@@ -1,6 +1,7 @@
-import { Button, HStack, Stack, Text } from '@chakra-ui/react';
+import { Button, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { capitalize } from 'lodash';
+import NextLink from 'next/link';
 
 import { BillingCycle, PricingStructure } from 'types/marketing/pricing';
 import useAppColors from 'hooks/useAppColors';
@@ -10,12 +11,10 @@ type Props = { priceInfo: PricingStructure; billingCycle: BillingCycle };
 const ProductHeader = ({ priceInfo, billingCycle }: Props) => {
   const { bodySub } = useAppColors();
   return (
-    <Stack spacing={3}>
-      <Text fontSize="xl" fontWeight={'semibold'}>
-        {capitalize(priceInfo.name)}
-      </Text>
+    <Stack spacing={2}>
+      <Heading fontSize="xl">{capitalize(priceInfo.name)}</Heading>
       <HStack>
-        <Text fontSize="3xl" fontWeight={'medium'}>
+        <Text fontSize="2xl" fontWeight={'medium'}>
           ${priceInfo.prices[billingCycle]}
         </Text>
         <Text fontSize="sm" color={bodySub}>
@@ -24,9 +23,11 @@ const ProductHeader = ({ priceInfo, billingCycle }: Props) => {
             : ''}
         </Text>
       </HStack>
-      <Button size="sm" colorScheme={'purple'}>
-        Sign Up
-      </Button>
+      <NextLink href={'/signup'} passHref>
+        <Button as={Link} size="sm" colorScheme={priceInfo.colorScheme}>
+          Sign Up
+        </Button>
+      </NextLink>
       <Text alignSelf="center" fontSize="sm" color={bodySub}>
         {priceInfo.prices[billingCycle]
           ? `billed ${billingCycle === 'monthly' ? 'monthly' : 'annually'}`

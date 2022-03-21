@@ -6,13 +6,15 @@ import useAppColors from 'hooks/useAppColors';
 
 type Props = {
   value: boolean | string | JSX.Element;
+  isLastRow?: boolean;
+  isPremium?: boolean;
 };
 
-const ProductValue = ({ value }: Props) => {
-  const { border } = useAppColors();
+const ProductValue = ({ value, isLastRow, isPremium }: Props) => {
+  const { border, primary, bodySub } = useAppColors();
   return (
-    <HStack borderBottomWidth="1px" borderColor={border} py={2}>
-      {value && <Icon as={BiCheck} fontSize="2xl"></Icon>}
+    <HStack borderBottomWidth={isLastRow ? '0' : '1px'} borderColor={border} py={2}>
+      {value && <Icon color={isPremium ? primary : bodySub} as={BiCheck} fontSize="2xl"></Icon>}
       <Text fontSize={'sm'}>{typeof value !== 'boolean' && value}</Text>
     </HStack>
   );

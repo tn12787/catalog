@@ -1,3 +1,5 @@
+import { PlanName, PricingStructure } from 'types/marketing/pricing';
+
 export const productData = [
   {
     title: 'Releases',
@@ -10,8 +12,8 @@ export const productData = [
       },
       {
         featureName: 'Manage artists',
-        artist: 'up to 2',
-        manager: 'up to 50',
+        artist: 'Up to 2',
+        manager: 'Up to 50',
         label: 'Unlimited',
       },
       {
@@ -128,3 +130,54 @@ export const productData = [
     ],
   },
 ];
+
+export const priceData: Record<PlanName, PricingStructure> = {
+  artist: {
+    name: 'artist',
+    prices: { monthly: 0, yearly: 0 },
+    isPerSeat: false,
+    flavorText: 'Free, forever',
+    colorScheme: 'pink',
+    featureItems: [
+      'Manage up to 2 Artists',
+      '5 Releases/Month',
+      'Intuitive Drag & Drop Planner',
+      'Task Tracking',
+      'Reminders',
+      'Ready-made Release plans',
+      'Ready-made Marketing plans',
+    ],
+  },
+  manager: {
+    name: 'manager',
+    prices: { monthly: 30, yearly: 24 },
+    isPerSeat: false,
+    flavorText: 'Manage many artists at once',
+    colorScheme: 'green',
+    featureItems: [
+      'Everything in Artist plus:',
+      'Manage up to 50 Artists',
+      '50 Releases/Month',
+      'Custom Release plans',
+      'Custom Marketing plans',
+    ],
+  },
+  label: {
+    name: 'label',
+    prices: { monthly: 50, yearly: 40 },
+    isPerSeat: true,
+    flavorText: 'Keep track of releases as a team',
+    colorScheme: 'purple',
+    featureItems: [
+      'Everything in Manager plus:',
+      'Unlimited Artists',
+      '300 Releases/month',
+      'Invite team members',
+      'Roles & Permissions',
+      'Assign team members to tasks',
+      'Link contacts to tasks',
+      'Integrations',
+      'Priority Support',
+    ],
+  },
+};

@@ -1,9 +1,14 @@
-import { Flex, FlexProps, ThemingProps, useRadioGroup, UseRadioGroupProps } from '@chakra-ui/react';
+import {
+  Flex,
+  FlexProps,
+  ThemingProps,
+  useColorModeValue,
+  useRadioGroup,
+  UseRadioGroupProps,
+} from '@chakra-ui/react';
 import React from 'react';
 
 import InnerRadioButton from './InnerRadioButton';
-
-import useAppColors from 'hooks/useAppColors';
 
 type Props = FlexProps &
   UseRadioGroupProps & {
@@ -17,16 +22,9 @@ const InnerRadioGroup = ({ size, onChange, value, defaultValue, options, ...rest
     onChange,
     value,
   });
-  const { bgPrimary } = useAppColors();
+  const bg = useColorModeValue('gray.200', 'gray.700');
   return (
-    <Flex
-      display="inline-flex"
-      align="center"
-      p={1}
-      rounded="lg"
-      bg={bgPrimary}
-      {...getRootProps(rest)}
-    >
+    <Flex display="inline-flex" align="center" p={1} rounded="lg" bg={bg} {...getRootProps(rest)}>
       {options.map((option) => (
         <InnerRadioButton
           size={size}

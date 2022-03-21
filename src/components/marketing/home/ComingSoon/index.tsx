@@ -10,7 +10,7 @@ import FormContent from 'components/forms/FormContent';
 import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
 import { addUserToMailingList } from 'queries/mailingLists';
-import { MailingListData } from 'types/common';
+import { MailingListData } from 'types/marketing/pricing';
 import logo from 'images/logo.svg';
 
 const ComingSoon = () => {

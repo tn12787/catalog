@@ -1,4 +1,4 @@
-import { Stack, Heading, Button, Text, useColorModeValue } from '@chakra-ui/react';
+import { Stack, Heading, Button, Text, useColorModeValue, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import HeroWave from './HeroWave';
@@ -42,7 +42,7 @@ const Hero = () => {
             w={{ base: '100%', lg: '50%' }}
           >
             <Heading size={'3xl'} fontWeight="black" colorScheme="green">
-              ⚡ Supercharge Your Releases
+              💿 Release more music
             </Heading>
             <Text
               style={{ textUnderlinePosition: 'under' }}
@@ -62,7 +62,14 @@ const Hero = () => {
             </Text>
             <Stack direction={{ base: 'column', lg: 'row' }}>
               <Button colorScheme={'purple'}>Get Started</Button>
-              <Button variant={'outline'}>Request a demo</Button>
+              <Button
+                as={Link}
+                href={'https://calendly.com/chalky/launchday-product-tour'}
+                isExternal
+                variant={'outline'}
+              >
+                Request a demo
+              </Button>
             </Stack>
           </Stack>
           <Stack w={{ base: '100%', lg: '50%' }} alignItems={{ base: 'center', lg: 'flex-end' }}>

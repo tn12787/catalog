@@ -1,5 +1,6 @@
-import { HStack, Stack, useColorModeValue, useTheme } from '@chakra-ui/react';
+import { HStack, LinkBox, LinkOverlay, Stack, useColorModeValue, useTheme } from '@chakra-ui/react';
 import React from 'react';
+import NextLink from 'next/link';
 
 import LoginButtons from './LoginButtons';
 import MarketingLinks from './MarketingLinks';
@@ -32,7 +33,12 @@ const MarketingNavBar = () => {
       zIndex={'overlay'}
     >
       <HStack py={3} w="90%" maxW="container.lg" justify={'space-between'}>
-        <Wordmark></Wordmark>
+        <NextLink href="/" passHref>
+          <LinkBox cursor={'pointer'}>
+            <LinkOverlay></LinkOverlay>
+            <Wordmark></Wordmark>
+          </LinkBox>
+        </NextLink>
         <MarketingLinks links={links}></MarketingLinks>
         <LoginButtons></LoginButtons>
       </HStack>

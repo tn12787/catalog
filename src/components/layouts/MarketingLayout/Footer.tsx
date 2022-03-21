@@ -1,14 +1,42 @@
-import { Button, ButtonGroup, Divider, IconButton, Input, Stack, Text } from '@chakra-ui/react';
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  IconButton,
+  Input,
+  Stack,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 import * as React from 'react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
 import Wordmark from 'components/marketing/navigation/MarketingNavBar/Wordmark';
+import { addUserToMailingList } from 'queries/mailingLists';
+import { MailingListData } from 'types/marketing/pricing';
 
 // import { Logo } from './Logo';
 
 const Footer = () => {
   const { bodySub, bgPrimary, bgSecondary } = useAppColors();
+  const { reset, register, handleSubmit } = useForm<MailingListData>({});
+
+  const toast = useToast();
+
+  const { mutateAsync: submitForm, isLoading } = useMutation(addUserToMailingList, {
+    onSuccess: () => {
+      toast({
+        title: 'Thanks! Subscribed to updates',
+        status: 'success',
+      });
+      reset();
+    },
+  });
+
+  const onSubmit = (data: MailingListData) => submitForm(data);
   return (
     <Stack bg={bgPrimary}>
       <Stack maxW="container.lg" alignSelf={'center'} px={2} w="90%" as="footer" role="contentinfo">
@@ -65,15 +93,28 @@ const Footer = () => {
               <Text fontSize="sm" fontWeight="semibold" color={bodySub}>
                 Stay up to date
               </Text>
-              <Stack spacing="4" direction={{ base: 'column', sm: 'row' }} maxW={{ lg: '360px' }}>
+              <Stack
+                as="form"
+                onSubmit={handleSubmit(onSubmit)}
+                spacing="4"
+                direction={{ base: 'column', sm: 'row' }}
+                maxW={{ lg: '360px' }}
+              >
                 <Input
                   bg={bgSecondary}
                   size="md"
                   placeholder="Enter your email"
                   type="email"
                   required
+                  {...register('email')}
                 />
-                <Button size="md" colorScheme={'purple'} type="submit" flexShrink={0}>
+                <Button
+                  isLoading={isLoading}
+                  size="md"
+                  colorScheme={'purple'}
+                  type="submit"
+                  flexShrink={0}
+                >
                   Subscribe
                 </Button>
               </Stack>
