@@ -1,4 +1,4 @@
-import { MailingListData } from 'types/common';
+import { MailingListData } from 'types/marketing/pricing';
 import { FormDatum } from 'types/forms';
 
 export const mailingListConfig: FormDatum<MailingListData>[] = [
