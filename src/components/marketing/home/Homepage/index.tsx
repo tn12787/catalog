@@ -1,5 +1,6 @@
-import { Stack, Text, Heading, Button } from '@chakra-ui/react';
+import { Stack, Text, Heading, Button, Link } from '@chakra-ui/react';
 import React from 'react';
+import NextLink from 'next/link';
 
 import Hero from './Hero';
 
@@ -35,7 +36,11 @@ const Homepage = () => {
             </Text>
           </Stack>
           <Stack direction={{ base: 'column', lg: 'row' }}>
-            <Button colorScheme={'purple'}>Get Started</Button>
+            <NextLink href={'/signup'} passHref>
+              <Button as={Link} colorScheme={'purple'}>
+                Get Started
+              </Button>
+            </NextLink>
             <Button variant={'outline'}>Learn more</Button>
           </Stack>
         </Stack>

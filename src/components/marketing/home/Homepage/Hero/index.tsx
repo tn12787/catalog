@@ -1,5 +1,6 @@
 import { Stack, Heading, Button, Text, useColorModeValue, Link } from '@chakra-ui/react';
 import React from 'react';
+import NextLink from 'next/link';
 
 import HeroWave from './HeroWave';
 import HeroRight from './HeroRight';
@@ -61,7 +62,11 @@ const Hero = () => {
               .
             </Text>
             <Stack direction={{ base: 'column', lg: 'row' }}>
-              <Button colorScheme={'purple'}>Get Started</Button>
+              <NextLink href={'/signup'} passHref>
+                <Button as={Link} colorScheme={'purple'}>
+                  Get Started
+                </Button>
+              </NextLink>
               <Button
                 as={Link}
                 href={'https://calendly.com/chalky/launchday-product-tour'}

@@ -1,4 +1,4 @@
-import { Button, HStack, Icon, IconButton, Link, useColorMode } from '@chakra-ui/react';
+import { Button, Stack, Icon, IconButton, Link, useColorMode } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import React from 'react';
@@ -9,7 +9,7 @@ const LoginButtons = () => {
   const signedIn = status === 'authenticated';
   const { toggleColorMode, colorMode } = useColorMode();
   return (
-    <HStack spacing={4}>
+    <Stack alignItems={'center'} direction={{ base: 'column', lg: 'row' }} spacing={4}>
       <IconButton
         onClick={toggleColorMode}
         aria-label="dark-theme"
@@ -26,7 +26,7 @@ const LoginButtons = () => {
           {signedIn ? 'Go to app' : 'Sign up free'}
         </Button>
       </NextLink>
-    </HStack>
+    </Stack>
   );
 };
 
