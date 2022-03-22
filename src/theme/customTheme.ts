@@ -1,11 +1,12 @@
-import { extendTheme, theme } from '@chakra-ui/react';
+import { extendTheme, theme as baseTheme } from '@chakra-ui/react';
 
+import { InnerRadioButton } from './CustomRadioButton';
 import { customColors } from './colors';
 
 const fontStack =
   'InterVariable, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 
-export const appTheme = extendTheme({
+export const theme = extendTheme({
   fonts: {
     body: fontStack,
     heading: fontStack,
@@ -13,9 +14,10 @@ export const appTheme = extendTheme({
   },
   components: {
     Heading: {
-      ...theme.components.Heading,
-      sizes: { ...theme.components.Heading.sizes, xl: { fontWeight: 'black' } },
+      ...baseTheme.components.Heading,
+      sizes: { ...baseTheme.components.Heading.sizes, xl: { fontWeight: 'black' } },
     },
+    InnerRadioButton,
   },
 
   colors: customColors,

@@ -170,12 +170,6 @@ export type PermissionType =
   | 'UPDATE_CONTACTS'
   | 'DELETE_CONTACTS';
 
-export type MailingListData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-};
-
 export type MappedSubscription = {
   product: {
     id: string;

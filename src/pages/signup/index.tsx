@@ -13,7 +13,7 @@ interface Props {
   csrfToken: string;
 }
 
-const LoginPage = ({ csrfToken }: Props) => {
+const SignupPage = ({ csrfToken }: Props) => {
   const router = useRouter();
 
   const toast = useToast();
@@ -33,18 +33,18 @@ const LoginPage = ({ csrfToken }: Props) => {
 
   return (
     <Flex direction="column" align="center" justify="center" flex={1} minH="100vh">
-      <PageHead title="Log in" />
+      <PageHead title="Sign up" />
       <Stack w={'80%'} maxW="400px" spacing={'40px'} alignItems="center">
         <Box w={20}>
           <Image src={logo} alt="Brand logo"></Image>
         </Box>
-        <Heading fontWeight="semibold" fontSize="2xl">
-          Log in to Launchday
+        <Heading textAlign="center" fontWeight="semibold" fontSize="2xl">
+          Create your account on Launchday
         </Heading>
         <AuthControls
-          csrfToken={csrfToken}
           error={router.query.error as string}
-          callbackUrl={(router.query.callbackUrl ?? '/overview') as string}
+          csrfToken={csrfToken}
+          callbackUrl={(router.query.callbackUrl ?? '/welcome') as string}
         ></AuthControls>
       </Stack>
     </Flex>
@@ -57,4 +57,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { session, csrfToken } };
 };
 
-export default LoginPage;
+export default SignupPage;
