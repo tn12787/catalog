@@ -97,6 +97,8 @@
     "db:push": "prisma db push",
     "test": "jest",
     "lint": "next lint",
-    "prepare": "husky install"
+    "tokens": "yarn chakra-cli tokens src/theme/customTheme.ts",
+    "prepare": "husky install",
+    "postinstall": "yarn tokens"
   }
 }
