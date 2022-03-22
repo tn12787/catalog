@@ -1,6 +1,20 @@
-import { HStack, LinkBox, LinkOverlay, Stack, useColorModeValue, useTheme } from '@chakra-ui/react';
+import {
+  Drawer,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+  HStack,
+  IconButton,
+  LinkBox,
+  LinkOverlay,
+  Stack,
+  useColorModeValue,
+  useDisclosure,
+  useTheme,
+} from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
+import { BiMenu } from 'react-icons/bi';
 
 import LoginButtons from './LoginButtons';
 import MarketingLinks from './MarketingLinks';
@@ -21,6 +35,8 @@ const MarketingNavBar = () => {
 
   const bg = useColorModeValue(colors.white, colors.gray[800]);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Stack
       backdropFilter={'blur(15px)'}
@@ -39,9 +55,31 @@ const MarketingNavBar = () => {
             <Wordmark></Wordmark>
           </LinkBox>
         </NextLink>
-        <MarketingLinks links={links}></MarketingLinks>
-        <LoginButtons></LoginButtons>
+        <Stack display={{ base: 'none', lg: 'flex' }}>
+          <MarketingLinks links={links}></MarketingLinks>
+        </Stack>
+        <Stack display={{ base: 'none', lg: 'flex' }}>
+          <LoginButtons></LoginButtons>
+        </Stack>
+        <IconButton
+          display={{ base: 'flex', lg: 'none' }}
+          icon={<BiMenu />}
+          aria-label="menu"
+          variant={'ghost'}
+          fontSize="2xl"
+          onClick={onOpen}
+        ></IconButton>
       </HStack>
+      <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
+        <DrawerOverlay></DrawerOverlay>
+        <DrawerContent>
+          <DrawerCloseButton></DrawerCloseButton>
+          <Stack w="100%" py={10} alignItems={'center'}>
+            <MarketingLinks links={links}></MarketingLinks>
+            <LoginButtons></LoginButtons>
+          </Stack>
+        </DrawerContent>
+      </Drawer>
     </Stack>
   );
 };
