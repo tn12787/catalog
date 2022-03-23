@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { User } from '@prisma/client';
 import { Heading, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { FiEdit } from 'react-icons/fi';
