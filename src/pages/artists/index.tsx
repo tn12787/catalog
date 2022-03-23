@@ -122,7 +122,11 @@ const ArtistsPage = () => {
             </NextLink>
           </BreadcrumbItem>
         </Breadcrumb>
-        <Stack direction="row" align="center" justify="space-between">
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          align={{ bsae: 'stretch', md: 'center' }}
+          justify="space-between"
+        >
           <Heading size="2xl" fontWeight="black" alignSelf="flex-start">
             Artists
           </Heading>

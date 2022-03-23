@@ -1,4 +1,4 @@
-import { BiBell, BiCalendar, BiDisc } from 'react-icons/bi';
+import { BiBell, BiCalendar, BiDisc, BiRocket } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
 import { RiLayoutMasonryLine } from 'react-icons/ri';
@@ -61,6 +61,12 @@ export const appLinks: NavLinkConfig = {
         href: `/workspaces/${currentWorkspace}/settings`,
         text: 'Manage Workspace',
         activeRegex: /^\/workspaces\/.+\/settings/,
+      },
+      {
+        icon: BiRocket,
+        href: `/upgrade`,
+        text: 'Upgrade',
+        activeRegex: /^\/upgrade$/,
       },
     ],
   }),

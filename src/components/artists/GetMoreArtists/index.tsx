@@ -1,4 +1,4 @@
-import { Stack, HStack, Heading, Button, Text, Link } from '@chakra-ui/react';
+import { Stack, HStack, Heading, Button, Text, Link, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import Card from 'components/Card';
@@ -8,12 +8,15 @@ import useFeatures from 'hooks/features/useFeatures';
 const GetMoreArtists = () => {
   const { isFeatureEnabled } = useFeatures();
 
+  const bgStart = useColorModeValue('teal.100', 'teal.800');
+  const bgEnd = useColorModeValue('purple.100', 'purple.800');
+
   if (!isFeatureEnabled(FeatureKey.PAYMENTS)) {
     return null;
   }
 
   return (
-    <Card color="white" p={8} bgGradient={'linear(to-tr, teal.600, purple.500)'}>
+    <Card p={8} bgGradient={`linear(to-tr, ${bgStart}, ${bgEnd})`}>
       <Stack
         spacing={5}
         justifyContent={'space-between'}
