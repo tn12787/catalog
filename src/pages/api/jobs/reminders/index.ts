@@ -30,7 +30,7 @@ class RemindersHandler {
         },
       },
       include: {
-        user: true,
+        user: { include: { emailPreferences: true } },
         workspace: true,
         tasksAssigned: {
           where: tasksAreOutstanding,
@@ -69,7 +69,7 @@ class RemindersHandler {
 
     let emailsSent = 0;
     workspaceMembersToNotify.forEach((member) => {
-      if (!member.user.receiveEmail) return; // skip users who have disable email notifications
+      if (!member.user.emailPreferences?.reminders) return; // skip users who have disable email notifications
 
       member.tasksAssigned.map(async (task) => {
         ++emailsSent;
