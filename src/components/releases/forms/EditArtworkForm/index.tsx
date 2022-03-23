@@ -1,6 +1,7 @@
 import { Stack, Text, useToast, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { useQueryClient, useMutation } from 'react-query';
+
 import 'firebase/storage';
 
 import { EditArtworkFormData } from '../../specific/tasks/Artwork/types';
@@ -11,6 +12,7 @@ import { createSingleArtwork, updateSingleArtwork, uploadImageToFirebase } from 
 import { ClientRelease } from 'types/common';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
+import { midday } from 'utils/dates';
 
 interface Props {
   releaseData: ClientRelease;
@@ -50,6 +52,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await createArtwork({
         ...data,
         url,
+        dueDate: midday(data.dueDate),
         assignees: data.assignees.map((item) => item.id),
         releaseId: releaseData.id,
       });
@@ -74,6 +77,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await updateArtwork({
         ...data,
         url,
+        dueDate: midday(data.dueDate),
         assignees: data.assignees.map((item) => item.id),
         taskId: releaseData.artwork?.id as string,
       });

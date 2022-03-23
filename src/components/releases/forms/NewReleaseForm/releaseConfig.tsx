@@ -1,5 +1,6 @@
 import { Artist } from '@prisma/client';
 import { startOfYesterday } from 'date-fns';
+import { Stack, Text } from '@chakra-ui/react';
 
 import { BasicInfoFormData } from './types';
 
@@ -47,8 +48,16 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>
     label: 'Release Date',
     type: 'date',
     registerArgs: { required: 'Please enter a date for your release.' },
-    helperContent:
-      'We recommend scheduling at least 4 weeks before your target release date to complete basic tasks.',
+    helperContent: (
+      <Stack>
+        <Text>{'New music is usually released on Fridays.'}</Text>
+        <Text>
+          {
+            "You should leave at least 4 weeks' worth of time before to prepare, distribute & promote your release."
+          }
+        </Text>
+      </Stack>
+    ),
     extraProps: {
       min: startOfYesterday(),
     },
