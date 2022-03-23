@@ -32,6 +32,10 @@ import { SortOrder } from 'queries/types';
 import { ArtistResponse } from 'types/common';
 import { SortBySelectOption } from 'types/forms';
 import useDebounce from 'hooks/useDebounce';
+import { canAddAnotherArtist, getLimitForSubscription } from 'utils/artists';
+import GetMoreArtists from 'components/artists/GetMoreArtists';
+import useFeatures from 'hooks/features/useFeatures';
+import { FeatureKey } from 'common/features/types';
 
 const sortOptions: SortBySelectOption<ArtistResponse>[] = [
   {
@@ -65,9 +69,9 @@ const sortOptions: SortBySelectOption<ArtistResponse>[] = [
 ];
 
 const ArtistsPage = () => {
-  const { bgPrimary, bgSecondary, primary } = useAppColors();
+  const { bgPrimary, bgSecondary, primary, bodySub } = useAppColors();
   const { currentWorkspace, workspaceMemberships } = useExtendedSession();
-  const { workspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
+  const { workspace, manageWorkspace, isLoading: isWorkspaceLoading } = useCurrentWorkspace();
   const [sortByValue, setSortBy] = useState<SortBySelectOption<ArtistResponse>>(sortOptions[0]);
   const [search, setSearch] = React.useState('');
 
@@ -91,6 +95,11 @@ const ArtistsPage = () => {
     ['CREATE_ARTISTS'],
     workspaceMemberships?.[currentWorkspace]
   );
+
+  const { isFeatureEnabled } = useFeatures();
+
+  const artistLimitNotReached =
+    canAddAnotherArtist(artists?.length ?? 0, workspace) || !isFeatureEnabled(FeatureKey.PAYMENTS);
 
   const shouldHideControls = artists?.length === 0 && !debouncedSearch;
 
@@ -118,11 +127,26 @@ const ArtistsPage = () => {
             Artists
           </Heading>
           {canCreateArtists && (
-            <NextLink passHref href={'/artists/new'}>
-              <Button colorScheme="purple" as={'a'}>
-                Add Artist
-              </Button>
-            </NextLink>
+            <Stack
+              alignItems={{ base: 'stretch', md: 'center' }}
+              direction={{ base: 'column-reverse', md: 'row' }}
+            >
+              {!artistLimitNotReached && (
+                <HStack>
+                  <Text fontSize={'xs'} color={bodySub}>
+                    No more artists left in plan
+                  </Text>
+                  <Button size="xs" onClick={manageWorkspace} colorScheme={'purple'} variant="link">
+                    Need more?
+                  </Button>
+                </HStack>
+              )}
+              <NextLink passHref href={'/artists/new'}>
+                <Button isDisabled={!artistLimitNotReached} colorScheme="purple" as={'a'}>
+                  Add Artist
+                </Button>
+              </NextLink>
+            </Stack>
           )}
         </Stack>
 
@@ -172,6 +196,9 @@ const ArtistsPage = () => {
         <Stack>
           <ArtistList artists={artists} search={debouncedSearch} loading={isLoading} />
         </Stack>
+        {getLimitForSubscription(workspace?.subscription) < Infinity && (
+          <GetMoreArtists></GetMoreArtists>
+        )}
       </Stack>
     </Stack>
   );
