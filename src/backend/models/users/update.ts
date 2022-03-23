@@ -1,5 +1,7 @@
 import { UserOnboardingSegment } from '@prisma/client';
-import { IsEnum, IsOptional, IsString, IsBoolean } from 'class-validator';
+import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
+
+import { UpdateEmailPreferencesDto } from './email/update';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -15,6 +17,6 @@ export class UpdateUserDto {
   image: string;
 
   @IsOptional()
-  @IsBoolean()
-  receiveEmail: boolean;
+  @ValidateNested()
+  emailPreferences: UpdateEmailPreferencesDto;
 }

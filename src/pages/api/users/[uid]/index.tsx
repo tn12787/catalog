@@ -30,7 +30,14 @@ class UserHandler {
         name: body.name,
         segment: body.segment,
         image: body.image,
-        receiveEmail: body.receiveEmail,
+        emailPreferences: {
+          upsert: {
+            create: { reminders: body.emailPreferences?.reminders },
+            update: {
+              reminders: body.emailPreferences?.reminders,
+            },
+          },
+        },
       },
     });
 
