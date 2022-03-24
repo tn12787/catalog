@@ -1,7 +1,7 @@
 import { createHandler, Req, Patch, Body, Delete } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
-import { AuthDecoratedRequest } from 'types/common';
 import { ensureUserHasWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';

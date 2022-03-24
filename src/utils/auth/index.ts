@@ -1,7 +1,8 @@
 import { Permission } from '@prisma/client';
 import { uniq } from 'lodash';
 
-import { EnrichedWorkspaceMember, PermissionType } from 'types/common';
+import { EnrichedWorkspaceMember } from 'types/common';
+import { PermissionType } from 'types/permissions';
 
 export const getAllUserPermissions = (member?: EnrichedWorkspaceMember): Permission[] => {
   const roles = member?.roles;

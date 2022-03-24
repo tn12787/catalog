@@ -10,11 +10,11 @@ import {
 } from '@storyofams/next-api-decorators';
 import { NotificationType } from '@prisma/client';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { getResourceWorkspaceMembership } from 'backend/apiUtils/workspaces';
-import { AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import {

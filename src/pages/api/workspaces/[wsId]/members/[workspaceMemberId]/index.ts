@@ -9,6 +9,7 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { UpdateWorkspaceMemberDto } from 'backend/models/workspaces/members/update';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -17,7 +18,6 @@ import {
   checkRequiredPermissions,
   getResourceWorkspaceMembership,
 } from 'backend/apiUtils/workspaces';
-import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
 class WorkspaceMemberHandler {

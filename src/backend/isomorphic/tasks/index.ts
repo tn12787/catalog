@@ -1,6 +1,6 @@
 import { NotFoundException } from '@storyofams/next-api-decorators';
+import { AuthDecoratedRequest } from 'types/auth';
 
-import { AuthDecoratedRequest } from 'types/common';
 import prisma from 'backend/prisma/client';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 

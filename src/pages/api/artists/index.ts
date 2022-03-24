@@ -3,19 +3,25 @@ import {
   Body,
   createHandler,
   DefaultValuePipe,
+  ForbiddenException,
   Get,
   HttpCode,
+  NotFoundException,
   Post,
   Query,
+  Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
+import { canAddAnotherArtist } from 'utils/artists';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
-import { ArtistResponse } from 'types/common';
+import { ArtistResponse, EnrichedWorkspace } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateArtistDto } from 'backend/models/artists/create';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
+import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 
 @requiresAuth()
 class ArtistHandler {
@@ -56,7 +62,28 @@ class ArtistHandler {
 
   @Post()
   @HttpCode(201)
-  async createArtist(@Body(ValidationPipe) body: CreateArtistDto) {
+  async createArtist(
+    @Req() req: AuthDecoratedRequest,
+    @Body(ValidationPipe) body: CreateArtistDto
+  ) {
+    await checkRequiredPermissions(req, ['CREATE_ARTISTS'], body.workspace);
+
+    const workspace = await prisma.workspace.findUnique({
+      where: { id: body.workspace },
+      include: { members: true },
+    });
+    const artists = await prisma.artist.count({ where: { workspace: { id: body.workspace } } });
+
+    if (!workspace) {
+      throw new NotFoundException('Workspace not found');
+    }
+
+    if (!canAddAnotherArtist(artists, workspace as EnrichedWorkspace)) {
+      throw new ForbiddenException(
+        "You cannot add any more artists to this workspace. Please upgrade this workspace's plan to add more."
+      );
+    }
+
     const result = await prisma.artist.create({
       data: {
         name: body.name,

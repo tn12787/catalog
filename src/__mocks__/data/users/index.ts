@@ -9,6 +9,11 @@ export const testUser = (extraFields: Partial<UserResponse>): UserResponse => {
     image: null,
     segment: null,
     workspaces: [],
+    emailPreferences: {
+      id: 'boi',
+      userId: 'test-used-id',
+      reminders: true,
+    },
     ...extraFields,
   };
 };

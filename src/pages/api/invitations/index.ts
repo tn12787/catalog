@@ -1,8 +1,8 @@
 import { createHandler, Request, Get } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
-import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
 class InviteHandler {

@@ -1,5 +1,3 @@
-import { Session } from 'next-auth';
-import type { NextApiRequest } from 'next';
 import {
   Role,
   Permission,
@@ -20,7 +18,8 @@ import {
   Contact,
   EmailPreferences,
 } from '@prisma/client';
-import Stripe from 'stripe';
+
+import { MappedSubscription } from 'types/billing';
 
 export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date | null;
@@ -96,8 +95,6 @@ export enum ReleaseType {
   ALBUM = 'Album',
 }
 
-export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
-
 export type EnrichedReleaseTask = ReleaseTaskWithAssignees & {
   artworkData: ArtworkData | null;
   distributionData: (DistributionData & { distributor?: Distributor }) | null;
@@ -128,62 +125,8 @@ export type EnrichedWorkspaceMember = WorkspaceMember & {
   roles: RoleWithPermission[];
 };
 
-export type ExtendedSession = Session & { token: ExtendedToken };
-
 export type EnrichedWorkspace = Workspace & {
   invites: Invite[];
   members: WorkspaceMemberWithUserAndRoles[];
   subscription?: MappedSubscription;
-};
-
-export interface ExtendedToken {
-  email: string;
-  name: string;
-  picture: string;
-  workspaceMemberships: EnrichedWorkspaceMember[];
-  sub: string;
-}
-
-export interface AuthDecoratedRequest extends NextApiRequest {
-  session: ExtendedSession;
-}
-
-export type PermissionType =
-  | 'CREATE_RELEASES'
-  | 'UPDATE_RELEASES'
-  | 'DELETE_RELEASES'
-  | 'VIEW_RELEASES'
-  | 'CREATE_ARTISTS'
-  | 'UPDATE_ARTISTS'
-  | 'DELETE_ARTISTS'
-  | 'VIEW_ARTISTS'
-  | 'CREATE_ROLES'
-  | 'UPDATE_ROLES'
-  | 'DELETE_ROLES'
-  | 'VIEW_ROLES'
-  | 'INVITE_USERS'
-  | 'DELETE_USERS'
-  | 'UPDATE_USERS'
-  | 'VIEW_USERS'
-  | 'VIEW_TEAM'
-  | 'UPDATE_TEAM'
-  | 'DELETE_TEAM'
-  | 'DELETE_ALL_COMMENTS'
-  | 'CREATE_CONTACTS'
-  | 'VIEW_CONTACTS'
-  | 'UPDATE_CONTACTS'
-  | 'DELETE_CONTACTS';
-
-export type MappedSubscription = {
-  product: {
-    id: string;
-    name: string;
-  };
-  status: Stripe.Subscription.Status;
-  trialEnd: Date | null;
-  totalSeats: number;
-  currentPeriodStart: Date;
-  currentPeriodEnd: Date;
-  cancelTime: Date | null;
-  interval: Stripe.SubscriptionItem['plan']['interval'];
 };

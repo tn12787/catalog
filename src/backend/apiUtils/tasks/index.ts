@@ -7,10 +7,10 @@ import { ReleaseTask, ReleaseTaskType } from '@prisma/client';
 import { transformContactsToPrismaQuery } from '../transforms/contacts';
 import { buildCreateTaskEvent } from '../taskEvents';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { CreateReleaseTaskDto, UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
-import { AuthDecoratedRequest } from 'types/common';
 import prisma from 'backend/prisma/client';
 
 export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: string) => {

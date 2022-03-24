@@ -100,7 +100,6 @@ model User {
   sessions         Session[]
   workspaces       WorkspaceMember[]
   segment          UserOnboardingSegment?
-  receiveEmail     Boolean?               @default(true)
   emailPreferences EmailPreferences?
 }
 

@@ -2,8 +2,9 @@ import { pickBy } from 'lodash';
 import { Release } from '@prisma/client';
 import { createHandler, DefaultValuePipe, Get, Query, Req } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
-import { ArtistResponse, AuthDecoratedRequest } from 'types/common';
+import { ArtistResponse } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';

@@ -10,7 +10,7 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/common';
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';
