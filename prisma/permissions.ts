@@ -1,4 +1,4 @@
-import { PermissionType } from '../src/types/common';
+import { PermissionType } from '../src/types/permissions';
 
 export const allPermissions: { name: PermissionType }[] = [
   { name: 'CREATE_RELEASES' },

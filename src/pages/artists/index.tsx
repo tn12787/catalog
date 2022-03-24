@@ -138,7 +138,7 @@ const ArtistsPage = () => {
               {!artistLimitNotReached && (
                 <HStack>
                   <Text fontSize={'xs'} color={bodySub}>
-                    No more artists left in plan
+                    No more artists left in plan.
                   </Text>
                   <Button size="xs" onClick={manageWorkspace} colorScheme={'purple'} variant="link">
                     Need more?

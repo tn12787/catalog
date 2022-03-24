@@ -2,7 +2,7 @@ import { Stripe } from 'stripe';
 import { fromUnixTime } from 'date-fns';
 
 import { stripe } from 'backend/apiUtils/stripe/server';
-import { MappedSubscription } from 'types/common';
+import { MappedSubscription, ProductName } from 'types/billing';
 
 export const transformSubscriptionToBasicData = async (
   subscription: Stripe.Subscription
@@ -11,7 +11,7 @@ export const transformSubscriptionToBasicData = async (
   return {
     product: {
       id: product.id,
-      name: product.name,
+      name: product.name as ProductName,
     },
     status: subscription.status,
     trialEnd: subscription.trial_end ? fromUnixTime(subscription.trial_end) : null,

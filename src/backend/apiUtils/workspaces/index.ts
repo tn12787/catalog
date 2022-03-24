@@ -7,8 +7,9 @@ import { getOrCreateStripeCustomer } from '../stripe/customers';
 import { defaultWorkspaceLabels } from './defaultLabels';
 
 import prisma from 'backend/prisma/client';
-import { PermissionType, ExtendedSession, AuthDecoratedRequest } from 'types/common';
+import { ExtendedSession, AuthDecoratedRequest } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
+import { PermissionType } from 'types/permissions';
 
 type UserCreateArgs = {
   name: string;

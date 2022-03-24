@@ -20,7 +20,8 @@ import {
   Contact,
   EmailPreferences,
 } from '@prisma/client';
-import Stripe from 'stripe';
+
+import { MappedSubscription } from 'types/billing';
 
 export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date | null;
@@ -147,43 +148,3 @@ export interface ExtendedToken {
 export interface AuthDecoratedRequest extends NextApiRequest {
   session: ExtendedSession;
 }
-
-export type PermissionType =
-  | 'CREATE_RELEASES'
-  | 'UPDATE_RELEASES'
-  | 'DELETE_RELEASES'
-  | 'VIEW_RELEASES'
-  | 'CREATE_ARTISTS'
-  | 'UPDATE_ARTISTS'
-  | 'DELETE_ARTISTS'
-  | 'VIEW_ARTISTS'
-  | 'CREATE_ROLES'
-  | 'UPDATE_ROLES'
-  | 'DELETE_ROLES'
-  | 'VIEW_ROLES'
-  | 'INVITE_USERS'
-  | 'DELETE_USERS'
-  | 'UPDATE_USERS'
-  | 'VIEW_USERS'
-  | 'VIEW_TEAM'
-  | 'UPDATE_TEAM'
-  | 'DELETE_TEAM'
-  | 'DELETE_ALL_COMMENTS'
-  | 'CREATE_CONTACTS'
-  | 'VIEW_CONTACTS'
-  | 'UPDATE_CONTACTS'
-  | 'DELETE_CONTACTS';
-
-export type MappedSubscription = {
-  product: {
-    id: string;
-    name: string;
-  };
-  status: Stripe.Subscription.Status;
-  trialEnd: Date | null;
-  totalSeats: number;
-  currentPeriodStart: Date;
-  currentPeriodEnd: Date;
-  cancelTime: Date | null;
-  interval: Stripe.SubscriptionItem['plan']['interval'];
-};

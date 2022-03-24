@@ -13,9 +13,9 @@ export const getLimitForSubscription = (
   subscription: EnrichedWorkspace['subscription']
 ): number => {
   switch (subscription?.product?.name) {
-    case 'manager':
+    case 'Manager Plan':
       return artistLimits.manager;
-    case 'label':
+    case 'Label Plan':
       return artistLimits.label;
     default:
       return artistLimits.artist;
