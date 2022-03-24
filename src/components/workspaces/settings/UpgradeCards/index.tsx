@@ -22,7 +22,6 @@ const UpgradeCards = () => {
       <Heading fontSize={'lg'}>{"You're on the free plan"}</Heading>
       <Text>
         Upgrade now to manage multiple artists, contacts, workspace members, roles, tasks and more.
-        Starts at $6 / month.
       </Text>
       <Button leftIcon={<BiRocket />} colorScheme="purple" onClick={() => checkout()}>
         Upgrade now

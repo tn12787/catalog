@@ -62,12 +62,12 @@ export const appLinks: NavLinkConfig = {
         text: 'Manage Workspace',
         activeRegex: /^\/workspaces\/.+\/settings/,
       },
-      {
-        icon: BiRocket,
-        href: `/upgrade`,
-        text: 'Upgrade',
-        activeRegex: /^\/upgrade$/,
-      },
+      // {
+      //   icon: BiRocket,
+      //   href: `/upgrade`,
+      //   text: 'Upgrade',
+      //   activeRegex: /^\/upgrade$/,
+      // },
     ],
   }),
   bottom: {
