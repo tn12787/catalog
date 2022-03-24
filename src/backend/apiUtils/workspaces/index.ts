@@ -49,6 +49,17 @@ export const manageSubscriptionChange = async (customer: string, id?: string) =>
   });
 };
 
+export const manageCustomerDelete = async (customer: string) => {
+  try {
+    await prisma.workspace.update({
+      where: { stripeCustomerId: customer },
+      data: { stripeCustomerId: null },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const getResourceWorkspaceMembership = async (
   req: AuthDecoratedRequest,
   workspaceId?: string

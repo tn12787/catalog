@@ -9,6 +9,9 @@ import { NavLinkConfig } from 'appLinks';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import useAppColors from 'hooks/useAppColors';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import useFeatures from 'hooks/features/useFeatures';
+import { FeatureKey } from 'common/features/types';
 
 interface Props {
   links: NavLinkConfig;
@@ -22,9 +25,12 @@ const Nav = ({ links, onItemSelected }: Props) => {
     ['UPDATE_TEAM'],
     workspaceMemberships?.[currentWorkspace]
   );
-  const { bgSecondary, bodySub } = useAppColors();
 
-  const settingsLinks = links.settings(currentWorkspace);
+  const { workspace } = useCurrentWorkspace();
+  const { bgSecondary, bodySub } = useAppColors();
+  const { isFeatureEnabled } = useFeatures();
+
+  const settingsLinks = links.settings(workspace, isFeatureEnabled(FeatureKey.PAYMENTS));
 
   return (
     <Stack

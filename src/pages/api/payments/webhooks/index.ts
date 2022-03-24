@@ -11,7 +11,7 @@ import { NextApiRequest } from 'next';
 import Stripe from 'stripe';
 
 import { stripe } from 'backend/apiUtils/stripe/server';
-import { manageSubscriptionChange } from 'backend/apiUtils/workspaces';
+import { manageCustomerDelete, manageSubscriptionChange } from 'backend/apiUtils/workspaces';
 
 // Stripe requires the raw body to construct the event.
 export const config = {
@@ -66,6 +66,10 @@ class WebhookHandler {
             subscriptionId as string
           );
         }
+        break;
+      case 'customer.deleted':
+        const customer = event.data.object as Stripe.Customer;
+        await manageCustomerDelete(customer.id);
         break;
       default:
         break;
