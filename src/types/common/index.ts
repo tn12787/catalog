@@ -1,4 +1,3 @@
-import { Session } from 'next-auth';
 import {
   Role,
   Permission,
@@ -126,18 +125,8 @@ export type EnrichedWorkspaceMember = WorkspaceMember & {
   roles: RoleWithPermission[];
 };
 
-export type ExtendedSession = Session & { token: ExtendedToken };
-
 export type EnrichedWorkspace = Workspace & {
   invites: Invite[];
   members: WorkspaceMemberWithUserAndRoles[];
   subscription?: MappedSubscription;
 };
-
-export interface ExtendedToken {
-  email: string;
-  name: string;
-  picture: string;
-  workspaceMemberships: EnrichedWorkspaceMember[];
-  sub: string;
-}

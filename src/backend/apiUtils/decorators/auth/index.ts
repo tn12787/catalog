@@ -13,9 +13,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2020-08-27',
 });
 
-import { AuthDecoratedRequest } from 'types/auth';
-
-import { ExtendedSession } from 'types/common';
+import { AuthDecoratedRequest, ExtendedSession } from 'types/auth';
 
 const requiresAuth = createMiddlewareDecorator(
   async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {

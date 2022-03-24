@@ -2,7 +2,7 @@ import { randomBytes } from 'crypto';
 
 import { testWorkspaceMemberShip } from '../workspaces';
 
-import { ExtendedSession } from 'types/common';
+import { ExtendedSession } from 'types/auth';
 
 export const mockSession = (extraFields: Partial<ExtendedSession>): ExtendedSession => {
   return {
