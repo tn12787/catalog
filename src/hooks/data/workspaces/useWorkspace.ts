@@ -1,18 +1,24 @@
-import { useQuery } from 'react-query';
+import { AxiosError } from 'axios';
+import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import { useCallback, useMemo } from 'react';
 
 import { fetchWorkspace } from 'queries/workspaces';
 import { createCheckout, createPortalLink } from 'queries/payments';
 import getStripe from 'backend/apiUtils/stripe/client';
+import { EnrichedWorkspace } from 'types/common';
 
 const defaultPrice = 'price_1KNFjFHNIzcgCVUerPbXkONu';
 
-const useWorkspace = (workspaceId: string) => {
+const useWorkspace = (
+  workspaceId: string,
+  options?: UseQueryOptions<EnrichedWorkspace, AxiosError>
+) => {
   const { data: workspace, isLoading } = useQuery(
-    ['workspace', workspaceId],
+    ['workspace', workspaceId] as QueryKey,
     () => fetchWorkspace(workspaceId),
     {
       enabled: !!workspaceId,
+      ...options,
     }
   );
 
