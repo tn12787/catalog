@@ -15,6 +15,7 @@ import {
 import { Release, ReleaseType, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import { pickBy } from 'lodash';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { buildCreateReleaseTaskArgs } from 'backend/apiUtils/tasks';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';
@@ -25,7 +26,6 @@ import {
   getResourceWorkspaceMembership,
 } from 'backend/apiUtils/workspaces';
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
-import { AuthDecoratedRequest } from 'types/common';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
 
 @requiresAuth()

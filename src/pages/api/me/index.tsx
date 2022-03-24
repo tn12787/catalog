@@ -3,7 +3,7 @@ import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import { JWT } from 'next-auth/jwt';
 
-import { AuthDecoratedRequest } from 'types/common';
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 

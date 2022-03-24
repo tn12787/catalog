@@ -11,9 +11,10 @@ import useArtistMutations from 'hooks/data/artists/useArtistMutations';
 interface Props {
   existingArtist?: FormArtist;
   onSubmitSuccess?: () => void;
+  isDisabled?: boolean;
 }
 
-const ArtistForm = ({ existingArtist, onSubmitSuccess }: Props) => {
+const ArtistForm = ({ isDisabled, existingArtist, onSubmitSuccess }: Props) => {
   const router = useRouter();
 
   const { currentWorkspace } = useExtendedSession();
@@ -45,6 +46,7 @@ const ArtistForm = ({ existingArtist, onSubmitSuccess }: Props) => {
       isLoading={createSingleArtist.isLoading || updateSingleArtist.isLoading}
       onSubmit={existingArtist ? onUpdate : onCreate}
       existingArtist={existingArtist}
+      isDisabled={isDisabled}
     />
   );
 };

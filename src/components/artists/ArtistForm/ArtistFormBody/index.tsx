@@ -14,9 +14,10 @@ type Props = {
   existingArtist?: FormArtist;
   onSubmit: (data: FormArtist) => void;
   isLoading?: boolean;
+  isDisabled?: boolean;
 };
 
-const ArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Props) => {
+const ArtistFormBody = ({ isDisabled, onSubmit, existingArtist, isLoading: loading }: Props) => {
   const {
     register,
     formState: { errors },
@@ -97,7 +98,7 @@ const ArtistFormBody = ({ onSubmit, existingArtist, isLoading: loading }: Props)
             rightIcon={existingArtist ? <FiSave></FiSave> : <FiArrowRight />}
             isLoading={loading}
             type="submit"
-            isDisabled={!name || !legalName}
+            isDisabled={isDisabled || !name || !legalName}
           >
             {existingArtist ? 'Save' : 'Create'}
           </Button>

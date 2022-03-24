@@ -7,11 +7,11 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateUserDto } from 'backend/models/users/update';
-import { AuthDecoratedRequest } from 'types/common';
 
 @requiresAuth()
 class UserHandler {

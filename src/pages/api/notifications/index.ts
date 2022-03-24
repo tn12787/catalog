@@ -12,7 +12,7 @@ import {
   BadRequestException,
 } from '@storyofams/next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/common';
+import { AuthDecoratedRequest } from 'types/auth';
 import {
   ensureUserHasWorkspaceMembership,
   ensureUserHasWorkspaceMembershipSync,

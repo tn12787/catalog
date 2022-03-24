@@ -9,7 +9,7 @@ import {
 
 import { getOrCreateStripeCustomer } from './../../../../backend/apiUtils/stripe/customers';
 
-import { AuthDecoratedRequest } from 'types/common';
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
 import { CreateCheckoutSessionDto } from 'backend/models/payments/checkout/create';

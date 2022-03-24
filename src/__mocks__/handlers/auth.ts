@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import { ExtendedSession } from 'types/common';
+import { ExtendedSession } from 'types/auth';
 import {
   mockSignOutResponse,
   mockSession,

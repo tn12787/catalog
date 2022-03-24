@@ -8,12 +8,12 @@ import {
   ConflictException,
 } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateInvitationDto } from 'backend/models/invitations/create';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
-import { AuthDecoratedRequest } from 'types/common';
 import { sendDynamicEmail } from 'backend/apiUtils/email';
 
 const inviteUserTemplateId = `d-324235f107c041f58e03d8fd8a66e104`;

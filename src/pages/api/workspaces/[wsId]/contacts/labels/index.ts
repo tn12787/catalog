@@ -9,11 +9,11 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { CreateContactLabelDto } from 'backend/models/contacts/labels/create';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
-import { AuthDecoratedRequest } from 'types/common';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 
 @requiresAuth()

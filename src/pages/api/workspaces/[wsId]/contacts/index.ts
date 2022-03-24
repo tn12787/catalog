@@ -12,11 +12,11 @@ import {
 } from '@storyofams/next-api-decorators';
 import { Contact } from '@prisma/client';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
-import { AuthDecoratedRequest } from 'types/common';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateContactDto } from 'backend/models/contacts/create';
 
