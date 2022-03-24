@@ -1,5 +1,6 @@
 import { Stack, HStack, Heading, Button, Text, Link, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
+import NextLink from 'next/link';
 
 import Card from 'components/Card';
 import { FeatureKey } from 'common/features/types';
@@ -35,16 +36,11 @@ const UnlockContacts = () => {
             <Text>Available with any paid plan.</Text>
           </Stack>
         </HStack>
-        <Button
-          as={Link}
-          bg={'white'}
-          color={'black'}
-          variant="outline"
-          href={`/workspaces/${workspace?.id}/upgrade`}
-          isExternal
-        >
-          View plans
-        </Button>
+        <NextLink href={`/workspaces/${workspace?.id}/upgrade`} passHref>
+          <Button as={Link} bg={'white'} color={'black'} variant="outline">
+            View plans
+          </Button>
+        </NextLink>
       </Stack>
     </Card>
   );
