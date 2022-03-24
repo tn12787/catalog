@@ -17,4 +17,8 @@ export class CreateCheckoutSessionDto {
   @IsNotEmpty()
   @IsString()
   workspaceId: string;
+
+  @IsOptional()
+  @IsString()
+  redirectPath: string;
 }

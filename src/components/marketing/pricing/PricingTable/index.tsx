@@ -7,12 +7,17 @@ import { priceData, productData } from './productData';
 
 import Card from 'components/Card';
 import { BillingCycle } from 'types/marketing/pricing';
+import { ProductResponse } from 'types/billing';
 
 type Props = {
   billingCycle: BillingCycle;
+  products?: ProductResponse[];
 };
 
-const PricingTable = ({ billingCycle }: Props) => {
+const PricingTable = ({ billingCycle, products }: Props) => {
+  console.log(products);
+  const enrichedPriceData = priceData(products ?? []);
+
   return (
     <Card
       rounded="xl"
@@ -30,9 +35,18 @@ const PricingTable = ({ billingCycle }: Props) => {
         <Flex alignItems={'center'}>
           <Heading size="md">Compare Features</Heading>
         </Flex>
-        <ProductHeader billingCycle={billingCycle} priceInfo={priceData.artist}></ProductHeader>
-        <ProductHeader billingCycle={billingCycle} priceInfo={priceData.manager}></ProductHeader>
-        <ProductHeader billingCycle={billingCycle} priceInfo={priceData.label}></ProductHeader>
+        <ProductHeader
+          billingCycle={billingCycle}
+          priceInfo={enrichedPriceData.artist}
+        ></ProductHeader>
+        <ProductHeader
+          billingCycle={billingCycle}
+          priceInfo={enrichedPriceData.manager}
+        ></ProductHeader>
+        <ProductHeader
+          billingCycle={billingCycle}
+          priceInfo={enrichedPriceData.label}
+        ></ProductHeader>
 
         <PricingGrid data={productData} />
       </SimpleGrid>

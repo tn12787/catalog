@@ -29,7 +29,7 @@ class CheckoutHandler {
       throw new NotFoundException();
     }
 
-    const { priceId, quantity = 1, metadata = {}, workspaceId } = body;
+    const { priceId, quantity = 1, metadata = {}, workspaceId, redirectPath } = body;
 
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], workspaceId);
 
@@ -47,6 +47,19 @@ class CheckoutHandler {
       throw new NotFoundException();
     }
 
+    if (!workspace.stripeCustomerId) {
+      await prisma.workspace.update({
+        where: { id: workspaceId },
+        data: { stripeCustomerId: customerId },
+      });
+    }
+
+    const price = await stripe.prices.retrieve(priceId);
+
+    const redirectUrl = `${process.env.NEXTAUTH_URL}${
+      redirectPath ?? `/workspaces/${workspaceId}/settings`
+    }`;
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       billing_address_collection: 'required',
@@ -55,22 +68,25 @@ class CheckoutHandler {
         {
           price: priceId,
           quantity,
-          adjustable_quantity: {
-            enabled: true,
-            minimum: 1,
-            maximum: 999,
-          },
+          adjustable_quantity:
+            price.billing_scheme === 'tiered'
+              ? {
+                  enabled: true,
+                  minimum: 1,
+                  maximum: 999,
+                }
+              : undefined,
         },
       ],
       mode: 'subscription',
       allow_promotion_codes: true,
       subscription_data: {
-        trial_period_days: 14,
+        trial_period_days: 30,
         metadata,
       },
 
-      success_url: `${process.env.NEXTAUTH_URL}/workspace/${workspaceId}/settings`,
-      cancel_url: `${process.env.NEXTAUTH_URL}/workspace/${workspaceId}/settings`,
+      success_url: redirectUrl,
+      cancel_url: redirectUrl,
     });
 
     return { sessionId: session.id };

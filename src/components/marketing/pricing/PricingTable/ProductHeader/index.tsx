@@ -5,22 +5,23 @@ import NextLink from 'next/link';
 
 import { BillingCycle, PricingStructure } from 'types/marketing/pricing';
 import useAppColors from 'hooks/useAppColors';
+import { priceToString } from 'utils/billing';
 
 type Props = { priceInfo: PricingStructure; billingCycle: BillingCycle };
 
 const ProductHeader = ({ priceInfo, billingCycle }: Props) => {
+  const selectedPrice = priceInfo.product?.prices[billingCycle];
+
   const { bodySub } = useAppColors();
   return (
     <Stack spacing={2}>
       <Heading fontSize="xl">{capitalize(priceInfo.name)}</Heading>
       <HStack>
         <Text fontSize="2xl" fontWeight={'medium'}>
-          ${priceInfo.prices[billingCycle]}
+          {selectedPrice ? `$${priceToString(selectedPrice)}` : 'Free'}
         </Text>
         <Text fontSize="sm" color={bodySub}>
-          {priceInfo.prices[billingCycle]
-            ? `${priceInfo.isPerSeat ? 'per user/month' : 'per month'}`
-            : ''}
+          {selectedPrice ? `${priceInfo.isPerSeat ? 'per user/month' : 'per month'}` : ''}
         </Text>
       </HStack>
       <NextLink href={'/signup'} passHref>
@@ -29,9 +30,7 @@ const ProductHeader = ({ priceInfo, billingCycle }: Props) => {
         </Button>
       </NextLink>
       <Text alignSelf="center" fontSize="sm" color={bodySub}>
-        {priceInfo.prices[billingCycle]
-          ? `billed ${billingCycle === 'monthly' ? 'monthly' : 'annually'}`
-          : ''}
+        {selectedPrice ? `billed ${billingCycle === 'monthly' ? 'monthly' : 'annually'}` : ''}
       </Text>
     </Stack>
   );

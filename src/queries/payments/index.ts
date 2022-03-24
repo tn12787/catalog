@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { ProductResponse } from 'types/billing';
+
 type CreatePortalLinkVars = {
   workspaceId: string;
 };
@@ -15,4 +17,9 @@ export const createCheckout = async (vars: CreateCheckoutVars) => {
 
 export const createPortalLink = async (vars: CreatePortalLinkVars) => {
   return await axios.post<{ url: string }>(`/api/payments/portal`, vars);
+};
+
+export const fetchProducts = async () => {
+  const { data: response } = await axios.get<ProductResponse[]>(`/api/payments/products`);
+  return response;
 };

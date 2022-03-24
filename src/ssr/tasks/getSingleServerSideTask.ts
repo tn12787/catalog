@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
-import { AuthDecoratedRequest } from 'types/auth';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { getTaskByIdIsomorphic } from 'backend/isomorphic/tasks';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 
