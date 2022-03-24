@@ -1,3 +1,4 @@
+import { ProductResponse } from 'types/billing';
 import { PlanName, PricingStructure } from 'types/marketing/pricing';
 
 export const productData = [
@@ -131,10 +132,10 @@ export const productData = [
   },
 ];
 
-export const priceData: Record<PlanName, PricingStructure> = {
+export const priceData = (products: ProductResponse[]): Record<PlanName, PricingStructure> => ({
   artist: {
     name: 'artist',
-    prices: { monthly: 0, yearly: 0 },
+    product: undefined,
     isPerSeat: false,
     flavorText: 'Free, forever',
     colorScheme: 'pink',
@@ -150,7 +151,7 @@ export const priceData: Record<PlanName, PricingStructure> = {
   },
   manager: {
     name: 'manager',
-    prices: { monthly: 30, yearly: 24 },
+    product: products.find((product) => product.name === 'Manager Plan'),
     isPerSeat: false,
     flavorText: 'Manage many artists at once',
     colorScheme: 'green',
@@ -164,7 +165,7 @@ export const priceData: Record<PlanName, PricingStructure> = {
   },
   label: {
     name: 'label',
-    prices: { monthly: 50, yearly: 40 },
+    product: products.find((product) => product.name === 'Label Plan'),
     isPerSeat: true,
     flavorText: 'Keep track of releases as a team',
     colorScheme: 'purple',
@@ -180,4 +181,4 @@ export const priceData: Record<PlanName, PricingStructure> = {
       'Priority Support',
     ],
   },
-};
+});
