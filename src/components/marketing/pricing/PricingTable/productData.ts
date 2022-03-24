@@ -159,6 +159,7 @@ export const priceData = (products: ProductResponse[]): Record<PlanName, Pricing
       'Everything in Artist plus:',
       'Manage up to 50 Artists',
       '50 Releases/Month',
+      'Manage contacts',
       'Custom Release plans',
       'Custom Marketing plans',
     ],
