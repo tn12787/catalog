@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 
+import { hasPaidPlan } from 'utils/billing';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import { OnboardingItem } from 'components/onboarding/OnboardingPopover/types';
 import useArtists from 'hooks/data/artists/useArtists';
@@ -48,12 +49,12 @@ const useOnboardingItems = (): UseOnboardingItemsReturn => {
         isComplete: !!releases?.total,
         onGo: () => router.push(`/releases/new`),
       },
-      {
+      hasPaidPlan(workspace) && {
         name: 'Add or import some contacts',
         isComplete: !!contacts?.total,
         onGo: () => router.push(`/contacts`),
       },
-    ];
+    ].filter(Boolean) as OnboardingItem[];
   }, [artists, workspace, router, releases, contacts]);
 
   const anyOnboardingLeft = useMemo(() => {
