@@ -85,7 +85,7 @@ class CheckoutHandler {
         metadata,
       },
 
-      success_url: redirectUrl,
+      success_url: `${redirectUrl}?success=true`,
       cancel_url: redirectUrl,
     });
 

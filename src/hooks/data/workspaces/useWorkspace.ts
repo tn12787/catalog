@@ -27,13 +27,14 @@ const useWorkspace = (workspaceId: string) => {
   }, [workspaceId]);
 
   const checkout = useCallback(
-    async (priceId: string = defaultPrice, quantity = 1) => {
+    async (priceId: string = defaultPrice, quantity = 1, path?: string) => {
       const {
         data: { sessionId },
       } = await createCheckout({
         workspaceId,
         quantity,
         priceId,
+        redirectPath: path,
       });
 
       const stripe = await getStripe();

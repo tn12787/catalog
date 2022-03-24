@@ -8,11 +8,13 @@ import {
   Stack,
   Link,
   Badge,
+  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 import { capitalize } from 'lodash';
 import { BiCheck } from 'react-icons/bi';
 import NextLink from 'next/link';
+import Stripe from 'stripe';
 
 import Card from 'components/Card';
 import { PricingStructure, BillingCycle } from 'types/marketing/pricing';
@@ -25,7 +27,8 @@ type Props = {
   billingCycle: BillingCycle;
   isHighlighted?: boolean;
   workspace?: EnrichedWorkspace;
-  onPlanSelected?: (priceId: string) => void;
+  onPlanSelected?: (price: Stripe.Price | undefined) => void;
+  isLoading?: boolean;
 };
 
 const PricingCard = ({
@@ -34,6 +37,7 @@ const PricingCard = ({
   isHighlighted,
   priceInfo,
   billingCycle,
+  isLoading,
 }: Props) => {
   const { bodySub } = useAppColors();
 
@@ -64,36 +68,42 @@ const PricingCard = ({
         <Box h={1} w="50px" bg={accentColor}></Box>
         <Text color={bodySub}>{priceInfo.flavorText}</Text>
         <Stack>
-          <HStack>
-            <Text fontSize="3xl" fontWeight={'medium'}>
-              {selectedPrice ? `$${priceToString(selectedPrice)}` : 'Free'}
-            </Text>
+          <Skeleton alignSelf={'flex-start'} isLoaded={!isLoading}>
+            <HStack>
+              <Text fontSize="3xl" fontWeight={'medium'}>
+                {selectedPrice ? `$${priceToString(selectedPrice)}` : 'Free'}
+              </Text>
+              <Text fontSize="sm" color={bodySub}>
+                {selectedPrice ? `${priceInfo.isPerSeat ? 'per user/month' : 'per month'}` : ''}
+              </Text>
+            </HStack>
+          </Skeleton>
+          <Skeleton alignSelf={'flex-start'} isLoaded={!isLoading}>
             <Text fontSize="sm" color={bodySub}>
-              {selectedPrice ? `${priceInfo.isPerSeat ? 'per user/month' : 'per month'}` : ''}
+              {selectedPrice
+                ? `billed ${billingCycle === 'monthly' ? 'monthly' : 'annually'}`
+                : 'No, really!'}
             </Text>
-          </HStack>
-          <Text fontSize="sm" color={bodySub}>
-            {selectedPrice
-              ? `billed ${billingCycle === 'monthly' ? 'monthly' : 'annually'}`
-              : 'No, really!'}
-          </Text>
+          </Skeleton>
         </Stack>
-        {workspace ? (
-          <Button
-            isDisabled={!workspace.subscription && isHighlighted}
-            onClick={() => onPlanSelected?.(selectedPrice?.id ?? '')}
-            colorScheme={priceInfo.colorScheme}
-            alignSelf="flex-start"
-          >
-            {workspace ? (isHighlighted ? 'Manage' : 'Choose plan') : 'Get Started'}
-          </Button>
-        ) : (
-          <NextLink href={'/signup'} passHref>
-            <Button as={Link} colorScheme={priceInfo.colorScheme} alignSelf="flex-start">
-              {'Get Started'}
+        <Skeleton isLoaded={!isLoading} alignSelf={'flex-start'}>
+          {workspace ? (
+            <Button
+              isDisabled={!workspace.subscription && isHighlighted}
+              onClick={() => onPlanSelected?.(selectedPrice)}
+              colorScheme={priceInfo.colorScheme}
+              alignSelf="flex-start"
+            >
+              {workspace ? (isHighlighted ? 'Manage' : 'Choose plan') : 'Get Started'}
             </Button>
-          </NextLink>
-        )}
+          ) : (
+            <NextLink href={'/signup'} passHref>
+              <Button as={Link} colorScheme={priceInfo.colorScheme} alignSelf="flex-start">
+                {'Get Started'}
+              </Button>
+            </NextLink>
+          )}
+        </Skeleton>
       </Stack>
       <Stack spacing={3}>
         <Text fontSize="md" fontWeight={'semibold'}>

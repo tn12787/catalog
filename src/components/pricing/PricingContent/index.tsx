@@ -1,5 +1,6 @@
 import { Stack, Text, Link } from '@chakra-ui/react';
 import React from 'react';
+import Stripe from 'stripe';
 
 import InnerRadioGroup from 'components/forms/radio/InnerRadioGroup';
 import PricingCard from 'components/marketing/pricing/PricingCard';
@@ -7,26 +8,27 @@ import PricingTable from 'components/marketing/pricing/PricingTable';
 import { priceData } from 'components/marketing/pricing/PricingTable/productData';
 import { BillingCycle } from 'types/marketing/pricing';
 import useAppColors from 'hooks/useAppColors';
-import { ProductResponse } from 'types/billing';
 import { EnrichedWorkspace } from 'types/common';
+import useProducts from 'hooks/data/billing/useProducts';
 
 type Props = {
   workspace?: EnrichedWorkspace;
-  products?: ProductResponse[];
   defaultBillingCycle?: BillingCycle;
-  onPlanSelected?: (priceId: string) => void;
+  onPlanSelected?: (price: Stripe.Price | undefined) => void;
+  isLoading?: boolean;
 };
 
 const PricingContent = ({
   workspace,
-  products,
   defaultBillingCycle = 'monthly',
   onPlanSelected,
+  isLoading,
 }: Props) => {
   const [selectedBillingCycle, setSelectedBillingCycle] =
     React.useState<BillingCycle>(defaultBillingCycle);
   const { primary } = useAppColors();
 
+  const { data: products, isLoading: areProductsLoading } = useProducts();
   const enrichedPrices = priceData(products ?? []);
 
   return (
@@ -51,6 +53,7 @@ const PricingContent = ({
       </Stack>
       <Stack spacing={5} direction={{ base: 'column', md: 'row' }}>
         <PricingCard
+          isLoading={isLoading || areProductsLoading}
           workspace={workspace}
           billingCycle={selectedBillingCycle}
           priceInfo={enrichedPrices.artist}
@@ -58,6 +61,7 @@ const PricingContent = ({
           onPlanSelected={onPlanSelected}
         ></PricingCard>
         <PricingCard
+          isLoading={isLoading || areProductsLoading}
           workspace={workspace}
           billingCycle={selectedBillingCycle}
           priceInfo={enrichedPrices.manager}
@@ -65,6 +69,7 @@ const PricingContent = ({
           onPlanSelected={onPlanSelected}
         ></PricingCard>
         <PricingCard
+          isLoading={isLoading || areProductsLoading}
           workspace={workspace}
           billingCycle={selectedBillingCycle}
           priceInfo={enrichedPrices.label}
@@ -72,7 +77,13 @@ const PricingContent = ({
           onPlanSelected={onPlanSelected}
         ></PricingCard>
       </Stack>
-      <PricingTable billingCycle={selectedBillingCycle} products={products} />
+      <PricingTable
+        isLoading={isLoading || areProductsLoading}
+        workspace={workspace}
+        onPlanSelected={onPlanSelected}
+        billingCycle={selectedBillingCycle}
+        products={products}
+      />
     </Stack>
   );
 };

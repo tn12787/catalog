@@ -8,12 +8,9 @@ import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
 import PricingContent from 'components/pricing/PricingContent';
 import Card from 'components/Card';
-import useProducts from 'hooks/data/billing/useProducts';
 
 const PricingPage = () => {
   const { bgPrimary } = useAppColors();
-
-  const { data: products } = useProducts();
 
   return (
     <Stack bg={bgPrimary} minH={'100vh'} alignItems={'center'} pt={'150px'}>
@@ -25,7 +22,7 @@ const PricingPage = () => {
         <Text fontSize={'xl'}>
           {"Flexible pricing, whether you're an independent artist, manager, or a major label."}
         </Text>
-        <PricingContent products={products}></PricingContent>
+        <PricingContent />
         <Card p={8}>
           <Stack
             spacing={5}

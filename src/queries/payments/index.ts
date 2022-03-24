@@ -9,6 +9,7 @@ type CreatePortalLinkVars = {
 type CreateCheckoutVars = CreatePortalLinkVars & {
   priceId: string;
   quantity: number;
+  redirectPath: string | undefined;
 };
 
 export const createCheckout = async (vars: CreateCheckoutVars) => {
