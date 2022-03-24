@@ -1,5 +1,4 @@
 import { Session } from 'next-auth';
-import type { NextApiRequest } from 'next';
 import {
   Role,
   Permission,
@@ -97,8 +96,6 @@ export enum ReleaseType {
   ALBUM = 'Album',
 }
 
-export type ReleaseTaskStatus = 'Outstanding' | 'In progress' | 'Waiting' | 'Complete';
-
 export type EnrichedReleaseTask = ReleaseTaskWithAssignees & {
   artworkData: ArtworkData | null;
   distributionData: (DistributionData & { distributor?: Distributor }) | null;
@@ -143,8 +140,4 @@ export interface ExtendedToken {
   picture: string;
   workspaceMemberships: EnrichedWorkspaceMember[];
   sub: string;
-}
-
-export interface AuthDecoratedRequest extends NextApiRequest {
-  session: ExtendedSession;
 }

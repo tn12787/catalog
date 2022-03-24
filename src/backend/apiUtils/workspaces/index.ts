@@ -6,8 +6,9 @@ import { getOrCreateStripeCustomer } from '../stripe/customers';
 
 import { defaultWorkspaceLabels } from './defaultLabels';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import prisma from 'backend/prisma/client';
-import { ExtendedSession, AuthDecoratedRequest } from 'types/common';
+import { ExtendedSession } from 'types/common';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { PermissionType } from 'types/permissions';
 

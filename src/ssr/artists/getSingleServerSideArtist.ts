@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
+import { AuthDecoratedRequest } from 'types/auth';
 
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import { AuthDecoratedRequest } from 'types/common';
 import { getArtistByIdIsomorphic } from 'backend/isomorphic/artists';
 
 export const getSingleServerSideArtist: GetServerSideProps = async (ctx) => {

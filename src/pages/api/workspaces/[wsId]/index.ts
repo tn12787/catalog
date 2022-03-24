@@ -9,12 +9,12 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateWorkspaceDto } from 'backend/models/workspaces/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
-import { AuthDecoratedRequest } from 'types/common';
 import { stripe } from 'backend/apiUtils/stripe/server';
 import { transformSubscriptionToBasicData } from 'backend/apiUtils/transforms/subscriptions';
 import { FeatureKey } from 'common/features/types';

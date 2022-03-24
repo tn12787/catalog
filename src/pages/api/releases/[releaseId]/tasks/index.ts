@@ -1,7 +1,7 @@
 import { Body, createHandler, Post, Req, ValidationPipe } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { getResourceWorkspaceMembership } from 'backend/apiUtils/workspaces';
-import { AuthDecoratedRequest } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';

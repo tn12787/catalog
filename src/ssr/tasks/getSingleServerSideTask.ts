@@ -1,8 +1,8 @@
 import { GetServerSideProps } from 'next';
+import { AuthDecoratedRequest } from 'types/auth';
 
 import { getTaskByIdIsomorphic } from 'backend/isomorphic/tasks';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import { AuthDecoratedRequest } from 'types/common';
 
 export const getSingleServerSideTask: GetServerSideProps = async (ctx) => {
   const res = await getServerSideSessionOrRedirect(ctx);

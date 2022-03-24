@@ -13,9 +13,10 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { AuthDecoratedRequest } from 'types/auth';
 import { canAddAnotherArtist } from 'utils/artists';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
-import { ArtistResponse, AuthDecoratedRequest, EnrichedWorkspace } from 'types/common';
+import { ArtistResponse, EnrichedWorkspace } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateArtistDto } from 'backend/models/artists/create';
 import prisma from 'backend/prisma/client';
