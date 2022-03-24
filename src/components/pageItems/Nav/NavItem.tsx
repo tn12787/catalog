@@ -30,7 +30,7 @@ const NavItem = forwardRef<HTMLAnchorElement, Props>((props, ref) => {
       ref={ref}
       {...rest}
     >
-      <HStack justify="space-between">
+      <HStack justify="space-between" color={isActive ? activeTextColor : textColor}>
         <HStack color={isActive ? activeTextColor : textColor}>
           <Icon as={icon} fontSize="xl" />
           <Text>{text}</Text>

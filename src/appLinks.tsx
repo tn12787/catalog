@@ -1,27 +1,29 @@
-import { BiBell, BiCalendar, BiDisc, BiRocket } from 'react-icons/bi';
+import { BiBell, BiCalendar, BiDisc, BiLock, BiRocket } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
 import { RiLayoutMasonryLine } from 'react-icons/ri';
 import { FaRegAddressBook } from 'react-icons/fa';
+import { Icon } from '@chakra-ui/react';
 
 import { NavBarLink } from 'components/pageItems/Nav/types';
 import { EnrichedWorkspace } from 'types/common';
+import { hasPaidPlan } from 'utils/billing';
+
+type NavLinkSection = { links: NavBarLink[]; name?: string };
+
+type NavSection = (
+  currentWorkspace: EnrichedWorkspace | undefined,
+  arePaymentsEnabled: boolean
+) => NavLinkSection;
 
 export interface NavLinkConfig {
-  main: {
-    links: NavBarLink[];
-  };
-  settings: (
-    currentWorkspace: EnrichedWorkspace | undefined,
-    arePaymentsEnabled: boolean
-  ) => { links: NavBarLink[]; name: string };
-  bottom: {
-    links: NavBarLink[];
-  };
+  main: NavSection;
+  settings: NavSection;
+  bottom: NavSection;
 }
 
 export const appLinks: NavLinkConfig = {
-  main: {
+  main: (currentWorkspace, arePaymentsEnabled) => ({
     links: [
       {
         icon: RiLayoutMasonryLine,
@@ -53,9 +55,12 @@ export const appLinks: NavLinkConfig = {
         href: '/contacts',
         text: 'Contacts',
         activeRegex: /^\/contacts/,
+        rightContent: arePaymentsEnabled && !hasPaidPlan(currentWorkspace) && (
+          <Icon fontSize={'md'} as={BiLock}></Icon>
+        ),
       },
     ],
-  },
+  }),
   settings: (currentWorkspace, arePaymentsEnabled) => ({
     name: 'Admin',
     links: [
@@ -74,7 +79,7 @@ export const appLinks: NavLinkConfig = {
         },
     ].filter(Boolean) as NavBarLink[],
   }),
-  bottom: {
+  bottom: () => ({
     links: [
       {
         icon: BiBell,
@@ -83,5 +88,5 @@ export const appLinks: NavLinkConfig = {
         activeRegex: /^\/notifications/,
       },
     ],
-  },
+  }),
 };
