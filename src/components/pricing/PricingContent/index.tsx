@@ -9,11 +9,12 @@ import { priceData } from 'components/marketing/pricing/PricingTable/productData
 import { BillingCycle } from 'types/marketing/pricing';
 import useAppColors from 'hooks/useAppColors';
 import { EnrichedWorkspace } from 'types/common';
-import useProducts from 'hooks/data/billing/useProducts';
+import { ProductResponse } from 'types/billing';
 
 type Props = {
   workspace?: EnrichedWorkspace;
   defaultBillingCycle?: BillingCycle;
+  products: ProductResponse[];
   onPlanSelected?: (price: Stripe.Price | undefined) => void;
   isLoading?: boolean;
 };
@@ -21,6 +22,7 @@ type Props = {
 const PricingContent = ({
   workspace,
   defaultBillingCycle = 'monthly',
+  products,
   onPlanSelected,
   isLoading,
 }: Props) => {
@@ -28,7 +30,6 @@ const PricingContent = ({
     React.useState<BillingCycle>(defaultBillingCycle);
   const { primary } = useAppColors();
 
-  const { data: products, isLoading: areProductsLoading } = useProducts();
   const enrichedPrices = priceData(products ?? []);
 
   return (
@@ -53,7 +54,7 @@ const PricingContent = ({
       </Stack>
       <Stack spacing={5} direction={{ base: 'column', md: 'row' }}>
         <PricingCard
-          isLoading={isLoading || areProductsLoading}
+          isLoading={isLoading}
           workspace={workspace}
           billingCycle={selectedBillingCycle}
           priceInfo={enrichedPrices.artist}
@@ -61,7 +62,7 @@ const PricingContent = ({
           onPlanSelected={onPlanSelected}
         ></PricingCard>
         <PricingCard
-          isLoading={isLoading || areProductsLoading}
+          isLoading={isLoading}
           workspace={workspace}
           billingCycle={selectedBillingCycle}
           priceInfo={enrichedPrices.manager}
@@ -69,7 +70,7 @@ const PricingContent = ({
           onPlanSelected={onPlanSelected}
         ></PricingCard>
         <PricingCard
-          isLoading={isLoading || areProductsLoading}
+          isLoading={isLoading}
           workspace={workspace}
           billingCycle={selectedBillingCycle}
           priceInfo={enrichedPrices.label}
@@ -78,7 +79,7 @@ const PricingContent = ({
         ></PricingCard>
       </Stack>
       <PricingTable
-        isLoading={isLoading || areProductsLoading}
+        isLoading={isLoading}
         workspace={workspace}
         onPlanSelected={onPlanSelected}
         billingCycle={selectedBillingCycle}
