@@ -30,6 +30,7 @@ const Nav = ({ links, onItemSelected }: Props) => {
   const { bgSecondary, bodySub } = useAppColors();
   const { isFeatureEnabled } = useFeatures();
 
+  const mainLinks = links.main(workspace, isFeatureEnabled(FeatureKey.PAYMENTS));
   const settingsLinks = links.settings(workspace, isFeatureEnabled(FeatureKey.PAYMENTS));
 
   return (
@@ -47,7 +48,7 @@ const Nav = ({ links, onItemSelected }: Props) => {
         <AccountSwitcher onChange={() => onItemSelected?.('account')} />
 
         <Stack>
-          {links.main.links.map((link, index) => (
+          {mainLinks.links.map((link, index) => (
             <NavLink onClick={() => onItemSelected?.(link.href)} {...link} key={index.toString()} />
           ))}
         </Stack>

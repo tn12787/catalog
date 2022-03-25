@@ -63,7 +63,7 @@ export const AccountSwitcher = ({ onChange }: Props) => {
     <Menu>
       <Skeleton rounded="lg" isLoaded={!isAnythingLoading}>
         <AccountSwitcherButton
-          workspaceName={(workspace?.name as string) ?? 'loadingWorkspace'}
+          workspace={workspace}
           userName={userData?.name ?? 'loadingUser'}
           photoUrl={activeWorkspace?.workspace.imageUrl as string}
           unreadNotificationCount={

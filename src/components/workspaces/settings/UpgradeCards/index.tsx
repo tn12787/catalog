@@ -7,19 +7,21 @@ import Card from 'components/Card';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import { FeatureKey } from 'common/features/types';
 import useFeatures from 'hooks/features/useFeatures';
+import useAppColors from 'hooks/useAppColors';
 
 const UpgradeCards = () => {
   const { workspace, isLoading } = useCurrentWorkspace();
   const { isFeatureEnabled } = useFeatures();
+  const { bgPrimary } = useAppColors();
 
-  const bgStart = useColorModeValue('red.200', 'red.800');
-  const bgEnd = useColorModeValue('purple.200', 'purple.800');
+  const bgStart = useColorModeValue('green.200', 'green.800');
+  const bgEnd = useColorModeValue(bgPrimary, bgPrimary);
   if (workspace?.subscription || isLoading || !isFeatureEnabled(FeatureKey.PAYMENTS)) {
     return null;
   }
 
   return (
-    <Card alignItems="flex-start" w="100%" bgGradient={`linear(to-tr, ${bgStart}, ${bgEnd})`}>
+    <Card py={7} alignItems="flex-start" w="100%" bgGradient={`linear(to-b, ${bgStart}, ${bgEnd})`}>
       <Heading fontSize={'lg'}>{"You're on the free plan"}</Heading>
       <Text>
         Upgrade now to manage multiple artists, contacts, workspace members, roles, tasks and more.
