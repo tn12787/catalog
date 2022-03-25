@@ -13,12 +13,14 @@ import useAppColors from 'hooks/useAppColors';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import PageHead from 'components/pageItems/PageHead';
 import { BillingCycle } from 'types/marketing/pricing';
+import useProducts from 'hooks/data/billing/useProducts';
 
 const UpgradePage = () => {
   const { workspace, manageWorkspace, checkout, isLoading } = useCurrentWorkspace();
   const { bgPrimary } = useAppColors();
   const router = useRouter();
   const toast = useToast();
+  const { data: products, isLoading: areProductsLoading } = useProducts();
 
   const onPlanSelected = (price: Stripe.Price | undefined) => {
     if (!price) return;
@@ -56,8 +58,9 @@ const UpgradePage = () => {
         <PricingContent
           defaultBillingCycle={`${workspace?.subscription?.interval ?? 'month'}ly` as BillingCycle}
           workspace={workspace}
+          products={products ?? []}
           onPlanSelected={onPlanSelected}
-          isLoading={isLoading}
+          isLoading={isLoading || areProductsLoading}
         ></PricingContent>
       </Stack>
     </Stack>

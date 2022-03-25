@@ -19,6 +19,6 @@ export type MappedSubscription = {
 };
 
 export type ProductResponse = Stripe.Product & {
-  prices: Record<BillingCycle, Stripe.Price>;
+  prices: Record<BillingCycle, Stripe.Price | undefined>;
   name: ProductName;
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react';
+import { GetStaticProps } from 'next';
 
 import { FeatureKey } from 'common/features/types';
 import { requireStaticFeatureForPage } from 'ssr/requireStaticFeatureForPage';
@@ -8,8 +9,14 @@ import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
 import PricingContent from 'components/pricing/PricingContent';
 import Card from 'components/Card';
+import { getProductsIsomorphic } from 'backend/isomorphic/payments/products';
+import { ProductResponse } from 'types/billing';
 
-const PricingPage = () => {
+type Props = {
+  products: ProductResponse[];
+};
+
+const PricingPage = ({ products }: Props) => {
   const { bgPrimary } = useAppColors();
 
   return (
@@ -22,7 +29,7 @@ const PricingPage = () => {
         <Text fontSize={'xl'}>
           {"Flexible pricing, whether you're an independent artist, manager, or a major label."}
         </Text>
-        <PricingContent />
+        <PricingContent products={products} />
         <Card p={8}>
           <Stack
             spacing={5}
@@ -54,6 +61,17 @@ const PricingPage = () => {
 
 PricingPage.getLayout = () => MarketingLayout;
 
-export const getStaticProps = requireStaticFeatureForPage([FeatureKey.MARKETING_SITE]);
+const fetchProductsStatically: GetStaticProps = async () => {
+  const products = await getProductsIsomorphic();
+  return {
+    props: { products },
+    revalidate: 10,
+  };
+};
+
+export const getStaticProps = requireStaticFeatureForPage(
+  [FeatureKey.MARKETING_SITE],
+  fetchProductsStatically
+);
 
 export default PricingPage;
