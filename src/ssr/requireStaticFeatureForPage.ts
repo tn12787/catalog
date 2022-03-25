@@ -4,15 +4,17 @@ import { FeatureKey } from 'common/features/types';
 import { isBackendFeatureEnabled } from 'common/features';
 
 export const requireStaticFeatureForPage =
-  (features: FeatureKey[]): GetStaticProps =>
-  async () => {
+  (features: FeatureKey[], next?: GetStaticProps): GetStaticProps =>
+  async (ctx) => {
     if (!features.every(isBackendFeatureEnabled)) {
       return {
         notFound: true,
       };
     }
 
-    return {
-      props: {},
-    };
+    if (!next) {
+      return {
+        props: {},
+      };
+    } else return next(ctx);
   };
