@@ -6,4 +6,5 @@ export interface NavBarLink {
   activeRegex: RegExp;
   icon: IconType;
   onClick?: () => void;
+  rightContent?: React.ReactNode;
 }
