@@ -9,7 +9,6 @@ import { priceData } from 'components/marketing/pricing/PricingTable/productData
 import { BillingCycle } from 'types/marketing/pricing';
 import useAppColors from 'hooks/useAppColors';
 import { EnrichedWorkspace } from 'types/common';
-import useProducts from 'hooks/data/billing/useProducts';
 import { ProductResponse } from 'types/billing';
 
 type Props = {
