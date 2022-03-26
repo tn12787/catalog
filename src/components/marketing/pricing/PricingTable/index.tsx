@@ -1,19 +1,19 @@
 import { SimpleGrid, Box, Heading, Flex } from '@chakra-ui/react';
 import React from 'react';
 import Stripe from 'stripe';
+import { BillingInterval } from '@prisma/client';
 
 import ProductHeader from './ProductHeader';
 import PricingGrid from './PricingGrid';
 import { priceData, productData } from './productData';
 
 import Card from 'components/Card';
-import { BillingCycle } from 'types/marketing/pricing';
 import { ProductResponse } from 'types/billing';
 import { EnrichedWorkspace } from 'types/common';
 
 type Props = {
   workspace?: EnrichedWorkspace;
-  billingCycle: BillingCycle;
+  billingCycle: BillingInterval;
   products?: ProductResponse[];
   isLoading?: boolean;
   onPlanSelected?: (price: Stripe.Price | undefined) => void;
@@ -52,14 +52,14 @@ const PricingTable = ({ onPlanSelected, workspace, billingCycle, products, isLoa
           workspace={workspace}
           billingCycle={billingCycle}
           priceInfo={enrichedPriceData.manager}
-          isHighlighted={workspace?.subscription?.product.name === 'Manager Plan'}
+          isHighlighted={workspace?.subscription?.productName === 'Manager Plan'}
           onPlanSelected={onPlanSelected}
         ></ProductHeader>
         <ProductHeader
           isLoading={isLoading}
           workspace={workspace}
           billingCycle={billingCycle}
-          isHighlighted={workspace?.subscription?.product.name === 'Label Plan'}
+          isHighlighted={workspace?.subscription?.productName === 'Label Plan'}
           priceInfo={enrichedPriceData.label}
           onPlanSelected={onPlanSelected}
         ></ProductHeader>

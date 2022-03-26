@@ -15,5 +15,5 @@ export const hasPaidPlan = (workspace: EnrichedWorkspace | undefined) => {
 
   if (!workspace?.subscription) return false;
 
-  return ['Manager Plan', 'Label Plan'].includes(workspace?.subscription?.product.name as string);
+  return ['Manager Plan', 'Label Plan'].includes(workspace?.subscription?.productName as string);
 };

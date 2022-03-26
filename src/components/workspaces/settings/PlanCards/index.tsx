@@ -41,7 +41,7 @@ const PlanCards = () => {
             </Button>
           </HStack>
           <StatNumber>
-            {workspace.subscription.product.name}{' '}
+            {workspace.subscription.productName}{' '}
             {workspace.subscription.cancelTime ? (
               <Badge size="sm">Cancelled</Badge>
             ) : (

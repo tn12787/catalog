@@ -2,7 +2,6 @@ import { ThemingProps } from '@chakra-ui/react';
 
 import { ProductResponse } from 'types/billing';
 
-export type BillingCycle = 'monthly' | 'yearly';
 export type PlanName = 'artist' | 'manager' | 'label';
 
 export type PricingStructure = {

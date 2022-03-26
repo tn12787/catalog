@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import Stripe from 'stripe';
 import { useRouter } from 'next/router';
+import { BillingInterval } from '@prisma/client';
 
 import { isBackendFeatureEnabled } from 'common/features';
 import { FeatureKey } from 'common/features/types';
@@ -12,7 +13,6 @@ import PricingContent from 'components/pricing/PricingContent';
 import useAppColors from 'hooks/useAppColors';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import PageHead from 'components/pageItems/PageHead';
-import { BillingCycle } from 'types/marketing/pricing';
 import useProducts from 'hooks/data/billing/useProducts';
 
 const UpgradePage = () => {
@@ -25,7 +25,7 @@ const UpgradePage = () => {
   const onPlanSelected = (price: Stripe.Price | undefined) => {
     if (!price) return;
 
-    if (workspace?.subscription?.product.id === price.product) {
+    if (workspace?.subscription?.productId === price.product) {
       manageWorkspace();
     } else {
       checkout(price.id, 1, `/workspaces/${workspace?.id}/upgrade`);
@@ -56,7 +56,9 @@ const UpgradePage = () => {
           {"Flexible pricing, whether you're an independent artist, manager, or a major label."}
         </Text>
         <PricingContent
-          defaultBillingCycle={`${workspace?.subscription?.interval ?? 'month'}ly` as BillingCycle}
+          defaultBillingCycle={
+            `${workspace?.subscription?.interval ?? 'month'}ly` as BillingInterval
+          }
           workspace={workspace}
           products={products ?? []}
           onPlanSelected={onPlanSelected}

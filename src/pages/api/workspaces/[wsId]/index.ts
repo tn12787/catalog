@@ -15,10 +15,6 @@ import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateWorkspaceDto } from 'backend/models/workspaces/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
-import { stripe } from 'backend/apiUtils/stripe/server';
-import { transformSubscriptionToBasicData } from 'backend/apiUtils/transforms/subscriptions';
-import { FeatureKey } from 'common/features/types';
-import { isBackendFeatureEnabled } from 'common/features';
 
 @requiresAuth()
 class WorkspaceHandler {
@@ -31,16 +27,11 @@ class WorkspaceHandler {
       include: {
         members: { include: { roles: true, user: true } },
         invites: true,
+        subscription: true,
       },
     });
 
-    if (workspace?.stripeSubscriptionId && isBackendFeatureEnabled(FeatureKey.PAYMENTS)) {
-      const subscription = await stripe.subscriptions.retrieve(workspace?.stripeSubscriptionId);
-      const mappedData = await transformSubscriptionToBasicData(subscription);
-      return { ...workspace, subscription: mappedData };
-    }
-
-    return { ...workspace, subscription: undefined };
+    return { ...workspace };
   }
 
   @Put()
