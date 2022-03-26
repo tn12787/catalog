@@ -54,19 +54,39 @@ enum UserOnboardingSegment {
   SOCIAL_MEDIA_MANAGER
 }
 
+enum BillingInterval {
+  MONTHLY
+  ANNUALLY
+}
+
+model Subscription {
+  id                 String          @id // Stripe subscription id
+  productId          String
+  productName        String
+  status             String
+  trialEnd           DateTime?
+  totalSeats         Int             @default(1)
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  cancelTime         DateTime?
+  interval           BillingInterval @default(MONTHLY)
+  workspace          Workspace       @relation(fields: [workspaceId], references: [id])
+  workspaceId        String          @unique
+}
+
 model Workspace {
-  id                   String            @id @default(cuid())
-  name                 String
-  imageUrl             String?
-  provider             CloudProvider
-  members              WorkspaceMember[]
-  artists              Artist[]
-  contacts             Contact[]
-  contactLabels        ContactLabel[]
-  releases             Release[]
-  invites              Invite[]
-  stripeCustomerId     String?           @unique
-  stripeSubscriptionId String?           @unique
+  id               String            @id @default(cuid())
+  name             String
+  imageUrl         String?
+  provider         CloudProvider
+  members          WorkspaceMember[]
+  artists          Artist[]
+  contacts         Contact[]
+  contactLabels    ContactLabel[]
+  releases         Release[]
+  invites          Invite[]
+  stripeCustomerId String?           @unique
+  subscription     Subscription?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
