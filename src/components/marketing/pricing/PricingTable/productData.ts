@@ -1,6 +1,7 @@
 import { ProductResponse } from 'types/billing';
 import { PlanName, PricingStructure } from 'types/marketing/pricing';
 
+// TODO: re-enable commented out selling points once built
 export const productData = [
   {
     title: 'Releases',
@@ -35,30 +36,30 @@ export const productData = [
         manager: true,
         label: true,
       },
-      {
-        featureName: 'Ready-made Release plans',
-        artist: true,
-        manager: true,
-        label: true,
-      },
-      {
-        featureName: 'Ready-made Marketing plans',
-        artist: true,
-        manager: true,
-        label: true,
-      },
-      {
-        featureName: 'Custom Release plans',
-        artist: false,
-        manager: true,
-        label: true,
-      },
-      {
-        featureName: 'Custom Marketing plans',
-        artist: false,
-        manager: true,
-        label: true,
-      },
+      // {
+      //   featureName: 'Ready-made Release plans',
+      //   artist: true,
+      //   manager: true,
+      //   label: true,
+      // },
+      // {
+      //   featureName: 'Ready-made Marketing plans',
+      //   artist: true,
+      //   manager: true,
+      //   label: true,
+      // },
+      // {
+      //   featureName: 'Custom Release plans',
+      //   artist: false,
+      //   manager: true,
+      //   label: true,
+      // },
+      // {
+      //   featureName: 'Custom Marketing plans',
+      //   artist: false,
+      //   manager: true,
+      //   label: true,
+      // },
     ],
   },
   {
@@ -145,8 +146,8 @@ export const priceData = (products: ProductResponse[]): Record<PlanName, Pricing
       'Intuitive Drag & Drop Planner',
       'Task Tracking',
       'Reminders',
-      'Ready-made Release plans',
-      'Ready-made Marketing plans',
+      // 'Ready-made Release plans',
+      // 'Ready-made Marketing plans',
     ],
   },
   manager: {
@@ -160,8 +161,8 @@ export const priceData = (products: ProductResponse[]): Record<PlanName, Pricing
       'Manage up to 50 Artists',
       '50 Releases/Month',
       'Manage contacts',
-      'Custom Release plans',
-      'Custom Marketing plans',
+      // 'Custom Release plans',
+      // 'Custom Marketing plans',
     ],
   },
   label: {
