@@ -46,7 +46,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await createMastering({
         ...data,
         dueDate: midday(data.dueDate),
-        assignees: data.assignees.map((item) => item.id),
+        assignees: (data.assignees ?? []).map((item) => item.id),
         releaseId: releaseData.id,
       });
 
@@ -67,7 +67,7 @@ const EditMasteringForm = ({ releaseData, onSubmitSuccess }: Props) => {
       await updateMastering({
         ...data,
         dueDate: midday(data.dueDate),
-        assignees: data.assignees.map((item) => item.id),
+        assignees: (data.assignees ?? []).map((item) => item.id),
         taskId: releaseData.mastering?.id as string,
       });
 

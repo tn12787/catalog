@@ -12,6 +12,7 @@ import { buildArtworkConfig } from './artworkConfig';
 import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 import { defaultTaskDueDate } from 'utils/tasks';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const EditArtworkFormBody = ({
   onSubmit,
@@ -38,6 +39,8 @@ const EditArtworkFormBody = ({
         }
       : { assignees: [] },
   });
+
+  const { workspace } = useCurrentWorkspace();
 
   const status = watch('status');
   const watchedAlbumArt = watch('artworkData');
@@ -68,7 +71,7 @@ const EditArtworkFormBody = ({
             />
           )}
         <FormContent
-          config={buildArtworkConfig()}
+          config={buildArtworkConfig(workspace)}
           errors={errors}
           control={control}
           register={register}

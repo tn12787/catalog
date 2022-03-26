@@ -6,20 +6,25 @@ import EditArtworkForm from '../../../forms/EditArtworkForm';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
-import { ClientRelease, EventType } from 'types/common';
+import { ClientRelease, EnrichedWorkspace, EventType } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 interface Props {
   releaseData: ClientRelease;
 }
 
-const buildFields = (artworkTask: ClientRelease['artwork'] | undefined): SummaryField[] => {
-  return [...defaultFields(artworkTask)].filter(Boolean) as SummaryField[];
+const buildFields = (
+  artworkTask: ClientRelease['artwork'] | undefined,
+  workspace?: EnrichedWorkspace
+): SummaryField[] => {
+  return [...defaultFields(artworkTask, workspace)].filter(Boolean) as SummaryField[];
 };
 
 const Artwork = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { bgSecondary } = useAppColors();
+  const { workspace } = useCurrentWorkspace();
 
   const artworkTask = releaseData.artwork;
   return (
@@ -27,7 +32,7 @@ const Artwork = ({ releaseData }: Props) => {
       <ReleaseTaskCard
         heading={'🎨 Artwork '}
         onEditClick={onOpen}
-        fields={buildFields(artworkTask)}
+        fields={buildFields(artworkTask, workspace)}
         taskType={EventType.ARTWORK}
         data={artworkTask}
       />
