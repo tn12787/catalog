@@ -12,7 +12,6 @@ import {
   checkTaskDates,
   checkTaskUpdatePermissions,
 } from 'backend/apiUtils/tasks';
-import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { CreateReleaseTaskDto } from 'backend/models/tasks/combined';
 
 @requiresAuth()
@@ -30,8 +29,6 @@ class ReleaseListHandler {
       req,
       releaseWorkspace?.workspaceId
     );
-
-    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     await checkTaskDates(body, id);
 

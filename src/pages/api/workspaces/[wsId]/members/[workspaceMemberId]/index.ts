@@ -3,7 +3,6 @@ import {
   Body,
   createHandler,
   Delete,
-  NotFoundException,
   Patch,
   Request,
   ValidationPipe,
@@ -50,7 +49,6 @@ class WorkspaceMemberHandler {
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], workspaceId);
 
     const instigator = await getResourceWorkspaceMembership(req, workspaceId);
-    if (!instigator) throw new NotFoundException('You are not a member of this workspace');
 
     if (instigator.id === workspaceMemberId)
       throw new BadRequestException('You cannot remove yourself from a workspace');

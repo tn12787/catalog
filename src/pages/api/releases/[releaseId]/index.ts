@@ -3,12 +3,14 @@ import {
   Body,
   createHandler,
   Delete,
+  ForbiddenException,
   Get,
   NotFoundException,
   Patch,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -18,6 +20,8 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { getReleaseByIdIsomorphic } from 'backend/isomorphic/releases';
 import { buildUpdateReleaseArgs } from 'backend/apiUtils/releases';
+import { canUpdateReleaseToDate } from 'utils/releases';
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 
 @requiresAuth()
 class SingleReleaseHandler {
@@ -36,15 +40,15 @@ class SingleReleaseHandler {
 
     const existingRelease = await prisma.release.findUnique({
       where: { id },
-      select: {
-        workspaceId: true,
+      include: {
         tasks: { select: { dueDate: true } },
       },
     });
 
-    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], existingRelease?.workspaceId);
-
     if (!existingRelease) throw new NotFoundException();
+
+    const workspace = await getWorkspaceByIdIsomorphic(req, existingRelease.workspaceId);
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], workspace.id);
 
     const updateArgs = buildUpdateReleaseArgs(body);
 
@@ -57,6 +61,22 @@ class SingleReleaseHandler {
         })
       ) {
         throw new BadRequestException("Release date cannot be before any task's due date");
+      }
+
+      const releasesInTargetMonth = await prisma.release.count({
+        where: {
+          workspace: { id: existingRelease.workspaceId },
+          targetDate: {
+            gte: startOfMonth(new Date(body.targetDate)),
+            lte: endOfMonth(new Date(body.targetDate)),
+          },
+        },
+      });
+
+      if (
+        !canUpdateReleaseToDate(releasesInTargetMonth, workspace, existingRelease, body.targetDate)
+      ) {
+        throw new ForbiddenException('Monthly limit of releases reached.');
       }
     }
 

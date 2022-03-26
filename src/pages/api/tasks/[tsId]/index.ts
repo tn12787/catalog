@@ -16,7 +16,6 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { getResourceWorkspaceMembership } from 'backend/apiUtils/workspaces';
-import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { createUpdateTaskEvents } from 'backend/apiUtils/taskEvents';
 import {
   checkTaskUpdatePermissions,
@@ -71,7 +70,6 @@ class SingleTaskHandler {
     };
 
     const activeWorkspaceMember = await getResourceWorkspaceMembership(req, workspace.id);
-    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const eventsToCreate = await createUpdateTaskEvents({
       body,
