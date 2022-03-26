@@ -18,7 +18,9 @@ const useOnboardingItems = (): UseOnboardingItemsReturn => {
   const { data: artists, isLoading: areArtistsLoading } = useArtists({});
   const { workspace, isLoading: isCurrentWorkspaceLoading } = useCurrentWorkspace();
   const { data: releases, isLoading: areReleasesLoading } = useReleases({});
-  const { data: contacts, isLoading: areContactsLoading } = useContacts({});
+  const { data: contacts, isLoading: areContactsLoading } = useContacts({
+    pagination: { pageSize: 1, page: 1 },
+  });
   const router = useRouter();
 
   const isAnythingLoading = [
