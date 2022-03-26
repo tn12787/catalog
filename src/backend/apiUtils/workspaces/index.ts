@@ -89,9 +89,15 @@ export const getResourceWorkspaceMembership = async (
 ) => {
   const session = (await getSession({ req })) as ExtendedSession;
 
-  return session?.token.workspaceMemberships.find(
+  const membership = session?.token.workspaceMemberships.find(
     (userWorkspace) => userWorkspace.workspaceId === workspaceId
   );
+
+  if (!membership) {
+    throw new ForbiddenException('You are not a member of this workspace.');
+  }
+
+  return membership;
 };
 
 export const ensureUserHasWorkspaceMembershipSync = (
@@ -122,10 +128,11 @@ export const getAllUserPermissionsForWorkspace = async (
   req: AuthDecoratedRequest,
   resourceWorkspace?: string
 ) => {
-  const workspaceMembership = await getResourceWorkspaceMembership(req, resourceWorkspace);
-  if (!workspaceMembership || !resourceWorkspace) {
+  if (!resourceWorkspace) {
     throw new NotFoundException();
   }
+
+  const workspaceMembership = await getResourceWorkspaceMembership(req, resourceWorkspace);
 
   const permissionsForWorkspace = uniq(
     workspaceMembership.roles

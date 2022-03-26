@@ -14,7 +14,9 @@ import {
 } from '@storyofams/next-api-decorators';
 import { Release, ReleaseType, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import { pickBy } from 'lodash';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
+import { canAddAnotherRelease } from 'utils/releases';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { buildCreateReleaseTaskArgs } from 'backend/apiUtils/tasks';
@@ -100,8 +102,21 @@ class ReleaseListHandler {
 
     await checkRequiredPermissions(req, ['CREATE_RELEASES'], workspace.id);
 
+    const releasesInTargetMonth = await prisma.release.count({
+      where: {
+        workspace: { id: body.workspace },
+        targetDate: {
+          gte: startOfMonth(new Date(body.targetDate)),
+          lte: endOfMonth(new Date(body.targetDate)),
+        },
+      },
+    });
+
+    if (!canAddAnotherRelease(releasesInTargetMonth, workspace)) {
+      throw new ForbiddenException('Monthly limit of releases reached.');
+    }
+
     const activeWorkspaceMember = await getResourceWorkspaceMembership(req, workspace.id);
-    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const optionalArgs = [
       body.artwork &&

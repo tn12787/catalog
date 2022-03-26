@@ -57,7 +57,6 @@ class SpecificCommentHandler {
       req,
       task?.release?.workspaceId
     );
-    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     // check if user is the author of the comment
     if (comment.user?.id !== activeWorkspaceMember.id) {
@@ -112,7 +111,6 @@ class SpecificCommentHandler {
       req,
       task?.release?.workspaceId
     );
-    if (!activeWorkspaceMember) throw new ForbiddenException();
 
     // To delete a comment, the user must either be the author of the comment, or have the DELETE_ALL_COMMENTS permission
     const userPermissions = await getAllUserPermissionsForWorkspace(

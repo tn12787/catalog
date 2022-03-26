@@ -2,9 +2,9 @@ import { Stack, Flex, Button } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 import { FiArrowRight, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import { ReleaseTaskType, ReleaseType } from '@prisma/client';
+import { Release, ReleaseTaskType, ReleaseType } from '@prisma/client';
 import { isEmpty } from 'lodash';
-import { format } from 'date-fns';
+import { endOfMonth, format, startOfMonth } from 'date-fns';
 
 import { ReleaseWizardComponentProps } from '../../NewReleaseWizard/types';
 
@@ -13,7 +13,14 @@ import { BasicInfoFormData } from './types';
 
 import FormContent from 'components/forms/FormContent';
 import useArtists from 'hooks/data/artists/useArtists';
-import { clientReleasePrepTasks, defaultReleaseDate } from 'utils/releases';
+import {
+  canUpdateReleaseToDate,
+  clientReleasePrepTasks,
+  defaultReleaseDate,
+  getLimitForSubscription,
+} from 'utils/releases';
+import useReleases from 'hooks/data/releases/useReleases';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const NewReleaseFormBody = ({
   onSubmit,
@@ -21,6 +28,7 @@ const NewReleaseFormBody = ({
   loading,
 }: ReleaseWizardComponentProps<BasicInfoFormData>) => {
   const { data: artists } = useArtists({});
+  const { workspace } = useCurrentWorkspace();
 
   const properDateFormat = useMemo(() => {
     const existingDate = existingRelease?.targetDate ?? defaultReleaseDate();
@@ -56,11 +64,38 @@ const NewReleaseFormBody = ({
 
   const selectedDate = watch('targetDate');
 
+  const { data: releasesInMonth, isLoading: releasesLoading } = useReleases({
+    dates: {
+      before: endOfMonth(new Date(selectedDate)),
+      after: startOfMonth(new Date(selectedDate)),
+    },
+  });
+
   useEffect(() => {
+    if (!releasesInMonth || !workspace) return;
+
+    clearErrors('targetDate');
+
+    if (
+      !canUpdateReleaseToDate(
+        releasesInMonth.total,
+        workspace,
+        existingRelease as Release,
+        new Date(selectedDate)
+      )
+    ) {
+      setError('targetDate', {
+        message: `You've reached the limit of releases for ${format(
+          new Date(selectedDate),
+          'MMMM yyyy'
+        )} on your current plan (${getLimitForSubscription(workspace.subscription)} / month).`,
+      });
+    }
+
     if (!existingRelease) return;
 
     const tasks = clientReleasePrepTasks(existingRelease);
-    clearErrors('targetDate');
+
     if (
       tasks
         .filter((item) => item.type !== ReleaseTaskType.GENERIC)
@@ -70,7 +105,16 @@ const NewReleaseFormBody = ({
         message: 'There are tasks for this release due after this date.',
       });
     }
-  }, [selectedDate, setError, clearErrors, errors, existingRelease]);
+  }, [
+    selectedDate,
+    setError,
+    releasesLoading,
+    clearErrors,
+    errors,
+    existingRelease,
+    releasesInMonth,
+    workspace,
+  ]);
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">

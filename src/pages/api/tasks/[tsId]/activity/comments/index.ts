@@ -37,14 +37,14 @@ class CommentHandler {
       },
     });
 
+    if (!task) throw new ForbiddenException();
+
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], task?.release?.workspaceId);
 
     const activeWorkspaceMember = await getResourceWorkspaceMembership(
       req,
       task?.release?.workspaceId
     );
-
-    if (!activeWorkspaceMember || !task) throw new ForbiddenException();
 
     const [result] = await prisma.$transaction([
       prisma.releaseTaskEvent.create({
