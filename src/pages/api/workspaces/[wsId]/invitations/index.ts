@@ -9,6 +9,7 @@ import {
 
 import { ForbiddenException } from './../../../../../backend/apiUtils/exceptions';
 
+import { isBackendFeatureEnabled } from 'common/features';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -18,6 +19,7 @@ import { CreateInvitationDto } from 'backend/models/invitations/create';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { sendDynamicEmail } from 'backend/apiUtils/email';
 import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
+import { FeatureKey } from 'common/features/types';
 
 const inviteUserTemplateId = `d-324235f107c041f58e03d8fd8a66e104`;
 
@@ -43,7 +45,10 @@ class InviteHandler {
       throw new ConflictException('User is already a member of this workspace');
     }
 
-    if (workspace.members.length >= (workspace.subscription?.totalSeats ?? 1)) {
+    if (
+      workspace.members.length >= (workspace.subscription?.totalSeats ?? 1) &&
+      isBackendFeatureEnabled(FeatureKey.PAYMENTS)
+    ) {
       throw new ForbiddenException('No more license seats left in plan.');
     }
 
