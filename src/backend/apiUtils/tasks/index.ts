@@ -12,6 +12,8 @@ import { CreateReleaseTaskDto, UpdateReleaseTaskDto } from 'backend/models/tasks
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { transformAssigneesToPrismaQuery } from 'backend/apiUtils/transforms/assignees';
 import prisma from 'backend/prisma/client';
+import { EnrichedWorkspace } from 'types/common';
+import { hasPaidPlan } from 'utils/billing';
 
 export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: string) => {
   if (!id) throw new NotFoundException();
@@ -29,13 +31,18 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
   return releaseWorkspace;
 };
 
-export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto & { userId: string }) => {
+export const buildCreateReleaseTaskArgs = (
+  workspace: EnrichedWorkspace,
+  body: CreateReleaseTaskDto & { userId: string }
+) => {
   const baseArgs = pickBy(
     {
       ...pick(body, ['status', 'notes', 'dueDate', 'type', 'name']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees, true),
-      contacts: transformContactsToPrismaQuery(body.contacts, true),
+      contacts: hasPaidPlan(workspace, 'Label Plan')
+        ? transformContactsToPrismaQuery(body.contacts, true)
+        : undefined,
       events: {
         create: [
           buildCreateTaskEvent({
@@ -52,13 +59,19 @@ export const buildCreateReleaseTaskArgs = (body: CreateReleaseTaskDto & { userId
   return { ...baseArgs, ...specificArgs };
 };
 
-export const buildUpdateReleaseTaskArgs = (body: UpdateReleaseTaskDto, type: ReleaseTaskType) => {
+export const buildUpdateReleaseTaskArgs = (
+  workspace: EnrichedWorkspace,
+  body: UpdateReleaseTaskDto,
+  type: ReleaseTaskType
+) => {
   const baseArgs = pickBy(
     {
       ...pick(body, ['status', 'notes', 'dueDate', 'name']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       assignees: transformAssigneesToPrismaQuery(body.assignees),
-      contacts: transformContactsToPrismaQuery(body.contacts),
+      contacts: hasPaidPlan(workspace, 'Label Plan')
+        ? transformContactsToPrismaQuery(body.contacts, true)
+        : undefined,
     },
     (v) => !isNil(v)
   );
