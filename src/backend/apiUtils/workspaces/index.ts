@@ -1,11 +1,13 @@
 import { uniq } from 'lodash';
 import { NotFoundException } from '@storyofams/next-api-decorators';
 import { getSession } from 'next-auth/react';
+import Stripe from 'stripe';
 
 import { getOrCreateStripeCustomer } from '../stripe/customers';
 
 import { defaultWorkspaceLabels } from './defaultLabels';
 
+import { transformSubscriptionToBasicData } from 'backend/apiUtils/transforms/subscriptions';
 import { AuthDecoratedRequest, ExtendedSession } from 'types/auth';
 import prisma from 'backend/prisma/client';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
@@ -42,9 +44,30 @@ export const createDefaultWorkspaceForUser = async ({ name, userId, email }: Use
   }
 };
 
-export const manageSubscriptionChange = async (customer: string, id?: string) => {
-  await prisma.workspace.update({
-    where: { stripeCustomerId: customer },
+export const manageSubscriptionChange = async (subscription: Stripe.Subscription) => {
+  const customerWorkspace = await prisma.workspace.findUnique({
+    where: { stripeCustomerId: subscription.customer as string },
+  });
+
+  if (!customerWorkspace) {
+    return;
+  }
+
+  const mappedData = await transformSubscriptionToBasicData(subscription);
+
+  await prisma.subscription.upsert({
+    where: { id: subscription.id },
+    create: {
+      id: subscription.id,
+      workspace: { connect: { id: customerWorkspace.id } },
+      ...mappedData,
+    },
+  });
+};
+
+export const manageSubscriptionDelete = async (customer: string) => {
+  await prisma.subscription.delete({
+    where: { workspace: { customer } },
     data: { stripeSubscriptionId: id ?? null },
   });
 };
