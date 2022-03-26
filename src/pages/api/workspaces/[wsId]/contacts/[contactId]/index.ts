@@ -5,6 +5,7 @@ import {
   Patch,
   Body,
   Delete,
+  ForbiddenException,
 } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
@@ -13,6 +14,8 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateContactDto } from 'backend/models/contacts/update';
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
+import { hasPaidPlan } from 'utils/billing';
 
 @requiresAuth()
 class SpecificNotificationHandler {
@@ -25,6 +28,11 @@ class SpecificNotificationHandler {
   ) {
     if (!contactId) {
       throw new NotFoundException();
+    }
+
+    const workspace = await getWorkspaceByIdIsomorphic(req, workspaceId);
+    if (!hasPaidPlan(workspace)) {
+      throw new ForbiddenException('A paid plan is required to use this feature.');
     }
 
     await checkRequiredPermissions(req, ['UPDATE_CONTACTS'], workspaceId);
@@ -49,6 +57,11 @@ class SpecificNotificationHandler {
   ) {
     if (!contactId) {
       throw new NotFoundException();
+    }
+
+    const workspace = await getWorkspaceByIdIsomorphic(req, workspaceId);
+    if (!hasPaidPlan(workspace)) {
+      throw new ForbiddenException('A paid plan is required to use this feature.');
     }
 
     await checkRequiredPermissions(req, ['DELETE_CONTACTS'], workspaceId);

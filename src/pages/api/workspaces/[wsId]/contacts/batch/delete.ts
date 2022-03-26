@@ -4,6 +4,7 @@ import {
   Body,
   BadRequestException,
   Post,
+  ForbiddenException,
 } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
@@ -12,6 +13,8 @@ import { BatchDeleteContactDto } from 'backend/models/contacts/batch/delete';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
+import { hasPaidPlan } from 'utils/billing';
 
 @requiresAuth()
 class DeleteBatchContactHandler {
@@ -21,6 +24,11 @@ class DeleteBatchContactHandler {
     @PathParam('wsId') workspaceId: string,
     @Body() body: BatchDeleteContactDto
   ) {
+    const workspace = await getWorkspaceByIdIsomorphic(req, workspaceId);
+    if (!hasPaidPlan(workspace)) {
+      throw new ForbiddenException('A paid plan is required to use this feature.');
+    }
+
     const ids = body.ids;
     if (!body.ids) throw new BadRequestException('No ids provided');
 

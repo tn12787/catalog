@@ -2,6 +2,7 @@ import {
   Body,
   createHandler,
   DefaultValuePipe,
+  ForbiddenException,
   Get,
   HttpCode,
   ParseNumberPipe,
@@ -12,6 +13,7 @@ import {
 } from '@storyofams/next-api-decorators';
 import { Contact } from '@prisma/client';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -19,25 +21,31 @@ import { SortOrder } from 'queries/types';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateContactDto } from 'backend/models/contacts/create';
+import { hasPaidPlan } from 'utils/billing';
 
 @requiresAuth()
 class ContactHandler {
   @Get()
   async list(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('wsId') workspace: string,
+    @PathParam('wsId') workspaceId: string,
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Contact>('name')) sortBy: keyof Contact,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,
     @Query('pageSize', DefaultValuePipe(10), ParseNumberPipe) pageSize: number,
     @Query('page', DefaultValuePipe(1), ParseNumberPipe) page: number
   ) {
-    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspace);
+    const workspace = await getWorkspaceByIdIsomorphic(req, workspaceId);
+    if (!hasPaidPlan(workspace)) {
+      throw new ForbiddenException('A paid plan is required to use this feature.');
+    }
+
+    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspaceId);
 
     const commonArgs = {
       where: {
         name: { contains: search, mode: 'insensitive' } as any,
-        workspace: { id: workspace },
+        workspace: { id: workspaceId },
       },
     };
 
@@ -79,6 +87,11 @@ class ContactHandler {
     @PathParam('wsId') workspaceId: string,
     @Req() req: AuthDecoratedRequest
   ) {
+    const workspace = await getWorkspaceByIdIsomorphic(req, workspaceId);
+    if (!hasPaidPlan(workspace)) {
+      throw new ForbiddenException('A paid plan is required to use this feature.');
+    }
+
     await checkRequiredPermissions(req, ['CREATE_CONTACTS'], workspaceId);
 
     const result = await prisma.contact.create({
