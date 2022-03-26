@@ -6,12 +6,17 @@ import { baseTaskConfig } from '../baseTaskConfig';
 import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 import { EditArtworkFormData } from 'components/releases/specific/tasks/Artwork/types';
 import { FormDatum } from 'types/forms';
+import { EnrichedWorkspace } from 'types/common';
+import { hasPaidPlan } from 'utils/billing';
 
-export const buildArtworkConfig = (): FormDatum<EditArtworkFormData, TaskStatus>[] => [
+export const buildArtworkConfig = (
+  workspace?: EnrichedWorkspace
+): FormDatum<EditArtworkFormData, TaskStatus>[] => [
   {
     name: 'assignees',
     label: 'Assignees',
     CustomComponent: AssigneeSelect,
+    hidden: !hasPaidPlan(workspace),
   },
   {
     name: 'status',
@@ -59,5 +64,6 @@ export const buildArtworkConfig = (): FormDatum<EditArtworkFormData, TaskStatus>
 ];
 
 export const buildWizardArtworkConfig = (
-  releaseDate: Date | null
-): FormDatum<EditArtworkFormData, TaskStatus>[] => [...baseTaskConfig(releaseDate)];
+  releaseDate: Date | null,
+  workspace?: EnrichedWorkspace
+): FormDatum<EditArtworkFormData, TaskStatus>[] => [...baseTaskConfig(releaseDate, workspace)];

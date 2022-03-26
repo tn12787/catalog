@@ -25,6 +25,8 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import SingleTaskMenu from 'components/tasks/SingleTaskMenu';
 import useCommentMutations from 'hooks/data/tasks/comments/useCommentMutations';
+import { hasPaidPlan } from 'utils/billing';
+import UnlockTasks from 'components/tasks/UnlockTasks';
 
 type SingleTaskPageProps = {
   task: EnrichedReleaseTask & { release: Release };
@@ -128,7 +130,10 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
             <ActivityList loading={activityLoading} events={taskActivity?.data ?? []} />
             {canEdit && <NewCommentBox onSubmit={onSubmit} loading={postSingleComment.isLoading} />}
           </Stack>
-          <TaskInfo loading={taskLoading} task={taskData} />
+          <Stack spacing={5} maxW={{ base: '100%', md: '300px' }}>
+            <TaskInfo loading={taskLoading} task={taskData} />
+            {!hasPaidPlan(workspace, 'Label Plan') && <UnlockTasks />}
+          </Stack>
         </Stack>
         <Divider />
       </Stack>

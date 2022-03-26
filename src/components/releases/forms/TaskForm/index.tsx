@@ -54,7 +54,7 @@ const TaskForm = ({ onSubmitSuccess, task, release, generic }: Props) => {
         status,
         notes,
         dueDate: midday(dueDate),
-        assignees: assignees.map((item) => item.id),
+        assignees: assignees?.map((item) => item.id) ?? [],
         contacts: contacts.map((item) => item.id),
         name: name.emoji ? `${name.emoji} ${name.text}` : name.text,
       } as UpdateTaskVars);

@@ -5,19 +5,21 @@ import { SummaryField } from '../../Summary';
 import ReleaseTaskCard from '../ReleaseTaskCard';
 import { defaultFields } from '../ReleaseTaskCard/defaultFields';
 
-import { ClientRelease, EventType } from 'types/common';
+import { ClientRelease, EnrichedWorkspace, EventType } from 'types/common';
 import EditDistributionForm from 'components/releases/forms/EditDistributionForm';
 import useAppColors from 'hooks/useAppColors';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 interface Props {
   releaseData: ClientRelease;
 }
 
 const buildFields = (
-  distributionTask: ClientRelease['distribution'] | undefined
+  distributionTask: ClientRelease['distribution'] | undefined,
+  workspace?: EnrichedWorkspace
 ): SummaryField[] => {
   return [
-    ...defaultFields(distributionTask),
+    ...defaultFields(distributionTask, workspace),
     {
       name: 'Distributor',
       content: <Text fontSize="sm">{distributionTask?.distributor?.name}</Text>,
@@ -29,13 +31,14 @@ const Distribution = ({ releaseData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const distributionTask = releaseData.distribution;
   const { bgSecondary } = useAppColors();
+  const { workspace } = useCurrentWorkspace();
 
   return (
     <>
       <ReleaseTaskCard
         heading={'💿 Distribution'}
         onEditClick={onOpen}
-        fields={buildFields(distributionTask)}
+        fields={buildFields(distributionTask, workspace)}
         taskType={EventType.DISTRIBUTION}
         data={distributionTask}
       />

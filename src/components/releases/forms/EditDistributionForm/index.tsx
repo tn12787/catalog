@@ -45,7 +45,7 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
     try {
       await createDistribution({
         ...data,
-        assignees: data.assignees.map((item) => item.id),
+        assignees: (data.assignees ?? []).map((item) => item.id),
         dueDate: midday(data.dueDate),
         releaseId: releaseData.id,
       });
@@ -66,7 +66,7 @@ const EditDistributionForm = ({ releaseData, onSubmitSuccess }: Props) => {
     try {
       await updateDistribution({
         ...data,
-        assignees: data.assignees.map((item) => item.id),
+        assignees: (data.assignees ?? []).map((item) => item.id),
         dueDate: midday(data.dueDate),
         taskId: releaseData.distribution?.id as string,
       });

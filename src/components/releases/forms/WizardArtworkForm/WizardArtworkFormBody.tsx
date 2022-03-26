@@ -15,6 +15,7 @@ import ImageDropper from 'components/images/ImageDropper';
 import useAppColors from 'hooks/useAppColors';
 import { uploadImageToFirebase } from 'queries/artwork';
 import { defaultTaskDueDate } from 'utils/tasks';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const WizardArtworkFormBody = ({
   onSubmit,
@@ -33,6 +34,8 @@ const WizardArtworkFormBody = ({
     const existingDate = completeState?.artwork?.dueDate ?? defaultTaskDueDate();
     return format(new Date(existingDate), 'yyyy-MM-dd');
   }, [completeState?.artwork?.dueDate]);
+
+  const { workspace } = useCurrentWorkspace();
 
   const {
     register,
@@ -85,7 +88,10 @@ const WizardArtworkFormBody = ({
           <Stack>
             <FormContent
               control={control}
-              config={buildWizardArtworkConfig(completeState?.basics?.targetDate as Date)}
+              config={buildWizardArtworkConfig(
+                completeState?.basics?.targetDate as Date,
+                workspace
+              )}
               errors={errors}
               register={register}
             />

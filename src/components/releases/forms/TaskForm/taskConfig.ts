@@ -2,10 +2,14 @@ import { baseTaskConfig } from '../baseTaskConfig';
 
 import { TaskFormData } from './types';
 
+import { EnrichedWorkspace } from 'types/common';
 import { FormDatum } from 'types/forms';
 import EmojiInput from 'components/forms/EmojiInput';
 
-export const buildTaskConfig = (isGeneric: boolean): FormDatum<TaskFormData>[] =>
+export const buildTaskConfig = (
+  isGeneric: boolean,
+  workspace?: EnrichedWorkspace
+): FormDatum<TaskFormData>[] =>
   [
     isGeneric && {
       name: 'name',
@@ -18,5 +22,5 @@ export const buildTaskConfig = (isGeneric: boolean): FormDatum<TaskFormData>[] =
       registerArgs: { required: 'Please enter a name for this task' },
       CustomComponent: EmojiInput,
     },
-    ...baseTaskConfig(null),
+    ...baseTaskConfig(null, workspace),
   ].filter(Boolean) as FormDatum<TaskFormData>[];
