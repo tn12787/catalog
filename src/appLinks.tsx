@@ -71,7 +71,7 @@ export const appLinks: NavLinkConfig = {
         activeRegex: /^\/workspaces\/.+\/settings/,
       },
       arePaymentsEnabled &&
-        currentWorkspace?.subscription?.product?.name !== 'Label Plan' && {
+        currentWorkspace?.subscription?.productName !== 'Label Plan' && {
           icon: BiRocket,
           href: `/workspaces/${currentWorkspace?.id}/upgrade`,
           text: 'Upgrade',

@@ -15,16 +15,17 @@ import { capitalize } from 'lodash';
 import { BiCheck } from 'react-icons/bi';
 import NextLink from 'next/link';
 import Stripe from 'stripe';
+import { BillingInterval } from '@prisma/client';
 
 import Card from 'components/Card';
-import { PricingStructure, BillingCycle } from 'types/marketing/pricing';
+import { PricingStructure } from 'types/marketing/pricing';
 import useAppColors from 'hooks/useAppColors';
 import { EnrichedWorkspace } from 'types/common';
 import { priceToString } from 'utils/billing';
 
 type Props = {
   priceInfo: PricingStructure;
-  billingCycle: BillingCycle;
+  billingCycle: BillingInterval;
   isHighlighted?: boolean;
   workspace?: EnrichedWorkspace;
   onPlanSelected?: (price: Stripe.Price | undefined) => void;

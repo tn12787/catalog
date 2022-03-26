@@ -11,7 +11,11 @@ import { NextApiRequest } from 'next';
 import Stripe from 'stripe';
 
 import { stripe } from 'backend/apiUtils/stripe/server';
-import { manageCustomerDelete, manageSubscriptionChange } from 'backend/apiUtils/workspaces';
+import {
+  manageCustomerDelete,
+  manageSubscriptionChange,
+  manageSubscriptionDelete,
+} from 'backend/apiUtils/workspaces';
 
 // Stripe requires the raw body to construct the event.
 export const config = {
@@ -46,25 +50,20 @@ class WebhookHandler {
       case 'customer.subscription.updated':
         const subscriptionUpdate = event.data.object as Stripe.Subscription;
 
-        await manageSubscriptionChange(
-          subscriptionUpdate.customer as string,
-          subscriptionUpdate.id
-        );
+        await manageSubscriptionChange(subscriptionUpdate);
         break;
 
       case 'customer.subscription.deleted':
         const subscriptionDelete = event.data.object as Stripe.Subscription;
 
-        await manageSubscriptionChange(subscriptionDelete.customer as string);
+        await manageSubscriptionDelete(subscriptionDelete);
         break;
       case 'checkout.session.completed':
         const checkoutSession = event.data.object as Stripe.Checkout.Session;
         if (checkoutSession.mode === 'subscription') {
           const subscriptionId = checkoutSession.subscription;
-          await manageSubscriptionChange(
-            checkoutSession.customer as string,
-            subscriptionId as string
-          );
+          const subscription = await stripe.subscriptions.retrieve(subscriptionId as string);
+          await manageSubscriptionChange(subscription);
         }
         break;
       case 'customer.deleted':

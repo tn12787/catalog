@@ -24,7 +24,7 @@ interface Props extends FlexProps {
 }
 
 const badgeFromWorkspace = (workspace: EnrichedWorkspace | undefined) => {
-  switch (workspace?.subscription?.product?.name) {
+  switch (workspace?.subscription?.productName) {
     case 'Manager Plan':
       return 'Manager';
     case 'Label Plan':
@@ -36,7 +36,7 @@ const badgeFromWorkspace = (workspace: EnrichedWorkspace | undefined) => {
 
 const badgeColorSchemeFromWorkspace = (workspace: EnrichedWorkspace | undefined) => {
   const enrichedPrices = priceData([]);
-  switch (workspace?.subscription?.product?.name) {
+  switch (workspace?.subscription?.productName) {
     case 'Manager Plan':
       return enrichedPrices.manager.colorScheme;
     case 'Label Plan':

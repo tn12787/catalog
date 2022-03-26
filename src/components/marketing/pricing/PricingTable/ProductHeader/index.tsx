@@ -3,8 +3,9 @@ import React from 'react';
 import { capitalize } from 'lodash';
 import NextLink from 'next/link';
 import Stripe from 'stripe';
+import { BillingInterval } from '@prisma/client';
 
-import { BillingCycle, PricingStructure } from 'types/marketing/pricing';
+import { PricingStructure } from 'types/marketing/pricing';
 import useAppColors from 'hooks/useAppColors';
 import { priceToString } from 'utils/billing';
 import { EnrichedWorkspace } from 'types/common';
@@ -12,7 +13,7 @@ import { EnrichedWorkspace } from 'types/common';
 type Props = {
   workspace?: EnrichedWorkspace;
   priceInfo: PricingStructure;
-  billingCycle: BillingCycle;
+  billingCycle: BillingInterval;
   isLoading?: boolean;
   isHighlighted?: boolean;
   onPlanSelected?: (price: Stripe.Price | undefined) => void;

@@ -1,24 +1,21 @@
+import { BillingInterval } from '@prisma/client';
 import Stripe from 'stripe';
-
-import { BillingCycle } from 'types/marketing/pricing';
 
 export type ProductName = 'Manager Plan' | 'Label Plan';
 
 export type MappedSubscription = {
-  product: {
-    id: string;
-    name: ProductName;
-  };
+  productName: ProductName;
+  productId: string;
   status: Stripe.Subscription.Status;
   trialEnd: Date | null;
   totalSeats: number;
   currentPeriodStart: Date;
   currentPeriodEnd: Date;
   cancelTime: Date | null;
-  interval: Stripe.SubscriptionItem['plan']['interval'];
+  interval: BillingInterval;
 };
 
 export type ProductResponse = Stripe.Product & {
-  prices: Record<BillingCycle, Stripe.Price | undefined>;
+  prices: Record<BillingInterval, Stripe.Price | undefined>;
   name: ProductName;
 };

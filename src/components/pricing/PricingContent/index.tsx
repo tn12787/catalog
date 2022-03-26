@@ -1,19 +1,19 @@
 import { Stack, Text, Link } from '@chakra-ui/react';
 import React from 'react';
 import Stripe from 'stripe';
+import { BillingInterval } from '@prisma/client';
 
 import InnerRadioGroup from 'components/forms/radio/InnerRadioGroup';
 import PricingCard from 'components/marketing/pricing/PricingCard';
 import PricingTable from 'components/marketing/pricing/PricingTable';
 import { priceData } from 'components/marketing/pricing/PricingTable/productData';
-import { BillingCycle } from 'types/marketing/pricing';
 import useAppColors from 'hooks/useAppColors';
 import { EnrichedWorkspace } from 'types/common';
 import { ProductResponse } from 'types/billing';
 
 type Props = {
   workspace?: EnrichedWorkspace;
-  defaultBillingCycle?: BillingCycle;
+  defaultBillingCycle?: BillingInterval;
   products: ProductResponse[];
   onPlanSelected?: (price: Stripe.Price | undefined) => void;
   isLoading?: boolean;
@@ -21,13 +21,13 @@ type Props = {
 
 const PricingContent = ({
   workspace,
-  defaultBillingCycle = 'monthly',
+  defaultBillingCycle = BillingInterval.monthly,
   products,
   onPlanSelected,
   isLoading,
 }: Props) => {
   const [selectedBillingCycle, setSelectedBillingCycle] =
-    React.useState<BillingCycle>(defaultBillingCycle);
+    React.useState<BillingInterval>(defaultBillingCycle);
   const { primary } = useAppColors();
 
   const enrichedPrices = priceData(products ?? []);
@@ -42,7 +42,7 @@ const PricingContent = ({
         <InnerRadioGroup
           size="lg"
           value={selectedBillingCycle}
-          onChange={(e) => setSelectedBillingCycle(e as BillingCycle)}
+          onChange={(e) => setSelectedBillingCycle(e as BillingInterval)}
           options={[
             { label: 'Monthly', value: 'monthly' },
             { label: 'Yearly', value: 'yearly' },
@@ -66,7 +66,7 @@ const PricingContent = ({
           workspace={workspace}
           billingCycle={selectedBillingCycle}
           priceInfo={enrichedPrices.manager}
-          isHighlighted={workspace?.subscription?.product.name === 'Manager Plan'}
+          isHighlighted={workspace?.subscription?.productName === 'Manager Plan'}
           onPlanSelected={onPlanSelected}
         ></PricingCard>
         <PricingCard
@@ -74,7 +74,7 @@ const PricingContent = ({
           workspace={workspace}
           billingCycle={selectedBillingCycle}
           priceInfo={enrichedPrices.label}
-          isHighlighted={workspace?.subscription?.product.name === 'Label Plan'}
+          isHighlighted={workspace?.subscription?.productName === 'Label Plan'}
           onPlanSelected={onPlanSelected}
         ></PricingCard>
       </Stack>
