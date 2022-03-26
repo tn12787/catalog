@@ -30,7 +30,7 @@ const ContactsField = ({ isDisabled, contacts, onChange }: Props) => {
       labelRightContent={
         hasProFeature ? null : (
           <Badge variant="outline" size="xs" rounded="full" px={2} colorScheme={pricesColor}>
-            Label Plan Only
+            Label Plan
           </Badge>
         )
       }
