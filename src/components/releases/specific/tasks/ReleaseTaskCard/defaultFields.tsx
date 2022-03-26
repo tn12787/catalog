@@ -4,12 +4,16 @@ import { format } from 'date-fns';
 
 import { SummaryField } from '../../Summary';
 
-import { ReleaseTaskWithAssignees, WorkspaceMemberWithUser } from 'types/common';
+import { EnrichedWorkspace, ReleaseTaskWithAssignees, WorkspaceMemberWithUser } from 'types/common';
 import AssigneeBadgeList from 'components/tasks/assignees/AssigneeBadge/AssigneeBadgeList';
 import TaskStatusBadge from 'components/tasks/TaskStatusBadge';
 import { isTaskComplete } from 'utils/tasks';
+import { hasPaidPlan } from 'utils/billing';
 
-export const defaultFields = (task?: ReleaseTaskWithAssignees): SummaryField[] => {
+export const defaultFields = (
+  task?: ReleaseTaskWithAssignees,
+  workspace?: EnrichedWorkspace
+): SummaryField[] => {
   if (!task) {
     return [];
   }
@@ -18,6 +22,7 @@ export const defaultFields = (task?: ReleaseTaskWithAssignees): SummaryField[] =
     {
       name: 'Assignees',
       content: <AssigneeBadgeList assignees={task.assignees as WorkspaceMemberWithUser[]} />,
+      hidden: !hasPaidPlan(workspace, 'Label Plan'),
     },
     {
       name: 'Status',

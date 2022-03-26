@@ -12,6 +12,7 @@ import FormContent from 'components/forms/FormContent';
 import { FormBodyProps } from 'types/forms';
 import { ReleaseTaskWithAssignees } from 'types/common';
 import { defaultTaskDueDate } from 'utils/tasks';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 interface Props extends FormBodyProps<TaskFormData> {
   existingData?: ReleaseTaskWithAssignees;
@@ -23,6 +24,8 @@ const TaskFormBody = ({ onSubmit, loading, existingData, generic }: Props) => {
     const existingDate = existingData?.dueDate ?? defaultTaskDueDate();
     return format(new Date(existingDate), 'yyyy-MM-dd');
   }, [existingData?.dueDate]);
+
+  const { workspace } = useCurrentWorkspace();
 
   const mappedTaskName = useMemo(() => deriveEmojiValueData(existingData?.name), [existingData]);
 
@@ -43,7 +46,7 @@ const TaskFormBody = ({ onSubmit, loading, existingData, generic }: Props) => {
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack spacing={3} width="100%" maxW="600px" margin="0 auto">
         <FormContent
-          config={buildTaskConfig(generic ?? false)}
+          config={buildTaskConfig(generic ?? false, workspace)}
           control={control}
           errors={errors}
           register={register}

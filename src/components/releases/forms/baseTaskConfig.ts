@@ -1,19 +1,22 @@
 import { TaskStatus } from '@prisma/client';
 import { format } from 'date-fns';
 
-import { ClientReleaseTaskData } from 'types/common';
+import { hasPaidPlan } from 'utils/billing';
+import { ClientReleaseTaskData, EnrichedWorkspace } from 'types/common';
 import AssigneeSelect from 'components/tasks/assignees/AssigneeSelect';
 import { FormDatum } from 'types/forms';
 
 export const baseTaskConfig = <
   T extends Pick<ClientReleaseTaskData, 'assignees' | 'status' | 'dueDate' | 'notes'>
 >(
-  releaseDate: Date | null
+  releaseDate: Date | null,
+  workspace?: EnrichedWorkspace
 ): FormDatum<T>[] => [
   {
     name: 'assignees',
     label: 'Assignees',
     CustomComponent: AssigneeSelect,
+    hidden: !hasPaidPlan(workspace),
   },
   {
     name: 'status',

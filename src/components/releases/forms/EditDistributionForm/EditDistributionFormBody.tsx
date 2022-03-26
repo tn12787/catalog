@@ -15,6 +15,7 @@ import { fetchDistributors } from 'queries/distribution';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 import { defaultTaskDueDate } from 'utils/tasks';
 import { midday } from 'utils/dates';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const EditDistributionFormBody = ({
   onSubmit,
@@ -48,6 +49,7 @@ const EditDistributionFormBody = ({
   });
 
   const { data: distributors } = useQuery('distributors', fetchDistributors);
+  const { workspace } = useCurrentWorkspace();
 
   useEffect(() => {
     reset({
@@ -65,7 +67,8 @@ const EditDistributionFormBody = ({
             completeState?.basics?.targetDate
               ? midday(new Date(completeState?.basics?.targetDate))
               : null,
-            distributors ?? []
+            distributors ?? [],
+            workspace
           )}
           control={control}
           errors={errors}

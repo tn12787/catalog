@@ -11,6 +11,7 @@ import FormContent from 'components/forms/FormContent';
 import { ReleaseWizardComponentProps } from 'components/releases/NewReleaseWizard/types';
 import { EditMasteringFormData } from 'components/releases/specific/tasks/Mastering/types';
 import { defaultTaskDueDate } from 'utils/tasks';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const EditMasteringFormBody = ({
   onSubmit,
@@ -47,12 +48,16 @@ const EditMasteringFormBody = ({
       dueDate: formattedDueDate as unknown as Date,
     });
   }, [completeState?.mastering, formattedDueDate, reset]);
+
+  const { workspace } = useCurrentWorkspace();
+
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)} width="100%">
       <Stack width="100%">
         <FormContent
           config={buildMasteringConfig(
-            completeState?.basics?.targetDate ? new Date(completeState?.basics?.targetDate) : null
+            completeState?.basics?.targetDate ? new Date(completeState?.basics?.targetDate) : null,
+            workspace
           )}
           control={control}
           errors={errors}

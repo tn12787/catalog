@@ -53,7 +53,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
         ...data,
         url,
         dueDate: midday(data.dueDate),
-        assignees: data.assignees.map((item) => item.id),
+        assignees: (data.assignees ?? []).map((item) => item.id),
         releaseId: releaseData.id,
       });
 
@@ -78,7 +78,7 @@ const EditArtworkForm = ({ releaseData, onSubmitSuccess }: Props) => {
         ...data,
         url,
         dueDate: midday(data.dueDate),
-        assignees: data.assignees.map((item) => item.id),
+        assignees: (data.assignees ?? []).map((item) => item.id),
         taskId: releaseData.artwork?.id as string,
       });
 
