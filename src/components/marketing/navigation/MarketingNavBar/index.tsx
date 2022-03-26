@@ -51,7 +51,7 @@ const MarketingNavBar = () => {
       <HStack py={3} w="90%" maxW="container.lg" justify={'space-between'}>
         <NextLink href="/" passHref>
           <LinkBox cursor={'pointer'}>
-            <LinkOverlay></LinkOverlay>
+            <LinkOverlay href={'/'}></LinkOverlay>
             <Wordmark></Wordmark>
           </LinkBox>
         </NextLink>

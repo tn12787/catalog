@@ -3,9 +3,13 @@ import React from 'react';
 
 interface Props {
   title: string;
+  description?: string;
 }
 
-const PageHead = ({ title }: Props) => {
+const PageHead = ({
+  title,
+  description = 'First-rate tools for managing music releases.',
+}: Props) => {
   return (
     <Head>
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -15,6 +19,7 @@ const PageHead = ({ title }: Props) => {
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
       <meta name="msapplication-TileColor" content="#da532c" />
       <meta name="theme-color" content="#ffffff" />
+      <meta name="description" content={description} />
       <title key="title">{`${title} | LaunchDay`}</title>
     </Head>
   );
