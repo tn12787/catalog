@@ -16,8 +16,7 @@ import { Release, ReleaseType, ReleaseTaskType, TaskStatus } from '@prisma/clien
 import { pickBy } from 'lodash';
 import { endOfMonth, startOfMonth } from 'date-fns';
 
-import { canAddAnotherRelease } from './../../../utils/releases/index';
-
+import { canAddAnotherRelease } from 'utils/releases';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { buildCreateReleaseTaskArgs } from 'backend/apiUtils/tasks';
