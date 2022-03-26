@@ -13,7 +13,6 @@ import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { CreatePortalSessionDto } from 'backend/models/payments/portal/create';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
-import prisma from 'backend/prisma/client';
 import { isBackendFeatureEnabled } from 'common/features';
 import { FeatureKey } from 'common/features/types';
 
