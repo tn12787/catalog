@@ -105,7 +105,7 @@ class ReleaseListHandler {
 
     const optionalArgs = [
       body.artwork &&
-        buildCreateReleaseTaskArgs({
+        buildCreateReleaseTaskArgs(workspace, {
           ...body.artwork,
           type: ReleaseTaskType.ARTWORK,
           dueDate: body.artwork?.dueDate ?? new Date(),
@@ -113,7 +113,7 @@ class ReleaseListHandler {
           userId: activeWorkspaceMember.id,
         }),
       body.distribution &&
-        buildCreateReleaseTaskArgs({
+        buildCreateReleaseTaskArgs(workspace, {
           ...body.distribution,
           type: ReleaseTaskType.DISTRIBUTION,
           dueDate: body.distribution?.dueDate ?? new Date(),
@@ -121,7 +121,7 @@ class ReleaseListHandler {
           userId: activeWorkspaceMember.id,
         }),
       body.mastering &&
-        buildCreateReleaseTaskArgs({
+        buildCreateReleaseTaskArgs(workspace, {
           ...body.mastering,
           type: ReleaseTaskType.MASTERING,
           dueDate: body.mastering?.dueDate ?? new Date(),
