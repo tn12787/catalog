@@ -1,7 +1,6 @@
 import {
   Body,
   createHandler,
-  ForbiddenException,
   Get,
   HttpCode,
   Post,
@@ -16,10 +15,10 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
-import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
-import { hasPaidPlan } from 'utils/billing';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 @requiresAuth()
+@requiresPaidPlan({ workspaceParamName: 'wsId' })
 class ContactLabelHandler {
   @Get()
   async list(
@@ -27,11 +26,6 @@ class ContactLabelHandler {
     @PathParam('wsId') workspaceId: string,
     @Query('search') search: string
   ) {
-    const workspace = await getWorkspaceByIdIsomorphic(req, workspaceId);
-    if (!hasPaidPlan(workspace)) {
-      throw new ForbiddenException('A paid plan is required to use this feature.');
-    }
-
     await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspaceId);
 
     const commonArgs = {
@@ -60,11 +54,6 @@ class ContactLabelHandler {
     @PathParam('wsId') workspaceId: string,
     @Req() req: AuthDecoratedRequest
   ) {
-    const workspace = await getWorkspaceByIdIsomorphic(req, workspaceId);
-    if (!hasPaidPlan(workspace)) {
-      throw new ForbiddenException('A paid plan is required to use this feature.');
-    }
-
     await checkRequiredPermissions(req, ['CREATE_CONTACTS'], workspaceId);
 
     const result = await prisma.contactLabel.create({
