@@ -1,5 +1,6 @@
 import { Body, createHandler, Post, Req, ValidationPipe } from '@storyofams/next-api-decorators';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { getResourceWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -23,15 +24,21 @@ class ReleaseListHandler {
     @PathParam('releaseId') id: string
   ) {
     const releaseWorkspace = await checkTaskUpdatePermissions(req, id);
+    const workspace = await getWorkspaceByIdIsomorphic(req, releaseWorkspace?.workspaceId);
+
     const activeWorkspaceMember = await getResourceWorkspaceMembership(
       req,
       releaseWorkspace?.workspaceId
     );
+
     if (!activeWorkspaceMember) throw new ForbiddenException();
 
     await checkTaskDates(body, id);
 
-    const baseArgs = buildCreateReleaseTaskArgs({ ...body, userId: activeWorkspaceMember.id });
+    const baseArgs = buildCreateReleaseTaskArgs(workspace, {
+      ...body,
+      userId: activeWorkspaceMember.id,
+    });
 
     const result = await prisma.releaseTask.create({
       data: {

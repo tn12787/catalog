@@ -26,6 +26,8 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
     },
   });
 
+  if (!releaseWorkspace) throw new NotFoundException(`Release with id ${id} not found`);
+
   await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseWorkspace?.workspaceId);
 
   return releaseWorkspace;
