@@ -18,8 +18,10 @@ import {
   checkRequiredPermissions,
   getResourceWorkspaceMembership,
 } from 'backend/apiUtils/workspaces';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 @requiresAuth()
+@requiresPaidPlan({ workspaceParamName: 'wsId', plan: 'Label Plan' })
 class WorkspaceMemberHandler {
   @Patch()
   async updateWorkspace(
