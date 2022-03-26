@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Heading, Skeleton, Stack } from '@chakra-ui/react';
-import Link from 'next/link';
+import { Button, Heading, Skeleton, Stack, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { RiAddFill } from 'react-icons/ri';
+import { BiRightArrowAlt } from 'react-icons/bi';
 
 import { PaginatedQueryResult } from 'queries/types';
 import { ClientRelease } from 'types/common';
@@ -31,7 +32,7 @@ const OverviewReleases = ({ releases, isLoading }: Props) => {
 
         {canCreateRelease && (
           <Skeleton isLoaded={!isLoading}>
-            <Link href={'/releases/new'} passHref>
+            <NextLink href={'/releases/new'} passHref>
               <Button
                 variant="outline"
                 size="sm"
@@ -41,7 +42,7 @@ const OverviewReleases = ({ releases, isLoading }: Props) => {
               >
                 Create new release
               </Button>
-            </Link>
+            </NextLink>
           </Skeleton>
         )}
       </Stack>
@@ -51,6 +52,17 @@ const OverviewReleases = ({ releases, isLoading }: Props) => {
         search=""
         releases={releases?.results ?? []}
       />
+      <NextLink href="/releases" passHref>
+        <Button
+          as={Link}
+          rightIcon={<BiRightArrowAlt></BiRightArrowAlt>}
+          variant={'link'}
+          colorScheme="purple"
+          size={'sm'}
+        >
+          See all ({releases?.total})
+        </Button>
+      </NextLink>
     </Card>
   );
 };
