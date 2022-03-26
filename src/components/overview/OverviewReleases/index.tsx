@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Heading, Skeleton, Stack, Link, HStack } from '@chakra-ui/react';
+import { Button, Heading, Skeleton, Stack, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { RiAddFill } from 'react-icons/ri';
-import { BiArrowFromRight, BiArrowToRight, BiRightArrow, BiRightArrowAlt } from 'react-icons/bi';
+import { BiRightArrowAlt } from 'react-icons/bi';
 
 import { PaginatedQueryResult } from 'queries/types';
 import { ClientRelease } from 'types/common';
