@@ -48,6 +48,7 @@ class ReleaseListHandler {
           create: [
             buildCreateTaskEvent({
               userId: activeWorkspaceMember.id,
+              workspace,
             }),
           ],
         },

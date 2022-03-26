@@ -75,6 +75,7 @@ class SingleTaskHandler {
       body,
       id,
       userId: activeWorkspaceMember?.id as string,
+      workspace,
     });
 
     const currentAssignees = releaseTask.assignees.map((assignee) => assignee.id);
