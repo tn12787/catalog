@@ -15,6 +15,7 @@ import {
 import { Release, ReleaseType, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import { pickBy } from 'lodash';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { buildCreateReleaseTaskArgs } from 'backend/apiUtils/tasks';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -95,16 +96,16 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateReleaseDto,
     @Request() req: AuthDecoratedRequest
   ) {
-    const workspace = await prisma.workspace.findUnique({ where: { id: body.workspace } });
+    const workspace = await getWorkspaceByIdIsomorphic(req, body.workspace);
 
-    await checkRequiredPermissions(req, ['CREATE_RELEASES'], workspace?.id);
+    await checkRequiredPermissions(req, ['CREATE_RELEASES'], workspace.id);
 
-    const activeWorkspaceMember = await getResourceWorkspaceMembership(req, workspace?.id);
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(req, workspace.id);
     if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const optionalArgs = [
       body.artwork &&
-        buildCreateReleaseTaskArgs({
+        buildCreateReleaseTaskArgs(workspace, {
           ...body.artwork,
           type: ReleaseTaskType.ARTWORK,
           dueDate: body.artwork?.dueDate ?? new Date(),
@@ -112,7 +113,7 @@ class ReleaseListHandler {
           userId: activeWorkspaceMember.id,
         }),
       body.distribution &&
-        buildCreateReleaseTaskArgs({
+        buildCreateReleaseTaskArgs(workspace, {
           ...body.distribution,
           type: ReleaseTaskType.DISTRIBUTION,
           dueDate: body.distribution?.dueDate ?? new Date(),
@@ -120,7 +121,7 @@ class ReleaseListHandler {
           userId: activeWorkspaceMember.id,
         }),
       body.mastering &&
-        buildCreateReleaseTaskArgs({
+        buildCreateReleaseTaskArgs(workspace, {
           ...body.mastering,
           type: ReleaseTaskType.MASTERING,
           dueDate: body.mastering?.dueDate ?? new Date(),

@@ -15,21 +15,23 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 @requiresAuth()
+@requiresPaidPlan({ workspaceParamName: 'wsId' })
 class ContactLabelHandler {
   @Get()
   async list(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('wsId') workspace: string,
+    @PathParam('wsId') workspaceId: string,
     @Query('search') search: string
   ) {
-    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspace);
+    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspaceId);
 
     const commonArgs = {
       where: {
         name: { contains: search, mode: 'insensitive' } as any,
-        workspace: { id: workspace },
+        workspace: { id: workspaceId },
       },
     };
 

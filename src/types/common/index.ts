@@ -17,9 +17,8 @@ import {
   ContactLabel,
   Contact,
   EmailPreferences,
+  Subscription,
 } from '@prisma/client';
-
-import { MappedSubscription } from 'types/billing';
 
 export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
   dueDate: string | Date | null;
@@ -128,5 +127,5 @@ export type EnrichedWorkspaceMember = WorkspaceMember & {
 export type EnrichedWorkspace = Workspace & {
   invites: Invite[];
   members: WorkspaceMemberWithUserAndRoles[];
-  subscription?: MappedSubscription;
+  subscription: Subscription | null;
 };

@@ -9,6 +9,7 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -20,18 +21,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 class WorkspaceHandler {
   @Get()
   async retrieveWorkspace(@Req() req: AuthDecoratedRequest, @PathParam('wsId') id: string) {
-    await checkRequiredPermissions(req, ['VIEW_TEAM'], id);
-
-    const workspace = await prisma.workspace.findUnique({
-      where: { id },
-      include: {
-        members: { include: { roles: true, user: true } },
-        invites: true,
-        subscription: true,
-      },
-    });
-
-    return { ...workspace };
+    return getWorkspaceByIdIsomorphic(req, id);
   }
 
   @Put()

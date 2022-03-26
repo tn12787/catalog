@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 
+import { ProductName } from 'types/billing';
 import { EnrichedWorkspace } from 'types/common';
 import { isBackendFeatureEnabled } from 'common/features';
 import { FeatureKey } from 'common/features/types';
@@ -10,10 +11,10 @@ export const priceToString = (price: Stripe.Price | undefined) => {
   return yearlyPrice / (price?.recurring?.interval === 'year' ? 12 : 1);
 };
 
-export const hasPaidPlan = (workspace: EnrichedWorkspace | undefined) => {
+export const hasPaidPlan = (workspace: EnrichedWorkspace | undefined, plan?: ProductName) => {
   if (!isBackendFeatureEnabled(FeatureKey.PAYMENTS)) return true;
 
   if (!workspace?.subscription) return false;
 
-  return ['Manager Plan', 'Label Plan'].includes(workspace?.subscription?.productName as string);
+  return plan ? workspace.subscription.productName === plan : true;
 };
