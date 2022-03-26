@@ -9,7 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { BiChevronRight } from 'react-icons/bi';
 
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -26,7 +26,7 @@ const ContactsPage = () => {
 
   const canShowWorkspace = !!workspace && canManageContacts(workspace);
   const { bgPrimary } = useAppColors();
-
+  const router = useRouter();
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} width="100%">
       <PageHead title="Contacts"></PageHead>
