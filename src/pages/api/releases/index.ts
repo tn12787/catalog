@@ -15,6 +15,7 @@ import {
 import { Release, ReleaseType, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import { pickBy } from 'lodash';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { buildCreateReleaseTaskArgs } from 'backend/apiUtils/tasks';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -95,11 +96,11 @@ class ReleaseListHandler {
     @Body(ValidationPipe) body: CreateReleaseDto,
     @Request() req: AuthDecoratedRequest
   ) {
-    const workspace = await prisma.workspace.findUnique({ where: { id: body.workspace } });
+    const workspace = await getWorkspaceByIdIsomorphic(req, body.workspace);
 
-    await checkRequiredPermissions(req, ['CREATE_RELEASES'], workspace?.id);
+    await checkRequiredPermissions(req, ['CREATE_RELEASES'], workspace.id);
 
-    const activeWorkspaceMember = await getResourceWorkspaceMembership(req, workspace?.id);
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(req, workspace.id);
     if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const optionalArgs = [

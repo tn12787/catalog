@@ -9,6 +9,7 @@ import {
 
 import { getOrCreateStripeCustomer } from './../../../../backend/apiUtils/stripe/customers';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
@@ -33,10 +34,7 @@ class CheckoutHandler {
 
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], workspaceId);
 
-    const workspace = await prisma.workspace.findUnique({ where: { id: workspaceId } });
-    if (!workspace) {
-      throw new NotFoundException();
-    }
+    const workspace = await getWorkspaceByIdIsomorphic(req, workspaceId);
 
     const customerId = await getOrCreateStripeCustomer(
       req.session.token.name,

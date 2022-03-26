@@ -8,6 +8,7 @@ import {
   ConflictException,
 } from '@storyofams/next-api-decorators';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -33,11 +34,7 @@ class InviteHandler {
     @Request() req: AuthDecoratedRequest,
     @Body(ValidationPipe) body: CreateInvitationDto
   ) {
-    const workspace = await prisma.workspace.findUnique({
-      where: { id },
-      include: { members: { include: { user: { select: { email: true } } } } },
-    });
-    if (!workspace) throw new NotFoundException('No workspace found');
+    const workspace = await getWorkspaceByIdIsomorphic(req, id);
 
     if (workspace.members.some((item) => item.user.email === body.email)) {
       throw new ConflictException('User is already a member of this workspace');
