@@ -12,7 +12,7 @@ export const artistLimits: Record<PlanName, number> = {
 export const getLimitForSubscription = (
   subscription: EnrichedWorkspace['subscription']
 ): number => {
-  switch (subscription?.product?.name) {
+  switch (subscription?.productName) {
     case 'Manager Plan':
       return artistLimits.manager;
     case 'Label Plan':

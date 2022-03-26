@@ -62,13 +62,13 @@ export const manageSubscriptionChange = async (subscription: Stripe.Subscription
       workspace: { connect: { id: customerWorkspace.id } },
       ...mappedData,
     },
+    update: mappedData,
   });
 };
 
-export const manageSubscriptionDelete = async (customer: string) => {
+export const manageSubscriptionDelete = async (subscription: Stripe.Subscription) => {
   await prisma.subscription.delete({
-    where: { workspace: { customer } },
-    data: { stripeSubscriptionId: id ?? null },
+    where: { id: subscription.id },
   });
 };
 

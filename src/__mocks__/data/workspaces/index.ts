@@ -9,7 +9,6 @@ export const testWorkspace = (extraFields: Partial<Workspace>): Workspace => {
     imageUrl: null,
     provider: CloudProvider.GSUITE,
     stripeCustomerId: 'test-stripe-customer-id',
-    stripeSubscriptionId: null,
     createdAt: new Date(),
     updatedAt: new Date(),
     ...extraFields,
