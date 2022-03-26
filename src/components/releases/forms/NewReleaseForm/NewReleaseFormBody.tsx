@@ -14,7 +14,6 @@ import { BasicInfoFormData } from './types';
 import FormContent from 'components/forms/FormContent';
 import useArtists from 'hooks/data/artists/useArtists';
 import {
-  canAddAnotherRelease,
   canUpdateReleaseToDate,
   clientReleasePrepTasks,
   defaultReleaseDate,

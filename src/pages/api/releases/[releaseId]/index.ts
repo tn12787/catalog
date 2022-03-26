@@ -20,7 +20,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { getReleaseByIdIsomorphic } from 'backend/isomorphic/releases';
 import { buildUpdateReleaseArgs } from 'backend/apiUtils/releases';
-import { canAddAnotherRelease, canUpdateReleaseToDate } from 'utils/releases';
+import { canUpdateReleaseToDate } from 'utils/releases';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 
 @requiresAuth()
