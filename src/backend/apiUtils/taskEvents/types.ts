@@ -1,8 +1,9 @@
 import { UpdateBaseReleaseTaskDto } from 'backend/models/tasks/update';
-import { ReleaseTaskWithAssignees } from 'types/common';
+import { ReleaseTaskWithAssignees, EnrichedWorkspace } from 'types/common';
 
 interface BaseTaskEventData {
   userId: string;
+  workspace: EnrichedWorkspace;
 }
 
 export interface UpdateTaskEventData extends BaseTaskEventData {
@@ -12,7 +13,8 @@ export interface UpdateTaskEventData extends BaseTaskEventData {
 
 export interface CreateTaskEventData extends BaseTaskEventData {}
 
-export interface CreateAssigneesEventData extends Pick<UpdateTaskEventData, 'userId'> {
+export interface CreateAssigneesEventData
+  extends Pick<UpdateTaskEventData, 'userId' | 'workspace'> {
   assignees: UpdateBaseReleaseTaskDto['assignees'];
   task: ReleaseTaskWithAssignees;
 }

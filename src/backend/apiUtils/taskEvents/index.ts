@@ -11,6 +11,7 @@ import {
   CreateNameEventData,
 } from './types';
 
+import { hasPaidPlan } from 'utils/billing';
 import prisma from 'backend/prisma/client';
 
 export const buildCreateTaskEvent = ({ userId }: CreateTaskEventData) => {
@@ -21,7 +22,12 @@ export const buildCreateTaskEvent = ({ userId }: CreateTaskEventData) => {
   };
 };
 
-export const createUpdateTaskEvents = async ({ body, id, userId }: UpdateTaskEventData) => {
+export const createUpdateTaskEvents = async ({
+  body,
+  id,
+  userId,
+  workspace,
+}: UpdateTaskEventData) => {
   if (!body) throw new BadRequestException('No body provided');
 
   const task = await prisma.releaseTask.findUnique({
@@ -36,7 +42,7 @@ export const createUpdateTaskEvents = async ({ body, id, userId }: UpdateTaskEve
   if (!task) throw new NotFoundException('Task not found');
 
   const events = [
-    createAsssigneesEventIfNeeded({ assignees: body.assignees, task, userId }),
+    createAsssigneesEventIfNeeded({ assignees: body.assignees, task, userId, workspace }),
     createStatusEventIfNeeded({ status: body.status, task, userId }),
     createDueDateEventIfNeeded({ dueDate: body.dueDate, task, userId }),
     createNameEventIfNeeded({ name: body.name, task, userId }),
@@ -45,8 +51,13 @@ export const createUpdateTaskEvents = async ({ body, id, userId }: UpdateTaskEve
   return events.filter(Boolean);
 };
 
-const createAsssigneesEventIfNeeded = ({ assignees, task, userId }: CreateAssigneesEventData) => {
-  if (!assignees) return;
+const createAsssigneesEventIfNeeded = ({
+  assignees,
+  task,
+  userId,
+  workspace,
+}: CreateAssigneesEventData) => {
+  if (!assignees || !hasPaidPlan(workspace, 'Label Plan')) return;
 
   const extraData = {
     oldAssignees: task.assignees.map(({ id }) => id),
