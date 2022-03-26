@@ -20,7 +20,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { getReleaseByIdIsomorphic } from 'backend/isomorphic/releases';
 import { buildUpdateReleaseArgs } from 'backend/apiUtils/releases';
-import { canAddAnotherRelease } from 'utils/releases';
+import { canAddAnotherRelease, canUpdateReleaseToDate } from 'utils/releases';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 
 @requiresAuth()
@@ -40,8 +40,7 @@ class SingleReleaseHandler {
 
     const existingRelease = await prisma.release.findUnique({
       where: { id },
-      select: {
-        workspaceId: true,
+      include: {
         tasks: { select: { dueDate: true } },
       },
     });
@@ -74,7 +73,9 @@ class SingleReleaseHandler {
         },
       });
 
-      if (!canAddAnotherRelease(releasesInTargetMonth, workspace)) {
+      if (
+        !canUpdateReleaseToDate(releasesInTargetMonth, workspace, existingRelease, body.targetDate)
+      ) {
         throw new ForbiddenException('Monthly limit of releases reached.');
       }
     }

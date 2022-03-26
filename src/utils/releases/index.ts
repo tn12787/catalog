@@ -1,4 +1,5 @@
 import { addWeeks, startOfToday } from 'date-fns';
+import { Release } from '@prisma/client';
 
 import { midday } from '../dates';
 
@@ -31,6 +32,23 @@ export const canAddAnotherRelease = (count: number, workspace?: EnrichedWorkspac
   if (!isBackendFeatureEnabled(FeatureKey.PAYMENTS)) return true;
 
   return count < getLimitForSubscription(workspace?.subscription ?? null);
+};
+
+export const canUpdateReleaseToDate = (
+  count: number,
+  workspace: EnrichedWorkspace,
+  existingRelease: Release,
+  date: Date
+) => {
+  if (!isBackendFeatureEnabled(FeatureKey.PAYMENTS)) return true;
+
+  const currentReleaseIsThisMonth = existingRelease
+    ? new Date(existingRelease?.targetDate).getMonth() === new Date(date).getMonth()
+    : false;
+
+  const finalizedCount = currentReleaseIsThisMonth ? count - 1 : count;
+
+  return finalizedCount < getLimitForSubscription(workspace?.subscription ?? null);
 };
 
 export const clientReleasePrepTasks = (release?: ClientRelease) =>
