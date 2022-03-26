@@ -1,5 +1,5 @@
 import { NotificationType, TaskStatus } from '@prisma/client';
-import { createHandler, Post } from '@storyofams/next-api-decorators';
+import { createHandler, Post, UseMiddleware } from '@storyofams/next-api-decorators';
 import { differenceInCalendarDays } from 'date-fns';
 
 import { NotificationEmailData } from './../../../../types/notifications/index';
@@ -9,10 +9,12 @@ import { daysFromNow } from 'backend/apiUtils/dates';
 import { requiresServiceAccount } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { dayDifferenceToString, taskHeadingByType } from 'utils/tasks';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 const notificationTemplateId = 'd-1b8a97cb16f946ef8b1379f2a61a56a4';
 
 @requiresServiceAccount()
+@UseMiddleware(PrivateApiLimiter(5))
 class RemindersHandler {
   @Post()
   async runJob() {

@@ -4,6 +4,7 @@ import {
   NotFoundException,
   Patch,
   Body,
+  UseMiddleware,
 } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
@@ -12,8 +13,10 @@ import { ensureUserHasWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateNotificationDto } from 'backend/models/notifications/update';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class SpecificNotificationHandler {
   @Patch()
   async updateSingleNotification(

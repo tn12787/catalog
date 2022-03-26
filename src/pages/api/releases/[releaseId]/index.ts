@@ -8,6 +8,7 @@ import {
   NotFoundException,
   Patch,
   Req,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { endOfMonth, startOfMonth } from 'date-fns';
@@ -22,8 +23,10 @@ import { getReleaseByIdIsomorphic } from 'backend/isomorphic/releases';
 import { buildUpdateReleaseArgs } from 'backend/apiUtils/releases';
 import { canUpdateReleaseToDate } from 'utils/releases';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class SingleReleaseHandler {
   @Get()
   async singleRelease(@Req() req: AuthDecoratedRequest, @PathParam('releaseId') id: string) {

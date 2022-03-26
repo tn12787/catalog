@@ -10,6 +10,7 @@ import {
   Body,
   Patch,
   BadRequestException,
+  UseMiddleware,
 } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
@@ -21,8 +22,10 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
 import { BatchUpdateNotificationDto } from 'backend/models/notifications/batchUpdate';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class NotificationHandler {
   @Get()
   async list(

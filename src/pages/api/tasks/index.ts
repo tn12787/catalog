@@ -1,6 +1,13 @@
 import { pickBy } from 'lodash';
 import { Release } from '@prisma/client';
-import { createHandler, DefaultValuePipe, Get, Query, Req } from '@storyofams/next-api-decorators';
+import {
+  createHandler,
+  DefaultValuePipe,
+  Get,
+  Query,
+  Req,
+  UseMiddleware,
+} from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
@@ -9,8 +16,10 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class TaskHandler {
   @Get()
   async tasks(

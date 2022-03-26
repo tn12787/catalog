@@ -5,6 +5,7 @@ import {
   Delete,
   Patch,
   Request,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
@@ -18,8 +19,10 @@ import {
   getResourceWorkspaceMembership,
 } from 'backend/apiUtils/workspaces';
 import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 @requiresPaidPlan({ workspaceParamName: 'wsId', plan: 'Label Plan' })
 class WorkspaceMemberHandler {
   @Patch()

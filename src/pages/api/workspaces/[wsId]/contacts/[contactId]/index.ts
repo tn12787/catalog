@@ -5,6 +5,7 @@ import {
   Patch,
   Body,
   Delete,
+  UseMiddleware,
 } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
@@ -14,8 +15,10 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateContactDto } from 'backend/models/contacts/update';
 import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 @requiresPaidPlan({ workspaceParamName: 'wsId' })
 class SpecificContactHandler {
   @Patch()

@@ -1,4 +1,11 @@
-import { createHandler, Req, Patch, Body, Delete } from '@storyofams/next-api-decorators';
+import {
+  createHandler,
+  Req,
+  Patch,
+  Body,
+  Delete,
+  UseMiddleware,
+} from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
 import { UpdateContactLabelDto } from 'backend/models/contacts/labels/update';
@@ -7,8 +14,10 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 @requiresPaidPlan({ workspaceParamName: 'wsId' })
 class SpecificContactLabelHandler {
   @Patch()

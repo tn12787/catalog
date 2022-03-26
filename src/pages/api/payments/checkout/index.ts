@@ -4,6 +4,7 @@ import {
   NotFoundException,
   Post,
   Request,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
@@ -18,8 +19,10 @@ import prisma from 'backend/prisma/client';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { isBackendFeatureEnabled } from 'common/features';
 import { FeatureKey } from 'common/features/types';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter(100))
 class CheckoutHandler {
   @Post()
   async createCheckoutSession(

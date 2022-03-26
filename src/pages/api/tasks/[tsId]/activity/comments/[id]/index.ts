@@ -5,6 +5,7 @@ import {
   NotFoundException,
   Put,
   Req,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { TaskEventType } from '@prisma/client';
@@ -20,8 +21,10 @@ import {
 } from 'backend/apiUtils/workspaces';
 import { UpdateCommentDto } from 'backend/models/tasks/activity/comments/update';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class SpecificCommentHandler {
   @Put()
   async updateComment(

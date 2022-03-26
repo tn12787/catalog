@@ -5,6 +5,7 @@ import {
   Post,
   Request,
   ConflictException,
+  UseMiddleware,
 } from '@storyofams/next-api-decorators';
 
 import { ForbiddenException } from './../../../../../backend/apiUtils/exceptions';
@@ -20,6 +21,7 @@ import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { sendDynamicEmail } from 'backend/apiUtils/email';
 import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 import { FeatureKey } from 'common/features/types';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 const inviteUserTemplateId = `d-324235f107c041f58e03d8fd8a66e104`;
 
@@ -31,6 +33,7 @@ type InvitationEmailData = {
 };
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 @requiresPaidPlan({ workspaceParamName: 'wsId', plan: 'Label Plan' })
 class InviteHandler {
   @Post()

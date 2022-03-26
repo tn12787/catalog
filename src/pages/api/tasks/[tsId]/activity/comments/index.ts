@@ -5,6 +5,7 @@ import {
   Req,
   ValidationPipe,
   NotFoundException,
+  UseMiddleware,
 } from '@storyofams/next-api-decorators';
 import { NotificationType, TaskEventType } from '@prisma/client';
 
@@ -18,8 +19,10 @@ import {
 } from 'backend/apiUtils/workspaces';
 import { CreateCommentDto } from 'backend/models/tasks/activity/comments/create';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class CommentHandler {
   @Post()
   async createComment(

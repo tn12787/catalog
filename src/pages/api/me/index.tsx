@@ -1,4 +1,10 @@
-import { createHandler, Get, NotFoundException, Request } from '@storyofams/next-api-decorators';
+import {
+  createHandler,
+  Get,
+  NotFoundException,
+  Request,
+  UseMiddleware,
+} from '@storyofams/next-api-decorators';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import { JWT } from 'next-auth/jwt';
@@ -6,8 +12,10 @@ import { JWT } from 'next-auth/jwt';
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class MeHandler {
   @Get()
   async me(@Request() req: AuthDecoratedRequest) {

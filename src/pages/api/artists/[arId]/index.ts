@@ -7,6 +7,7 @@ import {
   NotFoundException,
   Put,
   Req,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
@@ -17,8 +18,10 @@ import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import prisma from 'backend/prisma/client';
 import { UpdateArtistDto } from 'backend/models/artists/update';
 import { getArtistByIdIsomorphic } from 'backend/isomorphic/artists';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class ArtistHandler {
   @Get()
   async singleArtist(@Req() req: AuthDecoratedRequest, @PathParam('arId') id: string) {

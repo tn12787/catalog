@@ -6,6 +6,7 @@ import {
   Post,
   Query,
   Req,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
@@ -16,8 +17,10 @@ import prisma from 'backend/prisma/client';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 @requiresPaidPlan({ workspaceParamName: 'wsId' })
 class ContactLabelHandler {
   @Get()

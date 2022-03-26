@@ -10,6 +10,7 @@ import {
   Post,
   Query,
   Request,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { Release, ReleaseType, ReleaseTaskType, TaskStatus } from '@prisma/client';
@@ -30,8 +31,10 @@ import {
 } from 'backend/apiUtils/workspaces';
 import { transformReleaseToApiShape } from 'backend/apiUtils/transforms/releases';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class ReleaseListHandler {
   @Get()
   async releases(

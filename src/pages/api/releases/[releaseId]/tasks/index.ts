@@ -1,4 +1,11 @@
-import { Body, createHandler, Post, Req, ValidationPipe } from '@storyofams/next-api-decorators';
+import {
+  Body,
+  createHandler,
+  Post,
+  Req,
+  UseMiddleware,
+  ValidationPipe,
+} from '@storyofams/next-api-decorators';
 
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
@@ -13,8 +20,10 @@ import {
   checkTaskUpdatePermissions,
 } from 'backend/apiUtils/tasks';
 import { CreateReleaseTaskDto } from 'backend/models/tasks/combined';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class ReleaseListHandler {
   @Post()
   async createTask(

@@ -4,6 +4,7 @@ import {
   NotFoundException,
   Post,
   Req,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
@@ -15,8 +16,10 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
 import { isBackendFeatureEnabled } from 'common/features';
 import { FeatureKey } from 'common/features/types';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter(100))
 class PortalHandler {
   @Post()
   async createPortalSession(

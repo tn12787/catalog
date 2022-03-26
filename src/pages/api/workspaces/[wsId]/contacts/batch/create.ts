@@ -4,6 +4,7 @@ import {
   Body,
   BadRequestException,
   Post,
+  UseMiddleware,
 } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
@@ -13,8 +14,10 @@ import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { BatchCreateContactDto } from 'backend/models/contacts/batch/create';
 import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 @requiresPaidPlan({ workspaceParamName: 'wsId' })
 class CreateBatchContactHandler {
   @Post()

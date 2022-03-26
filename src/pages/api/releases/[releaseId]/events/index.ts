@@ -1,11 +1,18 @@
-import { createHandler, Get, NotFoundException } from '@storyofams/next-api-decorators';
+import {
+  createHandler,
+  Get,
+  NotFoundException,
+  UseMiddleware,
+} from '@storyofams/next-api-decorators';
 
 import { getEventsForRelease } from 'backend/apiUtils/events';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import prisma from 'backend/prisma/client';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class SpecificReleaseEventsHandler {
   @Get()
   async specificReleaseEvents(@PathParam('releaseId') id: string) {

@@ -9,6 +9,7 @@ import {
   Post,
   Query,
   Req,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
@@ -22,8 +23,10 @@ import { CreateArtistDto } from 'backend/models/artists/create';
 import prisma from 'backend/prisma/client';
 import { SortOrder } from 'queries/types';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class ArtistHandler {
   @Get()
   async artists(

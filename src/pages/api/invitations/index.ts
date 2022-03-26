@@ -1,10 +1,12 @@
-import { createHandler, Request, Get } from '@storyofams/next-api-decorators';
+import { createHandler, Request, Get, UseMiddleware } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class InviteHandler {
   @Get()
   async listInvites(@Request() req: AuthDecoratedRequest) {

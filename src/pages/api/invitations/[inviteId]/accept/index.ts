@@ -4,6 +4,7 @@ import {
   Request,
   NotFoundException,
   ForbiddenException,
+  UseMiddleware,
 } from '@storyofams/next-api-decorators';
 
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
@@ -13,8 +14,10 @@ import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { isBackendFeatureEnabled } from 'common/features';
 import { FeatureKey } from 'common/features/types';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter(5))
 class InviteAcceptanceHandler {
   @Post()
   async acceptInvite(@PathParam('inviteId') id: string, @Request() req: AuthDecoratedRequest) {

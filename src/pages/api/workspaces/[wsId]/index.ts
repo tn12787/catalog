@@ -6,6 +6,7 @@ import {
   Put,
   Req,
   Request,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
@@ -16,8 +17,10 @@ import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { UpdateWorkspaceDto } from 'backend/models/workspaces/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class WorkspaceHandler {
   @Get()
   async retrieveWorkspace(@Req() req: AuthDecoratedRequest, @PathParam('wsId') id: string) {

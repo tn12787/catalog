@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Patch,
   Req,
+  UseMiddleware,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 import { NotificationType } from '@prisma/client';
@@ -24,8 +25,10 @@ import {
 } from 'backend/apiUtils/tasks';
 import { UpdateReleaseTaskDto } from 'backend/models/tasks/combined';
 import { getTaskByIdIsomorphic } from 'backend/isomorphic/tasks';
+import { PrivateApiLimiter } from 'backend/apiUtils/ratelimiting';
 
 @requiresAuth()
+@UseMiddleware(PrivateApiLimiter())
 class SingleTaskHandler {
   @Get()
   async fetchTask(@Req() req: AuthDecoratedRequest, @PathParam('tsId') id: string) {
