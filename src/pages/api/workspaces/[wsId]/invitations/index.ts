@@ -7,6 +7,8 @@ import {
   ConflictException,
 } from '@storyofams/next-api-decorators';
 
+import { ForbiddenException } from './../../../../../backend/apiUtils/exceptions';
+
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -15,6 +17,7 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateInvitationDto } from 'backend/models/invitations/create';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { sendDynamicEmail } from 'backend/apiUtils/email';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 const inviteUserTemplateId = `d-324235f107c041f58e03d8fd8a66e104`;
 
@@ -26,6 +29,7 @@ type InvitationEmailData = {
 };
 
 @requiresAuth()
+@requiresPaidPlan({ workspaceParamName: 'wsId', plan: 'Label Plan' })
 class InviteHandler {
   @Post()
   async createInvite(
@@ -37,6 +41,10 @@ class InviteHandler {
 
     if (workspace.members.some((item) => item.user.email === body.email)) {
       throw new ConflictException('User is already a member of this workspace');
+    }
+
+    if (workspace.members.length >= (workspace.subscription?.totalSeats ?? 1)) {
+      throw new ForbiddenException('No more license seats left in plan.');
     }
 
     await checkRequiredPermissions(req, ['UPDATE_TEAM'], id);
