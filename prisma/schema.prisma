@@ -55,8 +55,8 @@ enum UserOnboardingSegment {
 }
 
 enum BillingInterval {
-  MONTHLY
-  ANNUALLY
+  monthly
+  yearly
 }
 
 model Subscription {
@@ -69,8 +69,8 @@ model Subscription {
   currentPeriodStart DateTime?
   currentPeriodEnd   DateTime?
   cancelTime         DateTime?
-  interval           BillingInterval @default(MONTHLY)
-  workspace          Workspace       @relation(fields: [workspaceId], references: [id])
+  interval           BillingInterval @default(monthly)
+  workspace          Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId        String          @unique
 }
 
