@@ -132,7 +132,7 @@ const SingleTaskPage = ({ task }: SingleTaskPageProps) => {
           </Stack>
           <Stack spacing={5} maxW={{ base: '100%', md: '300px' }}>
             <TaskInfo loading={taskLoading} task={taskData} />
-            {!hasPaidPlan(workspace) && <UnlockTasks />}
+            {!hasPaidPlan(workspace, 'Label Plan') && <UnlockTasks />}
           </Stack>
         </Stack>
         <Divider />

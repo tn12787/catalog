@@ -5,7 +5,6 @@ import NextLink from 'next/link';
 import Card from 'components/Card';
 import { FeatureKey } from 'common/features/types';
 import useFeatures from 'hooks/features/useFeatures';
-import useAppColors from 'hooks/useAppColors';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 
 const UnlockTasks = () => {
