@@ -41,7 +41,9 @@ export const buildCreateReleaseTaskArgs = (
     {
       ...pick(body, ['status', 'notes', 'dueDate', 'type', 'name']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
-      assignees: transformAssigneesToPrismaQuery(body.assignees, true),
+      assignees: hasPaidPlan(workspace, 'Label Plan')
+        ? transformAssigneesToPrismaQuery(body.assignees, true)
+        : undefined,
       contacts: hasPaidPlan(workspace, 'Label Plan')
         ? transformContactsToPrismaQuery(body.contacts, true)
         : undefined,
@@ -70,7 +72,9 @@ export const buildUpdateReleaseTaskArgs = (
     {
       ...pick(body, ['status', 'notes', 'dueDate', 'name']),
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
-      assignees: transformAssigneesToPrismaQuery(body.assignees),
+      assignees: hasPaidPlan(workspace, 'Label Plan')
+        ? transformAssigneesToPrismaQuery(body.assignees)
+        : undefined,
       contacts: hasPaidPlan(workspace, 'Label Plan')
         ? transformContactsToPrismaQuery(body.contacts, true)
         : undefined,
