@@ -18,7 +18,7 @@ import { hasPaidPlan } from 'utils/billing';
 export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: string) => {
   if (!id) throw new NotFoundException();
 
-  const releaseWorkspace = await prisma.release.findUnique({
+  const release = await prisma.release.findUnique({
     where: { id },
     select: {
       workspaceId: true,
@@ -26,11 +26,11 @@ export const checkTaskUpdatePermissions = async (req: AuthDecoratedRequest, id: 
     },
   });
 
-  if (!releaseWorkspace) throw new NotFoundException(`Release with id ${id} not found`);
+  if (!release) throw new NotFoundException(`Release with id ${id} not found`);
 
-  await checkRequiredPermissions(req, ['UPDATE_RELEASES'], releaseWorkspace?.workspaceId);
+  await checkRequiredPermissions(req, ['UPDATE_RELEASES'], release.workspaceId);
 
-  return releaseWorkspace;
+  return release;
 };
 
 export const buildCreateReleaseTaskArgs = (
@@ -51,6 +51,7 @@ export const buildCreateReleaseTaskArgs = (
         create: [
           buildCreateTaskEvent({
             userId: body.userId,
+            workspace,
           }),
         ],
       },
