@@ -33,7 +33,7 @@ const OverviewPage = () => {
   const upcomingReleaseQueryArgs = {
     dates: { after: startOfToday() },
     pagination: {
-      pageSize: 5,
+      pageSize: 3,
       page: 1,
     },
     sorting: {
