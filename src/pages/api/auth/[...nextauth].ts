@@ -5,7 +5,7 @@ import SlackProvider from 'next-auth/providers/slack';
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
-import { sendDynamicEmail } from 'backend/apiUtils/email';
+import { addMailingListEntry, sendDynamicEmail } from 'backend/apiUtils/email';
 import { createDefaultWorkspaceForUser } from 'backend/apiUtils/workspaces';
 import prisma from 'backend/prisma/client';
 
@@ -64,6 +64,9 @@ export default NextAuth({
         userId: user.id as string,
         email: user.email as string,
       });
+
+      const [firstName, lastName] = (user.name ?? '').split(' ');
+      await addMailingListEntry({ firstName, lastName, email: user.email as string });
 
       await prisma.user.update({
         where: { id: user.sub as string },
