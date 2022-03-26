@@ -200,7 +200,7 @@ const ArtistsPage = () => {
         <Stack>
           <ArtistList artists={artists} search={debouncedSearch} loading={isLoading} />
         </Stack>
-        {getLimitForSubscription(workspace?.subscription) < Infinity && (
+        {getLimitForSubscription(workspace?.subscription ?? null) < Infinity && (
           <GetMoreArtists></GetMoreArtists>
         )}
       </Stack>

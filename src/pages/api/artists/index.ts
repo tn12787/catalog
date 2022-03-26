@@ -6,17 +6,17 @@ import {
   ForbiddenException,
   Get,
   HttpCode,
-  NotFoundException,
   Post,
   Query,
   Req,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { canAddAnotherArtist } from 'utils/artists';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
-import { ArtistResponse, EnrichedWorkspace } from 'types/common';
+import { ArtistResponse } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateArtistDto } from 'backend/models/artists/create';
 import prisma from 'backend/prisma/client';
@@ -68,17 +68,10 @@ class ArtistHandler {
   ) {
     await checkRequiredPermissions(req, ['CREATE_ARTISTS'], body.workspace);
 
-    const workspace = await prisma.workspace.findUnique({
-      where: { id: body.workspace },
-      include: { members: true },
-    });
     const artists = await prisma.artist.count({ where: { workspace: { id: body.workspace } } });
+    const workspace = await getWorkspaceByIdIsomorphic(req, body.workspace);
 
-    if (!workspace) {
-      throw new NotFoundException('Workspace not found');
-    }
-
-    if (!canAddAnotherArtist(artists, workspace as EnrichedWorkspace)) {
+    if (!canAddAnotherArtist(artists, workspace)) {
       throw new ForbiddenException(
         "You cannot add any more artists to this workspace. Please upgrade this workspace's plan to add more."
       );

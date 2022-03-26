@@ -25,5 +25,5 @@ export const getLimitForSubscription = (
 export const canAddAnotherArtist = (count: number, workspace?: EnrichedWorkspace) => {
   if (!isBackendFeatureEnabled(FeatureKey.PAYMENTS)) return true;
 
-  return count < getLimitForSubscription(workspace?.subscription);
+  return count < getLimitForSubscription(workspace?.subscription ?? null);
 };

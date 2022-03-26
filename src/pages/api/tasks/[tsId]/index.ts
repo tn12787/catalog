@@ -10,6 +10,7 @@ import {
 } from '@storyofams/next-api-decorators';
 import { NotificationType } from '@prisma/client';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
@@ -47,7 +48,7 @@ class SingleTaskHandler {
       },
       select: {
         releaseId: true,
-        release: { select: { targetDate: true } },
+        release: { select: { targetDate: true, workspaceId: true } },
         type: true,
         assignees: true,
         dueDate: true,
@@ -59,18 +60,17 @@ class SingleTaskHandler {
       throw new NotFoundException();
     }
 
-    const releaseWorkspace = await checkTaskUpdatePermissions(req, releaseTask.releaseId);
+    await checkTaskUpdatePermissions(req, releaseTask.releaseId);
+
+    const workspace = await getWorkspaceByIdIsomorphic(req, releaseTask.release.workspaceId);
 
     await checkTaskDates(releaseTask, releaseTask.releaseId);
 
     const updateArgs = {
-      ...buildUpdateReleaseTaskArgs(body, releaseTask.type),
+      ...buildUpdateReleaseTaskArgs(workspace, body, releaseTask.type),
     };
 
-    const activeWorkspaceMember = await getResourceWorkspaceMembership(
-      req,
-      releaseWorkspace?.workspaceId
-    );
+    const activeWorkspaceMember = await getResourceWorkspaceMembership(req, workspace.id);
     if (!activeWorkspaceMember) throw new ForbiddenException();
 
     const eventsToCreate = await createUpdateTaskEvents({

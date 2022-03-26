@@ -12,8 +12,10 @@ import { BatchDeleteContactDto } from 'backend/models/contacts/batch/delete';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 @requiresAuth()
+@requiresPaidPlan({ workspaceParamName: 'wsId' })
 class DeleteBatchContactHandler {
   @Post()
   async bulkUpdate(

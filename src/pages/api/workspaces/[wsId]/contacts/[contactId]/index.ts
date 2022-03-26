@@ -13,9 +13,11 @@ import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateContactDto } from 'backend/models/contacts/update';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 @requiresAuth()
-class SpecificNotificationHandler {
+@requiresPaidPlan({ workspaceParamName: 'wsId' })
+class SpecificContactHandler {
   @Patch()
   async updateSingleContact(
     @Req() req: AuthDecoratedRequest,
@@ -62,4 +64,4 @@ class SpecificNotificationHandler {
   }
 }
 
-export default createHandler(SpecificNotificationHandler);
+export default createHandler(SpecificContactHandler);

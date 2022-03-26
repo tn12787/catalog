@@ -19,25 +19,27 @@ import { SortOrder } from 'queries/types';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateContactDto } from 'backend/models/contacts/create';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 @requiresAuth()
+@requiresPaidPlan({ workspaceParamName: 'wsId' })
 class ContactHandler {
   @Get()
   async list(
     @Req() req: AuthDecoratedRequest,
-    @PathParam('wsId') workspace: string,
+    @PathParam('wsId') workspaceId: string,
     @Query('search') search: string,
     @Query('sortBy', DefaultValuePipe<keyof Contact>('name')) sortBy: keyof Contact,
     @Query('sortOrder', DefaultValuePipe(SortOrder.ASC)) sortOrder: SortOrder,
     @Query('pageSize', DefaultValuePipe(10), ParseNumberPipe) pageSize: number,
     @Query('page', DefaultValuePipe(1), ParseNumberPipe) page: number
   ) {
-    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspace);
+    await checkRequiredPermissions(req, ['VIEW_CONTACTS'], workspaceId);
 
     const commonArgs = {
       where: {
         name: { contains: search, mode: 'insensitive' } as any,
-        workspace: { id: workspace },
+        workspace: { id: workspaceId },
       },
     };
 

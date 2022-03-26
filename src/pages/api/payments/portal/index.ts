@@ -7,12 +7,12 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
+import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
 import { AuthDecoratedRequest } from 'types/auth';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { CreatePortalSessionDto } from 'backend/models/payments/portal/create';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
-import prisma from 'backend/prisma/client';
 import { isBackendFeatureEnabled } from 'common/features';
 import { FeatureKey } from 'common/features/types';
 
@@ -31,8 +31,8 @@ class PortalHandler {
 
     await checkRequiredPermissions(request, ['UPDATE_TEAM'], workspaceId);
 
-    const workspace = await prisma.workspace.findUnique({ where: { id: workspaceId } });
-    if (!workspace || !workspace.stripeCustomerId) {
+    const workspace = await getWorkspaceByIdIsomorphic(request, workspaceId);
+    if (!workspace.stripeCustomerId) {
       throw new NotFoundException();
     }
 

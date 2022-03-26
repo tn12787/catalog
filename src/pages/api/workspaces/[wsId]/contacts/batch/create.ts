@@ -12,8 +12,10 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { BatchCreateContactDto } from 'backend/models/contacts/batch/create';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 @requiresAuth()
+@requiresPaidPlan({ workspaceParamName: 'wsId' })
 class CreateBatchContactHandler {
   @Post()
   async bulkUpdate(

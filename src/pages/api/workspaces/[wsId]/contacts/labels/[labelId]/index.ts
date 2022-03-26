@@ -1,11 +1,4 @@
-import {
-  createHandler,
-  Req,
-  NotFoundException,
-  Patch,
-  Body,
-  Delete,
-} from '@storyofams/next-api-decorators';
+import { createHandler, Req, Patch, Body, Delete } from '@storyofams/next-api-decorators';
 
 import { AuthDecoratedRequest } from 'types/auth';
 import { UpdateContactLabelDto } from 'backend/models/contacts/labels/update';
@@ -13,9 +6,11 @@ import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
+import { requiresPaidPlan } from 'backend/apiUtils/decorators/pricing';
 
 @requiresAuth()
-class SpecificNotificationHandler {
+@requiresPaidPlan({ workspaceParamName: 'wsId' })
+class SpecificContactLabelHandler {
   @Patch()
   async updateSingleContact(
     @Req() req: AuthDecoratedRequest,
@@ -23,10 +18,6 @@ class SpecificNotificationHandler {
     @PathParam('wsId') workspaceId: string,
     @PathParam('labelId') labelId: string
   ) {
-    if (!labelId) {
-      throw new NotFoundException();
-    }
-
     await checkRequiredPermissions(req, ['UPDATE_CONTACTS'], workspaceId);
 
     const updatedContactLabel = await prisma.contactLabel.update({
@@ -46,10 +37,6 @@ class SpecificNotificationHandler {
     @PathParam('wsId') workspaceId: string,
     @PathParam('labelId') labelId: string
   ) {
-    if (!labelId) {
-      throw new NotFoundException();
-    }
-
     await checkRequiredPermissions(req, ['DELETE_CONTACTS'], workspaceId);
 
     const deletedContactLabel = await prisma.contactLabel.delete({
@@ -61,4 +48,4 @@ class SpecificNotificationHandler {
   }
 }
 
-export default createHandler(SpecificNotificationHandler);
+export default createHandler(SpecificContactLabelHandler);

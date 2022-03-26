@@ -32,6 +32,7 @@ type FieldValues =
 type Props<T extends FieldValues> = PopoverProps & {
   fieldName: string;
   value: T;
+  labelRightContent?: React.ReactNode;
   renderValue?: ({ value }: { value: T }) => JSX.Element;
   onSubmit: (value: any) => void | Promise<void>;
   renderEditing: ({ value, onChange }: any) => JSX.Element;
@@ -43,6 +44,7 @@ const QuickFormField = <T extends FieldValues>({
   value,
   renderValue,
   onSubmit,
+  labelRightContent,
   renderEditing,
   isDisabled,
 }: Props<T>) => {
@@ -68,7 +70,10 @@ const QuickFormField = <T extends FieldValues>({
             onClick={onOpen}
             h="auto"
           >
-            <Text textTransform={'capitalize'}>{fieldName}</Text>
+            <HStack>
+              <Text textTransform={'capitalize'}>{fieldName}</Text>
+              {labelRightContent}
+            </HStack>
             {!isDisabled && <Icon as={FiEdit} />}
           </HStack>
         </PopoverTrigger>
