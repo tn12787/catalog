@@ -1,11 +1,14 @@
 import React from 'react';
-import { Stack, Text } from '@chakra-ui/react';
+import { Badge, Stack, Text } from '@chakra-ui/react';
 
 import QuickFormField from '../QuickFormField';
 
 import { ContactWithLabels } from 'types/common';
 import ContactSelect from 'components/contacts/ContactSelect';
 import ContactBadgeList from 'components/contacts/ContactBadge/ContactBadgeList';
+import { hasPaidPlan } from 'utils/billing';
+import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import { priceData } from 'components/marketing/pricing/PricingTable/productData';
 
 type Props = {
   contacts: ContactWithLabels[];
@@ -15,12 +18,22 @@ type Props = {
 
 const ContactsField = ({ isDisabled, contacts, onChange }: Props) => {
   const mapContacts = (items: ContactWithLabels[]) => items.map((item) => item.id);
+  const { workspace } = useCurrentWorkspace();
+  const hasProFeature = hasPaidPlan(workspace, 'Label Plan');
+  const pricesColor = priceData([]).label.colorScheme;
 
   return (
     <QuickFormField
-      isDisabled={isDisabled}
+      isDisabled={isDisabled || !hasProFeature}
       fieldName="linked contacts"
       value={contacts}
+      labelRightContent={
+        hasProFeature ? null : (
+          <Badge variant="outline" size="xs" rounded="full" px={2} colorScheme={pricesColor}>
+            Label Plan Only
+          </Badge>
+        )
+      }
       renderValue={({ value }) => <ContactBadgeList contacts={value} />}
       onSubmit={onChange}
       renderEditing={({ value, onChange }) => (
