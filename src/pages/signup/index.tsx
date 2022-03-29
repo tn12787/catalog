@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 import logo_dark from 'images/logo_dark.png';
-import logo from 'images/logo.svg';
+import logo from 'images/logo.png';
 import PageHead from 'components/pageItems/PageHead';
 import AuthControls from 'components/auth/AuthControls';
 

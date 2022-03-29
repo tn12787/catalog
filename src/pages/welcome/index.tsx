@@ -1,12 +1,13 @@
 import React from 'react';
-import { Flex, Stack, Box, Spinner } from '@chakra-ui/react';
+import { Flex, Stack, Box, Spinner, useColorModeValue } from '@chakra-ui/react';
 import Image from 'next/image';
 import { Invite } from '@prisma/client';
 
 import useAppColors from 'hooks/useAppColors';
 import PageHead from 'components/pageItems/PageHead';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
-import logo from 'images/logo.svg';
+import logo from 'images/logo.png';
+import logo_dark from 'images/logo_dark.png';
 import onboarding from 'images/onboarding.svg';
 import WizardSteps from 'components/forms/WizardSteps';
 import { useSteps } from 'hooks/useSteps';
@@ -48,6 +49,7 @@ const WelcomePage = () => {
   const { isLoading: isUserLoading } = useUser();
   const steps = buildSteps(invitations ?? []);
   const { index, next, currentStep } = useSteps<OnboardingWizardStep>(steps);
+  const logoSrc = useColorModeValue(logo, logo_dark);
 
   const CurrentStepComponent = currentStep.content;
 
@@ -71,7 +73,7 @@ const WelcomePage = () => {
           p={{ base: 8, lg: 20 }}
         >
           <Box w={20}>
-            <Image src={logo} alt="Brand logo"></Image>
+            <Image src={logoSrc} alt="Brand logo"></Image>
           </Box>
           {isAnythingLoading ? (
             <Spinner colorScheme={'purple'} size="xl" time="1s"></Spinner>
