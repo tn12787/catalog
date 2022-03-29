@@ -32,7 +32,7 @@ const HelpPage = () => {
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
-      <PageHead title="Artists" />
+      <PageHead title="Help & Support" />
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>

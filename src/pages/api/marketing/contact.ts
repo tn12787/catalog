@@ -1,10 +1,4 @@
-import {
-  Body,
-  createHandler,
-  Post,
-  ValidationPipe,
-  InternalServerErrorException,
-} from '@storyofams/next-api-decorators';
+import { Body, createHandler, Post, ValidationPipe } from '@storyofams/next-api-decorators';
 
 import { addMailingListEntry, sendDynamicEmail } from 'backend/apiUtils/email';
 import { ContactUsDto } from 'backend/models/marketing/contactUs';
