@@ -52,17 +52,19 @@ const OverviewReleases = ({ releases, isLoading }: Props) => {
         search=""
         releases={releases?.results ?? []}
       />
-      <NextLink href="/releases" passHref>
-        <Button
-          as={Link}
-          rightIcon={<BiRightArrowAlt></BiRightArrowAlt>}
-          variant={'link'}
-          colorScheme="purple"
-          size={'sm'}
-        >
-          See all ({releases?.total})
-        </Button>
-      </NextLink>
+      {releases?.total && (
+        <NextLink href="/releases" passHref>
+          <Button
+            as={Link}
+            rightIcon={<BiRightArrowAlt></BiRightArrowAlt>}
+            variant={'link'}
+            colorScheme="purple"
+            size={'sm'}
+          >
+            See all ({releases?.total})
+          </Button>
+        </NextLink>
+      )}
     </Card>
   );
 };

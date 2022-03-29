@@ -1,5 +1,5 @@
 export interface EmailData<T> {
-  to: string;
+  to: string | string[];
   templateId: string;
   dynamicTemplateData: T;
 }
