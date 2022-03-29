@@ -15,7 +15,7 @@ export const sendDynamicEmail = async <T>({
 }: EmailData<T>) => {
   try {
     await sendgrid.send({
-      from: 'Launchday <info@tpjnorton.com>',
+      from: 'Tom at Catalog <tom@catalogapp.io>',
       to,
       templateId,
       dynamicTemplateData,

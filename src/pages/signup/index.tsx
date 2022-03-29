@@ -1,10 +1,11 @@
-import { Box, Flex, Heading, Stack, useToast } from '@chakra-ui/react';
+import { Box, Flex, Heading, Stack, useColorModeValue, useToast } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { getCsrfToken, getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
+import logo_dark from 'images/logo_dark.png';
 import logo from 'images/logo.svg';
 import PageHead from 'components/pageItems/PageHead';
 import AuthControls from 'components/auth/AuthControls';
@@ -18,6 +19,8 @@ const SignupPage = ({ csrfToken }: Props) => {
 
   const toast = useToast();
   const { status } = useSession();
+
+  const logoSrc = useColorModeValue(logo, logo_dark);
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -36,10 +39,10 @@ const SignupPage = ({ csrfToken }: Props) => {
       <PageHead title="Sign up" />
       <Stack w={'80%'} maxW="400px" spacing={'40px'} alignItems="center">
         <Box w={20}>
-          <Image src={logo} alt="Brand logo"></Image>
+          <Image src={logoSrc} alt="Brand logo"></Image>
         </Box>
         <Heading textAlign="center" fontWeight="semibold" fontSize="2xl">
-          Create your account on Launchday
+          Create your account on Catalog
         </Heading>
         <AuthControls
           error={router.query.error as string}

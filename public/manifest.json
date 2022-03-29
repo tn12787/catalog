@@ -1,6 +1,6 @@
 {
-  "name": "LaunchDay",
-  "short_name": "LaunchDay",
+  "name": "Catalog",
+  "short_name": "Catalog",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
