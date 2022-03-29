@@ -3,6 +3,7 @@ import { BsGear } from 'react-icons/bs';
 import { FiMusic } from 'react-icons/fi';
 import { RiLayoutMasonryLine } from 'react-icons/ri';
 import { FaRegAddressBook } from 'react-icons/fa';
+import { IoHelpBuoySharp } from 'react-icons/io5';
 import { Icon } from '@chakra-ui/react';
 
 import { NavBarLink } from 'components/pageItems/Nav/types';
@@ -49,7 +50,6 @@ export const appLinks: NavLinkConfig = {
         text: 'Planner',
         activeRegex: /^\/planner/,
       },
-
       {
         icon: FaRegAddressBook,
         href: '/contacts',
@@ -58,6 +58,12 @@ export const appLinks: NavLinkConfig = {
         rightContent: arePaymentsEnabled && !hasPaidPlan(currentWorkspace) && (
           <Icon fontSize={'md'} as={BiLock}></Icon>
         ),
+      },
+      {
+        icon: IoHelpBuoySharp,
+        href: '/help',
+        text: 'Help & Support',
+        activeRegex: /^\/help/,
       },
     ],
   }),
