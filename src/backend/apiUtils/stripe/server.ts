@@ -7,7 +7,7 @@ export const stripe = new Stripe(
     // Register this as an official Stripe plugin.
     // https://stripe.com/docs/building-plugins#setappinfo
     appInfo: {
-      name: 'Launchday',
+      name: 'Catalog',
       version: '0.1.0',
     },
   }

@@ -11,7 +11,7 @@ import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
 import { addUserToMailingList } from 'queries/mailingLists';
 import { MailingListData } from 'types/marketing/pricing';
-import logo from 'images/logo.svg';
+import logo from 'images/logo.png';
 
 const ComingSoon = () => {
   const { bgPrimary } = useAppColors();

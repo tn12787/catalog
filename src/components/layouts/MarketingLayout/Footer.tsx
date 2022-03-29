@@ -130,7 +130,7 @@ const Footer = () => {
           align="center"
         >
           <Text fontSize="sm" color={bodySub}>
-            &copy; {new Date().getFullYear()} Launchday, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} Catalog. All rights reserved.
           </Text>
           <ButtonGroup colorScheme="gray" variant="ghost">
             <IconButton

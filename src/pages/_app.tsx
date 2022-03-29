@@ -9,6 +9,7 @@ import { DndProvider } from 'react-dnd';
 import { SessionProvider } from 'next-auth/react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RetryValue } from 'react-query/types/core/retryer';
+import Script from 'next/script';
 
 import ChakraSSRProvider, { getServerSideProps } from 'components/ChakraSSRProvider';
 import SomethingWentWrong from 'components/SomethingWentWrong';
@@ -43,6 +44,19 @@ const MyApp = ({ Component, pageProps }: Props) => {
 
   return (
     <React.StrictMode>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-MSZB8E8P4E"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-MSZB8E8P4E');
+        `}
+      </Script>
       <SessionProvider session={pageProps.session}>
         <DndProvider backend={HTML5Backend}>
           <QueryClientProvider client={queryClient}>

@@ -74,7 +74,7 @@ const UserSegmentForm = ({ onSubmit, isLastStep }: Props) => {
   return (
     <Stack spacing={6} as="form" onSubmit={handleSubmit(onSave)}>
       <Heading fontWeight="semibold" fontSize="4xl">
-        How will you use Launchday?
+        How will you use Catalog?
       </Heading>
       <Text>{'To get started, please tell us a bit about yourself.'}</Text>
       <FormControl>
