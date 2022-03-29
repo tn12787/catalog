@@ -4,6 +4,7 @@ import {
   Divider,
   IconButton,
   Input,
+  Link,
   Stack,
   Text,
   useToast,
@@ -77,10 +78,24 @@ const Footer = () => {
                   Legal
                 </Text>
                 <Stack spacing="3" shouldWrapChildren>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
+                  <Button
+                    as={Link}
+                    href={'https://getterms.io/view/kdrbb/privacy/en-us'}
+                    size="sm"
+                    fontWeight={'normal'}
+                    variant="link"
+                    isExternal
+                  >
                     Privacy
                   </Button>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
+                  <Button
+                    as={Link}
+                    href={'https://getterms.io/view/kdrbb/tos/en-us'}
+                    size="sm"
+                    fontWeight={'normal'}
+                    variant="link"
+                    isExternal
+                  >
                     Terms
                   </Button>
                   <Button size="sm" fontWeight={'normal'} variant="link">
