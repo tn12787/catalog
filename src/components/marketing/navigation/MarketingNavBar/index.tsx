@@ -26,6 +26,7 @@ const links = [
   { label: 'Home', href: '/' },
   // { label: 'Use Cases', href: '/use-cases' },
   { label: 'Pricing', href: '/pricing' },
+  { label: 'Contact', href: '/contact-us' },
   // { label: 'About us', href: '/about' },
 ];
 

@@ -12,6 +12,7 @@ import useAppColors from 'hooks/useAppColors';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import useFeatures from 'hooks/features/useFeatures';
 import { FeatureKey } from 'common/features/types';
+import Wordmark from 'components/marketing/navigation/MarketingNavBar/Wordmark';
 
 interface Props {
   links: NavLinkConfig;
@@ -69,6 +70,9 @@ const Nav = ({ links, onItemSelected }: Props) => {
       </Stack>
       <Stack>
         <NotificationNavItem onClick={() => onItemSelected?.('/notifications')} />
+      </Stack>
+      <Stack pt={3} alignItems="center">
+        <Wordmark logoOnly></Wordmark>
       </Stack>
     </Stack>
   );

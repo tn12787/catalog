@@ -16,7 +16,7 @@ import { useMutation } from 'react-query';
 
 import useAppColors from 'hooks/useAppColors';
 import Wordmark from 'components/marketing/navigation/MarketingNavBar/Wordmark';
-import { addUserToMailingList } from 'queries/mailingLists';
+import { addUserToMailingList } from 'queries/marketing/mailingLists';
 import { MailingListData } from 'types/marketing/pricing';
 
 // import { Logo } from './Logo';
