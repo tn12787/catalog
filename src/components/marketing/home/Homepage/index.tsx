@@ -13,7 +13,7 @@ const Homepage = () => {
   return (
     <Stack spacing={0} bg={bgSecondary} alignItems={'center'}>
       <PageHead
-        title={'Launchday - Delightful release management tools for artists and their teams.'}
+        title={'Catalog - Delightful release management tools for artists and their teams.'}
       />
       <Hero />
       <Stack

@@ -1,4 +1,4 @@
-# launchday
+# catalog
 
 A full-stack SaaS application for the music industry, to help individual artists and labels manage their releases.
 

@@ -20,7 +20,7 @@ const PageHead = ({
       <meta name="msapplication-TileColor" content="#da532c" />
       <meta name="theme-color" content="#ffffff" />
       <meta name="description" content={description} />
-      <title key="title">{`${title} | LaunchDay`}</title>
+      <title key="title">{`${title} | Catalog`}</title>
     </Head>
   );
 };

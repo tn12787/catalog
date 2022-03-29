@@ -8,7 +8,7 @@ export const buildInviteUserConfig = (roles: Role[]): FormDatum<User & { role: s
     type: 'email',
     label: 'Email address',
     extraProps: {
-      placeholder: 'e.g. tom@launchday.app',
+      placeholder: 'e.g. tom@catalogapp.io',
     },
   },
   {
