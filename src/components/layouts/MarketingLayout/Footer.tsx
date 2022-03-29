@@ -4,6 +4,7 @@ import {
   Divider,
   IconButton,
   Input,
+  Link,
   Stack,
   Text,
   useToast,
@@ -67,8 +68,15 @@ const Footer = () => {
                   <Button size="sm" fontWeight={'normal'} variant="link">
                     Pricing
                   </Button>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
-                    About us
+                  <Button
+                    as={Link}
+                    href={'/legal/acceptable-use'}
+                    size="sm"
+                    fontWeight={'normal'}
+                    variant="link"
+                    isExternal
+                  >
+                    Acceptable Use
                   </Button>
                 </Stack>
               </Stack>
@@ -77,14 +85,35 @@ const Footer = () => {
                   Legal
                 </Text>
                 <Stack spacing="3" shouldWrapChildren>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
+                  <Button
+                    as={Link}
+                    href={'/legal/privacy'}
+                    size="sm"
+                    fontWeight={'normal'}
+                    variant="link"
+                    isExternal
+                  >
                     Privacy
                   </Button>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
+                  <Button
+                    as={Link}
+                    href={'/legal/terms'}
+                    size="sm"
+                    fontWeight={'normal'}
+                    variant="link"
+                    isExternal
+                  >
                     Terms
                   </Button>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
-                    License
+                  <Button
+                    as={Link}
+                    href={'/legal/cookies'}
+                    size="sm"
+                    fontWeight={'normal'}
+                    variant="link"
+                    isExternal
+                  >
+                    Cookies
                   </Button>
                 </Stack>
               </Stack>
