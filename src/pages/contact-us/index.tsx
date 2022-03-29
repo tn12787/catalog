@@ -43,7 +43,7 @@ const ContactUsPage = () => {
       <Stack pt={'100px'} spacing={'25px'} width="90%" maxW="container.lg">
         <Stack
           direction={{ base: 'column', md: 'row' }}
-          align={{ bsae: 'stretch', md: 'center' }}
+          align={{ base: 'stretch', md: 'center' }}
           justify="space-between"
         >
           <Heading size="2xl" fontWeight="black" alignSelf="flex-start">
