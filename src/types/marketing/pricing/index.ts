@@ -27,3 +27,8 @@ export type MailingListData = {
   lastName: string;
   email: string;
 };
+
+export type ContactUsData = MailingListData & {
+  company: string;
+  message: string;
+};

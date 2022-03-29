@@ -9,7 +9,7 @@ import { mailingListConfig } from './config';
 import FormContent from 'components/forms/FormContent';
 import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
-import { addUserToMailingList } from 'queries/mailingLists';
+import { addUserToMailingList } from 'queries/marketing/mailingLists';
 import { MailingListData } from 'types/marketing/pricing';
 import logo from 'images/logo.png';
 
