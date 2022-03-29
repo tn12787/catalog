@@ -68,8 +68,15 @@ const Footer = () => {
                   <Button size="sm" fontWeight={'normal'} variant="link">
                     Pricing
                   </Button>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
-                    About us
+                  <Button
+                    as={Link}
+                    href={'/legal/acceptable-use'}
+                    size="sm"
+                    fontWeight={'normal'}
+                    variant="link"
+                    isExternal
+                  >
+                    Acceptable Use
                   </Button>
                 </Stack>
               </Stack>
@@ -80,7 +87,7 @@ const Footer = () => {
                 <Stack spacing="3" shouldWrapChildren>
                   <Button
                     as={Link}
-                    href={'https://getterms.io/view/kdrbb/privacy/en-us'}
+                    href={'/legal/privacy'}
                     size="sm"
                     fontWeight={'normal'}
                     variant="link"
@@ -90,7 +97,7 @@ const Footer = () => {
                   </Button>
                   <Button
                     as={Link}
-                    href={'https://getterms.io/view/kdrbb/tos/en-us'}
+                    href={'/legal/terms'}
                     size="sm"
                     fontWeight={'normal'}
                     variant="link"
@@ -98,8 +105,15 @@ const Footer = () => {
                   >
                     Terms
                   </Button>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
-                    License
+                  <Button
+                    as={Link}
+                    href={'/legal/cookies'}
+                    size="sm"
+                    fontWeight={'normal'}
+                    variant="link"
+                    isExternal
+                  >
+                    Cookies
                   </Button>
                 </Stack>
               </Stack>
