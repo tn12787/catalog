@@ -9,7 +9,7 @@ const AboutPage = () => {
   const { bgPrimary } = useAppColors();
   return (
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
-      <PageHead title="Contact Us" />
+      <PageHead title="About Us" />
       <Stack pt={'150px'} spacing={'100px'} width="90%" maxW="container.lg">
         <Stack>
           <Text fontWeight={'medium'} fontSize={'4xl'}>
