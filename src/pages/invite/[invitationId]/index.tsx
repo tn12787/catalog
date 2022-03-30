@@ -18,7 +18,7 @@ const AcceptInvitationPage = () => {
   const toast = useToast();
   const { primary } = useAppColors();
 
-  const { onChangeWorkspace } = useExtendedSession();
+  const { onChangeWorkspace: onChangeWorkspace } = useExtendedSession();
 
   const attemptInviteAcceptance = useCallback(
     async (id: string) => {
