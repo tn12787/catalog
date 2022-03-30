@@ -5,9 +5,9 @@ import SlackProvider from 'next-auth/providers/slack';
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
-import { addMailingListEntry, sendDynamicEmail } from 'backend/apiUtils/email';
-import { createDefaultWorkspaceForUser } from 'backend/apiUtils/workspaces';
+import { sendDynamicEmail } from 'backend/apiUtils/email';
 import prisma from 'backend/prisma/client';
+import { onUserCreated } from 'utils/users';
 
 type VerificationRequestData = {
   url: string;
@@ -57,28 +57,7 @@ export default NextAuth({
     }),
   ],
   events: {
-    createUser: async ({ user }) => {
-      await createDefaultWorkspaceForUser({
-        name: user.name as string,
-        userId: user.id as string,
-        email: user.email as string,
-      });
-
-      const [firstName, lastName] = (user.name ?? '').split(' ');
-      await addMailingListEntry({ firstName, lastName, email: user.email as string });
-
-      await prisma.user.update({
-        where: { id: user.sub as string },
-        data: {
-          emailPreferences: {
-            connectOrCreate: {
-              where: { userId: user.sub as string },
-              create: {},
-            },
-          },
-        },
-      });
-    },
+    createUser: onUserCreated,
   },
   secret: process.env.SECRET,
   jwt: {

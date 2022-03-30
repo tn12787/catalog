@@ -4,6 +4,7 @@ export enum FeatureKey {
   SLACK_LOGIN = 'slackLogin',
   MARKETING_SITE = 'marketingSite',
   DOCUMENTATION = 'documentation',
+  SIGNUP_NOTIFICATIONS = 'signupNotifications',
 }
 
 export type AppFeatureMap = Record<FeatureKey, boolean>;
