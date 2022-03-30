@@ -1,8 +1,7 @@
 import { GetServerSideProps } from 'next';
-import React, { useEffect } from 'react';
-import { Heading, Stack, Text, useToast } from '@chakra-ui/react';
+import React from 'react';
+import { Heading, Stack, Text } from '@chakra-ui/react';
 import Stripe from 'stripe';
-import { useRouter } from 'next/router';
 import { BillingInterval } from '@prisma/client';
 
 import { isBackendFeatureEnabled } from 'common/features';
@@ -18,8 +17,7 @@ import useProducts from 'hooks/data/billing/useProducts';
 const UpgradePage = () => {
   const { workspace, manageWorkspace, checkout, isLoading } = useCurrentWorkspace();
   const { bgPrimary } = useAppColors();
-  const router = useRouter();
-  const toast = useToast();
+
   const { data: products, isLoading: areProductsLoading } = useProducts();
 
   const onPlanSelected = (price: Stripe.Price | undefined) => {
@@ -28,22 +26,13 @@ const UpgradePage = () => {
     if (workspace?.subscription?.productId === price.product) {
       manageWorkspace();
     } else {
-      checkout(price.id, 1, `/workspaces/${workspace?.id}/upgrade`);
+      checkout({
+        priceId: price.id,
+        quantity: 1,
+        redirectPath: `/workspaces/${workspace?.id}/upgrade/success?price=${price.id}&customer=${workspace?.stripeCustomerId}`,
+      });
     }
   };
-
-  useEffect(() => {
-    if (router.query?.success) {
-      toast({ status: 'success', title: 'Success', description: 'Your plan has been updated.' });
-      router.replace(
-        `/workspaces/${workspace?.id}/upgrade`,
-        `/workspaces/${workspace?.id}/upgrade`,
-        {
-          shallow: true,
-        }
-      );
-    }
-  }, [router.query?.success, router, toast, workspace?.id]);
 
   return (
     <Stack minH="100vh" w="100%" alignItems={'center'} spacing={0} bg={bgPrimary}>
@@ -56,9 +45,7 @@ const UpgradePage = () => {
           {"Flexible pricing, whether you're an independent artist, manager, or a major label."}
         </Text>
         <PricingContent
-          defaultBillingCycle={
-            `${workspace?.subscription?.interval ?? 'month'}ly` as BillingInterval
-          }
+          defaultBillingCycle={(workspace?.subscription?.interval ?? 'monthly') as BillingInterval}
           workspace={workspace}
           products={products ?? []}
           onPlanSelected={onPlanSelected}
