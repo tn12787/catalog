@@ -34,7 +34,6 @@
     "emoji-picker-react": "^3.5.1",
     "emoji-regex": "^10.0.1",
     "firebase": "^8.2.1",
-    "firebase-functions": "^3.13.0",
     "focus-visible": "^5.2.0",
     "framer-motion": "5.3.3",
     "get-contrast": "^3.0.0",
