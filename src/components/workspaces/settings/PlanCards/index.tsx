@@ -53,7 +53,7 @@ const PlanCards = () => {
               )
             )}
           </StatNumber>
-          <StatHelpText>Billed {workspace.subscription.interval}ly</StatHelpText>
+          <StatHelpText>Billed {workspace.subscription.interval}</StatHelpText>
         </Stat>
       </Card>
       <Card w="100%">
