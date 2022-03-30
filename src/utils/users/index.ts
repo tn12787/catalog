@@ -19,11 +19,11 @@ export const onUserCreated = async ({ user }: { user: User }) => {
   await addMailingListEntry({ firstName, lastName, email: user.email as string });
 
   await prisma.user.update({
-    where: { id: user.sub as string },
+    where: { id: user.id as string },
     data: {
       emailPreferences: {
         connectOrCreate: {
-          where: { userId: user.sub as string },
+          where: { userId: user.id as string },
           create: {},
         },
       },
