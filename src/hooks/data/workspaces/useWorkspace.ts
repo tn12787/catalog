@@ -3,11 +3,9 @@ import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import { useCallback, useMemo } from 'react';
 
 import { fetchWorkspace } from 'queries/workspaces';
-import { createCheckout, createPortalLink } from 'queries/payments';
+import { createCheckout, CreateCheckoutVars, createPortalLink } from 'queries/payments';
 import getStripe from 'backend/apiUtils/stripe/client';
 import { EnrichedWorkspace } from 'types/common';
-
-const defaultPrice = 'price_1KNFjFHNIzcgCVUerPbXkONu';
 
 const useWorkspace = (
   workspaceId: string,
@@ -33,14 +31,14 @@ const useWorkspace = (
   }, [workspaceId]);
 
   const checkout = useCallback(
-    async (priceId: string = defaultPrice, quantity = 1, path?: string) => {
+    async ({ priceId, quantity = 1, redirectPath }: Omit<CreateCheckoutVars, 'workspaceId'>) => {
       const {
         data: { sessionId },
       } = await createCheckout({
         workspaceId,
         quantity,
         priceId,
-        redirectPath: path,
+        redirectPath,
       });
 
       const stripe = await getStripe();

@@ -13,8 +13,8 @@ const Wordmark = ({ logoOnly }: Props) => {
   const logoSrc = useColorModeValue(logo, logo_dark);
   return (
     <HStack>
-      <Box boxSize={'33px'}>
-        <Image alt={'Logo'} src={logoSrc} width={'33px'} height={'33px'}></Image>
+      <Box boxSize={'32px'}>
+        <Image layout="fixed" alt={'Logo'} src={logoSrc} width={32} height={32}></Image>
       </Box>
       {!logoOnly && (
         <Text fontSize={'lg'} fontWeight="black">
