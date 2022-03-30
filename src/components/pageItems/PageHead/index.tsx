@@ -13,7 +13,7 @@ const PageHead = ({
   title,
   titleTemplate = ' | Catalog',
   description = 'First-rate tools for managing music releases.',
-  image = '/og_image.png',
+  image = `${process.env.NEXTAUTH_URL}/og_image.png`,
 }: Props) => {
   const derivedTitle = `${title}${titleTemplate}`;
   const router = useRouter();
