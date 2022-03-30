@@ -6,6 +6,7 @@ export const staticFeatures: AppFeatureMap = {
   [FeatureKey.SLACK_LOGIN]: false,
   [FeatureKey.MARKETING_SITE]: true,
   [FeatureKey.DOCUMENTATION]: false,
+  [FeatureKey.SIGNUP_NOTIFICATIONS]: true,
 };
 
 export const isBackendFeatureEnabled = (feature: FeatureKey): boolean => {
