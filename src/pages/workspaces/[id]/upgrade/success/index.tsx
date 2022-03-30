@@ -2,6 +2,7 @@ import React from 'react';
 import { Flex, Stack, Heading, Text, Button, Link } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import NextLink from 'next/link';
+import Script from 'next/script';
 
 import { getSingleServerSideWorkspace } from 'ssr/workspaces/getSingleServerSideWorkspace';
 import { EnrichedWorkspace } from 'types/common';
@@ -27,7 +28,13 @@ const UpgradeSuccessPage = ({ workspace }: Props) => {
   return (
     <Flex bg={bgPrimary} direction="column" align="center" justify="center" flex={1} minH="100vh">
       <PageHead title="Purchase Successful" />
-
+      <Script id="google-analytics-conversion">
+        {` gtag(
+          'event',
+          'conversion',
+          { 'send_to': 'AW-585786529/qygPCMa9ka4DEKHJqZcC', 'transaction_id': '${currentWorkspace?.subscription?.id}' }
+        );`}
+      </Script>
       <Stack w={'80%'} maxW="container.sm" spacing={6} alignItems="center">
         <Heading size="4xl" fontSize={'8xl'}>
           🎉
