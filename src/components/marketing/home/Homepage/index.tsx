@@ -14,6 +14,7 @@ const Homepage = () => {
     <Stack spacing={0} bg={bgSecondary} alignItems={'center'}>
       <PageHead
         title={'Catalog - Delightful release management tools for artists and their teams.'}
+        titleTemplate={''}
       />
       <Hero />
       <Stack
