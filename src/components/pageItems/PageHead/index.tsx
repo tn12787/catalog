@@ -13,7 +13,7 @@ const PageHead = ({
   title,
   titleTemplate = ' | Catalog',
   description = 'First-rate tools for managing music releases.',
-  image = `${process.env.NEXTAUTH_URL}/og_image.png`,
+  image = `https://firebasestorage.googleapis.com/v0/b/launchday-mvp.appspot.com/o/admin%2Fog_image.png?alt=media&token=1d7142f6-ec52-4107-92e0-e276a3708891`,
 }: Props) => {
   const derivedTitle = `${title}${titleTemplate}`;
   const router = useRouter();
@@ -39,6 +39,7 @@ const PageHead = ({
       <meta property="og:site_name" content={'Catalog'} key="ogsitename" />
       <meta property="og:title" content={derivedTitle} key="ogtitle" />
       <meta property="og:description" content={description} key="ogdesc" />
+      <meta property="og:type" content="website" />
 
       <meta property="twitter:image" content="image" key="twitterImage" />
     </Head>
