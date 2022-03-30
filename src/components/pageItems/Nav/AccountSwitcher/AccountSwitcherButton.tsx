@@ -1,20 +1,10 @@
-import {
-  Avatar,
-  Box,
-  Text,
-  Flex,
-  FlexProps,
-  HStack,
-  useMenuButton,
-  Stack,
-  Badge,
-} from '@chakra-ui/react';
+import { Avatar, Box, Text, Flex, FlexProps, HStack, useMenuButton, Stack } from '@chakra-ui/react';
 import * as React from 'react';
 import { HiSelector } from 'react-icons/hi';
 
 import useAppColors from 'hooks/useAppColors';
 import { EnrichedWorkspace } from 'types/common';
-import { priceData } from 'components/marketing/pricing/PricingTable/productData';
+import PlanBadge from 'components/workspaces/PlanBadge';
 
 interface Props extends FlexProps {
   workspace: EnrichedWorkspace | undefined;
@@ -22,29 +12,6 @@ interface Props extends FlexProps {
   photoUrl: string;
   unreadNotificationCount: number;
 }
-
-const badgeFromWorkspace = (workspace: EnrichedWorkspace | undefined) => {
-  switch (workspace?.subscription?.productName) {
-    case 'Manager Plan':
-      return 'Manager';
-    case 'Label Plan':
-      return 'Label';
-    default:
-      return 'Artist';
-  }
-};
-
-const badgeColorSchemeFromWorkspace = (workspace: EnrichedWorkspace | undefined) => {
-  const enrichedPrices = priceData([]);
-  switch (workspace?.subscription?.productName) {
-    case 'Manager Plan':
-      return enrichedPrices.manager.colorScheme;
-    case 'Label Plan':
-      return enrichedPrices.label.colorScheme;
-    default:
-      return enrichedPrices.artist.colorScheme;
-  }
-};
 
 export const AccountSwitcherButton = ({
   workspace,
@@ -84,9 +51,7 @@ export const AccountSwitcherButton = ({
             <Text isTruncated fontWeight="semibold">
               {workspace?.name ?? 'isLoading'}
             </Text>
-            <Badge colorScheme={badgeColorSchemeFromWorkspace(workspace)}>
-              {badgeFromWorkspace(workspace)}
-            </Badge>
+            <PlanBadge workspace={workspace as EnrichedWorkspace}></PlanBadge>
           </HStack>
           <Box fontSize="xs" color="gray.400">
             {userName}

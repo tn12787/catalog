@@ -6,7 +6,7 @@ type CreatePortalLinkVars = {
   workspaceId: string;
 };
 
-type CreateCheckoutVars = CreatePortalLinkVars & {
+export type CreateCheckoutVars = CreatePortalLinkVars & {
   priceId: string;
   quantity: number;
   redirectPath: string | undefined;
