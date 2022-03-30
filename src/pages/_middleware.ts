@@ -13,7 +13,8 @@ const middleware =
     const currentEnv = process.env.NODE_ENV as Environment;
 
     if (environments.includes(currentEnv) && req.headers.get('x-forwarded-proto') !== 'https') {
-      return NextResponse.redirect(`https://${req.nextUrl.host}${req.nextUrl.pathname}`, status);
+      console.log(req);
+      // return NextResponse.redirect(, status);
     }
     return NextResponse.next();
   };
