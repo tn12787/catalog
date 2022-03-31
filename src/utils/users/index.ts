@@ -7,6 +7,7 @@ import prisma from 'backend/prisma/client';
 import { FeatureKey } from 'common/features/types';
 
 const userSignupTemaplateId = 'd-ff377af78f3c496285d16dcc4071ed3c';
+const welcomeEmailTemplateId = 'd-443b4118fe9447238d67b529d0dc3b86';
 
 export const onUserCreated = async ({ user }: { user: User }) => {
   await createDefaultWorkspaceForUser({
@@ -37,4 +38,10 @@ export const onUserCreated = async ({ user }: { user: User }) => {
       templateId: userSignupTemaplateId,
     });
   }
+
+  await sendDynamicEmail<any>({
+    to: user.email as string,
+    dynamicTemplateData: {},
+    templateId: welcomeEmailTemplateId,
+  });
 };
