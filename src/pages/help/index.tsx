@@ -23,6 +23,7 @@ import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import useFeatures from 'hooks/features/useFeatures';
 import Card from 'components/Card';
 import { FeatureKey } from 'common/features/types';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const HelpPage = () => {
   const { bgPrimary } = useAppColors();
@@ -54,9 +55,7 @@ const HelpPage = () => {
           align={{ bsae: 'stretch', md: 'center' }}
           justify="space-between"
         >
-          <Heading size="2xl" fontWeight="black" alignSelf="flex-start">
-            Help & Support
-          </Heading>
+          <PageTitle size="2xl">Help & Support</PageTitle>
         </Stack>
         <Card>
           <Heading size="md">How can we help?</Heading>

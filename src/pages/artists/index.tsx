@@ -4,7 +4,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Button,
-  Heading,
   Icon,
   Input,
   InputGroup,
@@ -36,6 +35,7 @@ import { canAddAnotherArtist, getLimitForSubscription } from 'utils/artists';
 import GetMoreArtists from 'components/artists/GetMoreArtists';
 import useFeatures from 'hooks/features/useFeatures';
 import { FeatureKey } from 'common/features/types';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const sortOptions: SortBySelectOption<ArtistResponse>[] = [
   {
@@ -127,9 +127,7 @@ const ArtistsPage = () => {
           align={{ bsae: 'stretch', md: 'center' }}
           justify="space-between"
         >
-          <Heading size="2xl" fontWeight="black" alignSelf="flex-start">
-            Artists
-          </Heading>
+          <PageTitle>Artists</PageTitle>
           {canCreateArtists && (
             <Stack
               alignItems={{ base: 'stretch', md: 'center' }}

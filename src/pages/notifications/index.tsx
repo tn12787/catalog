@@ -1,6 +1,6 @@
 import { HStack, Stack, Text } from '@chakra-ui/layout';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Button, ButtonGroup, Heading } from '@chakra-ui/react';
+import { Button, ButtonGroup } from '@chakra-ui/react';
 import { BiCheckDouble, BiX } from 'react-icons/bi';
 import { Notification } from '@prisma/client';
 
@@ -16,6 +16,7 @@ import NotificationTable from 'components/notifications/NotificationTable';
 import Card from 'components/Card';
 import useBatchUpdateNotifications from 'hooks/data/notifications/useBatchUpdateNotifications';
 import useUpdateAllNotifications from 'hooks/data/notifications/useUpdateAllNotifications.ts';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const NoficationsPage = () => {
   const { bgPrimary, bodySub } = useAppColors();
@@ -66,9 +67,7 @@ const NoficationsPage = () => {
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack py={2}>
           <Stack pt={2} direction="row" align="center" justify="space-between">
-            <Heading size="xl" fontWeight="black" alignSelf="flex-start">
-              All Notifications
-            </Heading>
+            <PageTitle>All Notifications</PageTitle>
           </Stack>
           <Text>Here you can see all notifications for the current workspace.</Text>
         </Stack>

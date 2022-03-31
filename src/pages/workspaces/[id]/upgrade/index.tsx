@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import React from 'react';
-import { Heading, Stack, Text } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 import Stripe from 'stripe';
 import { BillingInterval } from '@prisma/client';
 
@@ -13,6 +13,7 @@ import useAppColors from 'hooks/useAppColors';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import PageHead from 'components/pageItems/PageHead';
 import useProducts from 'hooks/data/billing/useProducts';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const UpgradePage = () => {
   const { workspace, manageWorkspace, checkout, isLoading } = useCurrentWorkspace();
@@ -38,9 +39,7 @@ const UpgradePage = () => {
     <Stack minH="100vh" w="100%" alignItems={'center'} spacing={0} bg={bgPrimary}>
       <PageHead title={'Upgrade your plan'}></PageHead>
       <Stack py={'50px'} spacing={'25px'} maxWidth={'container.lg'} w="90%">
-        <Heading fontSize={'5xl'} colorScheme="green">
-          Upgrade your plan
-        </Heading>
+        <PageTitle>Upgrade your plan</PageTitle>
         <Text fontSize={'xl'}>
           {"Flexible pricing, whether you're an independent artist, manager, or a major label."}
         </Text>
