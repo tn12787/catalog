@@ -4,7 +4,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Flex,
-  Heading,
   HStack,
   Image,
   Stack,
@@ -22,6 +21,7 @@ import ReleasePlaceholder from '../ReleasePlaceholder';
 import { ClientRelease } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import PageTitle from 'components/pageItems/PageTitle';
 
 interface Props {
   releaseData: ClientRelease;
@@ -83,7 +83,7 @@ const HeaderSection = ({ releaseData }: Props) => {
         </Breadcrumb>
         <Flex pb={3} align="center" justify="space-between" w={{ base: '100%', md: '100%' }}>
           <HStack alignItems="center" width="100%" margin={['0 auto']}>
-            <Heading>{releaseData.name}</Heading>
+            <PageTitle>{releaseData.name}</PageTitle>
           </HStack>
           <SingleReleaseMenu releaseData={releaseData} />
         </Flex>

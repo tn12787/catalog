@@ -30,6 +30,7 @@ import usePagination from 'hooks/usePagination';
 import PaginationControl from 'components/PaginationControl';
 import { SortBySelectOption } from 'types/forms';
 import useReleases from 'hooks/data/releases/useReleases';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const sortOptions: SortBySelectOption<ClientRelease>[] = [
   {
@@ -103,16 +104,7 @@ const ReleasesPage = () => {
           align={{ base: 'stretch', md: 'center' }}
           justify="space-between"
         >
-          <Heading
-            py={4}
-            color={primary}
-            as="h1"
-            size="2xl"
-            fontWeight="black"
-            alignSelf="flex-start"
-          >
-            All Releases
-          </Heading>
+          <PageTitle>All Releases</PageTitle>
           {canCreateRelease && !shouldHideControls && (
             <Link passHref href={'/releases/new'}>
               <Button colorScheme="purple" as={'a'}>

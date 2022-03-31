@@ -19,6 +19,7 @@ import { ClientRelease } from 'types/common';
 import OverviewReleases from 'components/overview/OverviewReleases';
 import useTasks from 'hooks/data/tasks/useTasks';
 import useExtendedSession from 'hooks/useExtendedSession';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const OverviewPage = () => {
   const { bgPrimary } = useAppColors();
@@ -61,9 +62,7 @@ const OverviewPage = () => {
 
       <Stack spacing={4} width="90%" maxW="container.lg">
         <Stack direction="row" align="center" justify="space-between">
-          <Heading size="2xl" fontWeight="black" pt={4} alignSelf="flex-start">
-            Overview
-          </Heading>
+          <PageTitle>Overview</PageTitle>
         </Stack>
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isWorkspaceLoading}>
