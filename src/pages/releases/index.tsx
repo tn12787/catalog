@@ -1,7 +1,6 @@
 import {
   Text,
   Stack,
-  Heading,
   Button,
   Input,
   InputGroup,
