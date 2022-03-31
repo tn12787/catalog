@@ -1,13 +1,6 @@
 import { Stack } from '@chakra-ui/layout';
 import React from 'react';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Heading,
-  Link,
-  Skeleton,
-} from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Link, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { BiChevronRight } from 'react-icons/bi';
 
@@ -19,6 +12,7 @@ import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import ContactLabelPageContent from 'components/contacts/labels/ContactLabelPageContent';
 import { canManageContacts } from 'utils/contacts';
 import UnlockContacts from 'components/contacts/UnlockContacts';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const ContactLabelsPage = () => {
   const { bgPrimary } = useAppColors();
@@ -54,9 +48,7 @@ const ContactLabelsPage = () => {
           </BreadcrumbItem>
         </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">
-          <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-            Manage Contact Labels
-          </Heading>
+          <PageTitle>Manage Contact Labels</PageTitle>
         </Stack>
         {!canShowWorkspace && <UnlockContacts />}
         <ContactLabelPageContent isDisabled={!canShowWorkspace}></ContactLabelPageContent>

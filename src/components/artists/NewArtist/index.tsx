@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Button, Heading, Stack, Text } from '@chakra-ui/react';
+import { Alert, Button, Stack, Text } from '@chakra-ui/react';
 
 import ArtistForm from '../ArtistForm';
 
@@ -10,6 +10,7 @@ import { canAddAnotherArtist } from 'utils/artists';
 import useArtists from 'hooks/data/artists/useArtists';
 import useFeatures from 'hooks/features/useFeatures';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const NewArtist = () => {
   const { bgPrimary } = useAppColors();
@@ -23,7 +24,7 @@ const NewArtist = () => {
   return (
     <Stack bg={bgPrimary} flex={1} align="center" direction="column" width="100%" height="100%">
       <Stack py={8} spacing={3} width="90%" maxW="container.lg">
-        <Heading>{'Create a new artist'}</Heading>
+        <PageTitle>Create a new Artist</PageTitle>
         <Text>Add basic info about the artist.</Text>
         {needsMoreArtists && (
           <Alert status={'warning'} variant="left-accent" py={2} rounded={'md'}>

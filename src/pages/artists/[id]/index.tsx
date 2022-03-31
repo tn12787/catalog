@@ -23,6 +23,7 @@ import useSingleArtist from 'hooks/data/artists/useSingleArtist';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import ArtistOverview from 'components/artists/specific/ArtistOverview';
 import ArtistReleases from 'components/artists/specific/ArtistReleases';
+import PageTitle from 'components/pageItems/PageTitle';
 
 type Props = {
   artist: ArtistResponse;
@@ -62,9 +63,7 @@ const SingleArtist = ({ artist }: Props) => {
         </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">
           <Skeleton isLoaded={!isLoading}>
-            <Heading as="h1" size="2xl" fontWeight="black" alignSelf="flex-start">
-              {artistData?.name}
-            </Heading>
+            <PageTitle>{artistData?.name}</PageTitle>
           </Skeleton>
         </Stack>
 

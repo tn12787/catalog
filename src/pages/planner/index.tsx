@@ -25,6 +25,7 @@ import { EventListItem } from 'components/releases/specific/Events/EventListItem
 import Card from 'components/Card';
 import { hasRequiredPermissions } from 'utils/auth';
 import PageHead from 'components/pageItems/PageHead';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const tabData = (events: ReleaseEvent[], isLoading: boolean) => [
   {
@@ -69,9 +70,7 @@ const Planner = () => {
           <Tabs w="100%" align="center" colorScheme="purple">
             <Stack justifyContent="space-between" direction={{ base: 'column', md: 'row' }}>
               <HStack spacing={4} alignItems="center" alignSelf={{ base: 'center', md: 'stretch' }}>
-                <Heading size="2xl" py={4} as="h1" fontWeight="black">
-                  Planner
-                </Heading>
+                <PageTitle>Planner</PageTitle>
                 {!canEditReleases && !isLoading && <Badge colorScheme="gray">Read-only</Badge>}
                 {isLoading && <Spinner thickness="3px" color={primary} speed="1s"></Spinner>}
               </HStack>

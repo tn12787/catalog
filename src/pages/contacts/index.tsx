@@ -1,13 +1,6 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Heading,
-  Skeleton,
-  Stack,
-} from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Skeleton, Stack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { BiChevronRight } from 'react-icons/bi';
@@ -20,6 +13,7 @@ import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
 import UnlockContacts from 'components/contacts/UnlockContacts';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const ContactsPage = () => {
   const { workspace, isLoading } = useCurrentWorkspace();
@@ -47,9 +41,7 @@ const ContactsPage = () => {
           </BreadcrumbItem>
         </Breadcrumb>
         <Stack direction="row" align="center" justify="space-between">
-          <Heading size="xl" fontWeight="black" alignSelf="flex-start">
-            All Contacts
-          </Heading>
+          <PageTitle>All Contacts</PageTitle>
         </Stack>
         {!canShowWorkspace && <UnlockContacts />}
         <ContactPageContent isDisabled={!canShowWorkspace} />

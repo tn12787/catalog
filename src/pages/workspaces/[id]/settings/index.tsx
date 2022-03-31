@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Heading } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -10,6 +10,7 @@ import PlanCards from 'components/workspaces/settings/PlanCards';
 import MembersCard from 'components/workspaces/settings/MembersCard';
 import UpgradeCards from 'components/workspaces/settings/UpgradeCards';
 import DeleteCard from 'components/workspaces/settings/DeleteCard';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const WorkspaceOverview = () => {
   const { bgPrimary } = useAppColors();
@@ -18,9 +19,7 @@ const WorkspaceOverview = () => {
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="Workspace Settings" />
       <Stack spacing={4} width="90%" maxW="container.lg">
-        <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-          Manage Workspace
-        </Heading>
+        <PageTitle>Manage Workspace</PageTitle>
         <WorkspaceInformation />
         <PlanCards />
         <UpgradeCards />

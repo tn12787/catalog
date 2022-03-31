@@ -1,4 +1,4 @@
-import { Stack, Heading } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
 
@@ -8,6 +8,7 @@ import { fetchMe } from 'queries/me';
 import UserInformation from 'components/users/UserInformation';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
+import PageTitle from 'components/pageItems/PageTitle';
 
 const UserSettings = () => {
   const { bgPrimary } = useAppColors();
@@ -18,9 +19,7 @@ const UserSettings = () => {
     <Stack bg={bgPrimary} flex={1} align="center" py={6} direction="column" width="100%">
       <PageHead title="Personal Settings" />
       <Stack spacing={4} width="90%" maxW="container.lg">
-        <Heading size="xl" fontWeight="black" py={4} alignSelf="flex-start">
-          Personal Settings
-        </Heading>
+        <PageTitle>Personal Settings</PageTitle>
         <UserInformation loading={isLoading} user={userData} />
       </Stack>
     </Stack>
