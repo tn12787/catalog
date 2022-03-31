@@ -1,4 +1,4 @@
-import { Stack, Heading } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
 
