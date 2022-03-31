@@ -13,7 +13,7 @@ const NavItem = forwardRef<HTMLAnchorElement, Props>((props, ref) => {
   const textColor = useColorModeValue('gray.900', '');
 
   const activeColor = useColorModeValue('purple.50', 'purple.200');
-  const activeTextColor = useColorModeValue('purple.400', 'purple.500');
+  const activeTextColor = useColorModeValue('purple.400', 'purple.700');
 
   const hoverColor = useColorModeValue('gray.100', 'gray.700');
 
