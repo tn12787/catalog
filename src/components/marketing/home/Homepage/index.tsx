@@ -38,6 +38,7 @@ const Homepage = () => {
           maxW={'container.xl'}
         >
           <Image
+            placeholder="blur"
             objectFit="cover"
             objectPosition={'100% 0%'}
             quality={100}
