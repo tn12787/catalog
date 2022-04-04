@@ -11,6 +11,8 @@ const Hero = () => {
   const highlightBlue = useColorModeValue('blue.500', 'blue.300');
   const highlightGreen = useColorModeValue('green.500', 'green.300');
   const { bgPrimary } = useAppColors();
+
+  const screenshotBg = useColorModeValue('purple.50', 'purple.900');
   return (
     <Stack
       w="100%"
@@ -27,7 +29,7 @@ const Hero = () => {
         position="absolute"
         bottom={0}
         left={0}
-        color={bgPrimary}
+        color={screenshotBg}
       >
         <HeroWave></HeroWave>
       </Stack>

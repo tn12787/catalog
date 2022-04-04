@@ -42,7 +42,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         </IconButton>
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
           <DrawerOverlay />
-          <DrawerContent maxW="300px" bg={bgPrimary}>
+          <DrawerContent size={'xs'} bg={bgPrimary}>
             <Nav
               links={appLinks}
               onItemSelected={(href) => {
