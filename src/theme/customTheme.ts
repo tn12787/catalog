@@ -13,10 +13,6 @@ export const theme = extendTheme({
     mono: 'Menlo, Consolas, monospace',
   },
   components: {
-    Heading: {
-      ...baseTheme.components.Heading,
-      sizes: { ...baseTheme.components.Heading.sizes, xl: { fontWeight: 'black' } },
-    },
     InnerRadioButton,
   },
 

@@ -1,14 +1,19 @@
-import { Stack, Text, Heading, Button, Link } from '@chakra-ui/react';
+import { Stack, Text, Heading, Button, Link, useColorModeValue, Flex } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
+import Image from 'next/image';
 
 import Hero from './Hero';
 
 import PageHead from 'components/pageItems/PageHead';
 import useAppColors from 'hooks/useAppColors';
+import screenshot from 'images/screenshot.png';
+import screenshot_dark from 'images/screenshot_dark.png';
 
 const Homepage = () => {
-  const { bgPrimary, bgSecondary } = useAppColors();
+  const { bgSecondary } = useAppColors();
+  const screenshotImage = useColorModeValue(screenshot, screenshot_dark);
+  const screenshotBg = useColorModeValue('purple.50', 'purple.900');
 
   return (
     <Stack spacing={0} bg={bgSecondary} alignItems={'center'}>
@@ -17,10 +22,35 @@ const Homepage = () => {
         titleTemplate={''}
       />
       <Hero />
+      <Stack spacing={'60px'} bg={screenshotBg} w="100%" alignItems={'center'}>
+        <Stack w={'90%'} textAlign={{ base: 'center' }} spacing={4} alignItems={'center'}>
+          <Heading>Powerful Release Tools</Heading>
+          <Text fontSize={'lg'}>
+            Catalog makes it easy to stay on top of release planning & marketing.
+          </Text>
+        </Stack>
+        <Flex
+          boxShadow={'2xl'}
+          borderRadius={{ base: '8px 8px 0 0', md: '15px 15px 0 0', lg: '20px 20px 0 0' }}
+          maxH={{ base: '100px', sm: '200px', md: '300px', lg: '400px' }}
+          overflow="hidden"
+          w={'90%'}
+          maxW={'container.xl'}
+        >
+          <Image
+            placeholder="blur"
+            objectFit="cover"
+            objectPosition={'100% 0%'}
+            quality={100}
+            alt={'app-screenshot'}
+            src={screenshotImage}
+          ></Image>
+        </Flex>
+      </Stack>
       <Stack
-        bg={bgPrimary}
+        bg={bgSecondary}
         textAlign={{ base: 'center', lg: 'left' }}
-        py={'50px'}
+        py={'100px'}
         w="100%"
         alignItems={'center'}
       >
