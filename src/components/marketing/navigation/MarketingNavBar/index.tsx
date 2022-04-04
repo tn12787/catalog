@@ -24,7 +24,6 @@ import useAppColors from 'hooks/useAppColors';
 
 const links = [
   { label: 'Home', href: '/' },
-  { label: 'Use Cases', href: '/use-cases' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'About us', href: '/about' },
   { label: 'Contact', href: '/contact-us' },
