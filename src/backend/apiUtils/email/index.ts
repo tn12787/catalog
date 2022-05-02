@@ -19,6 +19,10 @@ export const sendDynamicEmail = async <T>({
       to,
       templateId,
       dynamicTemplateData,
+      replyToList: [
+        { name: 'Tom Norton', email: 'tom@catalogapp.io' },
+        { name: 'Seb Carroll', email: 'seb@catalogapp.io' },
+      ],
     });
   } catch (error) {
     console.error(error);
