@@ -5,12 +5,9 @@ import NextLink from 'next/link';
 import HeroWave from './HeroWave';
 import HeroRight from './HeroRight';
 
-import useAppColors from 'hooks/useAppColors';
-
 const Hero = () => {
   const highlightBlue = useColorModeValue('blue.500', 'blue.300');
   const highlightGreen = useColorModeValue('green.500', 'green.300');
-  const { bgPrimary } = useAppColors();
 
   const screenshotBg = useColorModeValue('purple.50', 'purple.900');
   return (
@@ -71,7 +68,7 @@ const Hero = () => {
               </NextLink>
               <Button
                 as={Link}
-                href={'https://calendly.com/catalogapp/product-tour'}
+                href={'https://calendly.com/catalog-app/product-tour'}
                 isExternal
                 variant={'outline'}
               >
