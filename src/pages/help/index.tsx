@@ -62,7 +62,7 @@ const HelpPage = () => {
           <Text>Choose from one of the following items to get your issue resolved.</Text>
           <SimpleGrid columnGap={3} rowGap={3} columns={{ base: 1, md: 2 }}>
             <SupportGridItem
-              href={'mailto:tom@catalogapp.io?subject=Question about Catalog'}
+              href={'mailto:tom@catalogapp.io,seb@catalogapp.io?subject=Question about Catalog'}
               color={'purple'}
               icon={BiMailSend}
               title={'Contact us via email'}
