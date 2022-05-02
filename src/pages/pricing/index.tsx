@@ -46,7 +46,7 @@ const PricingPage = ({ products }: Props) => {
             </HStack>
             <Button
               as={Link}
-              href={'https://calendly.com/catalogapp/product-tour'}
+              href={'https://calendly.com/catalog-app/product-tour'}
               isExternal
               colorScheme={'purple'}
             >

@@ -35,7 +35,7 @@ const GetMoreArtists = () => {
           bg={'white'}
           color={'black'}
           variant="outline"
-          href={'https://calendly.com/catalogapp/product-tour'}
+          href={'https://calendly.com/catalog-app/product-tour'}
           isExternal
         >
           View plans
