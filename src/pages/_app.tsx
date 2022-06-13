@@ -47,7 +47,7 @@ const MyApp = ({ Component, pageProps }: Props) => {
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      ga.pageview(url);
+      ga.pageview(url, pageProps.session?.token.sub);
     };
 
     router.events.on('routeChangeComplete', handleRouteChange);
@@ -55,7 +55,7 @@ const MyApp = ({ Component, pageProps }: Props) => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router.events]);
+  }, [router.events, pageProps.session]);
 
   return (
     <React.StrictMode>
