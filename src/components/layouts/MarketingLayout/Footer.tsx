@@ -19,8 +19,6 @@ import Wordmark from 'components/marketing/navigation/MarketingNavBar/Wordmark';
 import { addUserToMailingList } from 'queries/marketing/mailingLists';
 import { MailingListData } from 'types/marketing/pricing';
 
-// import { Logo } from './Logo';
-
 const Footer = () => {
   const { bodySub, bgPrimary, bgSecondary } = useAppColors();
   const { reset, register, handleSubmit } = useForm<MailingListData>({});
