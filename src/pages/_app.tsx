@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider, QueryErrorResetBoundary } from 'react-query';
 import { Hydrate } from 'react-query/hydration';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -24,12 +24,16 @@ import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import '@fontsource/inter/800.css';
 import '@fontsource/inter/variable.css';
+import ga from 'analytics/ga';
+
+import { useRouter } from 'next/router';
 
 interface Props extends Omit<AppProps, 'Component'> {
   Component: NextPage & { getLayout?: () => React.FC<any> };
 }
 
 const MyApp = ({ Component, pageProps }: Props) => {
+  const router = useRouter();
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -41,6 +45,18 @@ const MyApp = ({ Component, pageProps }: Props) => {
       })
   );
   const Layout = Component.getLayout ? Component.getLayout() : Box;
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      ga.pageview(url);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <React.StrictMode>
