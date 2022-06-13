@@ -10,10 +10,12 @@ import { SessionProvider } from 'next-auth/react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RetryValue } from 'react-query/types/core/retryer';
 import Script from 'next/script';
+import { useRouter } from 'next/router';
 
 import ChakraSSRProvider, { getServerSideProps } from 'components/ChakraSSRProvider';
 import SomethingWentWrong from 'components/SomethingWentWrong';
 import { shouldRetryQuery } from 'utils/queries';
+import ga from 'analytics/ga';
 
 import 'focus-visible/dist/focus-visible';
 import '../index.css';
@@ -24,9 +26,6 @@ import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import '@fontsource/inter/800.css';
 import '@fontsource/inter/variable.css';
-import ga from 'analytics/ga';
-
-import { useRouter } from 'next/router';
 
 interface Props extends Omit<AppProps, 'Component'> {
   Component: NextPage & { getLayout?: () => React.FC<any> };
