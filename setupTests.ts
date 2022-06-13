@@ -11,7 +11,10 @@ jest.mock('next/image', () => ({
 
 import { server } from './src/__mocks__/server';
 
-beforeAll(() => server.listen());
+beforeAll(() => {
+  window.gtag = jest.fn();
+  server.listen();
+});
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 

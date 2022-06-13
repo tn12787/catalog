@@ -69,6 +69,7 @@
     "@types/gapi": "^0.0.39",
     "@types/gapi.auth2": "^0.0.54",
     "@types/gapi.client.calendar": "^3.0.10",
+    "@types/gtag.js": "^0.0.10",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.9.1",
     "@types/react": "^17.0.1",

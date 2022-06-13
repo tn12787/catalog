@@ -26,6 +26,7 @@ import useExtendedSession from 'hooks/useExtendedSession';
 import { CreateSingleReleaseVars } from 'queries/releases/types';
 import { midday } from 'utils/dates';
 import PageTitle from 'components/pageItems/PageTitle';
+import ga from 'analytics/ga';
 
 const buildSteps = (): ReleaseWizardStep[] => [
   {
@@ -79,6 +80,13 @@ const NewReleaseWizard = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['releases']);
+        ga.event({
+          action: 'Release created',
+          params: {
+            event_category: 'Releases',
+            event_label: 'Release created',
+          },
+        });
       },
     }
   );

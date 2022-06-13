@@ -11,6 +11,7 @@ const customJestConfig = {
     '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/src/__mocks__/fileMock.ts',
     '^__mocks__/(.*)': '<rootDir>/src/__mocks__/$1',
+    '^analytics/(.*)': '<rootDir>/src/analytics/$1',
     '^assets/(.*)': '<rootDir>/src/assets/$1',
     '^backend/(.*)': '<rootDir>/src/backend/$1',
     '^common/(.*)': '<rootDir>/src/common/$1',
