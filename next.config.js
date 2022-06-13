@@ -3,4 +3,5 @@ module.exports = {
     PUBLIC_URL: '',
   },
   outputFileTracing: false,
+  swcMinify: true,
 };

@@ -1,4 +1,4 @@
-import { extendTheme, theme as baseTheme } from '@chakra-ui/react';
+import { extendTheme } from '@chakra-ui/react';
 
 import { InnerRadioButton } from './CustomRadioButton';
 import { customColors } from './colors';
