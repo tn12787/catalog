@@ -81,10 +81,10 @@ const NewReleaseWizard = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['releases']);
         ga.event({
-          action: 'New release',
+          action: 'Release created',
           params: {
             event_category: 'Releases',
-            event_label: 'New release',
+            event_label: 'Release created',
           },
         });
       },
