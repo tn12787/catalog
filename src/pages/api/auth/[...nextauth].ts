@@ -32,12 +32,12 @@ export default NextAuth({
       },
     }),
     SpotifyProvider({
-      clientId: process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      clientId: process.env.SPOTIFY_CLIENT_ID as string,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
     }),
     SlackProvider({
-      clientId: process.env.SLACK_CLIENT_ID,
-      clientSecret: process.env.SLACK_CLIENT_SECRET,
+      clientId: process.env.SLACK_CLIENT_ID as string,
+      clientSecret: process.env.SLACK_CLIENT_SECRET as string,
       authorization: {
         params: {
           scope: 'openid profile email',
@@ -60,11 +60,9 @@ export default NextAuth({
     createUser: onUserCreated,
   },
   secret: process.env.SECRET,
-  jwt: {
-    signingKey: process.env.JWT_SIGNING_KEY as string,
-  },
+
   session: {
-    jwt: true,
+    strategy: 'jwt',
   },
   callbacks: {
     async session({ session, token, user }) {
