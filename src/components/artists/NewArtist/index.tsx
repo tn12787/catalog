@@ -11,6 +11,7 @@ import useArtists from 'hooks/data/artists/useArtists';
 import useFeatures from 'hooks/features/useFeatures';
 import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import PageTitle from 'components/pageItems/PageTitle';
+import ga from 'analytics/ga';
 
 const NewArtist = () => {
   const { bgPrimary } = useAppColors();
@@ -20,6 +21,13 @@ const NewArtist = () => {
 
   const needsMoreArtists =
     !canAddAnotherArtist(artists?.length ?? 0, workspace) && isFeatureEnabled(FeatureKey.PAYMENTS);
+
+  const onSubmitSuccess = () => {
+    ga.event({
+      action: 'Artist created',
+      params: { event_category: 'Artists', event_label: 'New Artist' },
+    });
+  };
 
   return (
     <Stack bg={bgPrimary} flex={1} align="center" direction="column" width="100%" height="100%">
@@ -42,7 +50,7 @@ const NewArtist = () => {
           </Alert>
         )}
         <Card width="100%">
-          <ArtistForm isDisabled={needsMoreArtists} />
+          <ArtistForm isDisabled={needsMoreArtists} onSubmitSuccess={onSubmitSuccess} />
         </Card>
       </Stack>
     </Stack>
