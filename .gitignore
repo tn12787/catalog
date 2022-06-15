@@ -135,3 +135,6 @@ yarn-error.log*
 # local env files
 # vercel
 .vercel
+
+# Sentry
+.sentryclirc
