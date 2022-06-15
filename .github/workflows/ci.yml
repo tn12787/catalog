@@ -10,6 +10,7 @@ jobs:
     env:
       DATABASE_URL: postgres://notarealDb
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
