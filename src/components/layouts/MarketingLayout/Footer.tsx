@@ -1,5 +1,4 @@
 import {
-  Badge,
   Button,
   ButtonGroup,
   Divider,
