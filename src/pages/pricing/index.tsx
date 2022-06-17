@@ -1,16 +1,5 @@
 import React from 'react';
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Button,
-  Heading,
-  HStack,
-  Link,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Link, Stack, Text } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 
 import { FeatureKey } from 'common/features/types';
