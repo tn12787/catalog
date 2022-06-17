@@ -69,7 +69,9 @@ const MyApp = ({ Component, pageProps }: Props) => {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'G-MSZB8E8P4E');
+          gtag('config', 'G-MSZB8E8P4E'. {
+            'user_id': '${pageProps.session?.token.sub}',
+          });
         `}
       </Script>
       <SessionProvider session={pageProps.session}>
