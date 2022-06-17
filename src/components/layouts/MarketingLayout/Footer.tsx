@@ -18,6 +18,7 @@ import useAppColors from 'hooks/useAppColors';
 import Wordmark from 'components/marketing/navigation/MarketingNavBar/Wordmark';
 import { addUserToMailingList } from 'queries/marketing/mailingLists';
 import { MailingListData } from 'types/marketing/pricing';
+import SaleBadge from 'components/pricing/SaleBadge';
 
 const Footer = () => {
   const { bodySub, bgPrimary, bgSecondary } = useAppColors();
@@ -63,7 +64,12 @@ const Footer = () => {
                   <Button size="sm" fontWeight={'normal'} variant="link">
                     Use Cases
                   </Button>
-                  <Button size="sm" fontWeight={'normal'} variant="link">
+                  <Button
+                    size="sm"
+                    rightIcon={<SaleBadge></SaleBadge>}
+                    fontWeight={'normal'}
+                    variant="link"
+                  >
                     Pricing
                   </Button>
                   <Button

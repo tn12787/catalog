@@ -14,6 +14,7 @@ import useCurrentWorkspace from 'hooks/data/workspaces/useCurrentWorkspace';
 import PageHead from 'components/pageItems/PageHead';
 import useProducts from 'hooks/data/billing/useProducts';
 import PageTitle from 'components/pageItems/PageTitle';
+import SaleAlert from 'components/pricing/SaleAlert';
 
 const UpgradePage = () => {
   const { workspace, manageWorkspace, checkout, isLoading } = useCurrentWorkspace();
@@ -39,6 +40,7 @@ const UpgradePage = () => {
     <Stack minH="100vh" w="100%" alignItems={'center'} spacing={0} bg={bgPrimary}>
       <PageHead title={'Upgrade your plan'}></PageHead>
       <Stack py={'50px'} spacing={'25px'} maxWidth={'container.lg'} w="90%">
+        {!workspace?.subscription && <SaleAlert></SaleAlert>}
         <PageTitle>Upgrade your plan</PageTitle>
         <Text fontSize={'xl'}>
           {"Flexible pricing, whether you're an independent artist, manager, or a major label."}

@@ -5,6 +5,8 @@ import NextLink from 'next/link';
 import HeroWave from './HeroWave';
 import HeroRight from './HeroRight';
 
+import SaleAlert from 'components/pricing/SaleAlert';
+
 const Hero = () => {
   const highlightBlue = useColorModeValue('blue.500', 'blue.300');
   const highlightGreen = useColorModeValue('green.500', 'green.300');
@@ -13,7 +15,7 @@ const Hero = () => {
   return (
     <Stack
       w="100%"
-      pt={{ base: '100px', sm: '120px', xl: '160px' }}
+      pt={{ base: '90px', sm: '110px', xl: '130px' }}
       pb={'250px'}
       position={'relative'}
       spacing={0}
@@ -30,7 +32,9 @@ const Hero = () => {
       >
         <HeroWave></HeroWave>
       </Stack>
+
       <Stack zIndex="banner" spacing={'25px'} maxWidth={'container.lg'} w="90%">
+        <SaleAlert></SaleAlert>
         <Stack
           spacing={{ base: '25px', lg: 0 }}
           direction={{ base: 'column-reverse', lg: 'row' }}
