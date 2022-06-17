@@ -9,6 +9,7 @@ import { Icon } from '@chakra-ui/react';
 import { NavBarLink } from 'components/pageItems/Nav/types';
 import { EnrichedWorkspace } from 'types/common';
 import { hasPaidPlan } from 'utils/billing';
+import SaleBadge from 'components/pricing/SaleBadge';
 
 type NavLinkSection = { links: NavBarLink[]; name?: string };
 
@@ -82,6 +83,7 @@ export const appLinks: NavLinkConfig = {
           href: `/workspaces/${currentWorkspace?.id}/upgrade`,
           text: 'Upgrade',
           activeRegex: /^\/workspaces\/.+\/upgrade/,
+          rightContent: !currentWorkspace?.subscription && <SaleBadge></SaleBadge>,
         },
     ].filter(Boolean) as NavBarLink[],
   }),
