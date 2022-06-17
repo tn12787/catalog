@@ -19,15 +19,9 @@ import { BiMenu } from 'react-icons/bi';
 import LoginButtons from './LoginButtons';
 import MarketingLinks from './MarketingLinks';
 import Wordmark from './Wordmark';
+import { links } from './links';
 
 import useAppColors from 'hooks/useAppColors';
-
-const links = [
-  { label: 'Home', href: '/' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'About us', href: '/about' },
-  { label: 'Contact', href: '/contact-us' },
-];
 
 const MarketingNavBar = () => {
   const { border } = useAppColors();

@@ -11,6 +11,7 @@ import PricingContent from 'components/pricing/PricingContent';
 import Card from 'components/Card';
 import { getProductsIsomorphic } from 'backend/isomorphic/payments/products';
 import { ProductResponse } from 'types/billing';
+import SaleAlert from 'components/pricing/SaleAlert';
 
 type Props = {
   products: ProductResponse[];
@@ -20,12 +21,14 @@ const PricingPage = ({ products }: Props) => {
   const { bgPrimary } = useAppColors();
 
   return (
-    <Stack bg={bgPrimary} minH={'100vh'} alignItems={'center'} pt={'150px'}>
+    <Stack bg={bgPrimary} minH={'100vh'} alignItems={'center'} pt={'100px'}>
       <PageHead title={'Pricing'}></PageHead>
       <Stack spacing={'25px'} maxWidth={'container.lg'} w="90%">
+        <SaleAlert></SaleAlert>
         <Heading fontSize={'5xl'} colorScheme="green">
           Pricing
         </Heading>
+
         <Text fontSize={'xl'}>
           {"Flexible pricing, whether you're an independent artist, manager, or a major label."}
         </Text>
