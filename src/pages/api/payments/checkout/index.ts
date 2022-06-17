@@ -7,10 +7,9 @@ import {
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
 
-import { getOrCreateStripeCustomer } from './../../../../backend/apiUtils/stripe/customers';
-
+import { getOrCreateStripeCustomer } from 'backend/apiUtils/stripe/customers';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { stripe } from 'backend/apiUtils/stripe/server';
 import { CreateCheckoutSessionDto } from 'backend/models/payments/checkout/create';
@@ -54,9 +53,13 @@ class CheckoutHandler {
 
     const price = await stripe.prices.retrieve(priceId);
 
-    const redirectUrl = `${process.env.NEXTAUTH_URL}${
+    const defaultRedirectPath = `${process.env.NEXTAUTH_URL}${
       redirectPath ?? `/workspaces/${workspaceId}/settings`
     }`;
+
+    const redirectUrl = redirectPath
+      ? `${process.env.NEXTAUTH_URL}${redirectPath}`
+      : defaultRedirectPath;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -83,8 +86,8 @@ class CheckoutHandler {
         metadata,
       },
 
-      success_url: `${redirectUrl}`,
-      cancel_url: redirectUrl,
+      success_url: redirectUrl,
+      cancel_url: defaultRedirectPath,
     });
 
     return { sessionId: session.id };
