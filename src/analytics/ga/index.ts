@@ -1,20 +1,21 @@
 import { GAEventArgs } from './types';
 
-const pageview = (url: string, userId?: string) => {
-  window.gtag('config', 'G-MSZB8E8P4E', {
-    page_path: url,
-    user_id: userId,
-  });
+const pageview = (url: string) => {
+  window?.gtag &&
+    window.gtag('config', 'G-MSZB8E8P4E', {
+      page_path: url,
+    });
 };
 
 const event = ({ action, params }: GAEventArgs) => {
-  window.gtag('event', action, params);
+  window?.gtag && window.gtag('event', action, params);
 };
 
 const trackIdentity = (id: string) => {
-  window.gtag('config', 'G-MSZB8E8P4E', {
-    user_id: id,
-  });
+  window?.gtag &&
+    window.gtag('config', 'G-MSZB8E8P4E', {
+      user_id: id,
+    });
 };
 
 const ga = {
