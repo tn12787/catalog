@@ -7,7 +7,7 @@ import ga from '..';
 import { ExtendedSession } from 'types/auth';
 
 const AnalyticsProvider: React.FC = ({ children }) => {
-  const { data } = useSession();
+  const { data, status } = useSession();
   const router = useRouter();
   useEffect(() => {
     const handleRouteChange = (url: string) => {
@@ -24,7 +24,7 @@ const AnalyticsProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const session = data as ExtendedSession;
     session && ga.trackIdentity(session.token.sub);
-  }, [data]);
+  }, [data, status]);
 
   return <>{children}</>;
 };
