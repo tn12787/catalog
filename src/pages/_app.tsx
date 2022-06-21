@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { QueryClient, QueryClientProvider, QueryErrorResetBoundary } from 'react-query';
 import { Hydrate } from 'react-query/hydration';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -10,12 +10,11 @@ import { SessionProvider } from 'next-auth/react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RetryValue } from 'react-query/types/core/retryer';
 import Script from 'next/script';
-import { useRouter } from 'next/router';
 
 import ChakraSSRProvider, { getServerSideProps } from 'components/ChakraSSRProvider';
 import SomethingWentWrong from 'components/SomethingWentWrong';
+import AnalyticsProvider from 'analytics/ga/AnalyticsProvider';
 import { shouldRetryQuery } from 'utils/queries';
-import ga from 'analytics/ga';
 
 import 'focus-visible/dist/focus-visible';
 import '../index.css';
@@ -32,7 +31,6 @@ interface Props extends Omit<AppProps, 'Component'> {
 }
 
 const MyApp = ({ Component, pageProps }: Props) => {
-  const router = useRouter();
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -44,18 +42,6 @@ const MyApp = ({ Component, pageProps }: Props) => {
       })
   );
   const Layout = Component.getLayout ? Component.getLayout() : Box;
-
-  useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      ga.pageview(url, pageProps.session?.token.sub);
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events, pageProps.session]);
 
   return (
     <React.StrictMode>
@@ -69,26 +55,26 @@ const MyApp = ({ Component, pageProps }: Props) => {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'G-MSZB8E8P4E'. {
-            'user_id': '${pageProps.session?.token.sub}',
-          });
+          gtag('config', 'G-MSZB8E8P4E');
         `}
       </Script>
       <SessionProvider session={pageProps.session}>
         <DndProvider backend={HTML5Backend}>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
-              <ChakraSSRProvider>
-                <Layout>
-                  <QueryErrorResetBoundary>
-                    {({ reset }) => (
-                      <ErrorBoundary onReset={reset} FallbackComponent={SomethingWentWrong}>
-                        <Component {...pageProps} />
-                      </ErrorBoundary>
-                    )}
-                  </QueryErrorResetBoundary>
-                </Layout>
-              </ChakraSSRProvider>
+              <AnalyticsProvider>
+                <ChakraSSRProvider>
+                  <Layout>
+                    <QueryErrorResetBoundary>
+                      {({ reset }) => (
+                        <ErrorBoundary onReset={reset} FallbackComponent={SomethingWentWrong}>
+                          <Component {...pageProps} />
+                        </ErrorBoundary>
+                      )}
+                    </QueryErrorResetBoundary>
+                  </Layout>
+                </ChakraSSRProvider>
+              </AnalyticsProvider>
             </Hydrate>
           </QueryClientProvider>
         </DndProvider>
