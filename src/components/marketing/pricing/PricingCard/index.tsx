@@ -67,7 +67,9 @@ const PricingCard = ({
           )}
         </Text>
         <Box h={1} w="50px" bg={accentColor}></Box>
-        <Text color={bodySub}>{priceInfo.flavorText}</Text>
+        <Text minH="50px" color={bodySub}>
+          {priceInfo.flavorText}
+        </Text>
         <Stack>
           <Skeleton alignSelf={'flex-start'} isLoaded={!isLoading}>
             <HStack>

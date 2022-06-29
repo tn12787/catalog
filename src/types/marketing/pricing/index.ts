@@ -2,7 +2,7 @@ import { ThemingProps } from '@chakra-ui/react';
 
 import { ProductResponse } from 'types/billing';
 
-export type PlanName = 'artist' | 'manager' | 'label';
+export type PlanName = 'artist' | 'plus' | 'manager' | 'label';
 
 export type PricingStructure = {
   product: ProductResponse | undefined;
