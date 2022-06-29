@@ -43,8 +43,8 @@ const PricingTable = ({ onPlanSelected, workspace, billingCycle, products, isLoa
           isLoading={isLoading}
           workspace={workspace}
           billingCycle={billingCycle}
-          priceInfo={enrichedPriceData.artist}
-          isHighlighted={workspace && !workspace.subscription}
+          priceInfo={enrichedPriceData.plus}
+          isHighlighted={workspace?.subscription?.productName === 'Plus Plan'}
           onPlanSelected={onPlanSelected}
         ></ProductHeader>
         <ProductHeader

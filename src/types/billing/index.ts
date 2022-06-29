@@ -1,7 +1,7 @@
 import { BillingInterval } from '@prisma/client';
 import Stripe from 'stripe';
 
-export type ProductName = 'Manager Plan' | 'Label Plan';
+export type ProductName = 'Plus Plan' | 'Manager Plan' | 'Label Plan';
 
 export type MappedSubscription = {
   productName: ProductName;

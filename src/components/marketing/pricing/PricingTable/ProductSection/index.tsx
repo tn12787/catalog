@@ -33,7 +33,7 @@ const ProductSection = ({ section }: Props) => {
             >
               {row.featureName}
             </Text>
-            <ProductValue isLastRow={isLastRow} value={row.artist}></ProductValue>
+            <ProductValue isLastRow={isLastRow} value={row.plus}></ProductValue>
             <ProductValue isLastRow={isLastRow} value={row.manager} isPremium></ProductValue>
             <ProductValue isLastRow={isLastRow} value={row.label} isPremium></ProductValue>
           </>
