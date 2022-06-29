@@ -171,6 +171,7 @@ export const priceData = (products: ProductResponse[]): Record<PlanName, Pricing
     flavorText: 'Release lots of music with multiple projects',
     colorScheme: 'pink',
     featureItems: [
+      'Everything in Artist and:',
       'Manage up to 4 Artists',
       '10 Releases/Month',
       // 'Ready-made Release plans',

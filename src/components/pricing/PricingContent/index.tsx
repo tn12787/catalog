@@ -52,15 +52,16 @@ const PricingContent = ({
           Save 20% on yearly billing
         </Text>
       </Stack>
-      <PricingCard
-        isLoading={isLoading}
-        workspace={workspace}
-        billingCycle={selectedBillingCycle}
-        priceInfo={enrichedPrices.artist}
-        isHighlighted={workspace && !workspace.subscription}
-        onPlanSelected={onPlanSelected}
-      ></PricingCard>
+
       <Stack spacing={5} direction={{ base: 'column', md: 'row' }}>
+        <PricingCard
+          isLoading={isLoading}
+          workspace={workspace}
+          billingCycle={selectedBillingCycle}
+          priceInfo={enrichedPrices.artist}
+          isHighlighted={workspace && !workspace.subscription}
+          onPlanSelected={onPlanSelected}
+        ></PricingCard>
         <PricingCard
           isLoading={isLoading}
           workspace={workspace}
