@@ -6,6 +6,8 @@ import { EnrichedWorkspace } from 'types/common';
 
 const badgeFromWorkspace = (workspace: EnrichedWorkspace | undefined) => {
   switch (workspace?.subscription?.productName) {
+    case 'Plus Plan':
+      return 'Plus';
     case 'Manager Plan':
       return 'Manager';
     case 'Label Plan':
@@ -18,6 +20,8 @@ const badgeFromWorkspace = (workspace: EnrichedWorkspace | undefined) => {
 const badgeColorSchemeFromWorkspace = (workspace: EnrichedWorkspace | undefined) => {
   const enrichedPrices = priceData([]);
   switch (workspace?.subscription?.productName) {
+    case 'Plus Plan':
+      return enrichedPrices.plus.colorScheme;
     case 'Manager Plan':
       return enrichedPrices.manager.colorScheme;
     case 'Label Plan':

@@ -10,7 +10,8 @@ import { ClientRelease, ReleaseTaskWithAssignees } from 'types/common';
 import { FeatureKey } from 'common/features/types';
 
 export const releaseLimits: Record<PlanName, number> = {
-  artist: 5,
+  artist: 3,
+  plus: 10,
   manager: 50,
   label: 300,
 };
@@ -19,6 +20,8 @@ export const getLimitForSubscription = (
   subscription: EnrichedWorkspace['subscription']
 ): number => {
   switch (subscription?.productName) {
+    case 'Plus Plan':
+      return releaseLimits.plus;
     case 'Manager Plan':
       return releaseLimits.manager;
     case 'Label Plan':

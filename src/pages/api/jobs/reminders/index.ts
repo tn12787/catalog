@@ -1,14 +1,14 @@
-import { NotificationType, TaskStatus } from '@prisma/client';
+import { NotificationType } from '@prisma/client';
 import { createHandler, Post } from '@storyofams/next-api-decorators';
 import { differenceInCalendarDays } from 'date-fns';
 
-import { NotificationEmailData } from './../../../../types/notifications/index';
-
+import { NotificationEmailData } from 'types/notifications';
 import { sendDynamicEmail } from 'backend/apiUtils/email';
-import { daysFromNow } from 'backend/apiUtils/dates';
+import { daysBeforeNow } from 'backend/apiUtils/dates';
 import { requiresServiceAccount } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { dayDifferenceToString, taskHeadingByType } from 'utils/tasks';
+import { fetchPaidWorkspaceMembersToNotify } from 'utils/reminders';
 
 const notificationTemplateId = 'd-1b8a97cb16f946ef8b1379f2a61a56a4';
 
@@ -16,51 +16,24 @@ const notificationTemplateId = 'd-1b8a97cb16f946ef8b1379f2a61a56a4';
 class RemindersHandler {
   @Post()
   async runJob() {
-    const tasksAreOutstanding = {
-      AND: {
-        status: { not: TaskStatus.COMPLETE },
-        dueDate: { lte: daysFromNow(2) },
-      },
-    };
+    const workspaceMembersToNotify = await fetchPaidWorkspaceMembersToNotify();
 
-    const workspaceMembersToNotify = await prisma.workspaceMember.findMany({
-      where: {
-        tasksAssigned: {
-          some: tasksAreOutstanding,
-        },
-      },
-      include: {
-        user: { include: { emailPreferences: true } },
-        workspace: true,
-        tasksAssigned: {
-          where: tasksAreOutstanding,
-          select: {
-            id: true,
-            type: true,
-            name: true,
-            release: { select: { name: true } },
-            status: true,
-            dueDate: true,
-          },
-        },
-      },
-    });
-
-    const distilledNotifications = workspaceMembersToNotify.map(
-      ({ tasksAssigned, id, ...rest }) => {
-        return {
-          ...rest,
-          notifications: tasksAssigned.map((tasks) => ({
+    // for each workspace member, look for tasks that are due soon, and for free users,
+    // that were due less than 7 days ago.
+    const notificationsToPost = workspaceMembersToNotify
+      .map(({ tasksAssigned, id, workspace }) => {
+        return tasksAssigned
+          .filter((task) => {
+            return workspace.subscription ? true : task.dueDate >= daysBeforeNow(7);
+          })
+          .map((task) => ({
             type: NotificationType.TASK_OVERDUE,
             workspaceMemberId: id,
-            taskId: tasks.id,
+            taskId: task.id,
             extraData: {},
-          })),
-        };
-      }
-    );
-
-    const notificationsToPost = distilledNotifications.map((item) => item.notifications).flat(1);
+          }));
+      })
+      .flat();
 
     await prisma.notification.createMany({
       data: notificationsToPost,
