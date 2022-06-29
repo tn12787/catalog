@@ -14,7 +14,7 @@ const freeTasksAreOutstanding = {
   ...tasksAreOutstanding,
   AND: {
     ...tasksAreOutstanding.AND,
-    dueDate: { ...tasksAreOutstanding.AND.dueDate, gte: daysBeforeNow(2) },
+    dueDate: { ...tasksAreOutstanding.AND.dueDate, gte: daysBeforeNow(7) },
   },
 };
 
