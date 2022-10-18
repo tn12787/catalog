@@ -1,9 +1,18 @@
 import { Flex, HStack, Stack } from '@chakra-ui/react';
 import React from 'react';
 import { ReleaseTaskType, TaskStatus } from '@prisma/client';
+import { chakra, shouldForwardProp } from '@chakra-ui/react';
+import { motion, isValidMotionProp } from 'framer-motion';
 
 import HeroRightListItem from './HeroRightListItem';
 import HeroCircle from './HeroCircle';
+
+const ChakraBox = chakra(motion.div, {
+  /**
+   * Allow motion props and non-Chakra props to be forwarded.
+   */
+  shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
+});
 
 const HeroRight = () => {
   return (
@@ -13,7 +22,8 @@ const HeroRight = () => {
       w="100%"
       justifyContent={{ base: 'center', lg: 'flex-end' }}
     >
-      <Stack
+      <ChakraBox
+        as={Stack}
         animate={{ translateY: '5px' }}
         maxW={{ base: '220px', lg: '270px' }}
         w="100%"
@@ -39,7 +49,7 @@ const HeroRight = () => {
           type={ReleaseTaskType.GENERIC}
           status={TaskStatus.OUTSTANDING}
         />
-      </Stack>
+      </ChakraBox>
       <Flex
         display={{ base: 'none', sm: 'flex' }}
         h={{ base: '250px', md: '250px' }}

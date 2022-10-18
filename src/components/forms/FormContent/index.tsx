@@ -1,12 +1,12 @@
 import { Stack, StackProps } from '@chakra-ui/react';
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 
 import FormField from './FormField';
 
 import { FormDatum } from 'types/forms';
 
-interface Props<T> extends StackProps {
+interface Props<T extends FieldValues> extends StackProps {
   config: FormDatum<T>[];
   register: UseFormReturn<T>['register'];
   errors: UseFormReturn<T>['formState']['errors'];
@@ -14,10 +14,16 @@ interface Props<T> extends StackProps {
 }
 
 interface FormContentComponent {
-  <T>(props: Props<T>): JSX.Element | null;
+  <T extends FieldValues>(props: Props<T>): JSX.Element | null;
 }
 
-const FormContent = <T,>({ errors, config, register, control, ...rest }: Props<T>) => {
+const FormContent = <T extends FieldValues>({
+  errors,
+  config,
+  register,
+  control,
+  ...rest
+}: Props<T>) => {
   return (
     <Stack py={6} spacing={5} width="100%" margin="0 auto" {...rest}>
       {config.map((item) => (
