@@ -64,11 +64,7 @@ const TracksCard = ({ releaseData }: Props) => {
           <ModalHeader>Add a track</ModalHeader>
           <ModalBody>
             <Stack>
-              <SearchBa>
-                <p>
-                  <Text>boio</Text>
-                </p>
-              </SearchBa>
+              <Text>boio</Text>
             </Stack>
           </ModalBody>
           <ModalCloseButton></ModalCloseButton>
