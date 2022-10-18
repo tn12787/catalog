@@ -76,7 +76,7 @@ const WelcomePage = () => {
             <Image src={logoSrc} alt="Brand logo"></Image>
           </Box>
           {isAnythingLoading ? (
-            <Spinner colorScheme={'purple'} size="xl" time="1s"></Spinner>
+            <Spinner colorScheme={'purple'} size="xl" speed="1s"></Spinner>
           ) : (
             <Stack spacing={6}>
               <WizardSteps variant="bars" steps={steps} currentStep={index}></WizardSteps>

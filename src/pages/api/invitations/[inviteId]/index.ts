@@ -1,6 +1,6 @@
-import { createHandler, Request, NotFoundException, Delete } from '@storyofams/next-api-decorators';
+import { createHandler, Request, NotFoundException, Delete } from 'next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';

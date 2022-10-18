@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider, QueryErrorResetBoundary } from 'react
 import { Hydrate } from 'react-query/hydration';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RetryValue } from 'react-query/types/core/retryer';
@@ -26,11 +27,14 @@ import '@fontsource/inter/700.css';
 import '@fontsource/inter/800.css';
 import '@fontsource/inter/variable.css';
 
-interface Props extends Omit<AppProps, 'Component'> {
-  Component: NextPage & { getLayout?: () => React.FC<any> };
+interface Props<P> extends Omit<AppProps<P>, 'Component'> {
+  Component: NextPage<P> & { getLayout?: () => React.FC<any> };
 }
 
-const MyApp = ({ Component, pageProps }: Props) => {
+const MyApp = ({
+  Component,
+  pageProps,
+}: Props<{ dehydratedState: unknown; session: Session | null | undefined }>) => {
   const [queryClient] = React.useState(
     () =>
       new QueryClient({

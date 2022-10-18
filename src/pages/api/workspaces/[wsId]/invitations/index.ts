@@ -5,13 +5,13 @@ import {
   Post,
   Request,
   ConflictException,
-} from '@storyofams/next-api-decorators';
+} from 'next-api-decorators';
 
 import { ForbiddenException } from './../../../../../backend/apiUtils/exceptions';
 
 import { isBackendFeatureEnabled } from 'common/features';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';

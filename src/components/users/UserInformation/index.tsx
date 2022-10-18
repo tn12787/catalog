@@ -26,13 +26,7 @@ const UserInformation = ({ user }: Props) => {
     {
       label: 'Profile image',
       content: (
-        <Avatar
-          size="lg"
-          borderRadius="md"
-          alt="user image"
-          src={user?.image ?? ''}
-          fontWeight="semibold"
-        ></Avatar>
+        <Avatar size="lg" borderRadius="md" src={user?.image ?? ''} fontWeight="semibold"></Avatar>
       ),
     },
     {
@@ -59,8 +53,9 @@ const UserInformation = ({ user }: Props) => {
       ) : (
         <>
           <DataList config={config} />
-          <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4} variant="solid">
+          <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4}>
             <Button
+              variant="solid"
               iconSpacing="1"
               onClick={() => {
                 setIsEditing(true);

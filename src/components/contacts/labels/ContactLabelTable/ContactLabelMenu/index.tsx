@@ -17,12 +17,12 @@ import ContactLabelModal from '../../ContactLabelModal';
 
 import useExtendedSession from 'hooks/useExtendedSession';
 import useAppColors from 'hooks/useAppColors';
-import { ContactWithLabels } from 'types/common';
+import { ContactLabelWithContacts } from 'types/common';
 import { hasRequiredPermissions } from 'utils/auth';
 import Dialog from 'components/Dialog';
 import useContactLabelMutations from 'hooks/data/contacts/labels/useContactLabelMutations';
 
-type Props = CellProps<ContactWithLabels>;
+type Props = CellProps<ContactLabelWithContacts>;
 
 const ContactLabelMenu = ({ value }: Props) => {
   const { workspaceMemberships, currentWorkspace } = useExtendedSession();

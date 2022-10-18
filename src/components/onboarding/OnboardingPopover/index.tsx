@@ -13,7 +13,7 @@ import {
   PopoverProps,
   PopoverCloseButton,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import OnboardingPopoverList from './OnboardingPopoverList';
 
@@ -56,7 +56,7 @@ const OnboardingPopover: React.FC<PopoverProps> = ({ children, onClose, onOpen, 
       onOpen={onPopoverOpen}
       {...rest}
     >
-      <PopoverTrigger>{children}</PopoverTrigger>
+      <PopoverTrigger>{children as ReactNode}</PopoverTrigger>
       <PopoverContent
         borderColor={border}
         shadow="xl"

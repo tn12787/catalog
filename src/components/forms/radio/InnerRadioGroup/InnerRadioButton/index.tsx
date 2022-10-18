@@ -15,6 +15,7 @@ import useAppColors from 'hooks/useAppColors';
 
 type Props = UseRadioProps & {
   size?: ThemingProps<'InnerRadioButton'>['size'];
+  children?: React.ReactNode;
 };
 
 const InnerRadioButton: React.FC<Props> = ({ size, ...props }) => {

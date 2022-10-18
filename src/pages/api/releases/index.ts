@@ -11,14 +11,14 @@ import {
   Query,
   Request,
   ValidationPipe,
-} from '@storyofams/next-api-decorators';
+} from 'next-api-decorators';
 import { Release, ReleaseType, ReleaseTaskType, TaskStatus } from '@prisma/client';
 import { pickBy } from 'lodash';
 import { endOfMonth, startOfMonth } from 'date-fns';
 
 import { canAddAnotherRelease } from 'utils/releases';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { buildCreateReleaseTaskArgs } from 'backend/apiUtils/tasks';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import { CreateReleaseDto } from 'backend/models/releases/create';

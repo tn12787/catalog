@@ -7,9 +7,9 @@ import {
   Query,
   Req,
   ValidationPipe,
-} from '@storyofams/next-api-decorators';
+} from 'next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { CreateContactLabelDto } from 'backend/models/contacts/labels/create';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';

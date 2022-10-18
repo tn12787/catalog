@@ -5,7 +5,7 @@ import {
   Post,
   Request,
   ValidationPipe,
-} from '@storyofams/next-api-decorators';
+} from 'next-api-decorators';
 
 import { getOrCreateStripeCustomer } from 'backend/apiUtils/stripe/customers';
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';

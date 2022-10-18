@@ -28,7 +28,7 @@ const useCommentMutations = ({ id }: UseTaskMutationArgs) => {
   );
 
   const onError = useCallback(
-    (message) => {
+    (message: string) => {
       toast({
         title: 'Oh no',
         description: message,

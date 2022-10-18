@@ -8,7 +8,7 @@ import { EmailData } from './types';
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY as string);
 client.setApiKey(process.env.SENDGRID_API_KEY as string);
 
-export const sendDynamicEmail = async <T>({
+export const sendDynamicEmail = async <T extends Record<string, any>>({
   to,
   templateId,
   dynamicTemplateData,

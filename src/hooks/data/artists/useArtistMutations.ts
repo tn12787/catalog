@@ -12,7 +12,7 @@ const useArtistMutations = () => {
   const toast = useToast();
 
   const onSuccess = useCallback(
-    (message) => {
+    (message: string) => {
       toast({
         status: 'success',
         title: message,
@@ -23,7 +23,7 @@ const useArtistMutations = () => {
   );
 
   const onError = useCallback(
-    (message, detail) => {
+    (message: string, detail: string) => {
       toast({
         title: message,
         description: detail,

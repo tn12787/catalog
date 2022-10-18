@@ -22,7 +22,6 @@ const WorkspaceInformation = () => {
         <Avatar
           size="lg"
           borderRadius="md"
-          alt="workspace_image"
           name={workspace?.name}
           src={workspace?.imageUrl ?? ''}
           fontWeight="semibold"
@@ -51,7 +50,7 @@ const WorkspaceInformation = () => {
       ) : (
         <>
           <DataList config={config} />
-          <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4} variant="solid">
+          <Stack direction={{ base: 'column', md: 'row' }} px={4} spacing={4}>
             <Button
               iconSpacing="1"
               onClick={() => {

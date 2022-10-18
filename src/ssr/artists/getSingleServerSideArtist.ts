@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
-import { AuthDecoratedRequest } from 'types/auth';
 
+import type { AuthDecoratedRequest } from 'types/auth';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 import { getArtistByIdIsomorphic } from 'backend/isomorphic/artists';
 

@@ -12,7 +12,7 @@ const useContactMutations = () => {
   const toast = useToast();
 
   const onSuccess = useCallback(
-    (message) => {
+    (message: string) => {
       toast({
         status: 'success',
         title: message,
@@ -23,7 +23,7 @@ const useContactMutations = () => {
   );
 
   const onError = useCallback(
-    (message) => {
+    (message: string) => {
       toast({
         title: 'Oh no',
         description: message,

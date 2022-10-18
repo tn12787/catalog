@@ -59,7 +59,7 @@ const CalendarEvent = <T extends BaseEvent = ReleaseEvent>({
           bg={deriveBadgeColorFromStatus(event)}
         ></Box>
       </Tooltip>
-      <Text isTruncated>
+      <Text noOfLines={1}>
         {taskHeadingByType(
           event.data.name,
           event?.data?.type as ReleaseTaskType,

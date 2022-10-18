@@ -1,4 +1,4 @@
-import { createHandler, Get } from '@storyofams/next-api-decorators';
+import { createHandler, Get } from 'next-api-decorators';
 
 import { getProductsIsomorphic } from 'backend/isomorphic/payments/products';
 

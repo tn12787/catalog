@@ -63,7 +63,7 @@ const ImageSelect = ({
           bg={bgPrimary}
           opacity={0.7}
         >
-          <Spinner isLoading={uploading} />
+          <Spinner />
         </Flex>
       )}
     </Stack>

@@ -80,7 +80,7 @@ export default NextAuth({
             },
           },
         });
-        session.accessToken = token.accessToken;
+        (session as any).accessToken = token.accessToken;
         return { ...session, token: { ...token, workspaceMemberships: userWorkspaces }, user };
       } catch (e) {
         console.error(e);

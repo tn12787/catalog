@@ -60,7 +60,6 @@ const EditArtworkFormBody = ({
             <Image
               borderRadius="5px"
               width="100%"
-              aspectRatio={1}
               objectFit="cover"
               alt="completed artwork"
               src={

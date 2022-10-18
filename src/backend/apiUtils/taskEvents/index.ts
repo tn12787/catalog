@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash';
 import { TaskEventType } from '@prisma/client';
-import { BadRequestException, NotFoundException } from '@storyofams/next-api-decorators';
+import { BadRequestException, NotFoundException } from 'next-api-decorators';
 
 import {
   CreateAssigneesEventData,

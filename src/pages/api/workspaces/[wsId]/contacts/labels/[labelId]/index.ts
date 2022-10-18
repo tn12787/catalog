@@ -1,6 +1,6 @@
-import { createHandler, Req, Patch, Body, Delete } from '@storyofams/next-api-decorators';
+import { createHandler, Req, Patch, Body, Delete } from 'next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { UpdateContactLabelDto } from 'backend/models/contacts/labels/update';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { PathParam } from 'backend/apiUtils/decorators/routing';

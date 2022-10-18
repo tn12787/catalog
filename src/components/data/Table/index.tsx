@@ -2,7 +2,6 @@ import { Text, Box, Stack, Skeleton } from '@chakra-ui/react';
 import { Thead, Tbody, Tr, Th, Table as ChakraTable, Td } from '@chakra-ui/table';
 import React, { useMemo } from 'react';
 import {
-  Cell,
   Column,
   IdType,
   useFlexLayout,
@@ -71,13 +70,13 @@ const Table = <T extends object>({
         hooks.visibleColumns.push((columns) => [
           {
             id: 'selection',
-            Header: ({ getToggleAllPageRowsSelectedProps }) => (
+            Header: ({ getToggleAllRowsSelectedProps }) => (
               <div>
-                <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
+                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
               </div>
             ),
 
-            Cell: ({ row }: Cell<T>) => (
+            Cell: ({ row }: any) => (
               <Stack justifyContent="center">
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Stack>

@@ -9,7 +9,9 @@ import ContactMenu from './ContactMenu';
 import { ContactWithLabels } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 
-function LabelList({ value }: CellProps<ContactWithLabels, ContactLabel[]>) {
+function LabelList({ value }: CellProps<ContactWithLabels, ContactLabel[] | undefined>) {
+  if (!value) return null;
+
   return (
     <Wrap>
       {value.map((label) => (
@@ -19,10 +21,10 @@ function LabelList({ value }: CellProps<ContactWithLabels, ContactLabel[]>) {
   );
 }
 
-function Website({ value }: CellProps<ContactWithLabels, string>) {
+function Website({ value }: CellProps<ContactWithLabels, string | null>) {
   const { primary } = useAppColors();
   return (
-    <Link isExternal href={value} color={primary}>
+    <Link isExternal href={value as string} color={primary}>
       {value}
     </Link>
   );
