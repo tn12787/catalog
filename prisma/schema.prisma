@@ -181,19 +181,21 @@ model VerificationToken {
 }
 
 model Artist {
-  id                String    @id @default(cuid())
-  name              String
-  legalName         String?
-  spotifyId         String?
-  instagramUsername String?
-  tiktokUsername    String?
-  imageUrl          String?
-  linkTreeUrl       String?
-  workspace         Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId       String
-  releases          Release[]
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime? @updatedAt
+  id                 String         @id @default(cuid())
+  name               String
+  legalName          String?
+  spotifyId          String?
+  instagramUsername  String?
+  tiktokUsername     String?
+  imageUrl           String?
+  linkTreeUrl        String?
+  workspace          Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId        String
+  releases           Release[]
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime?      @updatedAt
+  tracksAsMainArtist ReleaseTrack[] @relation("mainArtists")
+  tracksAsFeaturing  ReleaseTrack[] @relation("featuringArtists")
 
   @@unique([name, workspaceId])
 }
@@ -210,9 +212,21 @@ model Release {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime?   @updatedAt
 
-  tasks ReleaseTask[]
+  tasks  ReleaseTask[]
+  tracks ReleaseTrack[]
 
   @@unique([name, artistId, workspaceId])
+}
+
+model ReleaseTrack {
+  id               String    @id @default(cuid())
+  name             String
+  lyrics           String?
+  mainArtists      Artist[]  @relation("mainArtists")
+  featuringArtists Artist[]  @relation("featuringArtists")
+  releases         Release[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
 }
 
 model Contact {
