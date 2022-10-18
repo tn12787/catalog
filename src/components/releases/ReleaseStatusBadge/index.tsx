@@ -44,7 +44,7 @@ const releaseToBadge = (releaseData: ClientRelease) => {
 const ReleaseStatusBadge = ({ releaseData }: Props) => {
   const { label, color } = releaseToBadge(releaseData);
   return (
-    <Tag size="sm" isTruncated borderRadius={30} flexGrow={0} variant="solid" colorScheme={color}>
+    <Tag size="sm" noOfLines={1} borderRadius={30} flexGrow={0} variant="solid" colorScheme={color}>
       {label}
     </Tag>
   );

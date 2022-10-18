@@ -27,8 +27,8 @@ export const workspaceMembersColumns: Column<WorkspaceMemberWithUserAndRoles>[] 
           <HStack spacing={3}>
             <Avatar size="sm" name={value.name} src={value.photo} />
             <Stack overflowX={'hidden'} spacing={0}>
-              <Text isTruncated>{value.name}</Text>
-              <Text isTruncated color={textColor} fontSize="xs">
+              <Text noOfLines={1}>{value.name}</Text>
+              <Text noOfLines={1} color={textColor} fontSize="xs">
                 {value.email}
               </Text>
             </Stack>

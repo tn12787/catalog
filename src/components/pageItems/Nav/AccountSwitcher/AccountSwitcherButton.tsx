@@ -48,7 +48,7 @@ export const AccountSwitcherButton = ({
         />
         <Stack overflow="hidden" textAlign="start" spacing={0}>
           <HStack>
-            <Text isTruncated fontWeight="semibold">
+            <Text noOfLines={1} fontWeight="semibold">
               {workspace?.name ?? 'isLoading'}
             </Text>
             <PlanBadge workspace={workspace as EnrichedWorkspace}></PlanBadge>

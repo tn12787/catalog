@@ -24,7 +24,7 @@ const RoleBadge = ({ role, editable, onClick, onRemoveClick, inline }: Props) =>
       bg={inline ? 'transparent' : bgPrimary}
       onClick={() => onClick?.(role)}
     >
-      <Text color={bodyText} isTruncated fontSize="xs" fontWeight="semibold">
+      <Text color={bodyText} noOfLines={1} fontSize="xs" fontWeight="semibold">
         {role.name ?? 'Role'}
       </Text>
       {editable && (
