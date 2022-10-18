@@ -70,27 +70,15 @@ const Table = <T extends object>({
         hooks.visibleColumns.push((columns) => [
           {
             id: 'selection',
-            Header: ({ table }) => (
+            Header: ({ getToggleAllRowsSelectedProps }) => (
               <div>
-                <IndeterminateCheckbox
-                  {...{
-                    checked: table.getIsAllRowsSelected(),
-                    indeterminate: table.getIsSomeRowsSelected(),
-                    onChange: table.getToggleAllRowsSelectedHandler(),
-                  }}
-                />
+                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
               </div>
             ),
 
             Cell: ({ row }: any) => (
               <Stack justifyContent="center">
-                <IndeterminateCheckbox
-                  {...{
-                    checked: row.getIsSelected(),
-                    indeterminate: row.getIsSomeSelected(),
-                    onChange: row.getToggleSelectedHandler(),
-                  }}
-                />
+                <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Stack>
             ),
             width: 20,
