@@ -13,6 +13,7 @@ import PageHead from 'components/pageItems/PageHead';
 import { getSingleServerSideRelease } from 'ssr/releases/getSingleServerSideRelease';
 import useSingleRelease from 'hooks/data/releases/useSingleRelease';
 import MarketingCard from 'components/releases/specific/tasks/generic/MarketingCard';
+import TracksCard from 'components/releases/specific/TracksCard';
 
 interface Props {
   release: ClientRelease;
@@ -31,6 +32,7 @@ const SpecificRelease = ({ release }: Props) => {
       <HeaderSection releaseData={resolvedData} />
       <Stack mb={4} spacing={4} width="90%" maxW={'container.lg'}>
         <Summary releaseData={resolvedData} />
+        <TracksCard releaseData={resolvedData}></TracksCard>
         <ReleasePrepCard isLoading={isLoading} releaseData={resolvedData}></ReleasePrepCard>
         <MarketingCard isLoading={isLoading} releaseData={resolvedData}></MarketingCard>
         <Events releaseData={resolvedData} />
