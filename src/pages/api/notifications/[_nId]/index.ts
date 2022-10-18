@@ -1,12 +1,6 @@
-import {
-  createHandler,
-  Req,
-  NotFoundException,
-  Patch,
-  Body,
-} from '@storyofams/next-api-decorators';
+import { createHandler, Req, NotFoundException, Patch, Body } from 'next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { ensureUserHasWorkspaceMembership } from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';

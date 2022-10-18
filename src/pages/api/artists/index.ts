@@ -10,10 +10,10 @@ import {
   Query,
   Req,
   ValidationPipe,
-} from '@storyofams/next-api-decorators';
+} from 'next-api-decorators';
 
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { canAddAnotherArtist } from 'utils/artists';
 import { RequiredQuery } from 'backend/apiUtils/decorators/routing';
 import { ArtistResponse } from 'types/common';

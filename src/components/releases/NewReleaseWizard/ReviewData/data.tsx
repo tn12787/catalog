@@ -35,7 +35,7 @@ export const renderReviewData = <
                 <CustomComponent value={data[key]} />
               ) : (
                 <>
-                  <Text>{data[key]}</Text>
+                  <Text>{data[key] as string}</Text>
                 </>
               )}
             </HStack>

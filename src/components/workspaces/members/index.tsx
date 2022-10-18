@@ -67,6 +67,7 @@ const WorkspaceMembers = ({ workspace, remainingSeats, isDisabled, loading }: Pr
         </HStack>
 
         <ButtonGroup
+          as={Stack}
           alignItems={{ base: 'stretch', md: 'center' }}
           direction={{ base: 'column', md: 'row' }}
           size="sm"

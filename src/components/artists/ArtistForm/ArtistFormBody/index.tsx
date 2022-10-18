@@ -55,8 +55,8 @@ const ArtistFormBody = ({ isDisabled, onSubmit, existingArtist, isLoading: loadi
         <Stack spacing={{ base: 6, lg: '50px' }} direction={{ base: 'column', lg: 'row' }}>
           <Stack w="100%">
             <Text fontWeight={'bold'}>Photo</Text>
-            <FormControl name="image">
-              <FormLabel hidden fontSize={'sm'} htmlFor="name">
+            <FormControl id="image">
+              <FormLabel hidden fontSize={'sm'} htmlFor="image">
                 Artist Image
               </FormLabel>
               <Stack alignItems={{ base: 'stretch' }} direction={{ base: 'column' }}>

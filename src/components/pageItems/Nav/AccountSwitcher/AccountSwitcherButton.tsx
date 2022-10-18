@@ -43,7 +43,6 @@ export const AccountSwitcherButton = ({
           objectFit="cover"
           src={photoUrl}
           referrerPolicy="no-referrer"
-          alt="Workspace Image"
           name={workspace?.name}
         />
         <Stack overflow="hidden" textAlign="start" spacing={0}>

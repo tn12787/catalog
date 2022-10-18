@@ -1,8 +1,9 @@
 import { Stack } from '@chakra-ui/layout';
 import React from 'react';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Link, Skeleton } from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { BiChevronRight } from 'react-icons/bi';
+import NextLink from 'next/link';
 
 import useAppColors from 'hooks/useAppColors';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
@@ -31,9 +32,9 @@ const ContactLabelsPage = () => {
         <Breadcrumb fontSize="sm" separator={<BiChevronRight color="gray.500" />}>
           <BreadcrumbItem>
             <Skeleton isLoaded={!isWorkspaceLoading}>
-              <Link passHref href={`/overview`}>
+              <NextLink passHref href={`/overview`}>
                 <BreadcrumbLink>{workspace?.name}</BreadcrumbLink>
-              </Link>
+              </NextLink>
             </Skeleton>
           </BreadcrumbItem>
 

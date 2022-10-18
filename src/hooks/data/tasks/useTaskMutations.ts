@@ -15,7 +15,7 @@ const useTaskMutations = ({ id, releaseId }: UseTaskMutationArgs) => {
   const toast = useToast();
 
   const onSuccess = useCallback(
-    (message) => {
+    (message: string) => {
       toast({
         status: 'success',
         title: message,
@@ -30,7 +30,7 @@ const useTaskMutations = ({ id, releaseId }: UseTaskMutationArgs) => {
   );
 
   const onError = useCallback(
-    (message) => {
+    (message: string) => {
       toast({
         title: 'Oh no',
         description: message,

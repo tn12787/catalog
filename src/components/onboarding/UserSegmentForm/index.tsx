@@ -86,7 +86,7 @@ const UserSegmentForm = ({ onSubmit, isLastStep }: Props) => {
             <Radio value="professional">work in a team at a label or publishing house.</Radio>
             <Collapse in={radioValue === 'professional'}>
               <Stack px={5}>
-                <FormControl isInvalid={!!errors.segment} name="segment">
+                <FormControl isInvalid={!!errors.segment} id="segment">
                   <FormLabel htmlFor="segment">What best describes what you do?</FormLabel>
                   <Select placeholder="Choose an option..." {...register('segment')}>
                     <option value={UserOnboardingSegment.LABEL_MANAGER}>Label Manager</option>

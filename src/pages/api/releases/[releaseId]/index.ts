@@ -9,10 +9,10 @@ import {
   Patch,
   Req,
   ValidationPipe,
-} from '@storyofams/next-api-decorators';
+} from 'next-api-decorators';
 import { endOfMonth, startOfMonth } from 'date-fns';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { UpdateReleaseDto } from 'backend/models/releases/update';

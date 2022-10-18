@@ -1,4 +1,4 @@
-import { createHandler, Get, NotFoundException } from '@storyofams/next-api-decorators';
+import { createHandler, Get, NotFoundException } from 'next-api-decorators';
 
 import { getEventsForRelease } from 'backend/apiUtils/events';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';

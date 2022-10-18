@@ -24,7 +24,11 @@ import useAppColors from 'hooks/useAppColors';
 import useNotifications from 'hooks/data/notifications/useNotifications';
 import useUpdateAllNotifications from 'hooks/data/notifications/useUpdateAllNotifications.ts';
 
-const NotificationPopover: React.FC = ({ children }) => {
+type Props = {
+  children?: React.ReactNode;
+};
+
+const NotificationPopover: React.FC<Props> = ({ children }) => {
   const { bgSecondary, primary, border } = useAppColors();
 
   const { data: notifications, isLoading } = useNotifications({});

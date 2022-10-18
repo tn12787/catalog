@@ -1,9 +1,9 @@
-import { NotFoundException } from '@storyofams/next-api-decorators';
+import { NotFoundException } from 'next-api-decorators';
 
 import { EnrichedWorkspace } from 'types/common';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import prisma from 'backend/prisma/client';
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 
 export const getWorkspaceByIdIsomorphic = async (
   req: AuthDecoratedRequest,

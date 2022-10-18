@@ -1,5 +1,5 @@
 import { ReleaseTaskType } from '@prisma/client';
-import { InternalServerErrorException } from '@storyofams/next-api-decorators';
+import { InternalServerErrorException } from 'next-api-decorators';
 
 import { flattenField } from '../transforms/releases';
 

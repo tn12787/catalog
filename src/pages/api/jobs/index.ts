@@ -1,4 +1,4 @@
-import { createHandler, Post } from '@storyofams/next-api-decorators';
+import { createHandler, Post } from 'next-api-decorators';
 
 import { requiresServiceAccount } from 'backend/apiUtils/decorators/auth';
 

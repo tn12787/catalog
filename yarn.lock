@@ -2476,13 +2476,6 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@storyofams/next-api-decorators@^1.7.2":
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/@storyofams/next-api-decorators/-/next-api-decorators-1.8.2.tgz#f0d9a5697cf41f919cfbd756296f4e9fda710fb4"
-  integrity sha512-42K8xxwNd/cIOR5+t4OfRxXTATGlGzY2T/onlvVFLmKG9ci2Y/hvFnSepOE/7fiq4FnYrUA668064KxysXEUJA==
-  dependencies:
-    reflect-metadata "^0.1.13"
-
 "@stripe/stripe-js@^1.22.0":
   version "1.42.0"
   resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.42.0.tgz#6074d0ac184bd70c9e5b5bc00e126719277e0128"
@@ -2911,7 +2904,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
+"@types/react@*", "@types/react@^18.0.21":
   version "18.0.21"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.21.tgz#b8209e9626bb00a34c76f55482697edd2b43cc67"
   integrity sha512-7QUCOxvFgnD5Jk8ZKlUAhVcRj7GuJRjnjjiY/IUBWKgOlnvDvTMLD4RTF7NPyVmbRhNrbomZiOepg7M/2Kj1mA==
@@ -2920,7 +2913,7 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@^17", "@types/react@^17.0.1":
+"@types/react@^17":
   version "17.0.50"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.50.tgz#39abb4f7098f546cfcd6b51207c90c4295ee81fc"
   integrity sha512-ZCBHzpDb5skMnc1zFXAXnL3l1FAdi+xZvwxK+PkglMmBrwjpp9nKaWuEvrGnSifCJmBFGxZOOFuwC6KH/s0NuA==

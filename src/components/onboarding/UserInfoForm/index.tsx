@@ -73,7 +73,7 @@ const UserInfoForm = ({ onSubmit, isLastStep }: Props) => {
         Welcome 👋
       </Heading>
       <Text>{'Tell us a little about yourself below.'}</Text>
-      <FormControl name="name" isInvalid={!!errors.name}>
+      <FormControl id="name" isInvalid={!!errors.name}>
         <FormLabel htmlFor="name">Name</FormLabel>
         <Input
           placeholder={'Your name e.g. John Smith'}
@@ -82,19 +82,14 @@ const UserInfoForm = ({ onSubmit, isLastStep }: Props) => {
         ></Input>
         <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
       </FormControl>
-      <FormControl name="image">
+      <FormControl id="image">
         <FormLabel htmlFor="name">Profile photo</FormLabel>
         <Stack
           alignItems={{ base: 'flex-start', md: 'center' }}
           direction={{ base: 'column', md: 'row' }}
         >
           {currentImage && (
-            <Avatar
-              boxSize={{ base: '75px', md: '75px' }}
-              borderRadius="md"
-              src={currentImage}
-              alt="workspace image"
-            />
+            <Avatar boxSize={{ base: '75px', md: '75px' }} borderRadius="md" src={currentImage} />
           )}
           <ImageSelect
             maxW="200px"

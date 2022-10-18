@@ -1,4 +1,4 @@
-import { NextApiRequest } from 'next';
+import type { NextApiRequest } from 'next';
 import { Session } from 'next-auth';
 
 import { EnrichedWorkspaceMember } from 'types/common';

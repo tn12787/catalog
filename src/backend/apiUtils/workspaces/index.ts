@@ -1,5 +1,5 @@
 import { uniq } from 'lodash';
-import { NotFoundException } from '@storyofams/next-api-decorators';
+import { NotFoundException } from 'next-api-decorators';
 import { getSession } from 'next-auth/react';
 import Stripe from 'stripe';
 
@@ -8,7 +8,7 @@ import { getOrCreateStripeCustomer } from '../stripe/customers';
 import { defaultWorkspaceLabels } from './defaultLabels';
 
 import { transformSubscriptionToBasicData } from 'backend/apiUtils/transforms/subscriptions';
-import { AuthDecoratedRequest, ExtendedSession } from 'types/auth';
+import type { AuthDecoratedRequest, ExtendedSession } from 'types/auth';
 import prisma from 'backend/prisma/client';
 import { ForbiddenException } from 'backend/apiUtils/exceptions';
 import { PermissionType } from 'types/permissions';

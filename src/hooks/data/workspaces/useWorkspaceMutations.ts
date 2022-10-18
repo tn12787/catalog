@@ -13,7 +13,7 @@ const useWorkspaceMutations = () => {
   const toast = useToast();
 
   const onSuccess = useCallback(
-    (message) => {
+    (message: string) => {
       toast({
         status: 'success',
         title: message,
@@ -24,7 +24,7 @@ const useWorkspaceMutations = () => {
   );
 
   const onError = useCallback(
-    (message) => {
+    (message: string) => {
       toast({
         title: 'Oh no',
         description: message,

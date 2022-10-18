@@ -10,9 +10,9 @@ import {
   Body,
   Patch,
   BadRequestException,
-} from '@storyofams/next-api-decorators';
+} from 'next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import {
   ensureUserHasWorkspaceMembership,
   ensureUserHasWorkspaceMembershipSync,

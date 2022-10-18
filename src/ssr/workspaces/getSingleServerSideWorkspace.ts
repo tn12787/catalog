@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { getServerSideSessionOrRedirect } from 'ssr/getServerSideSessionOrRedirect';
 
 export const getSingleServerSideWorkspace: GetServerSideProps = async (ctx) => {

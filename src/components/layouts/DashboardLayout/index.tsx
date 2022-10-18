@@ -16,7 +16,11 @@ import Nav from 'components/pageItems/Nav';
 import useAppColors from 'hooks/useAppColors';
 import OnboardingButton from 'components/onboarding/OnboardingButton';
 
-const DashboardLayout: React.FC = ({ children }) => {
+type Props = {
+  children?: React.ReactNode;
+};
+
+const DashboardLayout: React.FC<Props> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { bgPrimary } = useAppColors();
   return (
@@ -40,9 +44,9 @@ const DashboardLayout: React.FC = ({ children }) => {
         >
           Open
         </IconButton>
-        <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+        <Drawer isOpen={isOpen} placement="left" size={'xs'} onClose={onClose}>
           <DrawerOverlay />
-          <DrawerContent size={'xs'} bg={bgPrimary}>
+          <DrawerContent bg={bgPrimary}>
             <Nav
               links={appLinks}
               onItemSelected={(href) => {

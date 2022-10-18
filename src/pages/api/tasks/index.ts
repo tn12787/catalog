@@ -1,8 +1,8 @@
 import { pickBy } from 'lodash';
 import { Release } from '@prisma/client';
-import { createHandler, DefaultValuePipe, Get, Query, Req } from '@storyofams/next-api-decorators';
+import { createHandler, DefaultValuePipe, Get, Query, Req } from 'next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { ArtistResponse } from 'types/common';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';

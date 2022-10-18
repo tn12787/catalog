@@ -74,11 +74,10 @@ export const AccountSwitcher = ({ onChange }: Props) => {
       <MenuList
         shadow="xl"
         py={4}
-        spacing={4}
         borderColor={border}
         color={useColorModeValue('gray.600', 'gray.200')}
       >
-        <Stack>
+        <Stack spacing={4}>
           <HStack px={4} fontSize="xs" color={bodySub}>
             <Avatar size="2xs" src={userData?.image as string} name={userData?.name as string} />
             <Text fontSize="xs">{userData?.email as string}</Text>
@@ -107,7 +106,6 @@ export const AccountSwitcher = ({ onChange }: Props) => {
                     objectFit="cover"
                     src={workspace.imageUrl ?? ''}
                     referrerPolicy="no-referrer"
-                    alt="Workspace Image"
                     name={workspace.name}
                   />
                   <Text>{workspace.name}</Text>

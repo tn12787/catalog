@@ -25,10 +25,10 @@ const UpdateNameItem = ({ event }: Props) => {
       <AssigneeBadge inline workspaceMember={event.user} />
       <Text>updated the name from</Text>
       <Text fontWeight={'semibold'} textDecoration="line-through">
-        {oldName}
+        {oldName as string}
       </Text>
       <Text>to</Text>
-      <Text fontWeight={'semibold'}>{newName}</Text>
+      <Text fontWeight={'semibold'}>{newName as string}</Text>
       <Text>{formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}</Text>
     </Wrap>
   );
