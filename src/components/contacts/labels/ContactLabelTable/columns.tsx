@@ -15,18 +15,22 @@ function ContactLabelCell({
   return <ContactLabelChip label={value} />;
 }
 
-function ContactCountCell({ value }: CellProps<ContactLabelWithContacts, Contact[]>) {
+function ContactCountCell({ value }: CellProps<ContactLabelWithContacts, Contact[] | undefined>) {
   const { bodySub } = useAppColors();
-  return value?.length > 0 ? (
+  return value?.length ?? 0 > 0 ? (
     <Text color={bodySub} fontSize={'xs'}>
-      {value.length} {maybePluralize(value.length, 'contact')} with this label
+      {value?.length} {maybePluralize(value?.length ?? 0, 'contact')} with this label
     </Text>
   ) : null;
 }
 
 export const columns: Column<ContactLabelWithContacts>[] = [
   {
-    Header: (d) => `${d.rows.length} ${maybePluralize(d.rows.length, 'label')}`,
+    Header: (d) => (
+      <Text>
+        `${d.rows.length} ${maybePluralize(d.rows.length, 'label')}`
+      </Text>
+    ),
     id: 'name',
     accessor: (d) => d,
     Cell: ContactLabelCell,

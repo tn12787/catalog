@@ -120,7 +120,7 @@ const AuthControls = ({ error, csrfToken, callbackUrl }: Props) => {
         <Text fontWeight={'semibold'} fontSize="lg">
           Use a magic link
         </Text>
-        <FormControl name="email" isInvalid={!!errors.email}>
+        <FormControl id="email" isInvalid={!!errors.email}>
           <FormLabel fontSize={'sm'} htmlFor="email">
             Email address
           </FormLabel>

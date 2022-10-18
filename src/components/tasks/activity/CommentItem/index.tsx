@@ -139,7 +139,7 @@ const CommentItem = ({ event, updates }: Props) => {
             onCancel={() => setEditing(false)}
           />
         ) : (
-          <Text whiteSpace={'pre'}>{latestCommentText}</Text>
+          <Text whiteSpace={'pre'}>{latestCommentText as string}</Text>
         )}
       </Card>
     </Stack>

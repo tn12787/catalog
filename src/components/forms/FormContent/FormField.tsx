@@ -22,7 +22,7 @@ import { InputComponentType } from './types';
 import useAppColors from 'hooks/useAppColors';
 import { FormDatum } from 'types/forms';
 
-interface Props<T> extends FormDatum<T> {
+interface Props<T extends FieldValues> extends FormDatum<T> {
   showLabel?: boolean;
   errors: UseFormReturn<T>['formState']['errors'];
   register: UseFormReturn<T>['register'];
@@ -30,7 +30,7 @@ interface Props<T> extends FormDatum<T> {
 }
 
 interface FormFieldComponent {
-  <T>(props: Props<T>): JSX.Element | null;
+  <T extends FieldValues>(props: Props<T>): JSX.Element | null;
 }
 
 const deriveComponent = (type?: string): InputComponentType => {
@@ -45,7 +45,7 @@ const deriveComponent = (type?: string): InputComponentType => {
   }
 };
 
-const FormField = <T,>({
+const FormField = <T extends FieldValues>({
   name,
   type,
   hidden,

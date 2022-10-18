@@ -12,7 +12,7 @@ export const inviteColumns: Column<Invite>[] = [
   {
     Header: '',
     accessor: (d) => d,
-    Cell: InvitationMenu,
+    Cell: InvitationMenu as any,
     id: 'actions',
     extraProps: {
       justifyContent: 'flex-end',

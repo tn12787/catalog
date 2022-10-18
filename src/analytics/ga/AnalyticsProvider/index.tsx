@@ -6,7 +6,7 @@ import ga from '..';
 
 import { ExtendedSession } from 'types/auth';
 
-const AnalyticsProvider: React.FC = ({ children }) => {
+const AnalyticsProvider: React.FC<any> = ({ children }) => {
   const { data, status } = useSession();
   const router = useRouter();
   useEffect(() => {

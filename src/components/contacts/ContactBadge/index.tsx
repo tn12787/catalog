@@ -24,7 +24,7 @@ const ContactBadge = ({ contact, editable, onClick, onRemoveClick, inline }: Pro
       bg={inline ? 'transparent' : bgPrimary}
       onClick={() => onClick?.(contact)}
     >
-      <Text color={bodyText} isTruncated fontSize="xs" fontWeight="semibold">
+      <Text color={bodyText} noOfLines={1} fontSize="xs" fontWeight="semibold">
         {contact.name ?? 'Contact'}
       </Text>
       {editable && (

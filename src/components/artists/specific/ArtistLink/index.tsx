@@ -2,7 +2,12 @@ import { HStack, LinkBox, LinkOverlay } from '@chakra-ui/react';
 import React from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 
-type Props = { icon?: React.ReactElement; href?: string; iconOnly?: boolean };
+type Props = {
+  icon?: React.ReactElement;
+  href?: string;
+  iconOnly?: boolean;
+  children?: React.ReactNode;
+};
 
 const ArtistLink: React.FC<Props> = ({ icon, href, iconOnly, children }) => {
   return (

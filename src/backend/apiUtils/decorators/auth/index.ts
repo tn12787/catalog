@@ -2,11 +2,11 @@ import {
   createMiddlewareDecorator,
   NextFunction,
   UnauthorizedException,
-} from '@storyofams/next-api-decorators';
-import { NextApiRequest, NextApiResponse } from 'next';
+} from 'next-api-decorators';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
-import { AuthDecoratedRequest, ExtendedSession } from 'types/auth';
+import type { AuthDecoratedRequest, ExtendedSession } from 'types/auth';
 
 const requiresAuth = createMiddlewareDecorator(
   async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {

@@ -42,7 +42,6 @@ const HeaderSection = ({ releaseData }: Props) => {
         <Box filter="blur(5px)" transform={'scale(1.05)'} maxH="200px" width="100%">
           <Image
             w="100%"
-            layout="responsive"
             objectFit="cover"
             backgroundSize={'cover'}
             alt="album art"

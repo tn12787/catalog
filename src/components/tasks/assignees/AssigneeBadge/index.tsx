@@ -25,7 +25,7 @@ const AssigneeBadge = ({ workspaceMember, editable, onClick, onRemoveClick, inli
       onClick={() => onClick?.(workspaceMember)}
     >
       <Avatar size="2xs" src={workspaceMember?.user.image || ''} />
-      <Text color={bodyText} isTruncated fontSize="xs" fontWeight="semibold">
+      <Text color={bodyText} noOfLines={1} fontSize="xs" fontWeight="semibold">
         {workspaceMember?.user.name ?? 'User'}
       </Text>
       {editable && (

@@ -62,13 +62,7 @@ const EditUserInfoForm = ({ onSubmit, onCancel, userData }: Props) => {
           direction={{ base: 'column', md: 'row' }}
         >
           {currentImage && (
-            <Avatar
-              size="lg"
-              borderRadius="md"
-              alt="user image"
-              src={currentImage}
-              fontWeight="semibold"
-            ></Avatar>
+            <Avatar size="lg" borderRadius="md" src={currentImage} fontWeight="semibold"></Avatar>
           )}
           <ImageSelect
             message="Choose"

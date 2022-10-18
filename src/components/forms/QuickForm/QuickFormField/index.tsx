@@ -77,7 +77,7 @@ const QuickFormField = <T extends FieldValues>({
             {!isDisabled && <Icon as={FiEdit} />}
           </HStack>
         </PopoverTrigger>
-        {renderValue ? renderValue({ value }) : <Box>{value}</Box>}
+        {renderValue ? renderValue({ value }) : <Box>{value?.toString()}</Box>}
         <PopoverContent bg={bgSecondary} w="auto" as={Stack} spacing={0}>
           <PopoverArrow bg={bgSecondary} />
           {renderEditing({ value, onChange })}

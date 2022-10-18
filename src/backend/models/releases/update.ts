@@ -1,5 +1,5 @@
 import { ReleaseType } from '@prisma/client';
-import { IsNotEmpty, IsDate, IsEnum, IsOptional } from 'class-validator';
+import { IsDate, IsEnum, IsOptional } from 'class-validator';
 
 import { ReleaseType as ReleaseTypeEnum } from 'types/common';
 

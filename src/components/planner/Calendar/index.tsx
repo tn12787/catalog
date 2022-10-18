@@ -150,7 +150,7 @@ const Calendar = <T extends BaseEvent>({
               </Text>
 
               <Stack direction={{ base: 'column', lg: 'row' }}>
-                <Stack direction="row" gutter={4}>
+                <Stack direction="row" spacing={4}>
                   <Button
                     size="xs"
                     onClick={() => setView('month')}
@@ -212,7 +212,7 @@ const Calendar = <T extends BaseEvent>({
           <Tr display="flex">
             {headers.weekDays.map(({ key, value }) => {
               return (
-                <Th flex={1} dislay="flex" textAlign="center" key={key}>
+                <Th flex={1} display="flex" textAlign="center" key={key}>
                   {format(value, 'E', { locale })}
                 </Th>
               );

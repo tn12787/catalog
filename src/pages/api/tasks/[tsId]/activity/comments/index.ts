@@ -5,10 +5,10 @@ import {
   Req,
   ValidationPipe,
   NotFoundException,
-} from '@storyofams/next-api-decorators';
+} from 'next-api-decorators';
 import { NotificationType, TaskEventType } from '@prisma/client';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';

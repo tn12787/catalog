@@ -26,7 +26,6 @@ const WorkspaceInvite = ({ invite }: Props) => {
           objectFit="cover"
           src={invite.workspace.imageUrl as string}
           referrerPolicy="no-referrer"
-          alt="Workspace Image"
           name={invite.workspace.name}
         />
         <Text fontWeight="semibold" fontSize="lg">

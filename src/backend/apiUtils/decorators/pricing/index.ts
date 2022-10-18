@@ -3,11 +3,11 @@ import {
   NextFunction,
   NotFoundException,
   ForbiddenException,
-} from '@storyofams/next-api-decorators';
-import { NextApiRequest, NextApiResponse } from 'next';
+} from 'next-api-decorators';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { getWorkspaceByIdIsomorphic } from 'backend/isomorphic/workspaces';
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { ProductName } from 'types/billing';
 import { hasPaidPlan } from 'utils/billing';
 

@@ -63,7 +63,7 @@ const ReleaseCard = ({ releaseData, loading }: ReleaseCardProps) => {
             <Skeleton isLoaded={!loading}>
               <NextLink passHref href={`/releases/${releaseData.id}`}>
                 <Link overflow={'hidden'} maxW="200px">
-                  <Text fontSize={'2xl'} maxW="sm" isTruncated fontWeight="semibold">
+                  <Text fontSize={'2xl'} maxW="sm" noOfLines={1} fontWeight="semibold">
                     {releaseData.name}
                   </Text>
                 </Link>

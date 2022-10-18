@@ -1,13 +1,7 @@
 import { Readable } from 'stream';
 
-import {
-  BadRequestException,
-  createHandler,
-  Header,
-  Post,
-  Req,
-} from '@storyofams/next-api-decorators';
-import { NextApiRequest } from 'next';
+import { BadRequestException, createHandler, Header, Post, Req } from 'next-api-decorators';
+import type { NextApiRequest } from 'next';
 import Stripe from 'stripe';
 
 import { stripe } from 'backend/apiUtils/stripe/server';

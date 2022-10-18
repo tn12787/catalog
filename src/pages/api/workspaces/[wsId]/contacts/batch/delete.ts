@@ -1,12 +1,6 @@
-import {
-  createHandler,
-  Req,
-  Body,
-  BadRequestException,
-  Post,
-} from '@storyofams/next-api-decorators';
+import { createHandler, Req, Body, BadRequestException, Post } from 'next-api-decorators';
 
-import { AuthDecoratedRequest } from 'types/auth';
+import type { AuthDecoratedRequest } from 'types/auth';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { BatchDeleteContactDto } from 'backend/models/contacts/batch/delete';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';

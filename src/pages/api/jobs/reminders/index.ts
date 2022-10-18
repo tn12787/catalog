@@ -1,5 +1,5 @@
 import { NotificationType } from '@prisma/client';
-import { createHandler, Post } from '@storyofams/next-api-decorators';
+import { createHandler, Post } from 'next-api-decorators';
 import { differenceInCalendarDays } from 'date-fns';
 
 import { NotificationEmailData } from 'types/notifications';
