@@ -25,7 +25,7 @@ interface Props<T extends object, L> extends Pick<ControllerRenderProps, 'onChan
   emptyContent?: string | JSX.Element;
 }
 
-const MultiSelect = forwardRef<HTMLSelectElement, any>(
+const MultiSelect = forwardRef<HTMLSelectElement, Props<any, any>>(
   <T extends { id: string }, L>(
     {
       value,
@@ -146,4 +146,4 @@ const MultiSelect = forwardRef<HTMLSelectElement, any>(
 
 MultiSelect.displayName = 'MultiSelect';
 
-export default React.memo(MultiSelect);
+export default React.memo(MultiSelect) as typeof MultiSelect;
