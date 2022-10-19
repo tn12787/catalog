@@ -19,6 +19,7 @@ interface Props<T extends object, L> extends Pick<ControllerRenderProps, 'onChan
   getItem: (item: T) => L;
   borderless?: boolean;
   isLoading?: boolean;
+  isDisabled?: boolean;
   searchPlaceholder?: string;
   renderListItem: (props: MultiSelectListItemProps<L>) => JSX.Element;
   renderSelectedItems: (props: SelectedItemListProps<T>) => JSX.Element;
@@ -38,6 +39,7 @@ const MultiSelect = forwardRef<HTMLSelectElement, Props<any, any>>(
       renderSelectedItems,
       getItem,
       onChange,
+      isDisabled,
       renderListItem,
       emptyContent = 'No items match your search',
     }: Props<T, L>,
@@ -94,10 +96,12 @@ const MultiSelect = forwardRef<HTMLSelectElement, Props<any, any>>(
               borderWidth={borderless ? '0' : '1px'}
               borderColor={border}
               value={searchString}
+              isDisabled={isDisabled}
               focusBorderColor={primary}
             />
             <InputRightElement>
               <IconButton
+                isDisabled={isDisabled}
                 fontSize="xl"
                 variant="ghost"
                 {...getToggleButtonProps()}
