@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 
 import WelcomePage from 'pages/welcome';
 import { renderWithProviders } from 'tests/utils/render';
@@ -15,6 +15,8 @@ describe('Welcome Page', () => {
     server.resetHandlers();
   });
 
+  afterEach(cleanup);
+
   it('Shows a the welcome page', async () => {
     const { getByText } = render();
     await waitFor(() => expect(getByText(/Welcome/)).toBeVisible());
@@ -29,7 +31,9 @@ describe('Welcome Page', () => {
 
     const NextButtonRegex = /^Next$/;
 
+    await waitFor(() => expect(getByPlaceholderText(/Your name/)).toHaveValue('Test Users'));
     fireEvent.input(getByPlaceholderText(/Your name/), { target: { value: '' } });
+    await waitFor(() => expect(getByPlaceholderText(/Your name/)).toHaveValue(''));
     expect(getByText(NextButtonRegex)).toBeDisabled();
 
     fireEvent.input(getByPlaceholderText(/Your name/), { target: { value: 'Test User' } });

@@ -28,7 +28,7 @@ const ContactSelect: React.FC<Props> = React.forwardRef<HTMLSelectElement, Props
         value={value}
         onChange={onChange}
         borderless={borderless}
-        itemToString={(item: ContactWithLabels) => item?.name || ''}
+        itemToString={(item: ContactWithLabels | null) => item?.name || ''}
         renderSelectedItems={ContactSelectedItems}
         renderListItem={(props: MultiSelectListItemProps<Contact>) => <ContactItem {...props} />}
         allItems={allContacts}

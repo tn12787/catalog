@@ -15,6 +15,7 @@ export const testClientRelease = (extraFields: Partial<ClientRelease>): ClientRe
     workspaceId: 'test-workspace-id',
     createdAt: new Date(),
     updatedAt: new Date(),
+    tracks: [],
     ...extraFields,
   };
 };

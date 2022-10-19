@@ -89,6 +89,7 @@ model Workspace {
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+  tracks    Track[]
 }
 
 model WorkspaceMember {
@@ -181,7 +182,7 @@ model VerificationToken {
 }
 
 model Artist {
-  id                 String         @id @default(cuid())
+  id                 String    @id @default(cuid())
   name               String
   legalName          String?
   spotifyId          String?
@@ -189,13 +190,13 @@ model Artist {
   tiktokUsername     String?
   imageUrl           String?
   linkTreeUrl        String?
-  workspace          Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace          Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId        String
   releases           Release[]
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime?      @updatedAt
-  tracksAsMainArtist ReleaseTrack[] @relation("mainArtists")
-  tracksAsFeaturing  ReleaseTrack[] @relation("featuringArtists")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime? @updatedAt
+  tracksAsMainArtist Track[]   @relation("mainArtists")
+  tracksAsFeaturing  Track[]   @relation("featuringArtists")
 
   @@unique([name, workspaceId])
 }
@@ -213,20 +214,24 @@ model Release {
   updatedAt   DateTime?   @updatedAt
 
   tasks  ReleaseTask[]
-  tracks ReleaseTrack[]
+  tracks Track[]
 
   @@unique([name, artistId, workspaceId])
 }
 
-model ReleaseTrack {
+model Track {
   id               String    @id @default(cuid())
   name             String
   lyrics           String?
   mainArtists      Artist[]  @relation("mainArtists")
   featuringArtists Artist[]  @relation("featuringArtists")
   releases         Release[]
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime? @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 model Contact {
