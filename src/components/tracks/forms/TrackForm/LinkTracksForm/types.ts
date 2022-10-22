@@ -1,5 +1,5 @@
-import { Track } from '@prisma/client';
+import { TrackResponse } from 'types/common';
 
 export type LinkTracksFormData = {
-  ids: Track['id'][];
+  ids: TrackResponse[];
 };

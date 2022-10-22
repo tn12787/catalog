@@ -15,6 +15,7 @@ type Props = { releaseData: ClientRelease; onSubmitSuccess: () => void };
 const LinkTracksForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const {
     register,
+    watch,
     control,
     handleSubmit,
     formState: { errors },
@@ -23,26 +24,32 @@ const LinkTracksForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const { linkTracksToRelease } = useTrackMutations({ releaseId: releaseData.id });
 
   const onSubmit = async (data: LinkTracksFormData) => {
-    await linkTracksToRelease.mutateAsync({ ...data, releaseId: releaseData.id });
+    await linkTracksToRelease.mutateAsync({
+      ids: data.ids.map((i) => i.id),
+      releaseId: releaseData.id,
+    });
     onSubmitSuccess();
   };
 
+  const ids = watch('ids');
+
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)}>
-      config={}
       <FormContent
-        config={linkTracksConfig()}
+        config={linkTracksConfig(releaseData.tracks)}
         register={register}
         control={control}
         errors={errors}
       ></FormContent>
       <Button
+        isLoading={linkTracksToRelease.isLoading}
+        isDisabled={!ids?.length}
         alignSelf={'flex-end'}
         type="submit"
         colorScheme={'purple'}
         leftIcon={<BiLink></BiLink>}
       >
-        Link tracks
+        Link selected tracks
       </Button>
     </Stack>
   );

@@ -13,7 +13,7 @@ type Props = {
 
 const TrackForm = ({ releaseData, onSubmitSuccess }: Props) => {
   return (
-    <Stack spacing={5} as="form">
+    <Stack spacing={5}>
       <Tabs colorScheme="purple">
         <TabList>
           <Tab>Create new Track</Tab>

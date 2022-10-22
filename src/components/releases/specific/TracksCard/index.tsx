@@ -62,7 +62,7 @@ const TracksCard = ({ releaseData }: Props) => {
         <ModalContent p={3} bg={bgSecondary}>
           <ModalHeader>Add a track</ModalHeader>
           <ModalBody>
-            <TrackForm releaseData={releaseData} />
+            <TrackForm releaseData={releaseData} onSubmitSuccess={onClose} />
           </ModalBody>
           <ModalCloseButton></ModalCloseButton>
         </ModalContent>
