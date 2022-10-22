@@ -14,13 +14,13 @@ import React from 'react';
 import { BiPlus } from 'react-icons/bi';
 
 import TrackList from './TrackList';
-import TrackForm from './TrackForm';
 
 import { ClientRelease } from 'types/common';
 import Card from 'components/Card';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import useAppColors from 'hooks/useAppColors';
+import TrackForm from 'components/tracks/forms/TrackForm';
 
 interface Props {
   releaseData: ClientRelease;
