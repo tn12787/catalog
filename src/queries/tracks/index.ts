@@ -1,8 +1,26 @@
 import axios from 'axios';
+import { Track } from '@prisma/client';
 
-import { LinkTrackVars, CreateSingleTrackVars } from './types';
+import { LinkTrackVars, CreateSingleTrackVars, TrackFilterOptions } from './types';
 
+import { PaginatedQueryResult } from 'queries/types';
 import { ClientRelease } from 'types/common';
+
+export const fetchWorkspaceTracks = async ({
+  workspace,
+  search,
+}: TrackFilterOptions): Promise<PaginatedQueryResult<Track>> => {
+  const { data } = await axios.get(`/api/tracks`, {
+    params: {
+      workspace,
+      search,
+      // sortBy: sorting?.key,
+      // sortOrder: sorting?.order,
+    },
+  });
+
+  return data;
+};
 
 export const linkTracksToRelease = async ({
   ids,
