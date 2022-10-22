@@ -35,7 +35,7 @@ export interface SummaryField {
 
 const fields = (releaseData: ClientRelease): SummaryField[] => [
   {
-    name: 'Artist',
+    name: 'Primary Artist',
     content: (
       <NextLink href={`/artists/${releaseData.artist.id}`} passHref>
         <Link>{releaseData.artist.name}</Link>
