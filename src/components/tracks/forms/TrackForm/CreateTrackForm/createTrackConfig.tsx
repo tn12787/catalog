@@ -1,11 +1,9 @@
-import { Artist, Distributor } from '@prisma/client';
-
 import { CreateTrackFormData } from './types';
 
-import { EnrichedWorkspace } from 'types/common';
 import { FormDatum } from 'types/forms';
+import ArtistSelect from 'components/artists/ArtistSelect';
 
-export const createTrackConfig = (artists: Artist[]): FormDatum<CreateTrackFormData>[] => [
+export const createTrackConfig = (): FormDatum<CreateTrackFormData>[] => [
   {
     name: 'name',
     label: 'Name',
@@ -24,5 +22,15 @@ export const createTrackConfig = (artists: Artist[]): FormDatum<CreateTrackFormD
       placeholder: 'Enter song lyrics here...',
       maxLength: 600,
     },
+  },
+  {
+    name: 'mainArtists',
+    label: 'Main Artists',
+    CustomComponent: ArtistSelect,
+  },
+  {
+    name: 'featuringArtists',
+    label: 'Featuring Artists',
+    CustomComponent: ArtistSelect,
   },
 ];
