@@ -19,7 +19,6 @@ import {
   EmailPreferences,
   Subscription,
   Track,
-  ReleaseTrack,
 } from '@prisma/client';
 
 export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
@@ -56,7 +55,7 @@ export type ReleaseTaskEventWithUser = ReleaseTaskEvent & {
 
 export interface EnrichedRelease extends Release {
   artist: Partial<Artist>;
-  tracks: (ReleaseTrack & { track: TrackResponse })[];
+  tracks: TrackResponse[];
   tasks: EnrichedReleaseTask[];
 }
 

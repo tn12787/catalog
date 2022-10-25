@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Track } from '@prisma/client';
 
-import { LinkTrackVars, CreateSingleTrackVars, TrackFilterOptions } from './types';
+import { CopyTrackVars, CreateSingleTrackVars, TrackFilterOptions } from './types';
 
 import { PaginatedQueryResult } from 'queries/types';
 import { ClientRelease } from 'types/common';
@@ -22,10 +22,10 @@ export const fetchWorkspaceTracks = async ({
   return data;
 };
 
-export const linkTracksToRelease = async ({
+export const copyTracksToRelease = async ({
   ids,
   releaseId,
-}: LinkTrackVars): Promise<ClientRelease | void> => {
+}: CopyTrackVars): Promise<ClientRelease | void> => {
   if (!ids) return Promise.reject();
 
   const { data: response } = await axios.put(`/api/releases/${releaseId}/tracks`, {

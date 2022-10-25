@@ -8,7 +8,7 @@ import {
   ValidationPipe,
 } from 'next-api-decorators';
 
-import { LinkReleaseTrackDto } from 'backend/models/tracks/update';
+import { CopyReleaseTrackDto } from 'backend/models/tracks/update';
 import type { AuthDecoratedRequest } from 'types/auth';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
@@ -54,9 +54,9 @@ class ReleaseTrackHandler {
   }
 
   @Put()
-  async linkTracks(
+  async copyTracks(
     @Req() req: AuthDecoratedRequest,
-    @Body(ValidationPipe) body: LinkReleaseTrackDto,
+    @Body(ValidationPipe) body: CopyReleaseTrackDto,
     @PathParam('releaseId') id: string
   ) {
     const release = await prisma.release.findUnique({
@@ -64,13 +64,35 @@ class ReleaseTrackHandler {
       select: { workspaceId: true },
     });
 
+    if (!release) throw new NotFoundException();
+
     await checkRequiredPermissions(req, ['UPDATE_RELEASES'], release?.workspaceId);
+
+    const tracksToCopy = await prisma.track.findMany({
+      where: { id: { in: body.ids } },
+      include: {
+        mainArtists: true,
+        featuringArtists: true,
+      },
+    });
 
     await prisma.release.update({
       where: { id },
       data: {
         tracks: {
-          connect: body.ids.map((id) => ({ id })),
+          createMany: {
+            data: tracksToCopy.map((track) => ({
+              workspaceId: release.workspaceId,
+              name: track.name,
+              lyrics: track.lyrics,
+              mainArtists: {
+                connect: track.mainArtists.map((artist) => ({ id: artist.id })),
+              },
+              featuringArtists: {
+                connect: track.featuringArtists.map((artist) => ({ id: artist.id })),
+              },
+            })),
+          },
         },
       },
     });

@@ -1,5 +1,5 @@
 import { TrackResponse } from 'types/common';
 
-export type LinkTracksFormData = {
+export type CopyTracksFormData = {
   ids: TrackResponse[];
 };

@@ -1,15 +1,15 @@
 import { Track } from '@prisma/client';
 import { Stack, Text } from '@chakra-ui/layout';
 
-import { LinkTracksFormData } from './types';
+import { CopyTracksFormData } from './types';
 
 import { FormDatum } from 'types/forms';
 import ExistingTrackSelect from 'components/tracks/ExistingTrackSelect';
 
-export const linkTracksConfig = (currentTracks?: Track[]): FormDatum<LinkTracksFormData>[] => [
+export const copyTracksConfig = (currentTracks?: Track[]): FormDatum<CopyTracksFormData>[] => [
   {
     name: 'ids',
-    label: 'Link Tracks',
+    label: 'Copy Existing Tracks',
     CustomComponent: ExistingTrackSelect as any, //allow passing existing tracks
     extraProps: {
       existingTracks: currentTracks ?? [],
