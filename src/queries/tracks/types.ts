@@ -10,7 +10,7 @@ export interface CreateSingleTrackVars extends Omit<SingleTrackVars, 'id'> {
   featuringArtists?: string[];
 }
 
-export type LinkTrackVars = { releaseId: string; ids: string[] };
+export type CopyTrackVars = { releaseId: string; ids: string[] };
 
 export type DeleteSingleTrackVars = Pick<SingleTrackVars, 'id'>;
 

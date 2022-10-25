@@ -214,7 +214,7 @@ model Release {
   updatedAt   DateTime?   @updatedAt
 
   tasks  ReleaseTask[]
-  tracks ReleaseTrack[]
+  tracks Track[]
 
   @@unique([name, artistId, workspaceId])
 }
@@ -226,24 +226,15 @@ model Track {
   mainArtists      Artist[] @relation("mainArtists")
   featuringArtists Artist[] @relation("featuringArtists")
 
+  release     Release   @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  releaseId   String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String
 
-  createdAt DateTime       @default(now())
-  updatedAt DateTime?      @updatedAt
-  releases  ReleaseTrack[]
-}
+  index Int @default(-1)
 
-model ReleaseTrack {
-  id        String    @id @default(cuid())
-  release   Release   @relation(fields: [releaseId], references: [id], onDelete: Cascade)
-  releaseId String
-  track     Track     @relation(fields: [trackId], references: [id], onDelete: Cascade)
-  trackId   String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
-
-  @@unique([releaseId, trackId])
 }
 
 model Contact {

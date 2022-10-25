@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class LinkReleaseTrackDto {
+export class CopyReleaseTrackDto {
   @IsNotEmpty()
   @IsString({ each: true })
   ids: string[];

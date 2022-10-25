@@ -1,7 +1,7 @@
 import { Stack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React from 'react';
 
-import LinkTracksForm from './LinkTracksForm';
+import CopyTracksForm from './CopyTracksForm';
 import CreateTrackForm from './CreateTrackForm';
 
 import { ClientRelease } from 'types/common';
@@ -27,10 +27,10 @@ const TrackForm = ({ releaseData, onSubmitSuccess }: Props) => {
             ></CreateTrackForm>
           </TabPanel>
           <TabPanel p={0}>
-            <LinkTracksForm
+            <CopyTracksForm
               releaseData={releaseData}
               onSubmitSuccess={onSubmitSuccess}
-            ></LinkTracksForm>
+            ></CopyTracksForm>
           </TabPanel>
         </TabPanels>
       </Tabs>

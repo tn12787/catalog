@@ -3,12 +3,12 @@ import { useToast } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
 import useExtendedSession from 'hooks/useExtendedSession';
-import { createReleaseTrack, linkTracksToRelease } from 'queries/tracks';
+import { createReleaseTrack, copyTracksToRelease } from 'queries/tracks';
 import { CreateSingleTrackVars } from 'queries/tracks/types';
 
 type UseTrackMutationArgs = Pick<CreateSingleTrackVars, 'releaseId'>;
 
-const useTaskMutations = ({ releaseId }: UseTrackMutationArgs) => {
+const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
   const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
 
@@ -44,7 +44,7 @@ const useTaskMutations = ({ releaseId }: UseTrackMutationArgs) => {
     onError: onError.bind(null, "Couldn't create that task"),
   });
 
-  const linkMutation = useMutation(linkTracksToRelease, {
+  const linkMutation = useMutation(copyTracksToRelease, {
     onSuccess: onSuccess.bind(null, 'Tracks linked to release'),
     onError: onError.bind(null, "Couldn't link those tracks"),
   });
@@ -56,9 +56,9 @@ const useTaskMutations = ({ releaseId }: UseTrackMutationArgs) => {
 
   return {
     createSingleTrack: createMutation,
-    linkTracksToRelease: linkMutation,
+    copyTracksToRelease: linkMutation,
     // updateSingleTrack: updateMutation,
   };
 };
 
-export default useTaskMutations;
+export default useTrackMutations;
