@@ -214,24 +214,36 @@ model Release {
   updatedAt   DateTime?   @updatedAt
 
   tasks  ReleaseTask[]
-  tracks Track[]
+  tracks ReleaseTrack[]
 
   @@unique([name, artistId, workspaceId])
 }
 
 model Track {
-  id               String    @id @default(cuid())
+  id               String   @id @default(cuid())
   name             String
   lyrics           String?
-  mainArtists      Artist[]  @relation("mainArtists")
-  featuringArtists Artist[]  @relation("featuringArtists")
-  releases         Release[]
+  mainArtists      Artist[] @relation("mainArtists")
+  featuringArtists Artist[] @relation("featuringArtists")
 
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String
 
+  createdAt DateTime       @default(now())
+  updatedAt DateTime?      @updatedAt
+  releases  ReleaseTrack[]
+}
+
+model ReleaseTrack {
+  id        String    @id @default(cuid())
+  release   Release   @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  releaseId String
+  track     Track     @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  trackId   String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+
+  @@unique([releaseId, trackId])
 }
 
 model Contact {

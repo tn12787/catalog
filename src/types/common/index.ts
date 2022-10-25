@@ -19,6 +19,7 @@ import {
   EmailPreferences,
   Subscription,
   Track,
+  ReleaseTrack,
 } from '@prisma/client';
 
 export interface ClientReleaseTask extends Omit<ReleaseTask, 'dueDate'> {
@@ -55,7 +56,7 @@ export type ReleaseTaskEventWithUser = ReleaseTaskEvent & {
 
 export interface EnrichedRelease extends Release {
   artist: Partial<Artist>;
-
+  tracks: (ReleaseTrack & { track: TrackResponse })[];
   tasks: EnrichedReleaseTask[];
 }
 
@@ -63,7 +64,7 @@ export type EnrichedReleaseWithoutArtist = Omit<EnrichedRelease, 'artist'>;
 
 export type ArtistResponse = Artist & { releases: ClientRelease[] };
 
-export type TrackResponse = Artist & { mainArtists: Artist[]; featuringArtists: [] };
+export type TrackResponse = Track & { mainArtists: Artist[]; featuringArtists: Artist[] };
 
 export type TaskResponse = EnrichedReleaseTask & { release: Release };
 
@@ -72,14 +73,14 @@ export type UserResponse = User & {
   emailPreferences: EmailPreferences;
 };
 
-export interface ClientRelease extends Omit<EnrichedRelease, 'tasks' | 'targetDate'> {
+export interface ClientRelease extends Omit<EnrichedRelease, 'tasks' | 'tracks' | 'targetDate'> {
   artwork?: ReleaseTaskWithAssignees & Omit<ArtworkData, 'taskId'>;
   distribution?: ReleaseTaskWithAssignees &
     Omit<DistributionData, 'taskId'> & { distributor?: Distributor };
   mastering?: ReleaseTaskWithAssignees & Omit<MasteringData, 'taskId'>;
   generic: TaskResponse[];
   targetDate: string | Date;
-  tracks: (Track & { mainArtists: Artist[] })[];
+  tracks: TrackResponse[];
 }
 
 export type ClientArtwork = Required<ClientRelease>['artwork'];
