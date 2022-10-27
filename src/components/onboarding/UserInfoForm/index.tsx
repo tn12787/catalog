@@ -48,7 +48,6 @@ const UserInfoForm = ({ onSubmit, isLastStep }: Props) => {
     reset,
     watch,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<Pick<User, 'name' | 'image'>>();
 

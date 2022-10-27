@@ -33,6 +33,7 @@ const ReleaseList = ({ isLoading, search, releases, EmptyComponent = NoReleasesY
           generic: [],
           createdAt: new Date(),
           updatedAt: new Date(),
+          tracks: [],
         }}
         loading
       />
