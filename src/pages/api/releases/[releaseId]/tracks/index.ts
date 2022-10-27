@@ -2,11 +2,14 @@ import {
   Body,
   createHandler,
   NotFoundException,
+  Patch,
   Post,
   Put,
   Req,
   ValidationPipe,
 } from 'next-api-decorators';
+
+import { computeNewTrackOrdering } from './../../../../../utils/tracks/index';
 
 import { CopyReleaseTrackDto } from 'backend/models/tracks/update';
 import type { AuthDecoratedRequest } from 'types/auth';
@@ -15,6 +18,7 @@ import { requiresAuth } from 'backend/apiUtils/decorators/auth';
 import prisma from 'backend/prisma/client';
 import { PathParam } from 'backend/apiUtils/decorators/routing';
 import { CreateReleaseTrackDto } from 'backend/models/tracks/create';
+import { ChangeTrackOrderingDto } from 'backend/models/tracks/ordering';
 
 @requiresAuth()
 class ReleaseTrackHandler {
@@ -98,6 +102,30 @@ class ReleaseTrackHandler {
         },
       },
     });
+  }
+
+  @Patch()
+  async updateTrackOrder(
+    @Req() req: AuthDecoratedRequest,
+    @Body(ValidationPipe) body: ChangeTrackOrderingDto,
+    @PathParam('releaseId') id: string
+  ) {
+    const release = await prisma.release.findUnique({
+      where: { id },
+      select: { workspaceId: true, tracks: true },
+    });
+
+    if (!release) throw new NotFoundException();
+
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], release?.workspaceId);
+
+    const newTracks = computeNewTrackOrdering(release.tracks, body.id, body.newIndex);
+
+    await prisma.$transaction(
+      newTracks.map((track) =>
+        prisma.track.update({ where: { id: track.id }, data: { index: track.index } })
+      )
+    );
   }
 }
 
