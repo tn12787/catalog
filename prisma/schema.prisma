@@ -231,7 +231,7 @@ model Track {
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String
 
-  index Int @default(-1)
+  index Int
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
