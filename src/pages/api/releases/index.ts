@@ -76,6 +76,7 @@ class ReleaseListHandler {
               masteringData: true,
             },
           },
+          tracks: { include: { mainArtists: true, featuringArtists: true } },
         },
         orderBy: sortBy
           ? {

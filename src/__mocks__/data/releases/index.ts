@@ -32,6 +32,7 @@ export const testRelease = (extraFields: Partial<EnrichedRelease>): EnrichedRele
     updatedAt: new Date(),
     artist: testArtist({ id: 'test-artist-id' }),
     tasks: [],
+    tracks: [],
     ...extraFields,
   };
 };

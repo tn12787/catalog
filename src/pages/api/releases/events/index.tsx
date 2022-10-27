@@ -24,6 +24,7 @@ class ReleaseListHandler {
       where,
       include: {
         artist: true,
+        tracks: { include: { mainArtists: true, featuringArtists: true } },
         tasks: {
           include: {
             assignees: { include: { user: true } },
