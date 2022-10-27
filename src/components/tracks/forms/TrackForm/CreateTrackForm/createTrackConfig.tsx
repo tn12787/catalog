@@ -10,7 +10,7 @@ export const createTrackConfig = (): FormDatum<CreateTrackFormData>[] => [
     type: 'text',
     registerArgs: {},
     extraProps: {
-      placeholder: 'Add notes here about this task...',
+      placeholder: 'Enter the track name...',
     },
   },
   {
