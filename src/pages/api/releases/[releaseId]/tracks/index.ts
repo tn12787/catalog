@@ -26,7 +26,7 @@ class ReleaseTrackHandler {
   ) {
     const release = await prisma.release.findUnique({
       where: { id },
-      select: { workspaceId: true },
+      select: { workspaceId: true, tracks: true },
     });
 
     if (!release) throw new NotFoundException();
@@ -38,6 +38,7 @@ class ReleaseTrackHandler {
       data: {
         tracks: {
           create: {
+            index: release.tracks.length,
             workspaceId: release?.workspaceId,
             name: body.name,
             lyrics: body.lyrics,
@@ -61,7 +62,7 @@ class ReleaseTrackHandler {
   ) {
     const release = await prisma.release.findUnique({
       where: { id },
-      select: { workspaceId: true },
+      select: { workspaceId: true, tracks: true },
     });
 
     if (!release) throw new NotFoundException();
@@ -81,7 +82,8 @@ class ReleaseTrackHandler {
       data: {
         tracks: {
           createMany: {
-            data: tracksToCopy.map((track) => ({
+            data: tracksToCopy.map((track, i) => ({
+              index: release.tracks.length + i,
               workspaceId: release.workspaceId,
               name: track.name,
               lyrics: track.lyrics,
