@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgres-main:
-    image: postgres:10.3
+    image: postgres:alpine
     restart: always
     environment:
       POSTGRES_DB: launchday
