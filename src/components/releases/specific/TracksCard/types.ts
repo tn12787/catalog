@@ -3,3 +3,7 @@ export interface TrackField {
   content: JSX.Element;
   hidden?: boolean;
 }
+
+export enum TrackDndType {
+  TRACK = 'TRACK',
+}
