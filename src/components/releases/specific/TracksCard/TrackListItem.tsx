@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 import { MdDragIndicator } from 'react-icons/md';
-import { useDrag } from 'react-dnd';
+import { useDrag, useDrop, XYCoord } from 'react-dnd';
+import { Identifier } from 'dnd-core';
+import { useQueryClient } from 'react-query';
 
 import { fields } from './fields';
 import { TrackDndType } from './types';
 
-import { TrackResponse } from 'types/common';
+import { ClientRelease, TrackResponse } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
+import useExtendedSession from 'hooks/useExtendedSession';
+import useTrackMutations from 'hooks/data/tracks/useTrackMutations';
 
 type Props = {
   track: TrackResponse;
@@ -18,15 +22,95 @@ const TrackListItem = ({ track, index }: Props) => {
   const { bodySub } = useAppColors();
   const [{ opacity }, drag, preview] = useDrag(() => ({
     type: TrackDndType.TRACK,
+    item: () => {
+      return { ...track, index };
+    },
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.4 : 1,
     }),
   }));
 
+  const { currentWorkspace } = useExtendedSession();
+
+  const queryClient = useQueryClient();
+
+  const dropRef = useRef<HTMLDivElement>(null);
+
   const [isHovering, setIsHovering] = React.useState(false);
 
+  const { updateTrackOrder } = useTrackMutations({ releaseId: track.releaseId });
+
+  const [{ handlerId }, drop] = useDrop<TrackResponse, void, { handlerId: Identifier | null }>({
+    accept: TrackDndType.TRACK,
+
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    hover(item: TrackResponse, monitor) {
+      if (!dropRef.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      // Don't replace items with themselves
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      // Determine rectangle on screen
+      const hoverBoundingRect = dropRef.current?.getBoundingClientRect();
+
+      // Get vertical middle
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+
+      // Get pixels to the top
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+
+      // Only perform the move when the mouse has crossed half of the items height
+      // When dragging downwards, only move when the cursor is below 50%
+      // When dragging upwards, only move when the cursor is above 50%
+
+      // Dragging downwards
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      // Dragging upwards
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      const activeQueryKey = ['releases', currentWorkspace, track.releaseId];
+      const release = queryClient.getQueryData(activeQueryKey) as ClientRelease;
+
+      const dragged = release.tracks[dragIndex];
+      release.tracks.splice(dragIndex, 1);
+      release.tracks.splice(hoverIndex, 0, dragged);
+
+      queryClient.setQueryData(activeQueryKey, release);
+      item.index = hoverIndex;
+    },
+    drop: (item, monitor) => {
+      if (monitor.didDrop()) return;
+
+      updateTrackOrder.mutate({
+        id: item.id,
+        newIndex: item.index,
+        releaseId: item.releaseId,
+      });
+    },
+  });
+
+  drop(dropRef);
+
   return (
-    <Flex>
+    <Box ref={dropRef} data-handler-id={handlerId}>
       <Flex
         direction={['column', 'column', 'row']}
         width={'90%'}
@@ -39,7 +123,7 @@ const TrackListItem = ({ track, index }: Props) => {
         onMouseLeave={() => setIsHovering(false)}
       >
         <Flex opacity={isHovering ? 1 : 0} transition={'opacity 0.08s ease-out'} ref={drag}>
-          <Icon cursor={'grab'} as={MdDragIndicator} color={bodySub} p={1} fontSize="2xl" />
+          <Icon cursor={'grab'} as={MdDragIndicator} color={bodySub} p={1} fontSize="3xl" />
         </Flex>
         <Text maxW="20px" w="100%">
           {index + 1}.
@@ -59,7 +143,7 @@ const TrackListItem = ({ track, index }: Props) => {
           );
         })}
       </Flex>
-    </Flex>
+    </Box>
   );
 };
 
