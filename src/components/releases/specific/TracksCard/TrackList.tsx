@@ -25,7 +25,6 @@ const TrackList = ({ tracks }: Props) => {
             {fields(tracks[0]).map((field) => {
               return (
                 <Flex
-                  mb={[3, 3, 0]}
                   width="100%"
                   align={{ base: 'center', md: 'flex-start' }}
                   direction={{ base: 'row', md: 'column' }}
