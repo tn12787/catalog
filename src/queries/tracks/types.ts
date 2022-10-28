@@ -12,6 +12,11 @@ export interface CreateSingleTrackVars extends Omit<SingleTrackVars, 'id'> {
 
 export type CopyTrackVars = { releaseId: string; ids: string[] };
 
+export type ChangeTrackOrderVars = Pick<SingleTrackVars, 'id'> & {
+  releaseId: string;
+  newIndex: number;
+};
+
 export type DeleteSingleTrackVars = Pick<SingleTrackVars, 'id'>;
 
 export interface TrackFilterOptions extends FilterOptions<Track> {

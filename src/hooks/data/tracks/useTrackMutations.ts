@@ -3,7 +3,7 @@ import { useToast } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
 import useExtendedSession from 'hooks/useExtendedSession';
-import { createReleaseTrack, copyTracksToRelease } from 'queries/tracks';
+import { createReleaseTrack, copyTracksToRelease, changeReleaseTrackOrder } from 'queries/tracks';
 import { CreateSingleTrackVars } from 'queries/tracks/types';
 
 type UseTrackMutationArgs = Pick<CreateSingleTrackVars, 'releaseId'>;
@@ -49,15 +49,15 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
     onError: onError.bind(null, "Couldn't link those tracks"),
   });
 
-  // const updateMutation = useMutation(updateTask, {
-  //   onSuccess: onSuccess.bind(null, 'Task updated'),
-  //   onError: onError.bind(null, "Couldn't update that task"),
-  // });
+  const updateOrderMutation = useMutation(changeReleaseTrackOrder, {
+    onSuccess: onSuccess.bind(null, 'Track order updated'),
+    onError: onError.bind(null, "Couldn't update track order. Please try again later"),
+  });
 
   return {
     createSingleTrack: createMutation,
     copyTracksToRelease: linkMutation,
-    // updateSingleTrack: updateMutation,
+    updateTrackOrder: updateOrderMutation,
   };
 };
 

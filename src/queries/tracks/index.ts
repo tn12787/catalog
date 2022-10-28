@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { Track } from '@prisma/client';
 
-import { CopyTrackVars, CreateSingleTrackVars, TrackFilterOptions } from './types';
+import {
+  ChangeTrackOrderVars,
+  CopyTrackVars,
+  CreateSingleTrackVars,
+  TrackFilterOptions,
+} from './types';
 
 import { PaginatedQueryResult } from 'queries/types';
 import { ClientRelease } from 'types/common';
@@ -39,6 +44,16 @@ export const createReleaseTrack = async ({
   ...rest
 }: CreateSingleTrackVars): Promise<ClientRelease | void> => {
   const { data: response } = await axios.post(`/api/releases/${releaseId}/tracks`, {
+    ...rest,
+  });
+  return response;
+};
+
+export const changeReleaseTrackOrder = async ({
+  releaseId,
+  ...rest
+}: ChangeTrackOrderVars): Promise<ClientRelease | void> => {
+  const { data: response } = await axios.patch(`/api/releases/${releaseId}/tracks`, {
     ...rest,
   });
   return response;
