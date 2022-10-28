@@ -4,6 +4,7 @@ import { MdDragIndicator } from 'react-icons/md';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { Identifier } from 'dnd-core';
 import { useQueryClient } from 'react-query';
+import { cloneDeep } from 'lodash';
 
 import { fields } from './fields';
 import { TrackDndType } from './types';
@@ -12,6 +13,7 @@ import { ClientRelease, TrackResponse } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import useExtendedSession from 'hooks/useExtendedSession';
 import useTrackMutations from 'hooks/data/tracks/useTrackMutations';
+import { computeNewTrackOrdering } from 'utils/tracks';
 
 type Props = {
   track: TrackResponse;
@@ -89,11 +91,9 @@ const TrackListItem = ({ track, index }: Props) => {
       const activeQueryKey = ['releases', currentWorkspace, track.releaseId];
       const release = queryClient.getQueryData(activeQueryKey) as ClientRelease;
 
-      const dragged = release.tracks[dragIndex];
-      release.tracks.splice(dragIndex, 1);
-      release.tracks.splice(hoverIndex, 0, dragged);
+      const newTracks = computeNewTrackOrdering(cloneDeep(release.tracks), item.id, hoverIndex);
 
-      queryClient.setQueryData(activeQueryKey, release);
+      queryClient.setQueryData(activeQueryKey, { ...release, tracks: newTracks });
       item.index = hoverIndex;
     },
     drop: (item, monitor) => {
@@ -131,7 +131,6 @@ const TrackListItem = ({ track, index }: Props) => {
         {fields(track).map((field) => {
           return (
             <Flex
-              mb={[3, 3, 0]}
               width="100%"
               align={{ base: 'center', md: 'flex-start' }}
               direction={{ base: 'row', md: 'column' }}

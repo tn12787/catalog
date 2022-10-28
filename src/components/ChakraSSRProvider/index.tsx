@@ -1,7 +1,11 @@
 // e.g. src/Chakra.js
 // a) import `ChakraProvider` component as well as the storageManagers
 import { ChakraProvider } from '@chakra-ui/provider';
-import { createCookieStorageManager, createLocalStorageManager } from '@chakra-ui/react';
+import {
+  createCookieStorageManager,
+  createLocalStorageManager,
+  ToastProvider,
+} from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 
 import { theme } from '../../theme/customTheme';
@@ -14,7 +18,7 @@ const ChakraSSRProvider = ({ cookies, children }: any) => {
 
   return (
     <ChakraProvider colorModeManager={colorModeManager} theme={theme}>
-      {children}
+      <ToastProvider>{children}</ToastProvider>
     </ChakraProvider>
   );
 };
