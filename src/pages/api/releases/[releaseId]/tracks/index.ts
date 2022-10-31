@@ -112,7 +112,7 @@ class ReleaseTrackHandler {
   ) {
     const release = await prisma.release.findUnique({
       where: { id },
-      select: { workspaceId: true, tracks: true },
+      select: { workspaceId: true, tracks: { orderBy: { index: 'asc' } } },
     });
 
     if (!release) throw new NotFoundException();
@@ -126,6 +126,8 @@ class ReleaseTrackHandler {
         prisma.track.update({ where: { id: track.id }, data: { index: track.index } })
       )
     );
+
+    return newTracks;
   }
 }
 
