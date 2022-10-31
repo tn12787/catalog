@@ -8,13 +8,13 @@ import { fields } from './fields';
 import { ClientRelease } from 'types/common';
 
 type Props = {
-  tracks: ClientRelease['tracks'];
+  releaseData: ClientRelease;
 };
 
-const TrackList = ({ tracks }: Props) => {
+const TrackList = ({ releaseData }: Props) => {
   return (
     <Stack>
-      {tracks.length ? (
+      {releaseData.tracks.length ? (
         <Stack>
           <Flex
             direction={['column', 'column', 'row']}
@@ -22,7 +22,7 @@ const TrackList = ({ tracks }: Props) => {
             justify="space-between"
             alignItems={['center', 'center', 'stretch']}
           >
-            {fields(tracks[0]).map((field) => {
+            {fields(releaseData.tracks[0]).map((field) => {
               return (
                 <Flex
                   width="100%"
@@ -39,8 +39,8 @@ const TrackList = ({ tracks }: Props) => {
             })}
           </Flex>
           <Stack spacing={0}>
-            {tracks.map((track, index) => (
-              <TrackListItem track={track} index={index} key={track.id} />
+            {releaseData.tracks.map((track, index) => (
+              <TrackListItem releaseData={releaseData} track={track} index={index} key={track.id} />
             ))}
           </Stack>
         </Stack>

@@ -45,7 +45,7 @@ const TracksCard = ({ releaseData }: Props) => {
           </Heading>
         </Flex>
       </Flex>
-      <TrackList tracks={releaseData.tracks}></TrackList>
+      <TrackList releaseData={releaseData}></TrackList>
       {canUpdateRelease && (
         <Button
           alignSelf={'center'}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Stack } from '@chakra-ui/react';
-import { BiPlus } from 'react-icons/bi';
+import { BiPlus, BiSave } from 'react-icons/bi';
 
 import { CreateEditTrackFormData } from './types';
 import { createTrackConfig } from './createTrackConfig';
@@ -27,8 +27,9 @@ const CreateEditTrackForm = ({ releaseData, onSubmitSuccess, existingTrackId }: 
   const onSubmit = async (data: CreateEditTrackFormData) => {
     const mutation = existingTrackId ? updateSingleTrack : createSingleTrack;
     await mutation.mutateAsync({
-      ...data,
       id: existingTrackId as string,
+      name: data.name,
+      lyrics: data.lyrics,
       mainArtists: data.mainArtists?.map((artist) => artist.id),
       featuringArtists: data.featuringArtists?.map((artist) => artist.id),
       releaseId: releaseData.id,
@@ -49,9 +50,9 @@ const CreateEditTrackForm = ({ releaseData, onSubmitSuccess, existingTrackId }: 
         alignSelf={'flex-end'}
         type="submit"
         colorScheme={'purple'}
-        leftIcon={<BiPlus></BiPlus>}
+        leftIcon={existingTrackId ? <BiSave /> : <BiPlus />}
       >
-        Add track
+        {existingTrackId ? 'Save' : 'Add track'}
       </Button>
     </Stack>
   );
