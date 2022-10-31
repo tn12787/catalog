@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Stack } from '@chakra-ui/react';
 import { BiPlus } from 'react-icons/bi';
 
-import { CreateTrackFormData } from './types';
+import { CreateEditTrackFormData } from './types';
 import { createTrackConfig } from './createTrackConfig';
 
 import { ClientRelease } from 'types/common';
@@ -12,23 +12,28 @@ import FormContent from 'components/forms/FormContent';
 
 type Props = { releaseData: ClientRelease; onSubmitSuccess: () => void; existingTrackId?: string };
 
-const CreateTrackForm = ({ releaseData, onSubmitSuccess }: Props) => {
+const CreateEditTrackForm = ({ releaseData, onSubmitSuccess, existingTrackId }: Props) => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateTrackFormData>();
+  } = useForm<CreateEditTrackFormData>({
+    defaultValues: releaseData.tracks.find((track) => track.id === existingTrackId),
+  });
 
-  const { createSingleTrack } = useTrackMutations({ releaseId: releaseData.id });
+  const { createSingleTrack, updateSingleTrack } = useTrackMutations({ releaseId: releaseData.id });
 
-  const onSubmit = async (data: CreateTrackFormData) => {
-    await createSingleTrack.mutateAsync({
+  const onSubmit = async (data: CreateEditTrackFormData) => {
+    const mutation = existingTrackId ? updateSingleTrack : createSingleTrack;
+    await mutation.mutateAsync({
       ...data,
+      id: existingTrackId as string,
       mainArtists: data.mainArtists?.map((artist) => artist.id),
       featuringArtists: data.featuringArtists?.map((artist) => artist.id),
       releaseId: releaseData.id,
     });
+
     onSubmitSuccess();
   };
 
@@ -52,4 +57,4 @@ const CreateTrackForm = ({ releaseData, onSubmitSuccess }: Props) => {
   );
 };
 
-export default CreateTrackForm;
+export default CreateEditTrackForm;
