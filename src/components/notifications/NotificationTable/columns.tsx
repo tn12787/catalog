@@ -10,10 +10,6 @@ import useAppColors from 'hooks/useAppColors';
 import { NotificationWithTask } from 'types/common';
 import { notificationToCopyAndLink } from 'utils/notifications';
 
-export const HasRead = ({ value }: { value: boolean }) => {
-  return <UnreadDot read={value} />;
-};
-
 const NotificationData = ({ value: notification }: { value: NotificationWithTask }) => {
   const { bodySub, bodyText } = useAppColors();
   const { message, link } = notificationToCopyAndLink(notification);

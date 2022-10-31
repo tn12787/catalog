@@ -363,6 +363,7 @@ enum NotificationType {
   TASK_OVERDUE
   TASK_COMMENT
   TASK_ASSIGNED
+  UPDATE
 }
 
 model Notification {

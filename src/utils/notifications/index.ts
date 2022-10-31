@@ -10,6 +10,12 @@ export const notificationToCopyAndLink = (
   notification: NotificationWithTask
 ): NotificationVisualData => {
   switch (notification.type) {
+    case NotificationType.UPDATE:
+      return {
+        message: (notification.extraData as { message: string })?.message,
+        link: '/',
+      };
+
     case NotificationType.TASK_ASSIGNED:
       return {
         message: `${notification.actor?.user.name} assigned you to ${taskHeadingByType(
