@@ -9,9 +9,8 @@ import {
   ValidationPipe,
 } from 'next-api-decorators';
 
-import { computeNewTrackOrdering } from './../../../../../utils/tracks/index';
-
-import { CopyReleaseTrackDto } from 'backend/models/tracks/update';
+import { computeNewTrackOrdering } from 'utils/tracks';
+import { CopyReleaseTrackDto } from 'backend/models/tracks/copy';
 import type { AuthDecoratedRequest } from 'types/auth';
 import { checkRequiredPermissions } from 'backend/apiUtils/workspaces';
 import { requiresAuth } from 'backend/apiUtils/decorators/auth';
