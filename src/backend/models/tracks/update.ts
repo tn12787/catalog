@@ -1,7 +1,9 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class CopyReleaseTrackDto {
+import { BaseReleaseTrackDto } from './common';
+
+export class UpdateReleaseTrackDto extends BaseReleaseTrackDto {
   @IsNotEmpty()
-  @IsString({ each: true })
-  ids: string[];
+  @IsString()
+  id: string;
 }

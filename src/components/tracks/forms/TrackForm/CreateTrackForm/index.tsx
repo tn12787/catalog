@@ -10,7 +10,7 @@ import { ClientRelease } from 'types/common';
 import useTrackMutations from 'hooks/data/tracks/useTrackMutations';
 import FormContent from 'components/forms/FormContent';
 
-type Props = { releaseData: ClientRelease; onSubmitSuccess: () => void };
+type Props = { releaseData: ClientRelease; onSubmitSuccess: () => void; existingTrackId?: string };
 
 const CreateTrackForm = ({ releaseData, onSubmitSuccess }: Props) => {
   const {
