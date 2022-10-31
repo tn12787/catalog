@@ -31,7 +31,7 @@ const TrackList = ({ tracks }: Props) => {
                   justify={{ base: 'space-between', md: 'center' }}
                   key={field.name}
                 >
-                  <Text fontSize="sm" fontWeight="semibold">
+                  <Text pl={12} fontSize="sm" fontWeight="semibold">
                     {field.name}
                   </Text>
                 </Flex>

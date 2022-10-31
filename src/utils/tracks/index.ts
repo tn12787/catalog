@@ -8,6 +8,10 @@ export const computeNewTrackOrdering = (tracks: Track[], id: string, newIndex: n
     throw new NotFoundException('The track you are trying to move does not exist');
   }
 
+  if (newIndex === oldIndex) {
+    return tracks;
+  }
+
   const track = tracks[oldIndex];
   tracks.splice(oldIndex, 1);
   tracks.splice(newIndex, 0, track);
