@@ -66,7 +66,7 @@ const ReleaseCalendar = ({ events, loading }: Props) => {
       return { events };
     },
 
-    onError: (_, __, context: any) => {
+    onError: (_, __, context) => {
       queryClient.setQueryData(['releaseEvents', currentWorkspace], context?.events);
     },
 

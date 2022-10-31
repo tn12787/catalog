@@ -2,18 +2,14 @@ import React, { useRef } from 'react';
 import { Box, Button, Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { MdDragIndicator } from 'react-icons/md';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
-import { useQueryClient } from 'react-query';
-import { cloneDeep } from 'lodash';
 import { BiPencil } from 'react-icons/bi';
 
 import { fields } from './fields';
 import { TrackDndType } from './types';
 
-import { ClientRelease, TrackResponse } from 'types/common';
+import { TrackResponse } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
-import useExtendedSession from 'hooks/useExtendedSession';
 import useTrackMutations from 'hooks/data/tracks/useTrackMutations';
-import { computeNewTrackOrdering } from 'utils/tracks';
 
 type Props = {
   track: TrackResponse;
@@ -34,8 +30,6 @@ const TrackListItem = ({ track, index }: Props) => {
     }),
   }));
 
-  const { currentWorkspace } = useExtendedSession();
-  const queryClient = useQueryClient();
   const dropRef = useRef<HTMLDivElement>(null);
 
   const [isHovering, setIsHovering] = React.useState(false);
@@ -82,13 +76,6 @@ const TrackListItem = ({ track, index }: Props) => {
     },
     drop: (item, monitor) => {
       if (monitor.didDrop()) return;
-
-      const activeQueryKey = ['releases', currentWorkspace, track.releaseId];
-      const release = queryClient.getQueryData(activeQueryKey) as ClientRelease;
-
-      const newTracks = computeNewTrackOrdering(cloneDeep(release.tracks), item.id, item.index);
-
-      queryClient.setQueryData(activeQueryKey, { ...release, tracks: newTracks });
 
       updateTrackOrder.mutate({
         id: item.id,
