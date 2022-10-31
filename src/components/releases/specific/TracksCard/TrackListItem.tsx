@@ -1,5 +1,19 @@
 import React, { useRef } from 'react';
-import { Box, Button, Flex, HStack, Icon, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Icon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { MdDragIndicator } from 'react-icons/md';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { BiPencil } from 'react-icons/bi';
@@ -7,17 +21,21 @@ import { BiPencil } from 'react-icons/bi';
 import { fields } from './fields';
 import { TrackDndType } from './types';
 
-import { TrackResponse } from 'types/common';
+import { ClientRelease, TrackResponse } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import useTrackMutations from 'hooks/data/tracks/useTrackMutations';
+import CreateEditTrackForm from 'components/tracks/forms/TrackForm/CreateEditTrackForm';
 
 type Props = {
+  releaseData: ClientRelease;
   track: TrackResponse;
   index: number;
 };
 
-const TrackListItem = ({ track, index }: Props) => {
-  const { bodySub } = useAppColors();
+const TrackListItem = ({ releaseData, track, index }: Props) => {
+  const { bodySub, bgSecondary } = useAppColors();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [{ opacity }, drag, preview] = useDrag(() => ({
     type: TrackDndType.TRACK,
     item: () => {
@@ -130,6 +148,7 @@ const TrackListItem = ({ track, index }: Props) => {
             opacity={isHovering ? 1 : 0}
             size="sm"
             variant="outline"
+            onClick={onOpen}
           >
             Edit
           </Button>
@@ -144,6 +163,20 @@ const TrackListItem = ({ track, index }: Props) => {
           </Button>
         </HStack>
       </Flex>
+      <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay></ModalOverlay>
+        <ModalContent p={3} bg={bgSecondary}>
+          <ModalHeader>Edit track</ModalHeader>
+          <ModalBody>
+            <CreateEditTrackForm
+              existingTrackId={track.id}
+              releaseData={releaseData}
+              onSubmitSuccess={onClose}
+            />
+          </ModalBody>
+          <ModalCloseButton></ModalCloseButton>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
