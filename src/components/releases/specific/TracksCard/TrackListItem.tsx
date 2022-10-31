@@ -100,8 +100,8 @@ const TrackListItem = ({ track, index }: Props) => {
         opacity={opacity}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
-        borderBottomWidth={3}
-        borderBottomColor={isHoveringOver ? 'auto' : 'transparent'}
+        borderTopWidth={3}
+        borderTopColor={isHoveringOver ? 'auto' : 'transparent'}
         transition={'all 0.08s ease-out'}
       >
         <Flex opacity={isHovering ? 1 : 0} transition={'opacity 0.08s ease-out'} ref={drag}>
