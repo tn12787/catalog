@@ -6,6 +6,7 @@ import {
   Flex,
   HStack,
   Icon,
+  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -17,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { MdDragIndicator } from 'react-icons/md';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
-import { BiPencil } from 'react-icons/bi';
+import { BiPencil, BiTrash } from 'react-icons/bi';
 import { rest } from 'lodash';
 
 import { fields } from './fields';
@@ -152,26 +153,23 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
           );
         })}
         <HStack>
-          <Button
-            leftIcon={<BiPencil></BiPencil>}
-            minW="50px"
+          <IconButton
+            icon={<BiPencil></BiPencil>}
             opacity={isHovering ? 1 : 0}
             size="sm"
             variant="outline"
             onClick={onEditOpen}
-          >
-            Edit
-          </Button>
-          <Button
-            minW="50px"
+            aria-label={'edit track'}
+          ></IconButton>
+          <IconButton
+            icon={<BiTrash />}
             opacity={isHovering ? 1 : 0}
             size="sm"
             variant="solid"
             colorScheme={'red'}
             onClick={onDeleteOpen}
-          >
-            Remove
-          </Button>
+            aria-label={'delete track'}
+          ></IconButton>
         </HStack>
       </Flex>
       <Modal size="2xl" isOpen={isEditOpen} onClose={onEditClose}>
