@@ -75,7 +75,7 @@ const TrackListItem = ({ track, index }: Props) => {
       item.index = hoverIndex;
     },
     drop: (item, monitor) => {
-      if (monitor.didDrop()) return;
+      if (monitor.didDrop() || item.id === track.id) return;
 
       updateTrackOrder.mutate({
         id: item.id,

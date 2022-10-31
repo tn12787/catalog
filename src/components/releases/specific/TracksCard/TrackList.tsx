@@ -38,9 +38,11 @@ const TrackList = ({ tracks }: Props) => {
               );
             })}
           </Flex>
-          {tracks.map((track, index) => (
-            <TrackListItem track={track} index={index} key={track.id} />
-          ))}
+          <Stack spacing={0}>
+            {tracks.map((track, index) => (
+              <TrackListItem track={track} index={index} key={track.id} />
+            ))}
+          </Stack>
         </Stack>
       ) : (
         <TrackListEmpty></TrackListEmpty>
