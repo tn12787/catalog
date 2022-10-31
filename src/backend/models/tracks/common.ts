@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, ArrayNotEmpty } from 'class-validator';
 
 export class BaseReleaseTrackDto {
   @IsNotEmpty()
@@ -9,7 +9,7 @@ export class BaseReleaseTrackDto {
   @IsString()
   lyrics?: string;
 
-  @IsNotEmpty()
+  @ArrayNotEmpty()
   @IsString({ each: true })
   mainArtists: string[];
 

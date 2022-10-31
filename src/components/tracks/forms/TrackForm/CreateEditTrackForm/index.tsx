@@ -17,6 +17,7 @@ const CreateEditTrackForm = ({ releaseData, onSubmitSuccess, existingTrackId }: 
     register,
     control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<CreateEditTrackFormData>({
     defaultValues: releaseData.tracks.find((track) => track.id === existingTrackId),
@@ -25,6 +26,11 @@ const CreateEditTrackForm = ({ releaseData, onSubmitSuccess, existingTrackId }: 
   const { createSingleTrack, updateSingleTrack } = useTrackMutations({ releaseId: releaseData.id });
 
   const onSubmit = async (data: CreateEditTrackFormData) => {
+    if (!data.mainArtists?.length) {
+      setError('mainArtists', { message: 'At least one main artist is required.' });
+      return;
+    }
+
     const mutation = existingTrackId ? updateSingleTrack : createSingleTrack;
     await mutation.mutateAsync({
       id: existingTrackId as string,
@@ -51,6 +57,7 @@ const CreateEditTrackForm = ({ releaseData, onSubmitSuccess, existingTrackId }: 
         type="submit"
         colorScheme={'purple'}
         leftIcon={existingTrackId ? <BiSave /> : <BiPlus />}
+        isLoading={createSingleTrack.isLoading || updateSingleTrack.isLoading}
       >
         {existingTrackId ? 'Save' : 'Add track'}
       </Button>

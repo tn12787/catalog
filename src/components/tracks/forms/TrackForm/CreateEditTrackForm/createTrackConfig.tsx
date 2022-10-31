@@ -8,7 +8,9 @@ export const createTrackConfig = (): FormDatum<CreateEditTrackFormData>[] => [
     name: 'name',
     label: 'Name',
     type: 'text',
-    registerArgs: {},
+    registerArgs: {
+      required: 'Please enter the track name',
+    },
     extraProps: {
       placeholder: 'Enter the track name...',
     },
@@ -27,6 +29,7 @@ export const createTrackConfig = (): FormDatum<CreateEditTrackFormData>[] => [
     name: 'mainArtists',
     label: 'Main Artists',
     CustomComponent: ArtistSelect,
+    helperContent: 'Select at least one main artist.',
   },
   {
     name: 'featuringArtists',
