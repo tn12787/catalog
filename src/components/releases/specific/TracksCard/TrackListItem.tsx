@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { MdDragIndicator } from 'react-icons/md';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
-import { Identifier } from 'dnd-core';
 import { useQueryClient } from 'react-query';
 import { cloneDeep } from 'lodash';
+import { BiPencil } from 'react-icons/bi';
 
 import { fields } from './fields';
 import { TrackDndType } from './types';
@@ -28,26 +28,27 @@ const TrackListItem = ({ track, index }: Props) => {
       return { ...track, index };
     },
     collect: (monitor) => ({
-      opacity: monitor.isDragging() ? 0.4 : 1,
+      opacity: monitor.isDragging() ? 0.8 : 1,
+      isDragging: monitor.isDragging(),
+      draggedItem: monitor.getItem(),
     }),
   }));
 
   const { currentWorkspace } = useExtendedSession();
-
   const queryClient = useQueryClient();
-
   const dropRef = useRef<HTMLDivElement>(null);
 
   const [isHovering, setIsHovering] = React.useState(false);
 
   const { updateTrackOrder } = useTrackMutations({ releaseId: track.releaseId });
 
-  const [{ handlerId }, drop] = useDrop<TrackResponse, void, { handlerId: Identifier | null }>({
+  const [{ handlerId, isHoveringOver }, drop] = useDrop({
     accept: TrackDndType.TRACK,
 
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
+        isHoveringOver: monitor.isOver(),
       };
     },
     hover(item: TrackResponse, monitor) {
@@ -57,47 +58,37 @@ const TrackListItem = ({ track, index }: Props) => {
       const dragIndex = item.index;
       const hoverIndex = index;
 
-      // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
         return;
       }
 
       // Determine rectangle on screen
       const hoverBoundingRect = dropRef.current?.getBoundingClientRect();
-
-      // Get vertical middle
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-      // Determine mouse position
+      const hoverBoundingHeight = hoverBoundingRect.bottom - hoverBoundingRect.top;
       const clientOffset = monitor.getClientOffset();
-
-      // Get pixels to the top
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      // Dragging downwards, as soon as we cross the top of the item
+      if (dragIndex < hoverIndex && hoverClientY < 0) {
         return;
       }
 
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      // Dragging upwards, as soon as we cross the bottom
+      if (dragIndex > hoverIndex && hoverClientY > hoverBoundingHeight) {
         return;
       }
 
-      const activeQueryKey = ['releases', currentWorkspace, track.releaseId];
-      const release = queryClient.getQueryData(activeQueryKey) as ClientRelease;
-
-      const newTracks = computeNewTrackOrdering(cloneDeep(release.tracks), item.id, hoverIndex);
-
-      queryClient.setQueryData(activeQueryKey, { ...release, tracks: newTracks });
       item.index = hoverIndex;
     },
     drop: (item, monitor) => {
       if (monitor.didDrop()) return;
+
+      const activeQueryKey = ['releases', currentWorkspace, track.releaseId];
+      const release = queryClient.getQueryData(activeQueryKey) as ClientRelease;
+
+      const newTracks = computeNewTrackOrdering(cloneDeep(release.tracks), item.id, item.index);
+
+      queryClient.setQueryData(activeQueryKey, { ...release, tracks: newTracks });
 
       updateTrackOrder.mutate({
         id: item.id,
@@ -110,17 +101,21 @@ const TrackListItem = ({ track, index }: Props) => {
   drop(dropRef);
 
   return (
-    <Box ref={dropRef} data-handler-id={handlerId}>
+    <Box ref={dropRef} data-handler-id={handlerId} w="100%">
       <Flex
         direction={['column', 'column', 'row']}
-        width={'90%'}
+        width={'100%'}
         justify="space-between"
         alignItems={['center', 'center', 'center']}
         ref={preview}
         fontSize="sm"
+        py={1}
         opacity={opacity}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
+        borderBottomWidth={3}
+        borderBottomColor={isHoveringOver ? 'auto' : 'transparent'}
+        transition={'all 0.08s ease-out'}
       >
         <Flex opacity={isHovering ? 1 : 0} transition={'opacity 0.08s ease-out'} ref={drag}>
           <Icon cursor={'grab'} as={MdDragIndicator} color={bodySub} p={1} fontSize="3xl" />
@@ -141,6 +136,26 @@ const TrackListItem = ({ track, index }: Props) => {
             </Flex>
           );
         })}
+        <HStack>
+          <Button
+            leftIcon={<BiPencil></BiPencil>}
+            minW="50px"
+            opacity={isHovering ? 1 : 0}
+            size="sm"
+            variant="outline"
+          >
+            Edit
+          </Button>
+          <Button
+            minW="50px"
+            opacity={isHovering ? 1 : 0}
+            size="sm"
+            variant="solid"
+            colorScheme={'red'}
+          >
+            Remove
+          </Button>
+        </HStack>
       </Flex>
     </Box>
   );
