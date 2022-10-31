@@ -68,6 +68,7 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
     },
     onError: (_, __, context) => {
       queryClient.setQueryData(activeQueryKey, context?.oldRelease);
+      onError("Couldn't update that track's order");
     },
   });
 
