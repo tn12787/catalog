@@ -56,7 +56,6 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
   });
 
   const updateOrderMutation = useMutation(changeReleaseTrackOrder, {
-    onSuccess: onSuccess.bind(null, 'Track order updated'),
     onMutate: ({ id, newIndex }) => {
       const release = queryClient.getQueryData(activeQueryKey) as ClientRelease;
 
