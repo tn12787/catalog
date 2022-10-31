@@ -4,7 +4,12 @@ import { useCallback } from 'react';
 import { cloneDeep } from 'lodash';
 
 import useExtendedSession from 'hooks/useExtendedSession';
-import { createReleaseTrack, copyTracksToRelease, changeReleaseTrackOrder } from 'queries/tracks';
+import {
+  createReleaseTrack,
+  copyTracksToRelease,
+  changeReleaseTrackOrder,
+  editSingleTrack,
+} from 'queries/tracks';
 import { CreateSingleTrackVars } from 'queries/tracks/types';
 import { ClientRelease } from 'types/common';
 import { computeNewTrackOrdering } from 'utils/tracks';
@@ -24,7 +29,7 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
       toast({
         status: 'success',
         title: message,
-        duration: 2000,
+        duration: 3000,
       });
 
       queryClient.invalidateQueries(['releases', currentWorkspace, releaseId]);
@@ -46,8 +51,13 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
   );
 
   const createMutation = useMutation(createReleaseTrack, {
-    onSuccess: onSuccess.bind(null, 'Task created'),
-    onError: onError.bind(null, "Couldn't create that task"),
+    onSuccess: onSuccess.bind(null, 'Track created'),
+    onError: onError.bind(null, "Couldn't create that track"),
+  });
+
+  const updateMutation = useMutation(editSingleTrack, {
+    onSuccess: onSuccess.bind(null, 'Track updated'),
+    onError: onError.bind(null, "Couldn't create that track"),
   });
 
   const linkMutation = useMutation(copyTracksToRelease, {
@@ -75,6 +85,7 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
     createSingleTrack: createMutation,
     copyTracksToRelease: linkMutation,
     updateTrackOrder: updateOrderMutation,
+    updateSingleTrack: updateMutation,
   };
 };
 

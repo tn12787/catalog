@@ -20,7 +20,7 @@ import Card from 'components/Card';
 import useExtendedSession from 'hooks/useExtendedSession';
 import { hasRequiredPermissions } from 'utils/auth';
 import useAppColors from 'hooks/useAppColors';
-import TrackForm from 'components/tracks/forms/TrackForm';
+import CreateEditTrackForm from 'components/tracks/forms/TrackForm';
 
 interface Props {
   releaseData: ClientRelease;
@@ -62,7 +62,7 @@ const TracksCard = ({ releaseData }: Props) => {
         <ModalContent p={3} bg={bgSecondary}>
           <ModalHeader>Add a track</ModalHeader>
           <ModalBody>
-            <TrackForm releaseData={releaseData} onSubmitSuccess={onClose} />
+            <CreateEditTrackForm releaseData={releaseData} onSubmitSuccess={onClose} />
           </ModalBody>
           <ModalCloseButton></ModalCloseButton>
         </ModalContent>

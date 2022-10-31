@@ -5,11 +5,12 @@ import {
   ChangeTrackOrderVars,
   CopyTrackVars,
   CreateSingleTrackVars,
+  EditSingleTrackVars,
   TrackFilterOptions,
 } from './types';
 
 import { PaginatedQueryResult } from 'queries/types';
-import { ClientRelease } from 'types/common';
+import { ClientRelease, TrackResponse } from 'types/common';
 
 export const fetchWorkspaceTracks = async ({
   workspace,
@@ -54,6 +55,16 @@ export const changeReleaseTrackOrder = async ({
   ...rest
 }: ChangeTrackOrderVars): Promise<ClientRelease | void> => {
   const { data: response } = await axios.patch(`/api/releases/${releaseId}/tracks`, {
+    ...rest,
+  });
+  return response;
+};
+
+export const editSingleTrack = async ({
+  id,
+  ...rest
+}: EditSingleTrackVars): Promise<TrackResponse | void> => {
+  const { data: response } = await axios.patch(`/api/tracks/${id}`, {
     ...rest,
   });
   return response;

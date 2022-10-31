@@ -1,9 +1,9 @@
-import { CreateTrackFormData } from './types';
+import { CreateEditTrackFormData } from './types';
 
 import { FormDatum } from 'types/forms';
 import ArtistSelect from 'components/artists/ArtistSelect';
 
-export const createTrackConfig = (): FormDatum<CreateTrackFormData>[] => [
+export const createTrackConfig = (): FormDatum<CreateEditTrackFormData>[] => [
   {
     name: 'name',
     label: 'Name',

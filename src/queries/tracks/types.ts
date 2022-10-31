@@ -10,6 +10,11 @@ export interface CreateSingleTrackVars extends Omit<SingleTrackVars, 'id'> {
   featuringArtists?: string[];
 }
 
+export interface EditSingleTrackVars extends SingleTrackVars {
+  mainArtists: string[];
+  featuringArtists?: string[];
+}
+
 export type CopyTrackVars = { releaseId: string; ids: string[] };
 
 export type ChangeTrackOrderVars = Pick<SingleTrackVars, 'id'> & {
