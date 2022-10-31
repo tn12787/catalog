@@ -24,6 +24,7 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
       toast({
         status: 'success',
         title: message,
+        duration: 2000,
       });
 
       queryClient.invalidateQueries(['releases', currentWorkspace, releaseId]);
