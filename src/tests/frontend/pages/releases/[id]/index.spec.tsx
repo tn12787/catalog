@@ -40,6 +40,7 @@ describe('Single Release Page', () => {
     expect(getByText(/Actions/)).toBeVisible();
     expect(getByText(testReleaseType)).toBeVisible();
 
+    expect(getByText(/Tracks/)).toBeVisible();
     expect(getByText(/Release Prep/)).toBeVisible();
     expect(getByText(/Marketing & Promotion/)).toBeVisible();
 

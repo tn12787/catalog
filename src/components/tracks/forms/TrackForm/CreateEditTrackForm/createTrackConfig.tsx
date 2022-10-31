@@ -20,7 +20,7 @@ export const createTrackConfig = (): FormDatum<CreateEditTrackFormData>[] => [
     registerArgs: {},
     extraProps: {
       placeholder: 'Enter song lyrics here...',
-      maxLength: 600,
+      maxLength: 20000,
     },
   },
   {
