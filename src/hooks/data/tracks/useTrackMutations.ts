@@ -1,16 +1,21 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useToast } from '@chakra-ui/react';
 import { useCallback } from 'react';
+import { cloneDeep } from 'lodash';
 
 import useExtendedSession from 'hooks/useExtendedSession';
 import { createReleaseTrack, copyTracksToRelease, changeReleaseTrackOrder } from 'queries/tracks';
 import { CreateSingleTrackVars } from 'queries/tracks/types';
+import { ClientRelease } from 'types/common';
+import { computeNewTrackOrdering } from 'utils/tracks';
 
 type UseTrackMutationArgs = Pick<CreateSingleTrackVars, 'releaseId'>;
 
 const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
   const { currentWorkspace } = useExtendedSession();
   const queryClient = useQueryClient();
+
+  const activeQueryKey = ['releases', currentWorkspace, releaseId];
 
   const toast = useToast();
 
@@ -51,7 +56,18 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
 
   const updateOrderMutation = useMutation(changeReleaseTrackOrder, {
     onSuccess: onSuccess.bind(null, 'Track order updated'),
-    onError: onError.bind(null, "Couldn't update track order. Please try again later"),
+    onMutate: ({ id, newIndex }) => {
+      const release = queryClient.getQueryData(activeQueryKey) as ClientRelease;
+
+      const newTracks = computeNewTrackOrdering(cloneDeep(release.tracks), id, newIndex);
+
+      queryClient.setQueryData(activeQueryKey, { ...release, tracks: newTracks });
+
+      return { oldRelease: release };
+    },
+    onError: (_, __, context) => {
+      queryClient.setQueryData(activeQueryKey, context?.oldRelease);
+    },
   });
 
   return {
