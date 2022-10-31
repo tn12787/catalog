@@ -5,6 +5,7 @@ import {
   ChangeTrackOrderVars,
   CopyTrackVars,
   CreateSingleTrackVars,
+  DeleteSingleTrackVars,
   EditSingleTrackVars,
   TrackFilterOptions,
 } from './types';
@@ -67,5 +68,12 @@ export const editSingleTrack = async ({
   const { data: response } = await axios.patch(`/api/tracks/${id}`, {
     ...rest,
   });
+  return response;
+};
+
+export const deleteSingleTrack = async ({
+  id,
+}: DeleteSingleTrackVars): Promise<TrackResponse | void> => {
+  const { data: response } = await axios.delete(`/api/tracks/${id}`);
   return response;
 };

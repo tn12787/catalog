@@ -1,6 +1,7 @@
 import {
   Body,
   createHandler,
+  Delete,
   NotFoundException,
   Patch,
   Req,
@@ -17,7 +18,7 @@ import { UpdateReleaseTrackDto } from 'backend/models/tracks/update';
 @requiresAuth()
 class IndividualTrackHandler {
   @Patch()
-  async releases(
+  async editTrack(
     @Req() req: AuthDecoratedRequest,
     @RequiredQuery('id') id: string,
     @Body(ValidationPipe) body: UpdateReleaseTrackDto
@@ -46,6 +47,24 @@ class IndividualTrackHandler {
     });
 
     return updated;
+  }
+
+  @Delete()
+  async deleteTrack(@Req() req: AuthDecoratedRequest, @RequiredQuery('id') id: string) {
+    const track = await prisma.track.findUnique({
+      where: { id },
+      include: { release: true },
+    });
+
+    if (!track) throw new NotFoundException();
+
+    await checkRequiredPermissions(req, ['UPDATE_RELEASES'], track.release.workspaceId);
+
+    const deleted = await prisma.track.delete({
+      where: { id },
+    });
+
+    return deleted;
   }
 }
 export default createHandler(IndividualTrackHandler);

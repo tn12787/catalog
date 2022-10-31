@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import {
   Box,
   Button,
+  ButtonGroup,
   Flex,
   HStack,
   Icon,
@@ -17,6 +18,7 @@ import {
 import { MdDragIndicator } from 'react-icons/md';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { BiPencil } from 'react-icons/bi';
+import { rest } from 'lodash';
 
 import { fields } from './fields';
 import { TrackDndType } from './types';
@@ -25,6 +27,7 @@ import { ClientRelease, TrackResponse } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
 import useTrackMutations from 'hooks/data/tracks/useTrackMutations';
 import CreateEditTrackForm from 'components/tracks/forms/TrackForm/CreateEditTrackForm';
+import Dialog from 'components/Dialog';
 
 type Props = {
   releaseData: ClientRelease;
@@ -34,7 +37,8 @@ type Props = {
 
 const TrackListItem = ({ releaseData, track, index }: Props) => {
   const { bodySub, bgSecondary } = useAppColors();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+  const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
 
   const [{ opacity }, drag, preview] = useDrag(() => ({
     type: TrackDndType.TRACK,
@@ -49,10 +53,11 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
   }));
 
   const dropRef = useRef<HTMLDivElement>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const [isHovering, setIsHovering] = React.useState(false);
 
-  const { updateTrackOrder } = useTrackMutations({ releaseId: track.releaseId });
+  const { updateTrackOrder, deleteSingleTrack } = useTrackMutations({ releaseId: track.releaseId });
 
   const [{ handlerId, isHoveringOver }, drop] = useDrop({
     accept: TrackDndType.TRACK,
@@ -105,6 +110,11 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
 
   drop(dropRef);
 
+  const onDelete = async () => {
+    await deleteSingleTrack.mutateAsync({ id: track.id });
+    onDeleteClose();
+  };
+
   return (
     <Box ref={dropRef} data-handler-id={handlerId} w="100%">
       <Flex
@@ -148,7 +158,7 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
             opacity={isHovering ? 1 : 0}
             size="sm"
             variant="outline"
-            onClick={onOpen}
+            onClick={onEditOpen}
           >
             Edit
           </Button>
@@ -158,12 +168,13 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
             size="sm"
             variant="solid"
             colorScheme={'red'}
+            onClick={onDeleteOpen}
           >
             Remove
           </Button>
         </HStack>
       </Flex>
-      <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
+      <Modal size="2xl" isOpen={isEditOpen} onClose={onEditClose}>
         <ModalOverlay></ModalOverlay>
         <ModalContent p={3} bg={bgSecondary}>
           <ModalHeader>Edit track</ModalHeader>
@@ -171,12 +182,37 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
             <CreateEditTrackForm
               existingTrackId={track.id}
               releaseData={releaseData}
-              onSubmitSuccess={onClose}
+              onSubmitSuccess={onEditClose}
             />
           </ModalBody>
           <ModalCloseButton></ModalCloseButton>
         </ModalContent>
       </Modal>
+      <Dialog
+        isOpen={isDeleteOpen}
+        onClose={onDeleteClose}
+        onConfirm={onDelete}
+        leastDestructiveRef={cancelRef}
+        loading={deleteSingleTrack.isLoading}
+        title="Remove track?"
+        message="Are you sure you want to delete this track? This action cannot be undone."
+        buttons={
+          <ButtonGroup>
+            <Button ref={cancelRef} onClick={onDeleteClose}>
+              No
+            </Button>
+            <Button
+              colorScheme="red"
+              isLoading={deleteSingleTrack.isLoading}
+              ml={3}
+              onClick={onDelete}
+            >
+              Yes
+            </Button>
+          </ButtonGroup>
+        }
+        {...rest}
+      />
     </Box>
   );
 };

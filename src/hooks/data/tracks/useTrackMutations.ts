@@ -9,6 +9,7 @@ import {
   copyTracksToRelease,
   changeReleaseTrackOrder,
   editSingleTrack,
+  deleteSingleTrack,
 } from 'queries/tracks';
 import { CreateSingleTrackVars } from 'queries/tracks/types';
 import { ClientRelease } from 'types/common';
@@ -65,6 +66,11 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
     onError: onError.bind(null, "Couldn't link those tracks"),
   });
 
+  const deleteMutation = useMutation(deleteSingleTrack, {
+    onSuccess: onSuccess.bind(null, 'Track deleted'),
+    onError: onError.bind(null, "Couldn't delete that track."),
+  });
+
   const updateOrderMutation = useMutation(changeReleaseTrackOrder, {
     onMutate: ({ id, newIndex }) => {
       const release = queryClient.getQueryData(activeQueryKey) as ClientRelease;
@@ -86,6 +92,7 @@ const useTrackMutations = ({ releaseId }: UseTrackMutationArgs) => {
     copyTracksToRelease: linkMutation,
     updateTrackOrder: updateOrderMutation,
     updateSingleTrack: updateMutation,
+    deleteSingleTrack: deleteMutation,
   };
 };
 
