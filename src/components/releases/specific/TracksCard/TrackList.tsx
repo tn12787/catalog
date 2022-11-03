@@ -1,4 +1,4 @@
-import { Stack, Flex, Text, SimpleGrid, Box } from '@chakra-ui/react';
+import { Stack, Flex, Text, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 
 import TrackListEmpty from './TrackListEmpty';
