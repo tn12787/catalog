@@ -117,12 +117,17 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
   };
 
   return (
-    <Box ref={dropRef} data-handler-id={handlerId} w="100%">
-      <Flex
-        direction={['column', 'column', 'row']}
+    <Box
+      borderBottomWidth={'1px'}
+      _last={{ borderBottomWidth: 0 }}
+      ref={dropRef}
+      data-handler-id={handlerId}
+      w="100%"
+    >
+      <HStack
         width={'100%'}
         justify="space-between"
-        alignItems={['center', 'center', 'center']}
+        alignItems={'center'}
         ref={preview}
         fontSize="sm"
         py={1}
@@ -133,15 +138,21 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
         borderTopColor={isHoveringOver ? 'auto' : 'transparent'}
         transition={'all 0.08s ease-out'}
       >
-        <Flex opacity={isHovering ? 1 : 0} transition={'opacity 0.08s ease-out'} ref={drag}>
-          <Icon cursor={'grab'} as={MdDragIndicator} color={bodySub} p={1} fontSize="3xl" />
+        <Flex
+          gridColumn={0}
+          opacity={isHovering ? 1 : 0}
+          transition={'opacity 0.08s ease-out'}
+          ref={drag}
+        >
+          <Icon cursor={'grab'} as={MdDragIndicator} color={bodySub} fontSize="xl" />
         </Flex>
         <Text maxW="20px" w="100%">
           {index + 1}.
         </Text>
-        {fields(track).map((field) => {
+        {fields(track).map((field, index) => {
           return (
             <Flex
+              gridColumn={index + 1}
               width="100%"
               align={{ base: 'center', md: 'flex-start' }}
               direction={{ base: 'row', md: 'column' }}
@@ -171,7 +182,7 @@ const TrackListItem = ({ releaseData, track, index }: Props) => {
             aria-label={'delete track'}
           ></IconButton>
         </HStack>
-      </Flex>
+      </HStack>
       <Modal size="2xl" isOpen={isEditOpen} onClose={onEditClose}>
         <ModalOverlay></ModalOverlay>
         <ModalContent p={3} bg={bgSecondary}>
