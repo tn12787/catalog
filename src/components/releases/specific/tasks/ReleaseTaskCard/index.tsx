@@ -60,7 +60,7 @@ const ReleaseTaskCard = <T extends ClientReleaseTaskData>({
           <HStack>
             <NextLink passHref href={`/tasks/${data.id}`}>
               <Button as={Link} variant="link" size="sm" colorScheme="purple">
-                View Details
+                Details
               </Button>
             </NextLink>
           </HStack>

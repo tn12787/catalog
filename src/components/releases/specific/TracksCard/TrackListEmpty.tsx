@@ -9,7 +9,9 @@ const TrackListEmpty = () => {
   return (
     <Stack py={2} alignItems="center" w="100%" alignSelf="center">
       <Icon color={bodySub} fontSize="5xl" as={BiDisc}></Icon>
-      <Text color={bodySub}>Tracks added to this release will appear here.</Text>
+      <Text fontSize="sm" color={bodySub}>
+        No tracks have been added yet.
+      </Text>
     </Stack>
   );
 };
