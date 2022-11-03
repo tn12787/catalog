@@ -13,6 +13,7 @@ import {
 import NextLink from 'next/link';
 import React from 'react';
 import { format } from 'date-fns';
+import { BiPencil } from 'react-icons/bi';
 
 import NewReleaseForm from '../forms/NewReleaseForm';
 
@@ -35,7 +36,7 @@ export interface SummaryField {
 
 const fields = (releaseData: ClientRelease): SummaryField[] => [
   {
-    name: 'Artist',
+    name: 'Primary Artist',
     content: (
       <NextLink href={`/artists/${releaseData.artist.id}`} passHref>
         <Link>{releaseData.artist.name}</Link>
@@ -70,7 +71,7 @@ const Summary = ({ releaseData }: Props) => {
         </Flex>
 
         {canUpdateRelease && (
-          <Button size="sm" colorScheme="purple" variant="outline" onClick={onOpen}>
+          <Button size="sm" leftIcon={<BiPencil />} variant="outline" onClick={onOpen}>
             Edit
           </Button>
         )}

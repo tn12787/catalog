@@ -26,6 +26,15 @@ export const getReleaseByIdIsomorphic = async (
     },
     include: {
       artist: true,
+      tracks: {
+        orderBy: {
+          index: 'asc',
+        },
+        include: {
+          mainArtists: true,
+          featuringArtists: true,
+        },
+      },
       tasks: {
         include: {
           assignees: { include: { user: true } },

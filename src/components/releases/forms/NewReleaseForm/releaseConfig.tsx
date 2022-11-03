@@ -19,7 +19,7 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>
   },
   {
     name: 'artist',
-    label: 'Artist',
+    label: 'Primary Artist',
     type: 'select',
     registerArgs: {
       required: 'Please enter an artist.',
@@ -29,6 +29,7 @@ export const basicInfoConfig = (artists: Artist[]): FormDatum<BasicInfoFormData>
     },
     options: artists.map(({ id, name }) => ({ label: name, value: id })),
     isLoading: !artists.length,
+    helperContent: 'For a compilation, select the artist who will be credited.',
   },
   {
     name: 'type',

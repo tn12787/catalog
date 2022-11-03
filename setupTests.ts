@@ -1,3 +1,4 @@
+import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import '@testing-library/jest-dom';
 import 'whatwg-fetch';
@@ -15,7 +16,10 @@ beforeAll(() => {
   window.gtag = jest.fn();
   server.listen();
 });
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  cleanup();
+});
 afterAll(() => server.close());
 
 jest.mock('next/router', () => ({

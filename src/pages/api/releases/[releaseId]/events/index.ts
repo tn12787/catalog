@@ -13,6 +13,7 @@ class SpecificReleaseEventsHandler {
       where: { id },
       include: {
         artist: true,
+        tracks: { include: { mainArtists: true, featuringArtists: true } },
         tasks: {
           include: {
             assignees: { include: { user: true } },

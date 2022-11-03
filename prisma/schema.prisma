@@ -89,6 +89,7 @@ model Workspace {
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+  tracks    Track[]
 }
 
 model WorkspaceMember {
@@ -181,19 +182,21 @@ model VerificationToken {
 }
 
 model Artist {
-  id                String    @id @default(cuid())
-  name              String
-  legalName         String?
-  spotifyId         String?
-  instagramUsername String?
-  tiktokUsername    String?
-  imageUrl          String?
-  linkTreeUrl       String?
-  workspace         Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId       String
-  releases          Release[]
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime? @updatedAt
+  id                 String    @id @default(cuid())
+  name               String
+  legalName          String?
+  spotifyId          String?
+  instagramUsername  String?
+  tiktokUsername     String?
+  imageUrl           String?
+  linkTreeUrl        String?
+  workspace          Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId        String
+  releases           Release[]
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime? @updatedAt
+  tracksAsMainArtist Track[]   @relation("mainArtists")
+  tracksAsFeaturing  Track[]   @relation("featuringArtists")
 
   @@unique([name, workspaceId])
 }
@@ -210,9 +213,28 @@ model Release {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime?   @updatedAt
 
-  tasks ReleaseTask[]
+  tasks  ReleaseTask[]
+  tracks Track[]
 
   @@unique([name, artistId, workspaceId])
+}
+
+model Track {
+  id               String   @id @default(cuid())
+  name             String
+  lyrics           String?
+  mainArtists      Artist[] @relation("mainArtists")
+  featuringArtists Artist[] @relation("featuringArtists")
+
+  release     Release   @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  releaseId   String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+
+  index Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 model Contact {

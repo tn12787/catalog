@@ -40,6 +40,7 @@ describe('Single Release Page', () => {
     expect(getByText(/Actions/)).toBeVisible();
     expect(getByText(testReleaseType)).toBeVisible();
 
+    expect(getByText(/^Tracks$/)).toBeVisible();
     expect(getByText(/Release Prep/)).toBeVisible();
     expect(getByText(/Marketing & Promotion/)).toBeVisible();
 
@@ -49,7 +50,7 @@ describe('Single Release Page', () => {
     expect(getByText('🎚️ Mastering')).toBeVisible();
     expect(getByText('📅 Timeline')).toBeVisible();
 
-    expect(queryByText(/View details/)).toBeNull();
+    expect(queryByText(/Details/)).toBeNull();
   });
 
   it('Should show artwork info if there is some', async () => {
@@ -87,7 +88,7 @@ describe('Single Release Page', () => {
     const { queryAllByText, getByText } = render(testReleaseData);
 
     expect(queryAllByText(testArtistName)).toHaveLength(1);
-    await waitFor(() => expect(getByText(/View Details/)).toBeVisible());
+    await waitFor(() => expect(getByText(/Details/)).toBeVisible());
     await waitFor(() => expect(queryAllByText('🎨 Artwork')).toHaveLength(2));
   });
 });

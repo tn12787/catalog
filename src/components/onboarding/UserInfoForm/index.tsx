@@ -49,9 +49,7 @@ const UserInfoForm = ({ onSubmit, isLastStep }: Props) => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<Pick<User, 'name' | 'image'>>({
-    defaultValues: { name: user?.name },
-  });
+  } = useForm<Pick<User, 'name' | 'image'>>();
 
   useEffect(() => {
     if (!user) return;
@@ -60,7 +58,6 @@ const UserInfoForm = ({ onSubmit, isLastStep }: Props) => {
   }, [user, reset]);
 
   const inputName = watch('name');
-
   const currentImage = watch('image');
 
   const onImageChange = (url: string) => {

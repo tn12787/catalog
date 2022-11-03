@@ -15,6 +15,7 @@ export const testClientRelease = (extraFields: Partial<ClientRelease>): ClientRe
     workspaceId: 'test-workspace-id',
     createdAt: new Date(),
     updatedAt: new Date(),
+    tracks: [],
     ...extraFields,
   };
 };
@@ -31,6 +32,7 @@ export const testRelease = (extraFields: Partial<EnrichedRelease>): EnrichedRele
     updatedAt: new Date(),
     artist: testArtist({ id: 'test-artist-id' }),
     tasks: [],
+    tracks: [],
     ...extraFields,
   };
 };

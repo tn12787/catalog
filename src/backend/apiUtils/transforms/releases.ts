@@ -19,6 +19,7 @@ export const transformReleaseToApiShape = (release: EnrichedRelease): ClientRele
     generic: release.tasks
       .filter((item) => item.type === ReleaseTaskType.GENERIC)
       .map((item) => stripDbFields(item)) as TaskResponse[],
+    tracks: release.tracks,
   };
 };
 

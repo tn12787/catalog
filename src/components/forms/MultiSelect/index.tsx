@@ -19,13 +19,14 @@ interface Props<T extends object, L> extends Pick<ControllerRenderProps, 'onChan
   getItem: (item: T) => L;
   borderless?: boolean;
   isLoading?: boolean;
+  isDisabled?: boolean;
   searchPlaceholder?: string;
   renderListItem: (props: MultiSelectListItemProps<L>) => JSX.Element;
   renderSelectedItems: (props: SelectedItemListProps<T>) => JSX.Element;
   emptyContent?: string | JSX.Element;
 }
 
-const MultiSelect = forwardRef<HTMLSelectElement, any>(
+const MultiSelect = forwardRef<HTMLSelectElement, Props<any, any>>(
   <T extends { id: string }, L>(
     {
       value,
@@ -38,6 +39,7 @@ const MultiSelect = forwardRef<HTMLSelectElement, any>(
       renderSelectedItems,
       getItem,
       onChange,
+      isDisabled,
       renderListItem,
       emptyContent = 'No items match your search',
     }: Props<T, L>,
@@ -94,10 +96,12 @@ const MultiSelect = forwardRef<HTMLSelectElement, any>(
               borderWidth={borderless ? '0' : '1px'}
               borderColor={border}
               value={searchString}
+              isDisabled={isDisabled}
               focusBorderColor={primary}
             />
             <InputRightElement>
               <IconButton
+                isDisabled={isDisabled}
                 fontSize="xl"
                 variant="ghost"
                 {...getToggleButtonProps()}
@@ -146,4 +150,4 @@ const MultiSelect = forwardRef<HTMLSelectElement, any>(
 
 MultiSelect.displayName = 'MultiSelect';
 
-export default React.memo(MultiSelect);
+export default React.memo(MultiSelect) as typeof MultiSelect;
