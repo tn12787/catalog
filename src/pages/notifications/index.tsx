@@ -17,6 +17,7 @@ import Card from 'components/Card';
 import useBatchUpdateNotifications from 'hooks/data/notifications/useBatchUpdateNotifications';
 import useUpdateAllNotifications from 'hooks/data/notifications/useUpdateAllNotifications.ts';
 import PageTitle from 'components/pageItems/PageTitle';
+import EmptyTableContent from 'components/tasks/TaskTable/EmptyContent';
 
 const NoficationsPage = () => {
   const { bgPrimary, bodySub } = useAppColors();
@@ -129,10 +130,10 @@ const NoficationsPage = () => {
               selectedRows={selectedRows}
               onSelectedRowsChange={onSelectionChange}
               emptyContent={
-                <Stack py={8} alignItems="center" w="100%" alignSelf="center">
-                  <Text fontSize="2xl">🎉</Text>
-                  <Text color={bodySub}>{"Woo hoo! You're at inbox zero."}</Text>
-                </Stack>
+                <EmptyTableContent
+                  iconText={<>🎉</>}
+                  message={<>{"Woo hoo! You're at inbox zero."}</>}
+                />
               }
             />
           </Stack>

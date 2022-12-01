@@ -1,6 +1,7 @@
 import { Heading, Stack, Text } from '@chakra-ui/layout';
 import React from 'react';
 import { useColorModeValue } from '@chakra-ui/color-mode';
+import { Tbody, Tr } from '@chakra-ui/react';
 
 import Card from 'components/Card';
 import { TaskResponse } from 'types/common';
@@ -30,9 +31,15 @@ const OverdueTasks = ({ data, loading }: Props) => {
         data={filteredData}
         loading={loading}
         emptyContent={
-          <Stack py={8} alignItems="center" w="100%" alignSelf="center">
-            <Text fontSize="2xl">🎉</Text>
-            <Text color={bodySub}>You have no outstanding tasks. Congrats!</Text>
+          <Stack as={Tbody} py={8} alignItems="center" w="100%" alignSelf="center">
+            <Tr>
+              <Text as="span" fontSize="2xl">
+                🎉
+              </Text>
+            </Tr>
+            <Text as="span" color={bodySub}>
+              You have no outstanding tasks. Congrats!
+            </Text>
           </Stack>
         }
       />

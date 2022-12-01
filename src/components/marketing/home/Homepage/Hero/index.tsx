@@ -55,11 +55,11 @@ const Hero = () => {
               fontSize={'xl'}
             >
               Delightful release management tools for{' '}
-              <Text color={highlightBlue} textDecoration="underline" display="inline">
+              <Text as="span" color={highlightBlue} textDecoration="underline" display="inline">
                 artists
               </Text>{' '}
               and{' '}
-              <Text color={highlightGreen} display="inline" textDecoration="underline">
+              <Text as="span" color={highlightGreen} display="inline" textDecoration="underline">
                 their teams
               </Text>
               .

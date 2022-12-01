@@ -2,11 +2,13 @@ import { Heading, HStack, Stack, Text } from '@chakra-ui/layout';
 import React from 'react';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/tabs';
 import { TaskStatus } from '@prisma/client';
+import { Tbody, Td, Tr } from '@chakra-ui/react';
 
 import TaskTable from 'components/tasks/TaskTable';
 import Card from 'components/Card';
 import { TaskResponse } from 'types/common';
 import useAppColors from 'hooks/useAppColors';
+import EmptyTableContent from 'components/tasks/TaskTable/EmptyContent';
 
 interface Props {
   data: TaskResponse[];
@@ -14,7 +16,6 @@ interface Props {
 }
 
 const MyTasks = ({ data, loading }: Props) => {
-  const { bodySub } = useAppColors();
   const tabData = (data: TaskResponse[], loading: boolean) => [
     {
       label: 'Outstanding',
@@ -23,17 +24,28 @@ const MyTasks = ({ data, loading }: Props) => {
           data={data.filter((item) => item?.status !== TaskStatus.COMPLETE)}
           loading={loading}
           emptyContent={
-            <Stack py={8} alignItems="center" w="100%" alignSelf="center">
-              <Text fontSize="2xl">🎉</Text>
-              <Text color={bodySub}>You have no outstanding tasks. Congrats!</Text>
-            </Stack>
+            <EmptyTableContent
+              iconText={<>🎉</>}
+              message={<>You have no outstanding tasks. Congrats!</>}
+            ></EmptyTableContent>
           }
         />
       ),
     },
     {
       label: 'All Tasks',
-      content: <TaskTable data={data} loading={loading} />,
+      content: (
+        <TaskTable
+          data={data}
+          loading={loading}
+          emptyContent={
+            <EmptyTableContent
+              iconText={<>📝</>}
+              message={<>There are no tasks here yet.</>}
+            ></EmptyTableContent>
+          }
+        />
+      ),
     },
   ];
 

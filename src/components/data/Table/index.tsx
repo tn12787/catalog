@@ -132,7 +132,7 @@ const Table = <T extends object>({
         <Thead>
           {headerGroups.map((headerGroup, i) => (
             <Tr {...headerGroup.getHeaderGroupProps()} key={i.toString()}>
-              {headerGroup.headers.map((column, index) => (
+              {headerGroup.headers.map((column) => (
                 <Th
                   py={2}
                   px={2}
@@ -140,7 +140,7 @@ const Table = <T extends object>({
                   display="flex"
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   {...column.extraProps}
-                  key={index.toString()}
+                  key={column.id ?? column.Header}
                 >
                   {column.render('Header')}
                   <Text display="inline-block" pl="1">
